@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <base href='/spa/' />
+        <title>OAuth 2.0 Sample - Demo App</title>
+        <link href='css/bootstrap-3.3.7.min.css' rel='stylesheet' type='text/css' />
+        <link href='css/app.css'                 rel='stylesheet' type='text/css' />
+    </head>
+    <body>
+        <div class='container'>
+            
+            <!-- The header area also displays the logged in user -->
+            <div class='row'>
+                <div class='col-xs-9'>
+                    <h1 class='text-heading text-left'>OAuth 2.0 Sample - Demo App</h1>
+                </div>
+                <div class='col-xs-3 logincontainer vertical-padding hide'>
+                    <div class='hideDuringLogin'>
+                        Logged in as: <span class='logintext'></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The button area for testing token related operations -->
+            <div class='row hideWhenLoggedOut'>
+                <div class='col-xs-3'>
+                    <button id='btnHome' class='btn btn-primary center-block'>Home</button>
+                </div>
+                <div class='col-xs-3'>
+                    <button id='btnExpireAccessToken' class='btn btn-primary center-block initiallydisabled'>Expire Token</button>
+                </div>
+                <div class='col-xs-3'>
+                    <button id='btnRefreshData' class='btn btn-primary center-block initiallydisabled'>Refresh Data</button>
+                </div>
+                <div class='col-xs-3'>
+                    <button id='btnLogout' class='btn btn-primary center-block initiallydisabled'>Logout</button>
+                </div>
+            </div>
+            
+            <!-- Error details when applicable -->
+            <div class='errorcontainer vertical-padding row'>
+                <div class='col-xs-3'>
+                    <button id='btnClearError' class='btn btn-default center-block hide'>Clear Error</button>
+                </div>
+                <div class='col-xs-9'>
+                    <div class='errorForm panel-group'></div>
+                </div>
+            </div>
+
+            <!-- Trace details when visible -->
+            <div class='tracecontainer row hide'>
+                <div class='col-xs-3'>
+                    <button id='btnClearTrace' class='btn btn-default center-block hide'>Clear Trace</button>
+                </div>
+                <div class='col-xs-9'>
+                    <ul id='trace' class='trace'></ul>
+                </div>
+            </div>
+            
+            <!-- Used when the Companies List View is the main view -->
+            <div class='listcontainer vertical-padding panel panel-primary hide'>
+                <div class='panel-heading'>
+                    <div class='row'>
+                        <div class ='col-xs-1 hide-mobile'></div>    
+                        <div class ='col-xs-2'>Account</div>
+                        <div class ='col-xs-3'></div>
+                        <div class ='col-xs-2'>Target USD</div>
+                        <div class ='col-xs-2'>Investment USD</div>
+                        <div class ='col-xs-2'># Investors</div>
+                    </div>
+                </div>
+                <div class='companyList panel-group'>
+                </div>
+            </div>
+            
+            <!-- Used when the Transactions View is the main view -->
+            <div class='row transactionscontainer vertical-padding panel panel-primary hide'>
+                <div class='panel-heading'>
+                    <div class ='transactionsheader'>Transactions</div>
+                </div>
+                <div class='transactionslist vertical-padding'></div>
+            </div>
+
+            <!-- Used when the Logged Out View is the main view -->
+            <div id='loggedOut' class='row hide'>
+                <div class='col-xs-12'>
+                    <h3>You are logged out - click <a href='/spa'>here</a> to resume ...</h3>
+                </div>
+            </div>
+        </div>
+        
+        <script src='dist/vendor.bundle.min.js'></script>
+        <script src='dist/bundle.min.js'></script>
+    </body>
+</html>
