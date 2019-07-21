@@ -3,7 +3,7 @@
 ### Overview
 
 * The completed SPA code sample using OAuth 2.0 and Open Id Connect, referenced in my blog at https://authguidance.com
-* The SPA is expected to be hosted by one of our APIs
+* This SPA's static content is designed to be hosted by one of our APIs, in either NodeJS, .Net Core or Java
 
 ### Details
 
