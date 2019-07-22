@@ -23,8 +23,6 @@ class App {
      * Class setup
      */
     public constructor() {
-
-        (window as any).$ = $;
         this._setupCallbacks();
     }
 

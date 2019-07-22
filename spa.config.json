@@ -1,7 +1,7 @@
 {
     "app": {
         "apiBaseUrl":       "https://api.mycompany.com/api",
-        "debugErrorDetails": false
+        "debugErrorDetails": true
     },
     "oauth": {
         "authority":        "https://dev-843469.oktapreview.com/oauth2/default",
