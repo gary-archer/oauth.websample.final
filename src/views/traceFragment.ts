@@ -77,12 +77,13 @@ export class TraceFragment {
         };
 
         // Use Handlebars to compile the HTML into a function and handle dangerous characters securely
-        const traceHtml = `<b>{{prefix}}</b> : {{text}}`;
-        const renderTrace = Handlebars.compile(traceHtml);
+        const htmlTemplate = `<b>{{prefix}}</b> : {{text}}`;
+        const renderer = Handlebars.compile(htmlTemplate);
+        const html = renderer(traceViewModel);
 
         // Make sure any trace info on the hidden iframe is routed to the main window
         const traceList = IFrameWindowHelper.getMainWindowElement('#trace');
-        traceList.append($('<li>').html(renderTrace(traceViewModel)));
+        traceList.append($('<li>').html(html));
 
         // Make sure the trace button is visible when there is output
         const clearButton = IFrameWindowHelper.getMainWindowElement('#btnClearTrace');

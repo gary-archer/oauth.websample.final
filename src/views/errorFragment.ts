@@ -121,27 +121,23 @@ export class ErrorFragment {
      */
     private _getErrorUserMessageRow(userMessage: string): string {
 
-        // Format a view model for display
+        // Create a view model
         const errorViewModel = {
             message: userMessage,
         };
 
-        // The HTML template
-        const rowHtml = `<div class='panel panel-default'>
-                             <div class='panel-body'>
-                                 <div class='row errorUserInfo'>
-                                     <div class='col-xs-12'>
-                                         {{message}}
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>`;
-
-        // Use Handlebars to compile the HTML into a function and handle dangerous characters securely
-        const renderError = Handlebars.compile(rowHtml);
-
-        // Run the the function to return the data to render
-        return renderError(errorViewModel);
+        // Use Handlebars to compile the HTML and handle dangerous characters securely
+        const htmlTemplate = `<div class='panel panel-default'>
+                                  <div class='panel-body'>
+                                      <div class='row errorUserInfo'>
+                                          <div class='col-xs-12'>
+                                              {{message}}
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>`;
+        const renderer = Handlebars.compile(htmlTemplate);
+        return renderer(errorViewModel);
     }
 
     /*
@@ -149,30 +145,26 @@ export class ErrorFragment {
      */
     private _getErrorSupportRow(title: string, value: any): string {
 
-        // Format a view model for display
+        // Create a view model
         const errorViewModel = {
             title,
             value,
         };
 
-        // The HTML template
-        const rowHtml = `<div class='panel panel-default'>
-                             <div class='panel-body'>
-                                 <div class='row errorSupportInfo'>
-                                     <div class='col-xs-2'>
-                                         {{title}}
-                                     </div>
-                                     <div class='col-xs-10'>
-                                         <b>{{value}}</b>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>`;
-
-        // Use Handlebars to compile the HTML into a function and handle dangerous characters securely
-        const renderError = Handlebars.compile(rowHtml);
-
-        // Run the the function to return the data to render
-        return renderError(errorViewModel);
+        // Use Handlebars to compile the HTML and handle dangerous characters securely
+        const htmlTemplate = `<div class='panel panel-default'>
+                                  <div class='panel-body'>
+                                      <div class='row errorSupportInfo'>
+                                          <div class='col-xs-2'>
+                                              {{title}}
+                                          </div>
+                                          <div class='col-xs-10'>
+                                              <b>{{value}}</b>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>`;
+        const renderer = Handlebars.compile(htmlTemplate);
+        return renderer(errorViewModel);
     }
 }

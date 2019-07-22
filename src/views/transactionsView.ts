@@ -75,36 +75,35 @@ export class TransactionsView {
 
       data.transactions.forEach((transaction: Transaction) => {
 
-        // Format a view model for display
+        // Create a view model
         const transactionViewModel = {
             id: transaction.id,
             investorId: transaction.investorId,
             formattedAmountUsd: Number(transaction.amountUsd).toLocaleString(),
         };
 
-        // The HTML template
-        const transactionHtml = `<div class='item col-md-3 col-xs-6'>
-                                     <div class='thumbnail'>
-                                         <div class='caption row'>
-                                             <div class='col-xs-6 text-left'>Transaction Id</div>
-                                             <div class='col-xs-6 text-right link'>{{id}}</div>
-                                         </div>
-                                         <div class='caption row'>
-                                             <div class='col-xs-6 text-left'>Investor Id</div>
-                                             <div class='col-xs-6 text-right link'>{{investorId}}</div>
-                                         </div>
-                                         <div class='caption row'>
-                                             <div class='col-xs-6 text-left'>Amount USD</div>
-                                             <div class='col-xs-6 text-right amount'>{{formattedAmountUsd}}</div>
-                                         </div>
-                                     </div>
-                                 </div>`;
+        // Use Handlebars to compile the HTML and handle dangerous characters securely
+        const htmlTemplate = `<div class='item col-md-3 col-xs-6'>
+                                  <div class='thumbnail'>
+                                      <div class='caption row'>
+                                          <div class='col-xs-6 text-left'>Transaction Id</div>
+                                          <div class='col-xs-6 text-right link'>{{id}}</div>
+                                      </div>
+                                      <div class='caption row'>
+                                          <div class='col-xs-6 text-left'>Investor Id</div>
+                                          <div class='col-xs-6 text-right link'>{{investorId}}</div>
+                                      </div>
+                                      <div class='caption row'>
+                                          <div class='col-xs-6 text-left'>Amount USD</div>
+                                          <div class='col-xs-6 text-right amount'>{{formattedAmountUsd}}</div>
+                                      </div>
+                                  </div>
+                              </div>`;
+        const renderer = Handlebars.compile(htmlTemplate);
+        const html = renderer(transactionViewModel);
 
-        // Use Handlebars to compile the HTML into a function and handle dangerous characters securely
-        const renderTransaction = Handlebars.compile(transactionHtml);
-
-        // Execute the function to render data
-        $('.transactionslist').append(renderTransaction(transactionViewModel));
+        // Render the data
+        $('.transactionslist').append(html);
     });
   }
 

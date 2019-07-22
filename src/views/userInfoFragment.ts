@@ -1,3 +1,4 @@
+import * as Handlebars from 'handlebars';
 import * as $ from 'jquery';
 import {UserInfoClaims} from '../entities/userInfoClaims';
 import {HttpClient} from '../plumbing/api/httpClient';
@@ -36,8 +37,15 @@ export class UserInfoFragment {
 
         // If we could get name info then render it
         if (claims && claims.givenName && claims.familyName) {
+
+            // Use Handlebars to compile the HTML and handle dangerous characters securely
+            const htmlTemplate = `{{givenName}} {{familyName}}`;
+            const renderer = Handlebars.compile(htmlTemplate);
+            const html = renderer(claims);
+
+            // Update the UI
             $('.logincontainer').removeClass('hide');
-            $('.logintext').text(`${claims.givenName} ${claims.familyName}`);
+            $('.logintext').text(html);
         }
     }
 }

@@ -52,7 +52,7 @@ export class ListView {
 
         companies.forEach((company: Company) => {
 
-            // Format a view model for display
+            // Create a view model
             const companyViewModel = {
                 id: company.id,
                 name: company.name,
@@ -61,37 +61,36 @@ export class ListView {
                 noInvestors: company.noInvestors,
             };
 
-            // The HTML template
-            const companiesHtml = `<div class='panel panel-default'>
-                                       <div class='panel-body'>
-                                           <div class='row'>
-                                               <div class='col-xs-1 hide-mobile'>
-                                                   <img src='images/{{id}}.svg' />
-                                               </div>
-                                               <div class='col-xs-2 image-padding'>
-                                                   {{name}}
-                                               </div>
-                                               <div class='col-xs-3 image-padding'>
-                                                   <a class='companyLink' data-id={{id}}>View Transactions</a>
-                                               </div>
-                                               <div class='col-xs-2 amount image-padding'>
-                                                   {{formattedTargetUsd}}<br/>
-                                               </div>
-                                               <div class='col-xs-2 amount image-padding'>
-                                                   {{formattedInvestmentUsd}}
-                                               </div>
-                                               <div class='col-xs-2 image-padding'>
-                                                   <div class='col-xs-2'>{{noInvestors}}</div>
-                                               </div>
-                                           </div>
-                                       </div>
-                                   </div>`;
+            // Use Handlebars to compile the HTML and handle dangerous characters securely
+            const htmlTemplate = `<div class='panel panel-default'>
+                                      <div class='panel-body'>
+                                          <div class='row'>
+                                              <div class='col-xs-1 hide-mobile'>
+                                                  <img src='images/{{id}}.svg' />
+                                              </div>
+                                              <div class='col-xs-2 image-padding'>
+                                                  {{name}}
+                                              </div>
+                                              <div class='col-xs-3 image-padding'>
+                                                  <a class='companyLink' data-id={{id}}>View Transactions</a>
+                                              </div>
+                                              <div class='col-xs-2 amount image-padding'>
+                                                  {{formattedTargetUsd}}<br/>
+                                              </div>
+                                              <div class='col-xs-2 amount image-padding'>
+                                                  {{formattedInvestmentUsd}}
+                                              </div>
+                                              <div class='col-xs-2 image-padding'>
+                                                  <div class='col-xs-2'>{{noInvestors}}</div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>`;
+            const renderer = Handlebars.compile(htmlTemplate);
+            const html = renderer(companyViewModel);
 
-            // Use Handlebars to compile the HTML into a function and handle dangerous characters securely
-            const renderCompanies = Handlebars.compile(companiesHtml);
-
-            // Execute the function to render data
-            $('.companyList').append(renderCompanies(companyViewModel));
+            // Render the data
+            $('.companyList').append(html);
         });
 
         // A click handler will change the view to look at transaction details
