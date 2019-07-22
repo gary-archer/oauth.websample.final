@@ -1,6 +1,6 @@
+import * as Handlebars from 'handlebars';
 import * as $ from 'jquery';
 import * as Oidc from 'oidc-client';
-import {HtmlEncoder} from '../plumbing/utilities/htmlEncoder';
 import {IFrameWindowHelper} from '../plumbing/utilities/iframeWindowHelper';
 import {OAuthLogger} from '../plumbing/utilities/oauthLogger';
 
@@ -70,13 +70,19 @@ export class TraceFragment {
      */
     private static _append(prefix: string, args: any): void {
 
-        // Get the output
-        const text = HtmlEncoder.encode(Array.prototype.slice.call(args).join(' : '));
-        const html = `<b>${prefix}</b> : ${text}`;
+        // Get the view model data
+        const traceViewModel = {
+            prefix,
+            text: Array.prototype.slice.call(args).join(' : '),
+        };
+
+        // Use Handlebars to compile the HTML into a function and handle dangerous characters securely
+        const traceHtml = `<b>{{prefix}}</b> : {{text}}`;
+        const renderTrace = Handlebars.compile(traceHtml);
 
         // Make sure any trace info on the hidden iframe is routed to the main window
         const traceList = IFrameWindowHelper.getMainWindowElement('#trace');
-        traceList.append($('<li>').html(html));
+        traceList.append($('<li>').html(renderTrace(traceViewModel)));
 
         // Make sure the trace button is visible when there is output
         const clearButton = IFrameWindowHelper.getMainWindowElement('#btnClearTrace');

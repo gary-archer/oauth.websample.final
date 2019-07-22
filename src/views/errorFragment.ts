@@ -1,9 +1,9 @@
+import * as Handlebars from 'handlebars';
 import * as $ from 'jquery';
 import * as moment from 'moment';
 import {AppConfiguration} from '../configuration/appConfiguration';
 import {ErrorHandler} from '../plumbing/errors/errorHandler';
 import {UIError} from '../plumbing/errors/uiError';
-import {HtmlEncoder} from '../plumbing/utilities/htmlEncoder';
 
 /*
  * The error fragment shows within a view to render error details
@@ -121,15 +121,27 @@ export class ErrorFragment {
      */
     private _getErrorUserMessageRow(userMessage: string): string {
 
-        return `<div class='panel panel-default'>
-                    <div class='panel-body'>
-                        <div class='row errorUserInfo'>
-                            <div class='col-xs-12'>
-                                ${HtmlEncoder.encode(userMessage)}
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
+        // Format a view model for display
+        const errorViewModel = {
+            message: userMessage,
+        };
+
+        // The HTML template
+        const rowHtml = `<div class='panel panel-default'>
+                             <div class='panel-body'>
+                                 <div class='row errorUserInfo'>
+                                     <div class='col-xs-12'>
+                                         {{message}}
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>`;
+
+        // Use Handlebars to compile the HTML into a function and handle dangerous characters securely
+        const renderError = Handlebars.compile(rowHtml);
+
+        // Run the the function to return the data to render
+        return renderError(errorViewModel);
     }
 
     /*
@@ -137,22 +149,30 @@ export class ErrorFragment {
      */
     private _getErrorSupportRow(title: string, value: any): string {
 
-        let output = value;
-        if (typeof value === 'string') {
-            output = HtmlEncoder.encode(value);
-        }
+        // Format a view model for display
+        const errorViewModel = {
+            title,
+            value,
+        };
 
-        return `<div class='panel panel-default'>
-                    <div class='panel-body'>
-                        <div class='row errorSupportInfo'>
-                            <div class='col-xs-2'>
-                                ${title}
-                            </div>
-                            <div class='col-xs-10'>
-                                <b>${output}</b>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
+        // The HTML template
+        const rowHtml = `<div class='panel panel-default'>
+                             <div class='panel-body'>
+                                 <div class='row errorSupportInfo'>
+                                     <div class='col-xs-2'>
+                                         {{title}}
+                                     </div>
+                                     <div class='col-xs-10'>
+                                         <b>{{value}}</b>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>`;
+
+        // Use Handlebars to compile the HTML into a function and handle dangerous characters securely
+        const renderError = Handlebars.compile(rowHtml);
+
+        // Run the the function to return the data to render
+        return renderError(errorViewModel);
     }
 }

@@ -21,6 +21,7 @@
     "@types/jquery": "^3.3.29",
     "@types/node": "^11.13.7",
     "core-js": "^3.0.1",
+    "handlebars": "^4.1.2",
     "ts-loader": "^5.4.3",
     "tslint": "^5.15.0",
     "typescript": "^3.4.3",

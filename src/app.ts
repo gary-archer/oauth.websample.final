@@ -45,6 +45,10 @@ class App {
         $('#btnClearTrace').click(this._onClearTrace);
 
         try {
+
+            // Start listening for hash changes once the page has been initially loaded
+            $(window).on('hashchange', this._onHashChange);
+
             // Download configuration
             this._configuration = await this._downloadSpaConfig();
 
@@ -102,16 +106,7 @@ class App {
      * Get and display user claims from the API, which can contain any data we need, not just token data
      */
     private async _getUserClaims(): Promise<void> {
-
-        try {
-            // Get user data and display data in the user region of the page
-            await this._router.executeUserInfoFragment();
-
-        } finally {
-
-            // The above is a one off event and regardless of success we start listening for hash changes
-            $(window).on('hashchange', this._onHashChange);
-        }
+        await this._router.executeUserInfoFragment();
     }
 
     /*

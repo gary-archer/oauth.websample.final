@@ -22,7 +22,11 @@ module.exports = {
   resolve: {
     
     // Set extensions for import statements, and the .js extension allows us to import modules from JS libraries
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+
+    alias: {
+      'handlebars' : 'handlebars/dist/handlebars.js'
+    }
   },
   optimization: {
 
