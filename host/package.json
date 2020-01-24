@@ -1,0 +1,29 @@
+{
+  "name": "basicspahost",
+  "version": "1.0.0",
+  "description": "A simple project to manage developer hosting and cloud deployment for our SPA",
+  "main": "server.ts",
+  "scripts": {
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "start": "ts-node src/server.ts",
+    "package": "ts-node src/customPackager.ts",
+    "deploy": "aws s3 cp .package s3://web.authguidance-examples.com --recursive",
+    "clearcache": "aws cloudfront create-invalidation --distribution-id=E1KK6YUBAK08ZY --paths \"/*\""
+  },
+  "keywords": [],
+  "author": "Gary Archer",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fs-extra": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "@types/fs-extra": "^8.0.1",
+    "@types/node": "^12.11.7",
+    "core-js": "^3.3.5",
+    "ts-node": "^8.4.1",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.4"
+  }
+}
