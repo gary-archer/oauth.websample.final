@@ -3,7 +3,7 @@
 ### Overview
 
 * The completed SPA code sample using OAuth 2.0 and Open Id Connect, referenced in my blog at https://authguidance.com
-* The SPA connects (by default) to AWS Cognito and an AWS secured API
+* **The goals of this sample are a technology update and to simplify the local web development setup**
 
 ### Details
 
