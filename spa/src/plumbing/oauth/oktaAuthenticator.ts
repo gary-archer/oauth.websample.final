@@ -11,7 +11,7 @@ import {Authenticator} from './authenticator';
 export class OktaAuthenticator implements Authenticator {
 
     // A session key used to avoid the user logging in whenever the page is refreshed
-    private readonly pageRefreshKey = 'canSilentlyRenew';
+    private readonly canRefreshKey = 'canSilentlyRenew';
 
     // The OIDC Client class does all of the real security processing
     private readonly _userManager: UserManager;
@@ -64,7 +64,7 @@ export class OktaAuthenticator implements Authenticator {
 
         // If there is no token but the page has previously loaded, we attempt a silent renewal on an iframe
         // This is the SPA equivalent of using a refresh token
-        const accessToken = await this._handlePageRefresh();
+        const accessToken = await this._refreshAccessToken();
         if (accessToken && accessToken.length > 0) {
             return accessToken;
         }
@@ -114,7 +114,7 @@ export class OktaAuthenticator implements Authenticator {
                 history.replaceState({}, document.title, data.hash);
 
                 // Also enable page refresh without logging in
-                sessionStorage.setItem(this.pageRefreshKey, 'true');
+                sessionStorage.setItem(this.canRefreshKey, 'true');
 
             } catch (e) {
 
@@ -150,7 +150,7 @@ export class OktaAuthenticator implements Authenticator {
             await this._userManager.signoutRedirect();
 
             // Remove the logged in session key
-            sessionStorage.removeItem(this.pageRefreshKey);
+            sessionStorage.removeItem(this.canRefreshKey);
 
         } catch (e) {
             throw ErrorHandler.getFromOAuthRequest(e, ErrorCodes.loginRequestFailed);
@@ -165,12 +165,11 @@ export class OktaAuthenticator implements Authenticator {
     }
 
     /*
-     * If the user refreshes the page we prevent the user needing to login again unless required
-     * This is done by manually triggering a silent token renewal on an iframe
+     * Try to refresh the access token by manually triggering a silent token renewal on an iframe
      */
-    private async _handlePageRefresh(): Promise<string> {
+    private async _refreshAccessToken(): Promise<string> {
 
-        const canRefresh = sessionStorage.getItem(this.pageRefreshKey);
+        const canRefresh = sessionStorage.getItem(this.canRefreshKey);
         if (canRefresh) {
 
             try {
