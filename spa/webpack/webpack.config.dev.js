@@ -9,7 +9,7 @@ module.exports = merge(baseConfig, {
   mode: 'development',
 
   // Output source maps to enable debugging of browser code
-  devtool: "source-map",
+  devtool: 'source-map',
 
   // Pass a variable through to our Web UI to tell it to display stack traces
   plugins:[
