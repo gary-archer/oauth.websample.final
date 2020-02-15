@@ -1,9 +1,10 @@
-import {UserManager, UserManagerSettings} from 'oidc-client';
+import {UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorHandler} from '../errors/errorHandler';
 import {Authenticator} from './authenticator';
+import {CognitoWebStorage} from './cognitoWebStorage';
 
 /*
  * Cognito specific implementation
@@ -14,30 +15,36 @@ export class CognitoAuthenticator implements Authenticator {
     private readonly _userManager: UserManager;
     private readonly _configuration: OAuthConfiguration;
 
-    // The refresh token is stored only in memory, and not in HTML5 session storage
-    private _refreshToken: string;
-
     /*
      * Initialise OAuth settings and create the UserManager
      */
     public constructor(configuration: OAuthConfiguration) {
 
-        // For Cognito we disable silent token renewal on an iframe
+        // For Cognito we disable silent token renewal on an iframe and use HTML
         const settings = {
             authority: configuration.authority,
             client_id: configuration.clientId,
             redirect_uri: configuration.appUri,
             scope: configuration.scope,
+
+            // Use the Authorization Code Flow (PKCE)
             response_type: 'code',
-            loadUserInfo: false,
+
+            // We are not using background silent token renewal
             automaticSilentRenew: false,
+
+            // We are not using these features and we get extended user info from our API
+            loadUserInfo: false,
             monitorSession: false,
+
+            // Use custom storage to work around Cognito problems
+            userStore: new WebStorageStateStore({ store: new CognitoWebStorage() }),
+
         } as UserManagerSettings;
 
         // Create the user manager
         this._userManager = new UserManager(settings);
         this._configuration = configuration;
-        this._refreshToken = '';
         this._setupCallbacks();
     }
 
@@ -53,11 +60,11 @@ export class CognitoAuthenticator implements Authenticator {
         }
 
         // Try to refresh the access token
-        if (this._refreshToken.length > 0) {
+        if (user && user.refresh_token && user.refresh_token.length > 0) {
 
             try {
                 // Ask OIDC client to silently renew using the refresh token
-                user = await this._userManager.signinSilent({refresh_token: this._refreshToken});
+                user = await this._userManager.signinSilent();
 
                 // Return the renewed access token
                 if (user && user.access_token && user.access_token.length > 0) {
@@ -114,13 +121,6 @@ export class CognitoAuthenticator implements Authenticator {
                 // Handle the response
                 const user = await this._userManager.signinRedirectCallback();
 
-                // Store the refresh token only in memory rather than in HTML5 session storage
-                // The access token is stored so that the user does not need to sign in after every page refresh
-                // This is a trade off between usability and security
-                this._refreshToken = user.refresh_token!;
-                user.refresh_token = '';
-                this._userManager.storeUser(user);
-
                 // Get the hash URL before the redirect
                 const data = JSON.parse(user.state);
 
@@ -161,7 +161,6 @@ export class CognitoAuthenticator implements Authenticator {
         try {
             // First clear all tokens from session storage
             await this._userManager.removeUser();
-            this._refreshToken = '';
 
             // Cognito requires the configured logout return URL to use a path segment
             // Therefore we configure https://web.authguidance-examples.com/spa/loggedout.html
