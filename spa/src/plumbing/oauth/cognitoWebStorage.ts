@@ -1,27 +1,25 @@
 /*
- * An adapter class to manage storage of Cognito tokens and work around lack of standards support
+ * An adapter class to manage session storage of Cognito tokens due to lack of support for prompt=none
+ * This trade off ensures that users do not need to re-login whenever the browser tab is refreshed
  */
 export class CognitoWebStorage {
 
-    // Our short lived access token is stored in HTML 5 session storage
-    // This trade off prevents end users from having to login every time they refresh the page
-    private readonly accessTokenStorageKey = 'basicspa.accesstoken';
-    private readonly _data: any = {};
+    // We only store the refresh token in memory
+    private _refreshToken: string;
 
     public constructor() {
-        this._data = {};
+        this._refreshToken = '';
     }
 
     /*
-     * Override the getItem method to retrieve the access token from session storage
+     * Override the getItem method to use the in memory refresh token
      */
     public getItem(key: string): any {
 
-        const item = this._data[key];
-        if (item) {
-
-            const deserialized = JSON.parse(item);
-            deserialized.access_token = sessionStorage.getItem(this.accessTokenStorageKey);
+        const rawData = sessionStorage.getItem(key);
+        if (rawData) {
+            const deserialized = JSON.parse(rawData);
+            deserialized.refresh_token = this._refreshToken;
             return JSON.stringify(deserialized);
         }
 
@@ -29,35 +27,36 @@ export class CognitoWebStorage {
     }
 
     /*
-     * Override the setItem method to save the access token from session storage
+     * Override the setItem method to save a dummy value for the refresh token
      */
     public setItem(key: string, value: any): any {
 
-        this._data[key] = value;
         const deserialized = JSON.parse(value);
-        sessionStorage.setItem(this.accessTokenStorageKey, deserialized.access_token);
+        this._refreshToken = deserialized.refresh_token;
+        deserialized.refresh_token = 'x'
+        sessionStorage.setItem(key, JSON.stringify(deserialized));
     }
 
     /*
-     * Override the removeItem method to remove the access token from session storage
+     * Override the removeItem method to also clear the refresh token
      */
     public removeItem(key: string): any {
 
-        delete this._data[key];
-        sessionStorage.removeItem(this.accessTokenStorageKey);
+        sessionStorage.removeItem(key);
+        this._refreshToken = '';
     }
 
     /*
      * Return the length property
      */
     public get length(): number {
-        return Object.getOwnPropertyNames(this._data).length;
+        return sessionStorage.length;
     }
 
     /*
      * Forward to the indexer property of sessionStorage
      */
     public key(index: number): string | null {
-        return Object.getOwnPropertyNames(this._data)[index];
+        return sessionStorage[index];
     }
 }
