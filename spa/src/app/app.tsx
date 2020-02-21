@@ -48,7 +48,7 @@ export class App extends React.Component<any, AppState> {
         this._setupCallbacks();
 
         // Create a helper class to do multiple view coordination and initialise the modal dialog
-        this._viewManager = new ViewManager(this._onLoginRequired, this._onLoadStateChanged);
+        this._viewManager = new ViewManager(this._startLoginRedirect, this._onLoadStateChanged);
         Modal.setAppElement('#root');
     }
 
@@ -216,7 +216,7 @@ export class App extends React.Component<any, AppState> {
     /*
      * Trigger a login redirect when notified by the view manager
      */
-    private async _onLoginRequired(): Promise<void> {
+    private async _startLoginRedirect(): Promise<void> {
 
         try {
             await this._authenticator.startLoginRedirect();
@@ -272,14 +272,15 @@ export class App extends React.Component<any, AppState> {
         // Update the hash location
         location.hash = '#';
 
-        // When logged out and login is clicked, force user data to be reloaded
-        if (!this.state.isLoggedIn) {
-            this.setState({loadUserInfo: true});
-        }
-
-        // Force a full app reload after an error to ensure that all data is retried
         if (this.state.isStarting || this._viewManager.hasError()) {
+
+            // Force a full app reload after an error to ensure that all data is retried
             await this._startApp();
+
+        } else if (!this.state.isLoggedIn) {
+
+            // When logged out and home is clicked, force a login redirect
+            await this._startLoginRedirect();
         }
     }
 
@@ -317,7 +318,7 @@ export class App extends React.Component<any, AppState> {
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
     private _setupCallbacks(): void {
-        this._onLoginRequired = this._onLoginRequired.bind(this);
+        this._startLoginRedirect = this._startLoginRedirect.bind(this);
         this._onLoadStateChanged = this._onLoadStateChanged.bind(this);
         this._onHashChange = this._onHashChange.bind(this);
         this._onResize = this._onResize.bind(this);
