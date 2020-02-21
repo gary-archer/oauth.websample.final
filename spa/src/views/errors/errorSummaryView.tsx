@@ -61,19 +61,14 @@ export class ErrorSummaryView extends React.Component<ErrorSummaryViewProps, Err
      */
     private _handleSummaryClick(event: React.MouseEvent<HTMLAnchorElement>) {
         event.preventDefault();
-
-        this.setState((prevState) => {
-            return {...prevState, showDetails: true};
-        });
+        this.setState({showDetails: true});
     }
 
     /*
      * Reset state when the dialog's close button is clicked
      */
     private _handleDetailsDialogClose() {
-        this.setState((prevState) => {
-            return {...prevState, showDetails: false};
-        });
+        this.setState({showDetails: false});
     }
 
     /*

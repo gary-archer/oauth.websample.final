@@ -117,9 +117,7 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
             const data = await this.props.apiClient.getCompanyTransactions(this.state.companyId, options);
 
             // Update UI state
-            this.setState((prevState) => {
-                return {...prevState, error: null, data};
-            });
+            this.setState({error: null, data});
             this.props.onViewLoaded();
 
         } catch (e) {
@@ -140,9 +138,7 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
             } else {
 
                 // Indicate failure to the view manager
-                this.setState((prevState) => {
-                    return {...prevState, error};
-                });
+                this.setState({error});
                 this.props.onViewLoadFailed(error);
             }
         }

@@ -63,7 +63,7 @@ export class App extends React.Component<any, AppState> {
         if (this.state.isStarting) {
 
             if (this.state.appError) {
-                return this._renderappError();
+                return this._renderError();
             } else {
                 return this._renderInitialScreen();
             }
@@ -90,30 +90,25 @@ export class App extends React.Component<any, AppState> {
         try {
 
             // Reset state during load
-            this.setState((prevState) => {
-                return {
-                    ...prevState,
-                    isStarting: true,
-                    isLoggedIn: false,
-                    loadUserInfo: true,
-                    sessionButtonsEnabled: false,
-                    appError: null,
-                    isMobileSize: this._isMobileSize(),
-                };
+            this.setState({
+                isStarting: true,
+                isLoggedIn: false,
+                loadUserInfo: true,
+                sessionButtonsEnabled: false,
+                appError: null,
+                isMobileSize: this._isMobileSize()
             });
 
             // Do the work to load the app
             await this._loadApp();
 
             // Update the load state to force a rerender of the full view
-            this.setState((prevState) => {
-                return {...prevState, isStarting: false, appError: null};
-            });
+            this.setState({isStarting: false, appError: null});
 
         } catch (e) {
-            this.setState((prevState) => {
-                return {...prevState, appError: ErrorHandler.getFromException(e)};
-            });
+
+            // Render the error
+            this.setState({appError: ErrorHandler.getFromException(e)});
         }
     }
 
@@ -141,9 +136,7 @@ export class App extends React.Component<any, AppState> {
 
         // If there are stored tokens, the initial state is logged in
         const isLoggedIn = await this._authenticator.isLoggedIn();
-        this.setState((prevState) => {
-            return {...prevState, isLoggedIn, sessionButtonsEnabled: isLoggedIn};
-        });
+        this.setState({isLoggedIn, sessionButtonsEnabled: isLoggedIn});
     }
 
     /*
@@ -237,7 +230,7 @@ export class App extends React.Component<any, AppState> {
     /*
      * Render startup errors
      */
-    private _renderappError(): React.ReactNode {
+    private _renderError(): React.ReactNode {
 
         const headerButtonProps = {
             sessionButtonsEnabled: this.state.sessionButtonsEnabled,
@@ -272,10 +265,7 @@ export class App extends React.Component<any, AppState> {
             this._authenticator.startLoginRedirect();
 
         } catch (e) {
-
-            this.setState((prevState) => {
-                return {...prevState, appError: ErrorHandler.getFromException(e)};
-            });
+            this.setState({appError: ErrorHandler.getFromException(e)});
          }
     }
 
@@ -284,9 +274,7 @@ export class App extends React.Component<any, AppState> {
      */
     private _onLoadStateChanged(loaded: boolean): void {
 
-        this.setState((prevState) => {
-            return {...prevState, sessionButtonsEnabled: loaded};
-        });
+        this.setState({sessionButtonsEnabled: loaded});
     }
 
     /*
@@ -304,16 +292,12 @@ export class App extends React.Component<any, AppState> {
         if (!this.state.isMobileSize && this._isMobileSize()) {
 
             // Handle changing from a large size to mobile size
-            this.setState((prevState) => {
-                return {...prevState, isMobileSize: true};
-            });
+            this.setState({isMobileSize: true});
 
         } else if (this.state.isMobileSize && !this._isMobileSize()) {
 
             // Handle changing from a mobile size to large size
-            this.setState((prevState) => {
-                return {...prevState, isMobileSize: false};
-            });
+            this.setState({isMobileSize: false});
         }
     }
 
@@ -364,10 +348,7 @@ export class App extends React.Component<any, AppState> {
             await this._authenticator!.startLogout();
 
          } catch (e) {
-
-            this.setState((prevState) => {
-                return {...prevState, appError: ErrorHandler.getFromException(e)};
-            });
+            this.setState({appError: ErrorHandler.getFromException(e)});
          }
     }
 

@@ -53,6 +53,7 @@ export class ErrorBoundary extends React.Component<any, ErrorBoundaryState> {
      * Catch errors and translate for display
      */
     public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-        this.setState({error: ErrorHandler.getFromRenderError(error, errorInfo.componentStack)});
+        const details = ErrorHandler.getFromRenderError(error, errorInfo.componentStack);
+        this.setState({error: details});
     }
 }
