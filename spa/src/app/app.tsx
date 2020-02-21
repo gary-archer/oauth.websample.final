@@ -96,7 +96,7 @@ export class App extends React.Component<any, AppState> {
                 loadUserInfo: true,
                 sessionButtonsEnabled: false,
                 appError: null,
-                isMobileSize: this._isMobileSize()
+                isMobileSize: this._isMobileSize(),
             });
 
             // Do the work to load the app
@@ -130,13 +130,20 @@ export class App extends React.Component<any, AppState> {
         // Initialise OIDC library logging
         this._traceListener = new TraceListener();
 
-        // Subscribe to windows events
+        // Subscribe to window events
         window.onhashchange = this._onHashChange;
         window.onresize = this._onResize;
 
-        // If there are stored tokens, the initial state is logged in
+        // Get login related fields state
         const isLoggedIn = await this._authenticator.isLoggedIn();
-        this.setState({isLoggedIn, sessionButtonsEnabled: isLoggedIn});
+        const isReturnedFromLogout = location.hash.indexOf('loggedout') >= 0;
+
+        // Update the UI
+        this.setState({
+            isLoggedIn,
+            sessionButtonsEnabled: isLoggedIn,
+            loadUserInfo: !isReturnedFromLogout,
+        });
     }
 
     /*
@@ -181,8 +188,7 @@ export class App extends React.Component<any, AppState> {
         };
 
         const logoutProps = {
-            onViewLoading: this._viewManager.onMainViewLoading,
-            onViewLoaded: this._viewManager.onMainViewLoaded,
+            onLoginClick: this._handleHomeClick,
         };
 
         // Callbacks to prevent multi line JSX warnings
@@ -270,10 +276,9 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
-     * Update the load state when notified
+     * Update session buttons when the main view starts and ends loading
      */
     private _onLoadStateChanged(loaded: boolean): void {
-
         this.setState({sessionButtonsEnabled: loaded});
     }
 
@@ -313,8 +318,14 @@ export class App extends React.Component<any, AppState> {
      */
     private async _handleHomeClick(): Promise<void> {
 
-        // Update the location
+        // Update the hash location
         location.hash = '#';
+
+        if (!this.state.isLoggedIn) {
+
+            // Force user data to be reloaded
+            this.setState({loadUserInfo: true});
+        }
 
         // Force a full application restart after an error
         if (this.state.appError || this._viewManager.hasError()) {

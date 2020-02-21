@@ -3,9 +3,6 @@
  */
 export interface LogoutViewProps {
 
-    // A callback when the view is loading
-    onViewLoading: (viewType: string) => void;
-
-    // A callback when the view loads successfully
-    onViewLoaded: () => void;
+    // A callback when re-login is selected
+    onLoginClick: () => void;
 }
