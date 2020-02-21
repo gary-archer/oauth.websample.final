@@ -17,13 +17,13 @@ export class ViewManager {
 
     // Application callbacks
     private readonly _onLoginRequired: () => void;
-    private readonly onLoadStateChanged: (enabled: boolean) => void;
+    private readonly _onLoadStateChanged: (enabled: boolean) => void;
 
     public constructor(loginRequired: () => void, onLoadStateChanged: (enabled: boolean) => void) {
 
         // Store callbacks
         this._onLoginRequired = loginRequired;
-        this.onLoadStateChanged = onLoadStateChanged;
+        this._onLoadStateChanged = onLoadStateChanged;
 
         // Initially we wait for both views to load
         this._mainViewLoaded = false;
@@ -39,7 +39,7 @@ export class ViewManager {
      * Session buttons are disabled while the main view loads
      */
     public onMainViewLoading() {
-        this.onLoadStateChanged(false);
+        this._onLoadStateChanged(false);
     }
 
     /*
@@ -48,7 +48,7 @@ export class ViewManager {
     public onMainViewLoaded() {
         this._mainViewLoaded = true;
         this._mainViewLoadError = null;
-        this.onLoadStateChanged(true);
+        this._onLoadStateChanged(true);
     }
 
     /*
