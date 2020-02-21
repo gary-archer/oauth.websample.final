@@ -109,7 +109,7 @@ export class App extends React.Component<any, AppState> {
             const isLoggedIn = await this._authenticator.isLoggedIn();
             const isReturnedFromLogout = location.hash.indexOf('loggedout') >= 0;
 
-            // Update the UI
+            // Update the UI state
             this.setState({
                 isStarting: false,
                 isLoggedIn,
