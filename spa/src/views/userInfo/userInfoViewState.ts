@@ -12,6 +12,6 @@ export interface UserInfoViewState {
     // Populated when there is an error getting data
     error: UIError | null;
 
-    // We keep track of logged out state for use in getDerivedStateFromProps
-    isLoggedOut: boolean;
+    // Whether the view should load data
+    shouldLoad: boolean;
 }

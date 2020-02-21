@@ -37,11 +37,13 @@ export class App extends React.Component<any, AppState> {
     public constructor(props: any) {
         super(props);
 
-        // Track application state
+        // Set initial state, which will be used on the first render
         this.state = {
             isStarting: true,
-            isMainViewLoaded: false,
-            applicationError: null,
+            isLoggedIn: false,
+            loadUserInfo: true,
+            sessionButtonsEnabled: false,
+            appError: null,
             isMobileSize: this._isMobileSize(),
         };
 
@@ -60,8 +62,8 @@ export class App extends React.Component<any, AppState> {
 
         if (this.state.isStarting) {
 
-            if (this.state.applicationError) {
-                return this._renderStartUpError();
+            if (this.state.appError) {
+                return this._renderappError();
             } else {
                 return this._renderInitialScreen();
             }
@@ -92,8 +94,12 @@ export class App extends React.Component<any, AppState> {
                 return {
                     ...prevState,
                     isStarting: true,
-                    isMainViewLoaded: false,
-                    applicationError: null};
+                    isLoggedIn: false,
+                    loadUserInfo: true,
+                    sessionButtonsEnabled: false,
+                    appError: null,
+                    isMobileSize: this._isMobileSize(),
+                };
             });
 
             // Do the work to load the app
@@ -101,12 +107,12 @@ export class App extends React.Component<any, AppState> {
 
             // Update the load state to force a rerender of the full view
             this.setState((prevState) => {
-                return {...prevState, isStarting: false};
+                return {...prevState, isStarting: false, appError: null};
             });
 
         } catch (e) {
             this.setState((prevState) => {
-                return {...prevState, applicationError: ErrorHandler.getFromException(e)};
+                return {...prevState, appError: ErrorHandler.getFromException(e)};
             });
         }
     }
@@ -132,6 +138,12 @@ export class App extends React.Component<any, AppState> {
         // Subscribe to windows events
         window.onhashchange = this._onHashChange;
         window.onresize = this._onResize;
+
+        // If there are stored tokens, the initial state is logged in
+        const isLoggedIn = await this._authenticator.isLoggedIn();
+        this.setState((prevState) => {
+            return {...prevState, isLoggedIn, sessionButtonsEnabled: isLoggedIn};
+        });
     }
 
     /*
@@ -142,14 +154,14 @@ export class App extends React.Component<any, AppState> {
         const titleProps = {
             userInfo: {
                 apiClient: this._apiClient,
-                isLoggedOut: this._isLoggedOut(),
+                initialShouldLoad: this.state.loadUserInfo,
                 onViewLoaded: this._viewManager.onUserInfoLoaded,
                 onViewLoadFailed: this._viewManager.onUserInfoLoadFailed,
             },
         };
 
         const headerButtonProps = {
-            sessionButtonsEnabled: this.state.isMainViewLoaded,
+            sessionButtonsEnabled: this.state.sessionButtonsEnabled,
             handleHomeClick: this._handleHomeClick,
             handleExpireAccessTokenClick: this._handleExpireAccessTokenClick,
             handleRefreshDataClick: this._handleRefreshDataClick,
@@ -159,11 +171,11 @@ export class App extends React.Component<any, AppState> {
         const errorProps = {
             hyperlinkMessage: 'Problem Encountered in Application',
             dialogTitle: 'Application Error',
-            error: this.state.applicationError,
+            error: this.state.appError,
         };
 
         const sessionProps = {
-            isVisible: !(this.state.isStarting || this._isLoggedOut()),
+            isVisible: this.state.isLoggedIn,
             apiClient: this._apiClient,
         };
 
@@ -225,10 +237,10 @@ export class App extends React.Component<any, AppState> {
     /*
      * Render startup errors
      */
-    private _renderStartUpError(): React.ReactNode {
+    private _renderappError(): React.ReactNode {
 
         const headerButtonProps = {
-            sessionButtonsEnabled: this.state.isMainViewLoaded,
+            sessionButtonsEnabled: this.state.sessionButtonsEnabled,
             handleHomeClick: this._handleHomeClick,
             handleExpireAccessTokenClick: this._handleExpireAccessTokenClick,
             handleRefreshDataClick: this._handleRefreshDataClick,
@@ -238,7 +250,7 @@ export class App extends React.Component<any, AppState> {
         const errorProps = {
             hyperlinkMessage: 'Problem Encountered during Application Startup',
             dialogTitle: 'Application Startup Error',
-            error: this.state.applicationError,
+            error: this.state.appError,
         };
 
         return (
@@ -255,7 +267,16 @@ export class App extends React.Component<any, AppState> {
      * Trigger a login redirect when notified by the view manager
      */
     private _onLoginRequired() {
-        this._authenticator.startLoginRedirect();
+
+        try {
+            this._authenticator.startLoginRedirect();
+
+        } catch (e) {
+
+            this.setState((prevState) => {
+                return {...prevState, appError: ErrorHandler.getFromException(e)};
+            });
+         }
     }
 
     /*
@@ -264,7 +285,7 @@ export class App extends React.Component<any, AppState> {
     private _onLoadStateChanged(loaded: boolean): void {
 
         this.setState((prevState) => {
-            return {...prevState, isMainViewLoaded: loaded};
+            return {...prevState, sessionButtonsEnabled: loaded};
         });
     }
 
@@ -312,7 +333,7 @@ export class App extends React.Component<any, AppState> {
         location.hash = '#';
 
         // Force a full application restart after an error
-        if (this.state.applicationError || this._viewManager.hasError()) {
+        if (this.state.appError || this._viewManager.hasError()) {
             await this._startApp();
         }
     }
@@ -345,16 +366,9 @@ export class App extends React.Component<any, AppState> {
          } catch (e) {
 
             this.setState((prevState) => {
-                return {...prevState, applicationError: ErrorHandler.getFromException(e)};
+                return {...prevState, appError: ErrorHandler.getFromException(e)};
             });
          }
-    }
-
-    /*
-     * Calculate whether logged out from the hash URL
-     */
-    private _isLoggedOut(): boolean {
-        return location.hash.indexOf('loggedout') >= 0;
     }
 
     /*

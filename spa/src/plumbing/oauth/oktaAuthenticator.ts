@@ -52,6 +52,15 @@ export class OktaAuthenticator implements Authenticator {
     }
 
     /*
+     * See if the app has any tokens
+     */
+    public async isLoggedIn(): Promise<boolean> {
+
+        const user = await this._userManager.getUser();
+        return !!user;
+    }
+
+    /*
      * Get an access token and login if required
      */
     public async getAccessToken(): Promise<string> {

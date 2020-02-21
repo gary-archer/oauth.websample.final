@@ -33,7 +33,7 @@ export class CognitoWebStorage {
 
         const deserialized = JSON.parse(value);
         this._refreshToken = deserialized.refresh_token;
-        deserialized.refresh_token = 'x'
+        deserialized.refresh_token = 'x';
         sessionStorage.setItem(key, JSON.stringify(deserialized));
     }
 

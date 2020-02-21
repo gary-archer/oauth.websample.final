@@ -9,8 +9,8 @@ export interface UserInfoViewProps {
     // The API client to get data
     apiClient: ApiClient;
 
-    // The logged out state when user info is created
-    isLoggedOut: boolean;
+    // Whether the view should load data initially
+    initialShouldLoad: boolean;
 
     // A callback when the view loads successfully
     onViewLoaded: () => void;
