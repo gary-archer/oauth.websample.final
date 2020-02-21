@@ -8,7 +8,6 @@ import {LogoutView} from './logout/logoutView';
 export class ViewManager {
 
     // Load state
-    private _mainViewName: string;
     private _mainViewLoaded: boolean;
     private _userInfoLoaded: boolean;
 
@@ -27,7 +26,6 @@ export class ViewManager {
         this.onLoadStateChanged = onLoadStateChanged;
 
         // Initially we wait for both views to load
-        this._mainViewName = '';
         this._mainViewLoaded = false;
         this._userInfoLoaded = false;
 
@@ -40,8 +38,7 @@ export class ViewManager {
     /*
      * Session buttons are disabled while the main view loads
      */
-    public onMainViewLoading(mainViewName: string) {
-        this._mainViewName = mainViewName;
+    public onMainViewLoading() {
         this.onLoadStateChanged(false);
     }
 
@@ -51,11 +48,7 @@ export class ViewManager {
     public onMainViewLoaded() {
         this._mainViewLoaded = true;
         this._mainViewLoadError = null;
-
-        // Session buttons are not enabled when logged out
-        if (this._mainViewName !== 'LogoutView') {
-            this.onLoadStateChanged(true);
-        }
+        this.onLoadStateChanged(true);
     }
 
     /*

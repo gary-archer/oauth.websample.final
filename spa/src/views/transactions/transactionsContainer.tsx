@@ -113,7 +113,7 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
             };
 
             // Get data from the API
-            this.props.onViewLoading('TransactionsContainer');
+            this.props.onViewLoading();
             const data = await this.props.apiClient.getCompanyTransactions(this.state.companyId, options);
 
             // Update UI state

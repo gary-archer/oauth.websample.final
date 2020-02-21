@@ -4,7 +4,7 @@ import {ErrorBoundaryState} from './errorBoundaryState';
 import {ErrorSummaryView} from './errorSummaryView';
 
 /*
- * Manages catching of rendering errors anywhere in the tree view
+ * Manages catching of rendering errors anywhere in the tree view during development
  */
 export class ErrorBoundary extends React.Component<any, ErrorBoundaryState> {
 

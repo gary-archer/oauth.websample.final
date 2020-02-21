@@ -1,7 +1,7 @@
 import {UIError} from '../../plumbing/errors/uiError';
 
 /*
- * Used for rendering of a fallback UI when there is an error
+ * Used to render a fallback UI when there is a rendering error
  */
 export interface ErrorBoundaryState {
     error: UIError | null;

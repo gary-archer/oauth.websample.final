@@ -4,16 +4,14 @@ import {HashRouter, Route, Switch} from 'react-router-dom';
 import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
-import {ErrorHandler} from '../plumbing/errors/errorHandler';
 import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorFactory} from '../plumbing/oauth/authenticatorFactory';
 import {TraceListener} from '../plumbing/oauth/trace/traceListener';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
+import {AppErrorView} from '../views/errors/appErrorView';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
-import {ErrorSummaryView} from '../views/errors/errorSummaryView';
-import {HeadingView} from '../views/frame/headingView';
 import {SessionView} from '../views/frame/sessionView';
 import {TitleView} from '../views/frame/titleView';
 import {HeaderButtonsView} from '../views/headerButtons/headerButtonsView';
@@ -28,8 +26,8 @@ import {AppState} from './appState';
  */
 export class App extends React.Component<any, AppState> {
 
-    private _viewManager: ViewManager;
     private _configuration!: Configuration;
+    private _viewManager: ViewManager;
     private _authenticator!: Authenticator;
     private _apiClient!: ApiClient;
     private _traceListener!: TraceListener;
@@ -43,7 +41,6 @@ export class App extends React.Component<any, AppState> {
             isLoggedIn: false,
             loadUserInfo: true,
             sessionButtonsEnabled: false,
-            appError: null,
             isMobileSize: this._isMobileSize(),
         };
 
@@ -61,15 +58,8 @@ export class App extends React.Component<any, AppState> {
     public render(): React.ReactNode {
 
         if (this.state.isStarting) {
-
-            if (this.state.appError) {
-                return this._renderError();
-            } else {
-                return this._renderInitialScreen();
-            }
-
+            return this._renderInitialScreen();
         } else {
-
             return this._renderMain();
         }
     }
@@ -95,55 +85,41 @@ export class App extends React.Component<any, AppState> {
                 isLoggedIn: false,
                 loadUserInfo: true,
                 sessionButtonsEnabled: false,
-                appError: null,
                 isMobileSize: this._isMobileSize(),
             });
 
-            // Do the work to load the app
-            await this._loadApp();
+            // First download configuration from the browser's web domain
+            this._configuration = await ConfigurationLoader.download('spa.config.json');
 
-            // Update the load state to force a rerender of the full view
-            this.setState({isStarting: false, appError: null});
+            // Initialise authentication and handle login responses if applicable
+            this._authenticator = AuthenticatorFactory.createAuthenticator(this._configuration.oauth);
+            await this._authenticator.handleLoginResponse();
+
+            // Create a client to reliably call the API
+            this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
+
+            // Initialise OIDC library logging
+            this._traceListener = new TraceListener();
+
+            // Subscribe to window events
+            window.onhashchange = this._onHashChange;
+            window.onresize = this._onResize;
+
+            // Get login related fields state
+            const isLoggedIn = await this._authenticator.isLoggedIn();
+            const isReturnedFromLogout = location.hash.indexOf('loggedout') >= 0;
+
+            // Update the UI
+            this.setState({
+                isStarting: false,
+                isLoggedIn,
+                sessionButtonsEnabled: isLoggedIn,
+                loadUserInfo: !isReturnedFromLogout,
+            });
 
         } catch (e) {
-
-            // Render the error
-            this.setState({appError: ErrorHandler.getFromException(e)});
+            EventEmitter.dispatch(EventNames.error, {area: 'Startup', error: e});
         }
-    }
-
-    /*
-     * Do the initial creation of global objects before attempting to render the whole view
-     */
-    private async _loadApp(): Promise<void> {
-
-        // First download configuration from the browser's web domain
-        this._configuration = await ConfigurationLoader.download('spa.config.json');
-
-        // Initialise authentication and handle login responses if applicable
-        this._authenticator = AuthenticatorFactory.createAuthenticator(this._configuration.oauth);
-        await this._authenticator.handleLoginResponse();
-
-        // Create a client to reliably call the API
-        this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
-
-        // Initialise OIDC library logging
-        this._traceListener = new TraceListener();
-
-        // Subscribe to window events
-        window.onhashchange = this._onHashChange;
-        window.onresize = this._onResize;
-
-        // Get login related fields state
-        const isLoggedIn = await this._authenticator.isLoggedIn();
-        const isReturnedFromLogout = location.hash.indexOf('loggedout') >= 0;
-
-        // Update the UI
-        this.setState({
-            isLoggedIn,
-            sessionButtonsEnabled: isLoggedIn,
-            loadUserInfo: !isReturnedFromLogout,
-        });
     }
 
     /*
@@ -166,12 +142,6 @@ export class App extends React.Component<any, AppState> {
             handleExpireAccessTokenClick: this._handleExpireAccessTokenClick,
             handleRefreshDataClick: this._handleRefreshDataClick,
             handleLogoutClick: this._handleLogoutClick,
-        };
-
-        const errorProps = {
-            hyperlinkMessage: 'Problem Encountered in Application',
-            dialogTitle: 'Application Error',
-            error: this.state.appError,
         };
 
         const sessionProps = {
@@ -201,7 +171,7 @@ export class App extends React.Component<any, AppState> {
             <ErrorBoundary>
                 <TitleView {...titleProps} />
                 <HeaderButtonsView {...headerButtonProps} />
-                <ErrorSummaryView {...errorProps} />
+                <AppErrorView />
                 <SessionView {...sessionProps}/>
                 <TraceView />
                 <HashRouter>
@@ -225,19 +195,6 @@ export class App extends React.Component<any, AppState> {
             userInfo: null,
         };
 
-        return (
-            <ErrorBoundary>
-                <TitleView {...titleProps}/>
-                <TraceView />
-            </ErrorBoundary>
-        );
-    }
-
-    /*
-     * Render startup errors
-     */
-    private _renderError(): React.ReactNode {
-
         const headerButtonProps = {
             sessionButtonsEnabled: this.state.sessionButtonsEnabled,
             handleHomeClick: this._handleHomeClick,
@@ -246,18 +203,12 @@ export class App extends React.Component<any, AppState> {
             handleLogoutClick: this._handleLogoutClick,
         };
 
-        const errorProps = {
-            hyperlinkMessage: 'Problem Encountered during Application Startup',
-            dialogTitle: 'Application Startup Error',
-            error: this.state.appError,
-        };
-
         return (
             <ErrorBoundary>
-                <HeadingView />
+                <TitleView {...titleProps}/>
                 <HeaderButtonsView {...headerButtonProps}/>
-                <ErrorSummaryView {...errorProps}/>
                 <TraceView />
+                <AppErrorView />
             </ErrorBoundary>
         );
     }
@@ -265,13 +216,13 @@ export class App extends React.Component<any, AppState> {
     /*
      * Trigger a login redirect when notified by the view manager
      */
-    private _onLoginRequired() {
+    private async _onLoginRequired(): Promise<void> {
 
         try {
-            this._authenticator.startLoginRedirect();
+            await this._authenticator.startLoginRedirect();
 
         } catch (e) {
-            this.setState({appError: ErrorHandler.getFromException(e)});
+            EventEmitter.dispatch(EventNames.error, {area: 'Login', error: e});
          }
     }
 
@@ -321,14 +272,13 @@ export class App extends React.Component<any, AppState> {
         // Update the hash location
         location.hash = '#';
 
+        // When logged out and login is clicked, force user data to be reloaded
         if (!this.state.isLoggedIn) {
-
-            // Force user data to be reloaded
             this.setState({loadUserInfo: true});
         }
 
-        // Force a full application restart after an error
-        if (this.state.appError || this._viewManager.hasError()) {
+        // Force a full app reload after an error to ensure that all data is retried
+        if (this.state.isStarting || this._viewManager.hasError()) {
             await this._startApp();
         }
     }
@@ -359,7 +309,7 @@ export class App extends React.Component<any, AppState> {
             await this._authenticator!.startLogout();
 
          } catch (e) {
-            this.setState({appError: ErrorHandler.getFromException(e)});
+            EventEmitter.dispatch(EventNames.error, {area: 'Logout', error: e});
          }
     }
 

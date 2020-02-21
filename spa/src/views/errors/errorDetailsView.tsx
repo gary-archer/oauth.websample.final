@@ -4,7 +4,7 @@ import {ErrorReporter} from '../../plumbing/errors/errorReporter';
 import {ErrorDetailsViewProps} from './errorDetailsViewProps';
 
 /*
- * Manages rendering of error details
+ * Manages rendering the error detailed view
  */
 export class ErrorDetailsView extends React.Component<ErrorDetailsViewProps> {
 

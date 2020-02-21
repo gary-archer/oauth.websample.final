@@ -27,9 +27,9 @@ export class SessionView extends React.Component<SessionViewProps> {
         }
 
         return  (
-                    <div className='sessionid text-right mx-auto'>
-                        <small>{`API Session Id: ${this._sessionId}`}</small>
-                    </div>
-                );
+            <div className='sessionid text-right mx-auto'>
+                <small>{`API Session Id: ${this._sessionId}`}</small>
+            </div>
+        );
     }
 }

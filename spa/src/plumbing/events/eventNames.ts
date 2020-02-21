@@ -3,7 +3,10 @@
  */
 export class EventNames {
 
-    // Used to handle Refresh Data button clicks
+    // Used to publish application level errors
+    public static readonly error: string = 'error';
+
+    // Used to handle reload events
     public static readonly reload: string = 'reload';
 
     // Used when trace messages arrive from the OIDC client library

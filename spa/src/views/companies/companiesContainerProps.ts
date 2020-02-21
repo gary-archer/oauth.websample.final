@@ -10,12 +10,12 @@ export interface CompaniesContainerProps {
     apiClient: ApiClient;
 
     // A callback before the view loads
-    onViewLoading: (viewType: string) => void;
+    onViewLoading: () => void;
 
     // A callback when the view loads successfully
     onViewLoaded: () => void;
 
-    // A callback when the view loads successfully
+    // A callback when the view load fails
     onViewLoadFailed: (error: UIError) => void;
 
     // Whether to render the mobile view
