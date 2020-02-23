@@ -268,18 +268,19 @@ export class App extends React.Component<any, AppState> {
      */
     private async _handleHomeClick(): Promise<void> {
 
+        // Force a full app reload after an error to ensure that all data is retried
+        if (this.state.isStarting || this._viewManager.hasError()) {
+            await this._startApp();
+            return;
+        }
+
         // When logged out and home is clicked, force a login redirect and return home
         if (!this.state.isLoggedIn) {
             await this._startLoginRedirect('#');
             return;
         }
 
-        // Force a full app reload after an error to ensure that all data is retried
-        if (this.state.isStarting || this._viewManager.hasError()) {
-            await this._startApp();
-        }
-
-        // Update the hash location
+        // Otherwise navigate home
         location.hash = '#';
     }
 
