@@ -85,11 +85,15 @@ export class OktaAuthenticator implements Authenticator {
     /*
      * Trigger the login redirect
      */
-    public async startLoginRedirect(): Promise<void> {
+    public async startLoginRedirect(returnLocation?: string): Promise<void> {
 
-        // Store the SPA's client side location
+        // Store the SPA's location
+        let hash = returnLocation;
+        if (!hash) {
+            hash = location.hash;
+        }
         const data = {
-            hash: location.hash.length > 0 ? location.hash : '#',
+            hash,
         };
 
         try {

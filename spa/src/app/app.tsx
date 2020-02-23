@@ -123,6 +123,32 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
+     * Render basic details before the app has initialised
+     */
+    private _renderInitialScreen(): React.ReactNode {
+
+        const titleProps = {
+            userInfo: null,
+        };
+
+        const headerButtonProps = {
+            sessionButtonsEnabled: this.state.sessionButtonsEnabled,
+            handleHomeClick: this._handleHomeClick,
+            handleExpireAccessTokenClick: this._handleExpireAccessTokenClick,
+            handleRefreshDataClick: this._handleRefreshDataClick,
+            handleLogoutClick: this._handleLogoutClick,
+        };
+
+        return (
+            <ErrorBoundary>
+                <TitleView {...titleProps}/>
+                <HeaderButtonsView {...headerButtonProps}/>
+                <AppErrorView />
+            </ErrorBoundary>
+        );
+    }
+
+    /*
      * Attempt to render the entire layout
      */
     private _renderMain(): React.ReactNode {
@@ -187,39 +213,12 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
-     * Render basic details before the app has initialised
-     */
-    private _renderInitialScreen(): React.ReactNode {
-
-        const titleProps = {
-            userInfo: null,
-        };
-
-        const headerButtonProps = {
-            sessionButtonsEnabled: this.state.sessionButtonsEnabled,
-            handleHomeClick: this._handleHomeClick,
-            handleExpireAccessTokenClick: this._handleExpireAccessTokenClick,
-            handleRefreshDataClick: this._handleRefreshDataClick,
-            handleLogoutClick: this._handleLogoutClick,
-        };
-
-        return (
-            <ErrorBoundary>
-                <TitleView {...titleProps}/>
-                <HeaderButtonsView {...headerButtonProps}/>
-                <TraceView />
-                <AppErrorView />
-            </ErrorBoundary>
-        );
-    }
-
-    /*
      * Trigger a login redirect when notified by the view manager
      */
-    private async _startLoginRedirect(): Promise<void> {
+    private async _startLoginRedirect(returnLocation?: string): Promise<void> {
 
         try {
-            await this._authenticator.startLoginRedirect();
+            await this._authenticator.startLoginRedirect(returnLocation);
 
         } catch (e) {
             EventEmitter.dispatch(EventNames.error, {area: 'Login', error: e});
@@ -265,23 +264,23 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
-     * Ensure we return to the home location and support retries after errors
+     * Return to the home location and also support retries after errors
      */
     private async _handleHomeClick(): Promise<void> {
 
+        // When logged out and home is clicked, force a login redirect and return home
+        if (!this.state.isLoggedIn) {
+            await this._startLoginRedirect('#');
+            return;
+        }
+
+        // Force a full app reload after an error to ensure that all data is retried
+        if (this.state.isStarting || this._viewManager.hasError()) {
+            await this._startApp();
+        }
+
         // Update the hash location
         location.hash = '#';
-
-        if (this.state.isStarting || this._viewManager.hasError()) {
-
-            // Force a full app reload after an error to ensure that all data is retried
-            await this._startApp();
-
-        } else if (!this.state.isLoggedIn) {
-
-            // When logged out and home is clicked, force a login redirect
-            await this._startLoginRedirect();
-        }
     }
 
     /*

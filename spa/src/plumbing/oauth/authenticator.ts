@@ -10,7 +10,7 @@ export interface Authenticator {
     getAccessToken(): Promise<string>;
 
     // Start a login redirect
-    startLoginRedirect(): Promise<void>;
+    startLoginRedirect(returnLocation?: string): Promise<void>;
 
     // Handle a main window login response when the page loads
     handleLoginResponse(): Promise<void>;
