@@ -42,6 +42,8 @@ export class App extends React.Component<any, AppState> {
             loadUserInfo: true,
             sessionButtonsEnabled: false,
             isMobileSize: this._isMobileSize(),
+            errorArea: '',
+            error: null,
         };
 
         // Make callbacks available
@@ -65,10 +67,9 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
-     * Do the initial load before the initial render
+     * Page startup logic
      */
     public async componentDidMount(): Promise<void> {
-
         await this._startApp();
     }
 
@@ -77,49 +78,57 @@ export class App extends React.Component<any, AppState> {
      */
     private async _startApp(): Promise<void> {
 
+        // Reset state during load
+        this.setState({
+            isStarting: true,
+            isLoggedIn: false,
+            loadUserInfo: true,
+            sessionButtonsEnabled: false,
+            isMobileSize: this._isMobileSize(),
+            errorArea: '',
+            error: null,
+        });
+
+        // First download configuration from the browser's web domain
         try {
-
-            // Reset state during load
-            this.setState({
-                isStarting: true,
-                isLoggedIn: false,
-                loadUserInfo: true,
-                sessionButtonsEnabled: false,
-                isMobileSize: this._isMobileSize(),
-            });
-
-            // First download configuration from the browser's web domain
             this._configuration = await ConfigurationLoader.download('spa.config.json');
 
-            // Initialise authentication and handle login responses if applicable
+        } catch (e) {
+            this.setState({errorArea: 'Startup', error: e});
+            return;
+        }
+
+        // Set up the authenticator and handle login responses on the main window
+        try {
             this._authenticator = AuthenticatorFactory.createAuthenticator(this._configuration.oauth);
             await this._authenticator.handleLoginResponse();
 
-            // Create a client to reliably call the API
-            this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
-
-            // Initialise OIDC library logging
-            this._traceListener = new TraceListener();
-
-            // Subscribe to window events
-            window.onhashchange = this._onHashChange;
-            window.onresize = this._onResize;
-
-            // Get login related fields state
-            const isLoggedIn = await this._authenticator.isLoggedIn();
-            const isReturnedFromLogout = location.hash.indexOf('loggedout') >= 0;
-
-            // Update the UI state
-            this.setState({
-                isStarting: false,
-                isLoggedIn,
-                sessionButtonsEnabled: isLoggedIn,
-                loadUserInfo: !isReturnedFromLogout,
-            });
-
         } catch (e) {
-            EventEmitter.dispatch(EventNames.error, {area: 'Startup', error: e});
+            this.setState({errorArea: 'Login', error: e});
+            return;
         }
+
+        // Create the API client
+        this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
+
+        // Initialise OIDC library logging
+        this._traceListener = new TraceListener();
+
+        // Get login related fields state
+        const isLoggedIn = await this._authenticator.isLoggedIn();
+        const isReturnedFromLogout = location.hash.indexOf('loggedout') >= 0;
+
+        // Update the UI state
+        this.setState({
+            isStarting: false,
+            isLoggedIn,
+            sessionButtonsEnabled: isLoggedIn,
+            loadUserInfo: !isReturnedFromLogout,
+        });
+
+        // Subscribe to window events
+        window.onhashchange = this._onHashChange;
+        window.onresize = this._onResize;
     }
 
     /*
@@ -129,6 +138,11 @@ export class App extends React.Component<any, AppState> {
 
         const titleProps = {
             userInfo: null,
+        };
+
+        const errorProps = {
+            initialArea: this.state.errorArea,
+            initialError: this.state.error,
         };
 
         const headerButtonProps = {
@@ -141,9 +155,9 @@ export class App extends React.Component<any, AppState> {
 
         return (
             <ErrorBoundary>
-                <TitleView {...titleProps}/>
-                <HeaderButtonsView {...headerButtonProps}/>
-                <AppErrorView />
+                <TitleView {...titleProps} />
+                <HeaderButtonsView {...headerButtonProps} />
+                <AppErrorView {...errorProps} />
             </ErrorBoundary>
         );
     }
@@ -168,6 +182,11 @@ export class App extends React.Component<any, AppState> {
             handleExpireAccessTokenClick: this._handleExpireAccessTokenClick,
             handleRefreshDataClick: this._handleRefreshDataClick,
             handleLogoutClick: this._handleLogoutClick,
+        };
+
+        const errorProps = {
+            initialArea: this.state.errorArea,
+            initialError: this.state.error,
         };
 
         const sessionProps = {
@@ -197,8 +216,8 @@ export class App extends React.Component<any, AppState> {
             <ErrorBoundary>
                 <TitleView {...titleProps} />
                 <HeaderButtonsView {...headerButtonProps} />
-                <AppErrorView />
-                <SessionView {...sessionProps}/>
+                <AppErrorView {...errorProps} />
+                <SessionView {...sessionProps} />
                 <TraceView />
                 <HashRouter>
                     <Switch>
@@ -218,10 +237,11 @@ export class App extends React.Component<any, AppState> {
     private async _startLoginRedirect(returnLocation?: string): Promise<void> {
 
         try {
+            this.setState({errorArea: '', error: null});
             await this._authenticator.startLoginRedirect(returnLocation);
 
         } catch (e) {
-            EventEmitter.dispatch(EventNames.error, {area: 'Login', error: e});
+            this.setState({errorArea: 'Login', error: e});
          }
     }
 
@@ -268,8 +288,13 @@ export class App extends React.Component<any, AppState> {
      */
     private async _handleHomeClick(): Promise<void> {
 
+        // If there is an error then reset for the retry
+        if (this.state.error) {
+            this.setState({errorArea: '', error: null});
+        }
+
         // Force a full app reload after an error to ensure that all data is retried
-        if (this.state.isStarting || this._viewManager.hasError()) {
+        if (this.state.isStarting) {
             await this._startApp();
             return;
         }
@@ -307,10 +332,11 @@ export class App extends React.Component<any, AppState> {
     private async _handleLogoutClick(): Promise<void> {
 
         try {
+            this.setState({errorArea: '', error: null});
             await this._authenticator!.startLogout();
 
          } catch (e) {
-            EventEmitter.dispatch(EventNames.error, {area: 'Logout', error: e});
+            this.setState({errorArea: 'Logout', error: e});
          }
     }
 

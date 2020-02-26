@@ -3,9 +3,6 @@
  */
 export class EventNames {
 
-    // Used to publish application level errors
-    public static readonly error: string = 'error';
-
     // Used to handle reload events
     public static readonly reload: string = 'reload';
 

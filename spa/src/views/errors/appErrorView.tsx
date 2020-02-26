@@ -1,24 +1,36 @@
 import React from 'react';
-import {ErrorHandler} from '../../plumbing/errors/errorHandler';
-import {EventEmitter} from '../../plumbing/events/eventEmitter';
-import {EventNames} from '../../plumbing/events/eventNames';
+import {AppErrorProps} from './appErrorProps';
 import {AppErrorState} from './appErrorState';
 import {ErrorSummaryView} from './errorSummaryView';
 
 /*
  * Manages rendering of application level errors, such as those during startup or login
  */
-export class AppErrorView extends React.Component<any, AppErrorState> {
+export class AppErrorView extends React.Component<AppErrorProps, AppErrorState> {
+
+    /*
+     * If the error state changes we update state used for rendering
+     */
+    public static getDerivedStateFromProps(
+        nextProps: AppErrorProps,
+        prevState: AppErrorState): AppErrorState | null {
+
+        // Return updated state
+        if (nextProps.initialArea !== prevState.area || nextProps.initialError !== prevState.error) {
+            return {area: nextProps.initialArea, error: nextProps.initialError};
+        }
+
+        // Indicate no changes to state
+        return null;
+    }
 
     public constructor(props: any) {
         super(props);
 
         this.state = {
-            area: '',
-            error: null,
+            area: props.initialArea,
+            error: props.initialError,
         };
-
-        this._setupCallbacks();
     }
 
     /*
@@ -46,35 +58,5 @@ export class AppErrorView extends React.Component<any, AppErrorState> {
                 </div>
             </div>
         );
-    }
-
-    /*
-     * Load data then listen for the reload event
-     */
-    public async componentDidMount(): Promise<void> {
-        EventEmitter.subscribe(EventNames.error, this._receiveError);
-    }
-
-    /*
-     * Unsubscribe when we unload
-     */
-    public async componentWillUnmount(): Promise<void> {
-        EventEmitter.unsubscribe(EventNames.error, this._receiveError);
-    }
-
-    /*
-     * Update state when an error is received
-     */
-    private _receiveError(data: any): void {
-
-        const error = ErrorHandler.getFromException(data.error);
-        this.setState({area: data.area, error});
-    }
-
-    /*
-     * Plumbing to ensure that the this parameter is available in async callbacks
-     */
-    private _setupCallbacks(): void {
-        this._receiveError = this._receiveError.bind(this);
     }
 }

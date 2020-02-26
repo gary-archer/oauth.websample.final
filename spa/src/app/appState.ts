@@ -1,3 +1,4 @@
+import {UIError} from '../plumbing/errors/uiError';
 
 /*
  * Application level state used for rendering
@@ -18,4 +19,10 @@ export interface AppState {
 
     // Record when the size changes to that of a mobile phone
     isMobileSize: boolean;
+
+    // Application level error area
+    errorArea: string;
+
+    // The application level error if applicable
+    error: UIError | null;
 }
