@@ -3,6 +3,7 @@ import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorHandler} from '../errors/errorHandler';
+import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {Authenticator} from './authenticator';
 import {CognitoWebStorage} from './cognitoWebStorage';
 
@@ -14,6 +15,7 @@ export class CognitoAuthenticator implements Authenticator {
     // The OIDC Client class does all of the real security processing
     private readonly _userManager: UserManager;
     private readonly _configuration: OAuthConfiguration;
+    private readonly _concurrencyHandler: ConcurrentActionHandler;
 
     /*
      * Initialise OAuth settings and create the UserManager
@@ -45,6 +47,7 @@ export class CognitoAuthenticator implements Authenticator {
         // Create the user manager
         this._userManager = new UserManager(settings);
         this._configuration = configuration;
+        this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();
     }
 
@@ -58,24 +61,42 @@ export class CognitoAuthenticator implements Authenticator {
     }
 
     /*
-     * Get an access token and login if required
+     * Get an access token if possible, which will retrieve it from storage
      */
     public async getAccessToken(): Promise<string> {
 
-        // On most calls we just return the existing token from HTML5 storage
-        let user = await this._userManager.getUser();
+        // Get the existing token
+        const user = await this._userManager.getUser();
         if (user && user.access_token && user.access_token.length > 0) {
             return user.access_token;
         }
 
-        // Try to refresh the access token
+        // Try to refresh if possible
+        const newAccessToken = this.refreshAccessToken();
+        if (newAccessToken) {
+            return newAccessToken;
+        }
+
+        // Otherwise, short circuit normal SPA page execution and do not try to render the view
+        throw ErrorHandler.getFromLoginRequired();
+    }
+
+    /*
+     * A client calls this to explicitly ask for a new token after receiving a 401 from the API
+     */
+    public async refreshAccessToken(): Promise<string> {
+
+        // For Cognito, see if we have a refresh token
+        let user = await this._userManager.getUser();
         if (user && user.refresh_token && user.refresh_token.length > 0) {
 
             try {
-                // Ask OIDC client to silently renew using the refresh token
-                user = await this._userManager.signinSilent();
+
+                // The concurrency handler will only do the refresh work for the first UI view that requests it
+                await this._concurrencyHandler.execute(this._refreshAccessToken);
 
                 // Return the renewed access token
+                user = await this._userManager.getUser();
                 if (user && user.access_token && user.access_token.length > 0) {
                     return user.access_token;
                 }
@@ -152,20 +173,6 @@ export class CognitoAuthenticator implements Authenticator {
     }
 
     /*
-     * This method is for testing only, to make the access token in storage act like it has expired
-     */
-    public async expireAccessToken(): Promise<void> {
-
-        const user = await this._userManager.getUser();
-        if (user) {
-
-            // This will cause the next call to the API to return 401
-            user.access_token = 'x' + user.access_token + 'x';
-            this._userManager.storeUser(user);
-        }
-    }
-
-    /*
      * Implement the bespoke Cognito redirect to log out at the authorization server
      * https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
      */
@@ -192,22 +199,41 @@ export class CognitoAuthenticator implements Authenticator {
     }
 
     /*
-     * Clear the current access token from storage
+     * This method is for testing only, to make the access token in storage act like it has expired
      */
-    public async clearAccessToken(): Promise<void> {
+    public async expireAccessToken(): Promise<void> {
 
+        const user = await this._userManager.getUser();
+        if (user) {
+
+            // This will cause the next call to the API to return 401
+            user.access_token = 'x' + user.access_token + 'x';
+            this._userManager.storeUser(user);
+        }
+    }
+
+    /*
+     * Do the work of refreshing an access token
+     */
+    private async _refreshAccessToken() {
+
+        // Ensure that the existing access token is cleared
         const user = await this._userManager.getUser();
         if (user) {
             user.access_token = '';
             this._userManager.storeUser(user);
         }
+
+        // Ask OIDC client to silently renew the access token using the Cognito refresh token
+        await this._userManager.signinSilent();
     }
 
     /*
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
     private _setupCallbacks(): void {
-        this.clearAccessToken = this.clearAccessToken.bind(this);
         this.getAccessToken = this.getAccessToken.bind(this);
+        this.refreshAccessToken = this.refreshAccessToken.bind(this);
+        this._refreshAccessToken = this._refreshAccessToken.bind(this);
    }
 }

@@ -288,18 +288,20 @@ export class App extends React.Component<any, AppState> {
      */
     private async _handleHomeClick(): Promise<void> {
 
-        // If there is an error then reset for the retry
-        if (this.state.error) {
-            this.setState({errorArea: '', error: null});
-        }
-
-        // Force a full app reload after an error to ensure that all data is retried
-        if (this.state.isStarting) {
+        // Force a full app reload after a startup error
+        if (this.state.isStarting && this.state.error) {
             await this._startApp();
             return;
         }
 
-        // When logged out and home is clicked, force a login redirect and return home
+        // If there is a view error then force views to reload
+        if (this._viewManager.hasError()) {
+            location.hash = '#';
+            EventEmitter.dispatch(EventNames.reload, false);
+            return;
+        }
+
+        // When logged out and home is clicked, force a login redirect which returns to the home location
         if (!this.state.isLoggedIn) {
             await this._startLoginRedirect('#');
             return;

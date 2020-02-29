@@ -80,9 +80,8 @@ export class ApiClient {
                 throw ErrorHandler.getFromApiError(error1, url);
             }
 
-            // If we received a 401 then clear the failing access token from storage and get a new one
-            await this._authenticator.clearAccessToken();
-            token = await this._authenticator.getAccessToken();
+            // If we received a 401 then try to get a new token
+            token = await this._authenticator.refreshAccessToken();
 
             // The general pattern for calling an OAuth secured API is to retry 401s once with a new token
             try {

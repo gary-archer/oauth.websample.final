@@ -1,6 +1,8 @@
 import React from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {EventEmitter} from '../../plumbing/events/eventEmitter';
+import {EventNames} from '../../plumbing/events/eventNames';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {UserInfoViewProps} from './userInfoViewProps';
 import {UserInfoViewState} from './userInfoViewState';
@@ -77,13 +79,20 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
     }
 
     /*
-     * Load user info when not logged out
+     * Load data then listen for the reload event
      */
     public async componentDidMount(): Promise<void> {
 
-        if (this.state.shouldLoad) {
-            await this._loadData();
-        }
+        await this._loadData();
+        EventEmitter.subscribe(EventNames.reload, this._loadData);
+    }
+
+    /*
+     * Unsubscribe when we unload
+     */
+    public async componentWillUnmount(): Promise<void> {
+
+        EventEmitter.unsubscribe(EventNames.reload, this._loadData);
     }
 
     /*
@@ -104,6 +113,11 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
     private async _loadData(): Promise<void> {
 
         try {
+
+            // Avoid loading when in the logged out view
+            if (!this.state.shouldLoad) {
+                return;
+            }
 
             // Get user info
             const claims = await this.props.apiClient.getUserInfo();

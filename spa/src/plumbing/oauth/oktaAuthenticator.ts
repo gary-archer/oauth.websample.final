@@ -1,8 +1,9 @@
-import {InMemoryWebStorage, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
+import {InMemoryWebStorage, User, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorHandler} from '../errors/errorHandler';
+import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {Authenticator} from './authenticator';
 
 /*
@@ -10,11 +11,10 @@ import {Authenticator} from './authenticator';
  */
 export class OktaAuthenticator implements Authenticator {
 
-    // A session key used to avoid the user logging in whenever the page is refreshed
-    private readonly canRefreshKey = 'canSilentlyRenew';
-
     // The OIDC Client class does all of the real security processing
     private readonly _userManager: UserManager;
+    private readonly _concurrencyHandler: ConcurrentActionHandler;
+    private readonly canRefreshKey = 'canSilentlyRenew';
 
     /*
      * Initialise OAuth settings and create the UserManager
@@ -48,6 +48,7 @@ export class OktaAuthenticator implements Authenticator {
 
         // Create the user manager
         this._userManager = new UserManager(settings);
+        this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();
     }
 
@@ -73,13 +74,47 @@ export class OktaAuthenticator implements Authenticator {
 
         // If there is no token but the page has previously loaded, we attempt a silent renewal on an iframe
         // This is the SPA equivalent of using a refresh token
-        const accessToken = await this._refreshAccessToken();
+        const accessToken = await this.refreshAccessToken();
         if (accessToken && accessToken.length > 0) {
             return accessToken;
         }
 
         // Short circuit normal SPA page execution and do not try to render the view
         throw ErrorHandler.getFromLoginRequired();
+    }
+
+    /*
+     * Try to refresh the access token by manually triggering a silent token renewal on an iframe
+     */
+    public async refreshAccessToken(): Promise<string> {
+
+        const canRefresh = sessionStorage.getItem(this.canRefreshKey);
+        if (canRefresh) {
+
+            try {
+
+                // The concurrency handler will only do the refresh work for the first UI view that requests it
+                await this._concurrencyHandler.execute(this._refreshAccessToken);
+
+                // Return the renewed access token
+                const user = await this._userManager.getUser();
+                if (user && user.access_token && user.access_token.length > 0) {
+                    return user.access_token;
+                }
+
+            } catch (e) {
+
+                // A login required error means we need to do a full login redirect
+                if (e.error !== ErrorCodes.loginRequired) {
+
+                    // In this code sample we report any other errors, such as iframe timeouts
+                    // An alternative approach would be to return an empty token instead
+                    throw e;
+                }
+            }
+        }
+
+        return '';
     }
 
     /*
@@ -141,19 +176,6 @@ export class OktaAuthenticator implements Authenticator {
     }
 
     /*
-     * This method is for testing only, to make the access token in storage act like it has expired
-     */
-    public async expireAccessToken(): Promise<void> {
-
-        const user = await this._userManager.getUser();
-        if (user) {
-
-            user.access_token = 'x' + user.access_token + 'x';
-            this._userManager.storeUser(user);
-        }
-    }
-
-    /*
      * Redirect in order to log out at the authorization server and remove vendor cookies
      */
     public async startLogout(): Promise<void> {
@@ -171,48 +193,41 @@ export class OktaAuthenticator implements Authenticator {
     }
 
     /*
-     * Clear the current access token from storage
+     * This method is for testing only, to make the access token in storage act like it has expired
      */
-    public async clearAccessToken(): Promise<void> {
-        await this._userManager.removeUser();
+    public async expireAccessToken(): Promise<void> {
+
+        const user = await this._userManager.getUser();
+        if (user) {
+
+            user.access_token = 'x' + user.access_token + 'x';
+            this._userManager.storeUser(user);
+        }
     }
 
     /*
-     * Try to refresh the access token by manually triggering a silent token renewal on an iframe
+     * Do the work of refreshing an access token
      */
-    private async _refreshAccessToken(): Promise<string> {
+    private async _refreshAccessToken() {
 
-        const canRefresh = sessionStorage.getItem(this.canRefreshKey);
-        if (canRefresh) {
-
-            try {
-
-                // Redirect on an iframe using the Authorization Server session cookie and prompt=none
-                // A different scope could be requested by also supplying an object with a scope property
-                const user = await this._userManager.signinSilent();
-                if (user) {
-                    return user.access_token;
-                }
-            } catch (e) {
-
-                // A login required error means we need to do a full login redirect
-                if (e.error !== ErrorCodes.loginRequired) {
-
-                    // In this code sample we report any other errors, such as iframe timeouts
-                    // An alternative approach would be to return an empty token instead
-                    throw e;
-                }
-            }
+        // Ensure that the existing access token is cleared
+        const user = await this._userManager.getUser();
+        if (user) {
+            user.access_token = '';
+            this._userManager.storeUser(user);
         }
 
-        return '';
+        // Redirect on an iframe using the Authorization Server session cookie and prompt=none
+        // Note also that a different scope could be requested by supplying an object with a scope property
+        await this._userManager.signinSilent();
     }
 
     /*
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
     private _setupCallbacks(): void {
-        this.clearAccessToken = this.clearAccessToken.bind(this);
         this.getAccessToken = this.getAccessToken.bind(this);
+        this.refreshAccessToken = this.refreshAccessToken.bind(this);
+        this._refreshAccessToken = this._refreshAccessToken.bind(this);
    }
 }
