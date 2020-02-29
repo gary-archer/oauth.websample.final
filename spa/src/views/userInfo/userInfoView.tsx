@@ -83,8 +83,8 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
      */
     public async componentDidMount(): Promise<void> {
 
-        await this._loadData();
         EventEmitter.subscribe(EventNames.reload, this._loadData);
+        await this._loadData();
     }
 
     /*

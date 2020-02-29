@@ -294,16 +294,16 @@ export class App extends React.Component<any, AppState> {
             return;
         }
 
+        // When logged out and home is clicked, force a login redirect which returns to the home location
+        if (!this.state.isLoggedIn) {
+            await this._startLoginRedirect('#');
+            return;
+        }
+
         // If there is a view error then force views to reload
         if (this._viewManager.hasError()) {
             location.hash = '#';
             EventEmitter.dispatch(EventNames.reload, false);
-            return;
-        }
-
-        // When logged out and home is clicked, force a login redirect which returns to the home location
-        if (!this.state.isLoggedIn) {
-            await this._startLoginRedirect('#');
             return;
         }
 

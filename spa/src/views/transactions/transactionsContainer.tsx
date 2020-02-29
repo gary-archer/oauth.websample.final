@@ -78,8 +78,8 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
      */
     public async componentDidMount(): Promise<void> {
 
-        await this._loadData(false);
         EventEmitter.subscribe(EventNames.reload, this._loadData);
+        await this._loadData(false);
     }
 
     /*

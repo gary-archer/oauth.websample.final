@@ -64,8 +64,8 @@ export class CompaniesContainer extends React.Component<CompaniesContainerProps,
      */
     public async componentDidMount(): Promise<void> {
 
-        await this._loadData(false);
         EventEmitter.subscribe(EventNames.reload, this._loadData);
+        await this._loadData(false);
     }
 
     /*
