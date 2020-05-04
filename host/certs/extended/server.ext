@@ -1,0 +1,2 @@
+# Extended properties for server certificate generation
+subjectAltName=DNS:api.mycompany.com,DNS:web.mycompany.com
