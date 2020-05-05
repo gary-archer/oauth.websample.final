@@ -1,6 +1,6 @@
 import React from 'react';
-import {HeadingView} from '../frame/headingView';
 import {UserInfoView} from '../userInfo/userInfoView';
+import {HeadingView} from './headingView';
 import {TitleViewProps} from './titleViewProps';
 
 /*

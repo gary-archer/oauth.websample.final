@@ -116,9 +116,9 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
             this.setState({error: null});
 
             // Get data from the API
-            this.props.onViewLoading();
+            this.props.viewManager.onViewLoading();
             const data = await this.props.apiClient.getCompanyTransactions(this.state.companyId, options);
-            this.props.onViewLoaded();
+            this.props.viewManager.onViewLoaded();
 
             // Update UI state
             this.setState({data});
@@ -131,14 +131,14 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
             if (isExpected) {
 
                 // For 'expected' errors, return to the home view
-                this.props.onViewLoaded();
+                this.props.viewManager.onViewLoaded();
                 location.hash = '#';
 
             } else {
 
                 // Indicate failure to the view manager
                 this.setState({error});
-                this.props.onViewLoadFailed(error);
+                this.props.viewManager.onViewLoadFailed(error);
             }
         }
     }

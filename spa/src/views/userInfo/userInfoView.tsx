@@ -117,7 +117,7 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
 
             // Avoid loading when logged out
             if (!this.state.shouldLoad) {
-                this.props.onViewLoaded();
+                this.props.viewManager.onViewLoaded();
                 return;
             }
 
@@ -125,9 +125,9 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
             this.setState({error: null});
 
             // Get user info
-            this.props.onViewLoading();
+            this.props.viewManager.onViewLoading();
             const claims = await this.props.apiClient.getUserInfo();
-            this.props.onViewLoaded();
+            this.props.viewManager.onViewLoaded();
 
             // Update state with claims in order to render the logged in user info
             this.setState({claims});
@@ -136,7 +136,7 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
 
             const error = ErrorHandler.getFromException(e);
             this.setState({error});
-            this.props.onViewLoadFailed(error);
+            this.props.viewManager.onViewLoadFailed(error);
         }
     }
 

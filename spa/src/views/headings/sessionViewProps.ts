@@ -5,9 +5,9 @@ import {ApiClient} from '../../api/client/apiClient';
  */
 export interface SessionViewProps {
 
+    // The API client provides the session id value
+    apiClient: ApiClient;
+
     // Visibility
     isVisible: boolean;
-
-    // The API client provides the footer session id
-    apiClient: ApiClient;
 }
