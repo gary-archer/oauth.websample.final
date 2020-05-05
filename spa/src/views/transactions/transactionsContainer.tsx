@@ -140,24 +140,6 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
                 this.setState({error});
                 this.props.onViewLoadFailed(error);
             }
-
-            // Handle invalid input due to typing an id into the browser address bar
-            if (error.statusCode === 404 && error.errorCode === ErrorCodes.companyNotFound) {
-
-                // User typed an id value outside of allowed company ids
-                location.hash = '#';
-
-            } else if (error.statusCode === 400 && error.errorCode === ErrorCodes.invalidCompanyId) {
-
-                // User typed an invalid id such as 'abc'
-                location.hash = '#';
-
-            } else {
-
-                // Indicate failure to the view manager
-                this.setState({error});
-                this.props.onViewLoadFailed(error);
-            }
         }
     }
 
@@ -200,7 +182,6 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
 
             // User typed an invalid id such as 'abc'
             isExpected = true
-
         }
 
         return isExpected;

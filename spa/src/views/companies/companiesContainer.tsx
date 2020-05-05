@@ -91,10 +91,10 @@ export class CompaniesContainer extends React.Component<CompaniesContainerProps,
             // Do the load
             this.props.onViewLoading();
             const companies = await this.props.apiClient.getCompanyList(options);
+            this.props.onViewLoaded();
 
             // Update success state
             this.setState({companies});
-            this.props.onViewLoaded();
 
         } catch (e) {
 
