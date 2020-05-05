@@ -3,15 +3,14 @@ type SuccessCallback = () => void;
 type ErrorCallback = (error: any) => void;
 
 /*
- * Used when multiple React UI fragments attempt an action that needs to be synchronised
+ * Used when multiple React UI fragments attempt an action that needs to be performed only once
+ * Javascript is single threaded so we do not need to lock as in other languages
  */
 export class ConcurrentActionHandler {
 
-    private _actionInProgress: boolean;
     private _callbacks: [SuccessCallback, ErrorCallback][];
 
     public constructor() {
-        this._actionInProgress = false;
         this._callbacks = [];
     }
 
@@ -35,9 +34,9 @@ export class ConcurrentActionHandler {
         });
 
         // Only do the work for the first UI view that calls us
-        if (!this._actionInProgress) {
+        const performAction = this._callbacks.length === 1;
+        if (performAction) {
 
-            this._actionInProgress = true;
             try {
 
                 // Do the work
@@ -57,7 +56,6 @@ export class ConcurrentActionHandler {
             }
 
             // Reset once complete
-            this._actionInProgress = false;
             this._callbacks = [];
         }
 

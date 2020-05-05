@@ -82,12 +82,11 @@ export class ViewManager {
         // Once all views have loaded, reset state and, if required, trigger a login redirect only once
         if (this._loadedCount === this._viewsToLoad) {
 
-            const triggerLoginOnParent = this._loginRequired;
-            this._reset();
-
-            if (triggerLoginOnParent) {
+            if (this._loginRequired) {
                 this._onLoginRequired();
             }
+
+            this._reset();
         }
     }
 
