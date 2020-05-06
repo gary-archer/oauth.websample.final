@@ -221,7 +221,7 @@ export class OktaAuthenticator implements Authenticator {
         } catch (e) {
 
             // For session expired errors, clear token data and return success, to force a login redirect
-            if (e.message === ErrorCodes.loginRequired) {
+            if (e.error === ErrorCodes.loginRequired) {
 
                 await this._userManager.removeUser();
                 this._isLoggedIn = false;

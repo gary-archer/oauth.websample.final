@@ -228,8 +228,11 @@ export class CognitoAuthenticator implements Authenticator {
 
         } catch (e) {
 
+            console.log('*** TOKEN REFRESH FAILED');
+            console.log(e.message);
+
             // For invalid_grant errors, clear token data and return success, to force a login redirect
-            if (e.message === ErrorCodes.refreshTokenExpired) {
+            if (e.message === ErrorCodes.loginRequired) {
 
                 await this._userManager.removeUser();
                 this._isLoggedIn = false;
