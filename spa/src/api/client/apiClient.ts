@@ -32,9 +32,9 @@ export class ApiClient {
     /*
      * We download user info from the API so that we can get any data we need
      */
-    public async getUserInfo(): Promise<UserInfoClaims> {
+    public async getUserInfo(options?: ApiRequestOptions): Promise<UserInfoClaims> {
 
-        return await this._callApi('userclaims/current', 'GET') as UserInfoClaims;
+        return await this._callApi('userclaims/current', 'GET', null, options) as UserInfoClaims;
     }
 
     /*
