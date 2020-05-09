@@ -99,7 +99,7 @@ export class App extends React.Component<any, AppState> {
             this._authenticator = AuthenticatorFactory.createAuthenticator(this._configuration.oauth);
             await this._authenticator.initialise();
             await this._authenticator.handleLoginResponse();
-            
+
             // Create the API client
             this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
 
