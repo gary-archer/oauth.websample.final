@@ -5,6 +5,7 @@ import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
+import {ErrorHandler} from '../plumbing/errors/errorHandler';
 import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
@@ -98,7 +99,7 @@ export class App extends React.Component<any, AppState> {
             this._authenticator = AuthenticatorFactory.createAuthenticator(this._configuration.oauth);
             await this._authenticator.initialise();
             await this._authenticator.handleLoginResponse();
-
+            
             // Create the API client
             this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
 
@@ -115,7 +116,7 @@ export class App extends React.Component<any, AppState> {
             });
 
         } catch (e) {
-            this.setState({error: e});
+            this.setState({error: ErrorHandler.getFromException(e)});
         }
     }
 
@@ -225,7 +226,7 @@ export class App extends React.Component<any, AppState> {
             await this._authenticator!.startLogin(returnLocation);
 
         } catch (e) {
-            this.setState({error: e});
+            this.setState({error: ErrorHandler.getFromException(e)});
          }
     }
 
@@ -260,24 +261,22 @@ export class App extends React.Component<any, AppState> {
         // If there is a startup error then reinitialise the app
         if (!this.state.isInitialised) {
             await this._initialiseApp();
+            return;
         }
 
-        if (this.state.isInitialised) {
-
-            // When in the login required view and home is clicked, force a login redirect
-            if (!this._authenticator!.isLoggedIn()) {
-                await this._startLoginRedirect('#');
-                return;
-            }
-
-            // Force views to reload if there have been view errors
-            if (!this.state.isDataLoaded) {
-                this._onReloadData(false);
-            }
-
-            // Navigate to the home view
-            location.hash = '#';
+        // When in the login required view and home is clicked, force a login redirect
+        if (!this._authenticator!.isLoggedIn()) {
+            await this._startLoginRedirect('#');
+            return;
         }
+
+        // Force views to reload if there have been view errors
+        if (!this.state.isDataLoaded) {
+            this._onReloadData(false);
+        }
+
+        // Navigate to the home view
+        location.hash = '#';
     }
 
     /*
@@ -295,7 +294,8 @@ export class App extends React.Component<any, AppState> {
          } catch (e) {
 
             // On error, only output logout errors to the console
-            ErrorConsoleReporter.output(e);
+            const error = ErrorHandler.getFromException(e);
+            ErrorConsoleReporter.output(error);
 
             // Force a move to the login required view
             location.hash = '#/loggedout';

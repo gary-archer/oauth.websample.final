@@ -1,3 +1,5 @@
+import {UIError} from '../plumbing/errors/uiError';
+
 /*
  * Application level state used for rendering
  */
@@ -13,5 +15,5 @@ export interface AppState {
     isMobileSize: boolean;
 
     // The application level error object
-    error: any;
+    error: UIError | null;
 }

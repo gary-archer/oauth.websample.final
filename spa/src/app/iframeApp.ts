@@ -24,8 +24,8 @@ export class IFrameApp {
         } catch (e) {
 
             // In the event of errors, avoid impacting end users and output the error to the console
-            const uiError = ErrorHandler.getFromTokenError(e, ErrorCodes.tokenRenewalError);
-            ErrorConsoleReporter.output(uiError);
+            const error = ErrorHandler.getFromTokenError(e, ErrorCodes.tokenRenewalError);
+            ErrorConsoleReporter.output(error);
         }
     }
 }
