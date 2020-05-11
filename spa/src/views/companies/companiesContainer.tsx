@@ -98,9 +98,9 @@ export class CompaniesContainer extends React.Component<CompaniesContainerProps,
 
         } catch (e) {
 
-            // Update error state
+            // Update state
             const error = ErrorHandler.getFromException(e);
-            this.setState({error});
+            this.setState({companies: [], error});
             this.props.viewManager.onViewLoadFailed(error);
         }
     }

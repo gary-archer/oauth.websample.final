@@ -137,7 +137,7 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
             } else {
 
                 // Indicate failure to the view manager
-                this.setState({error});
+                this.setState({data: null, error});
                 this.props.viewManager.onViewLoadFailed(error);
             }
         }
