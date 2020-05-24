@@ -7,7 +7,8 @@
 
 ### Details
 
-* See the [React JS Secured SPA Write Up](https://authguidance.com/2019/04/08/how-to-run-the-react-js-spa/) for an overview and how to run the code
+* See the [ReactJS SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup/) for a summary of behaviour
+* See the [ReactJS SPA Instructions](https://authguidance.com/2019/04/08/how-to-run-the-react-js-spa/) for details on how to run the code
 * See the [Web Content Delivery Write Up](https://authguidance.com/2018/12/02/spa-content-deployment/) for instructions on cloud deployment
 
 ### Programming Languages
