@@ -10,9 +10,6 @@ import {WebStaticContent} from './webStaticContent';
 // Read the config file
 const configBuffer = fs.readFileSync('../spa/spa.config.json');
 const spaConfig = JSON.parse(configBuffer.toString());
-
-// Override to the web development domain
-spaConfig.oauth.appUri = 'https://web.mycompany.com/spa/';
 const port = 443;
 
 // Configure how web static content is served
