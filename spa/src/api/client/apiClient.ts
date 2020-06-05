@@ -62,7 +62,10 @@ export class ApiClient {
         dataToSend?: any,
         options?: ApiRequestOptions): Promise<any> {
 
-        // Get the full path
+        throw new Error('API calls with web view tokens are not yet implemented');
+
+        /*
+            // Get the full path
         const url = `${this._apiBaseUrl}${path}`;
 
         // Get the access token, and if it does not exist a login redirect will be triggered
@@ -92,7 +95,7 @@ export class ApiClient {
                 // Report Ajax errors for the retry
                 throw ErrorHandler.getFromHttpError(error2, url, 'Web API');
             }
-        }
+        }*/
     }
 
     /*

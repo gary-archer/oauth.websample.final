@@ -4,35 +4,38 @@
 export class MobilePromise {
 
     /*
-     * An interface to call 
+     * An interface to call the mobile app and wait for a deferred result
      */
-    public static async callMobile(
-        methodName: string,
-        method: (callbackName: string) => void): Promise<string> {
+    public static async callMobile(methodName: string, mobileAuthenticator: any): Promise<string> {
 
         return new Promise<string>((resolve, reject) => {
 
             // First define callback behaviour
             const callback = (data: string, error: string) => {
 
+                // First remove the callback
+                delete (window as any)[uniqueCallbackName];
+
                 if (error) {
 
                     // Report errors
-                    reject(new Error('Remote side failed'));
+                    console.log(`*** RECEIVED ERROR FROM MOBILE: ${error}`);
+                    reject(new Error(error));
 
                 } else {
 
                     // Return a success result
+                    console.log(`*** RECEIVED ACCESS TOKEN FROM MOBILE: ${data}`);
                     resolve(data);
                 }
             };
 
-            // Persist the callback on the window object so that the mobile side is able to call us back
+            // Persist the callback on the window object so that the mobile side is able to notify us
             const uniqueCallbackName = `callback_${methodName}`;
             (window as any)[uniqueCallbackName] = callback;
 
             // Call the mobile method, which will return immediately
-            method(uniqueCallbackName);
+            mobileAuthenticator[methodName](uniqueCallbackName);
         });
     }
 }

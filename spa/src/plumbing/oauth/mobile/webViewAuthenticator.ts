@@ -23,7 +23,7 @@ export class WebViewAuthenticator implements Authenticator {
      * Do initial setup
      */
     public async initialise(): Promise<void> {
-        const accessToken = this._mobileAuthenticator.getAccessToken();
+        const accessToken = await this.getAccessToken();
         this._isLoggedIn = !!accessToken;
     }
 
@@ -40,9 +40,7 @@ export class WebViewAuthenticator implements Authenticator {
     public async getAccessToken(): Promise<string> {
 
         // Get the current token from the mobile app
-        const accessToken = MobilePromise.callMobile(
-            'getAccessToken',
-            this._mobileAuthenticator.getAccessToken);
+        const accessToken = await MobilePromise.callMobile('getAccessToken', this._mobileAuthenticator);
 
         // Return it if found
         if (accessToken) {
@@ -57,12 +55,12 @@ export class WebViewAuthenticator implements Authenticator {
      * Ask the mobile app to use its refresh token to get a new access token
      */
     public async refreshAccessToken(): Promise<string> {
-        
+
         const accessToken = this._mobileAuthenticator.refreshAccessToken();
         if (accessToken) {
             return accessToken;
         }
-        
+
         throw ErrorHandler.getFromLoginRequired();
     }
 
