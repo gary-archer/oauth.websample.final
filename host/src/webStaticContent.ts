@@ -5,6 +5,8 @@ import * as path from 'path';
  * The relative path to web files
  */
 const WEB_FILES_ROOT = '../../spa';
+const ANDROID_FILES_ROOT = '../../../authguidance.mobilesample.android';
+const IOS_FILES_ROOT = '../../../authguidance.mobilesample.ios';
 
 /*
  * Resolve web requests for static content
@@ -29,6 +31,8 @@ export class WebStaticContent {
         this._expressApp.get('/spa/*', this._getWebResource);
         this._expressApp.get('/spa', this._getWebRootResource);
         this._expressApp.get('/favicon.ico', this._getFavicon);
+        this._expressApp.get('/android/*', this._getAndroidResource);
+        this._expressApp.get('/ios/*', this._getIosResource);
     }
 
     /*
@@ -69,6 +73,26 @@ export class WebStaticContent {
     private _getFavicon(request: Request, response: Response): void {
 
         const webFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/favicon.ico`);
+        response.sendFile(webFilePath);
+    }
+
+    /*
+     * Serve up the requested Android file
+     */
+    private _getAndroidResource(request: Request, response: Response): void {
+
+        const resourcePath = request.path.replace('/android', '/');
+        const webFilePath = path.join(`${__dirname}/${ANDROID_FILES_ROOT}/${resourcePath}`);
+        response.sendFile(webFilePath);
+    }
+
+    /*
+     * Serve up the requested IOS file
+     */
+    private _getIosResource(request: Request, response: Response): void {
+
+        const resourcePath = request.path.replace('/ios', '/');
+        const webFilePath = path.join(`${__dirname}/${IOS_FILES_ROOT}/${resourcePath}`);
         response.sendFile(webFilePath);
     }
 }

@@ -1,10 +1,10 @@
 import {UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
-import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
-import {ErrorCodes} from '../errors/errorCodes';
-import {ErrorHandler} from '../errors/errorHandler';
-import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
-import {Authenticator} from './authenticator';
+import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
+import {ErrorCodes} from '../../errors/errorCodes';
+import {ErrorHandler} from '../../errors/errorHandler';
+import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
+import {Authenticator} from '../authenticator';
 import {CognitoWebStorage} from './cognitoWebStorage';
 
 /*

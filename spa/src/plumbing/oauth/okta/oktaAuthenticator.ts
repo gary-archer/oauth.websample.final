@@ -1,10 +1,10 @@
 import {InMemoryWebStorage, User, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
-import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
-import {ErrorCodes} from '../errors/errorCodes';
-import {ErrorHandler} from '../errors/errorHandler';
-import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
-import {Authenticator} from './authenticator';
+import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
+import {ErrorCodes} from '../../errors/errorCodes';
+import {ErrorHandler} from '../../errors/errorHandler';
+import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
+import {Authenticator} from '../authenticator';
 
 /*
  * The entry point for initiating login and token requests

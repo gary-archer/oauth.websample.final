@@ -1,6 +1,6 @@
 import {UserManager, UserManagerSettings} from 'oidc-client';
 import urlparse from 'url-parse';
-import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
+import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 
 /*
  * A simple class to manage token renewal

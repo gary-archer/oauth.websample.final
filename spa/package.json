@@ -15,6 +15,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "guid-typescript": "^1.0.9",
+    "is-ua-webview": "^1.0.5",
     "moment": "^2.24.0",
     "oidc-client": "^1.10.1",
     "react": "^16.13.1",
