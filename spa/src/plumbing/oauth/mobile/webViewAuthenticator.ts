@@ -1,4 +1,5 @@
 import {ErrorHandler} from '../../errors/errorHandler';
+import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
 import {MobilePromise} from './mobilePromise';
 
@@ -9,6 +10,7 @@ export class WebViewAuthenticator implements Authenticator {
 
     // Global OAuth fields
     private readonly _mobileAuthenticator: any;
+    private readonly _concurrencyHandler: ConcurrentActionHandler;
     private _isLoggedIn: boolean;
 
     /*
@@ -16,6 +18,7 @@ export class WebViewAuthenticator implements Authenticator {
      */
     public constructor() {
         this._mobileAuthenticator = (window as any).mobileAuthenticator;
+        this._concurrencyHandler = new ConcurrentActionHandler();
         this._isLoggedIn = false;
     }
 
@@ -56,19 +59,22 @@ export class WebViewAuthenticator implements Authenticator {
      */
     public async refreshAccessToken(): Promise<string> {
 
-        const accessToken = this._mobileAuthenticator.refreshAccessToken();
+        /*const accessToken = this._mobileAuthenticator.refreshAccessToken();
         if (accessToken) {
             return accessToken;
-        }
+        }*/
 
-        throw ErrorHandler.getFromLoginRequired();
+        return 'j89023t4nu234fgnou';
+        // throw ErrorHandler.getFromLoginRequired();
     }
 
     /*
      * Start a login redirect
      */
     public async startLogin(returnLocation?: string): Promise<void> {
-        this._mobileAuthenticator.startLogin();
+        
+        // this._mobileAuthenticator.startLogin();
+        throw new Error('Login has not been implemented yet');
     }
 
     /*

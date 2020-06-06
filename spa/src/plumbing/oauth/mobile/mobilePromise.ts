@@ -1,3 +1,5 @@
+import {Guid} from 'guid-typescript';
+
 /*
  * A utility class to deal with async exchange with the mobile side
  */
@@ -19,19 +21,18 @@ export class MobilePromise {
                 if (error) {
 
                     // Report errors
-                    console.log(`*** RECEIVED ERROR FROM MOBILE: ${error}`);
                     reject(new Error(error));
 
                 } else {
 
                     // Return a success result
-                    console.log(`*** RECEIVED ACCESS TOKEN FROM MOBILE: ${data}`);
                     resolve(data);
                 }
             };
 
             // Persist the callback on the window object so that the mobile side is able to notify us
-            const uniqueCallbackName = `callback_${methodName}`;
+            const guid = Guid.create().toString();
+            const uniqueCallbackName = `callback_${methodName}_${guid}`;
             (window as any)[uniqueCallbackName] = callback;
 
             // Call the mobile method, which will return immediately
