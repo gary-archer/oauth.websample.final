@@ -22,6 +22,7 @@ import {TraceView} from '../views/trace/traceView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
 import {ViewManager} from '../views/viewManager';
 import {AppState} from './appState';
+import { ErrorCodes } from '../plumbing/errors/errorCodes';
 
 /*
  * The application root component
@@ -99,7 +100,6 @@ export class App extends React.Component<any, AppState> {
             this._authenticator = AuthenticatorFactory.createAuthenticator(this._configuration.oauth);
             await this._authenticator.initialise();
             await this._authenticator.handleLoginResponse();
-            console.log('APP INITIALIZE');
 
             // Create the API client
             this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
@@ -227,6 +227,14 @@ export class App extends React.Component<any, AppState> {
             await this._authenticator!.startLogin(returnLocation);
 
         } catch (e) {
+
+            // Treat cancelled logins as a non error
+            const error = ErrorHandler.getFromException(e)
+            if (error.errorCode === ErrorCodes.redirectCancelled) {
+                location.hash = '#/loggedout';
+                return
+            }
+
             this.setState({error: ErrorHandler.getFromException(e)});
          }
     }
@@ -294,8 +302,13 @@ export class App extends React.Component<any, AppState> {
 
          } catch (e) {
 
+            // Treat cancelled logins as a non error
+            const error = ErrorHandler.getFromException(e)
+            if (error.errorCode === ErrorCodes.redirectCancelled) {
+                return;
+            }
+
             // On error, only output logout errors to the console
-            const error = ErrorHandler.getFromException(e);
             ErrorConsoleReporter.output(error);
 
             // Force a move to the login required view

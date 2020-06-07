@@ -36,6 +36,10 @@ export class ErrorFormatter {
             lines.push(ErrorFormatter._createErrorLine(++count, 'Id', error.instanceId.toString()));
         }
 
+        if (error.appAuthCode.length > 0) {
+            lines.push(ErrorFormatter._createErrorLine(++count, 'AppAuth Code', error.appAuthCode.toString()));
+        }
+
         if (error.utcTime.length > 0) {
             const displayTime = moment(error.utcTime).format('DD MMM YYYY HH:mm:ss');
             lines.push(ErrorFormatter._createErrorLine(++count, 'UTC Time', displayTime));

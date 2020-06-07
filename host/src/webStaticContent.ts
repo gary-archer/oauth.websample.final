@@ -5,8 +5,8 @@ import * as path from 'path';
  * The relative path to web files
  */
 const WEB_FILES_ROOT = '../../spa';
-const ANDROID_FILES_ROOT = '../../../authguidance.mobilewebview.android';
-const IOS_FILES_ROOT = '../../../authguidance.mobilewebview.ios';
+const ANDROID_FILES_ROOT = '../../../authguidance.mobilewebview.android/web';
+const IOS_FILES_ROOT = '../../../authguidance.mobilewebview.ios/web';
 
 /*
  * Resolve web requests for static content

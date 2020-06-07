@@ -1,37 +1,28 @@
-import {ErrorHandler} from '../../errors/errorHandler';
-import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
+import {Guid} from 'guid-typescript';
 import {Authenticator} from '../authenticator';
-import {MobilePromise} from './mobilePromise';
+import {MobileMethod} from './mobileMethod';
 
 /*
  * An implementation that calls back the hosting mobile app
  */
 export class WebViewAuthenticator implements Authenticator {
 
-    // Global OAuth fields
-    private readonly _mobileAuthenticator: any;
-    private readonly _concurrencyHandler: ConcurrentActionHandler;
     private _isLoggedIn: boolean;
 
-    /*
-     * Store a reference to the object set in the web view on the mobile side
-     */
     public constructor() {
-        this._mobileAuthenticator = (window as any).mobileAuthenticator;
-        this._concurrencyHandler = new ConcurrentActionHandler();
         this._isLoggedIn = false;
     }
 
     /*
-     * Do initial setup
+     * Make an initial async request to get the logged in state
      */
     public async initialise(): Promise<void> {
-        const accessToken = await this.getAccessToken();
-        this._isLoggedIn = !!accessToken;
+        const result = await MobileMethod.callAsync('isLoggedIn');
+        this._isLoggedIn = result === 'true';
     }
 
     /*
-     * Return true if we have tokens
+     * A synchronous method that ReactJS can bind to when updating the UI based on logged in state
      */
     public isLoggedIn(): boolean {
         return this._isLoggedIn;
@@ -41,44 +32,25 @@ export class WebViewAuthenticator implements Authenticator {
      * Ask the mobile app for the current access token
      */
     public async getAccessToken(): Promise<string> {
-
-        // Get the current token from the mobile app
-        const accessToken = await MobilePromise.callMobile('getAccessToken', this._mobileAuthenticator);
-
-        // Return it if found
-        if (accessToken) {
-            return accessToken;
-        }
-
-        // Try to refresh the access token otherwise
-        return this.refreshAccessToken();
+        return await MobileMethod.callAsync('getAccessToken', Guid.create().toString());
     }
 
     /*
      * Ask the mobile app to use its refresh token to get a new access token
      */
     public async refreshAccessToken(): Promise<string> {
-
-        /*const accessToken = this._mobileAuthenticator.refreshAccessToken();
-        if (accessToken) {
-            return accessToken;
-        }*/
-
-        return 'j89023t4nu234fgnou';
-        // throw ErrorHandler.getFromLoginRequired();
+        return await MobileMethod.callAsync('refreshAccessToken', Guid.create().toString());
     }
 
     /*
      * Start a login redirect
      */
     public async startLogin(returnLocation?: string): Promise<void> {
-        
-        // this._mobileAuthenticator.startLogin();
-        throw new Error('Login has not been implemented yet');
+        await MobileMethod.callAsync('startLogin');
     }
 
     /*
-     * This is a no op when running in a web view
+     * The method to handle a login response on page load is is a no op when running in a web view
      */
     public async handleLoginResponse(): Promise<void> {
     }
@@ -87,11 +59,20 @@ export class WebViewAuthenticator implements Authenticator {
      * Initiate a logout redirect
      */
     public async startLogout(): Promise<void> {
+        await MobileMethod.callAsync('startLogout');
     }
 
     /*
      * For testing, make the access token act like it is expired
      */
     public async expireAccessToken(): Promise<void> {
+        await MobileMethod.callAsync('expireAccessToken');
+    }
+
+    /*
+     * For testing, make the refresh token act like it is expired
+     */
+    public async expireRefreshToken(): Promise<void> {
+        await MobileMethod.callAsync('expireRefreshToken');
     }
 }
