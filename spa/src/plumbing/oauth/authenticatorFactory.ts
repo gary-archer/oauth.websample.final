@@ -19,11 +19,12 @@ export class AuthenticatorFactory {
 
             // When running in a mobile web view we create an authenticator that calls back the mobile app
             return new WebViewAuthenticator();
-        }
-        else if (configuration.authority.toLowerCase().indexOf('cognito') !== -1) {
+
+        } else if (configuration.authority.toLowerCase().indexOf('cognito') !== -1) {
 
             // Cognito has some limitations that we have to work around
             return new CognitoAuthenticator(configuration);
+
         } else {
 
             // The Okta authenticator is standards based
