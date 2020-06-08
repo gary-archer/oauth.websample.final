@@ -13,12 +13,12 @@ export class AuthenticatorFactory {
     /*
      * Return different authenticator strategies depending on the runtime configuration received
      */
-    public static createAuthenticator(configuration: OAuthConfiguration): Authenticator {
+    public static createAuthenticator(configuration: OAuthConfiguration, postLoginAction: () => void): Authenticator {
 
         if (isWebView(navigator.userAgent)) {
 
             // When running in a mobile web view we create an authenticator that calls back the mobile app
-            return new WebViewAuthenticator();
+            return new WebViewAuthenticator(postLoginAction);
 
         } else if (configuration.authority.toLowerCase().indexOf('cognito') !== -1) {
 

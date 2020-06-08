@@ -8,9 +8,11 @@ import {MobileMethod} from './mobileMethod';
 export class WebViewAuthenticator implements Authenticator {
 
     private _isLoggedIn: boolean;
+    private _postLoginAction: () => void;
 
-    public constructor() {
+    public constructor(postLoginAction: () => void) {
         this._isLoggedIn = false;
+        this._postLoginAction = postLoginAction;
     }
 
     /*
@@ -43,10 +45,21 @@ export class WebViewAuthenticator implements Authenticator {
     }
 
     /*
-     * Start a login redirect
+     * Do the login operation, which does not involve redirecting the whole page
      */
     public async startLogin(returnLocation?: string): Promise<void> {
+
+        // Ask the mobile side to do the work
         await MobileMethod.callAsync('startLogin');
+
+        // Navigate away from login required
+        if (location.hash.indexOf('loggedout') !== -1) {
+            location.hash = '#'
+        }
+
+        // Run post login actions
+        this._isLoggedIn = true;
+        this._postLoginAction();
     }
 
     /*
@@ -56,10 +69,12 @@ export class WebViewAuthenticator implements Authenticator {
     }
 
     /*
-     * Initiate a logout redirect
+     * Initiate a logout redirect, which does not involve redirecting the whole page
      */
     public async startLogout(): Promise<void> {
+
         await MobileMethod.callAsync('startLogout');
+        this._isLoggedIn = false;
     }
 
     /*

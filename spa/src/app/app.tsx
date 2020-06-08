@@ -5,6 +5,7 @@ import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
+import {ErrorCodes} from '../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../plumbing/errors/errorHandler';
 import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
@@ -22,7 +23,6 @@ import {TraceView} from '../views/trace/traceView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
 import {ViewManager} from '../views/viewManager';
 import {AppState} from './appState';
-import { ErrorCodes } from '../plumbing/errors/errorCodes';
 
 /*
  * The application root component
@@ -44,6 +44,7 @@ export class App extends React.Component<any, AppState> {
         // Set initial state, which will be used on the first render
         this.state = {
             isInitialised: false,
+            isLoggedIn: false,
             isDataLoaded: false,
             isMobileSize: this._isMobileSize(),
             error: null,
@@ -87,6 +88,7 @@ export class App extends React.Component<any, AppState> {
         // Reset state
         this.setState({
             isInitialised: false,
+            isLoggedIn: false,
             isDataLoaded: false,
             isMobileSize: this._isMobileSize(),
             error: null,
@@ -96,8 +98,8 @@ export class App extends React.Component<any, AppState> {
             // First download configuration from the browser's web domain
             this._configuration = await ConfigurationLoader.download('spa.config.json');
 
-            // Set up the authenticator and handle any login responses on the main window
-            this._authenticator = AuthenticatorFactory.createAuthenticator(this._configuration.oauth);
+            // Initialise authentication processing and receive any login responses on the main window
+            this._authenticator = this._createAuthenticator();
             await this._authenticator.initialise();
             await this._authenticator.handleLoginResponse();
 
@@ -114,6 +116,7 @@ export class App extends React.Component<any, AppState> {
             // Update state
             this.setState({
                 isInitialised: true,
+                isLoggedIn: this._authenticator.isLoggedIn(),
             });
 
         } catch (e) {
@@ -184,7 +187,7 @@ export class App extends React.Component<any, AppState> {
 
         const sessionProps = {
             apiClient: this._apiClient!,
-            isVisible: this._authenticator!.isLoggedIn(),
+            isVisible: this.state.isLoggedIn,
         };
 
         const mainViewProps = {
@@ -219,20 +222,33 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
+     * Create the authenticator object and supply options
+     */
+    private _createAuthenticator(): Authenticator {
+
+        const postLoginAction = () => {
+            this._onReloadData(false);
+        };
+
+        return AuthenticatorFactory.createAuthenticator(this._configuration!.oauth, postLoginAction);
+    }
+
+    /*
      * Trigger a login redirect when notified by the view manager
      */
     private async _startLoginRedirect(returnLocation?: string): Promise<void> {
 
         try {
             await this._authenticator!.startLogin(returnLocation);
+            this.setState({isLoggedIn: true});
 
         } catch (e) {
 
             // Treat cancelled logins as a non error
-            const error = ErrorHandler.getFromException(e)
+            const error = ErrorHandler.getFromException(e);
             if (error.errorCode === ErrorCodes.redirectCancelled) {
                 location.hash = '#/loggedout';
-                return
+                return;
             }
 
             this.setState({error: ErrorHandler.getFromException(e)});
@@ -297,22 +313,30 @@ export class App extends React.Component<any, AppState> {
             // Update state
             this.setState({isDataLoaded: false});
 
-            // Do the logout redirect, which will return to the login required view
+            // Do the logout redirect
             await this._authenticator!.startLogout();
 
          } catch (e) {
 
-            // Treat cancelled logins as a non error
+            // Treat cancelled logouts as a non error
             const error = ErrorHandler.getFromException(e)
             if (error.errorCode === ErrorCodes.redirectCancelled) {
                 return;
             }
 
-            // On error, only output logout errors to the console
+            // Only output logout errors to the console
             ErrorConsoleReporter.output(error);
 
-            // Force a move to the login required view
+            // Ensure that we are in the login required view
             location.hash = '#/loggedout';
+
+         } finally {
+
+            // Move to login required if necessary
+            if (!this._isInLoginRequired()) {
+                location.hash = '#/loggedout';
+            }
+            this.setState({isLoggedIn: false});
          }
     }
 
