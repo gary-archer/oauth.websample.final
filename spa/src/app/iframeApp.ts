@@ -2,7 +2,7 @@ import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../plumbing/errors/errorHandler';
-import {OktaTokenRenewalResponseHandler} from '../plumbing/oauth/oktaTokenRenewalResponseHandler';
+import {OktaTokenRenewalResponseHandler} from '../plumbing/oauth/okta/oktaTokenRenewalResponseHandler';
 
 /*
  * A mini application for the hidden iframe that does silent token renewal

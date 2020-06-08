@@ -47,7 +47,7 @@ export class ErrorSummaryView extends React.Component<ErrorSummaryViewProps, Err
      */
     public render(): React.ReactNode {
 
-        // If there is no error do not render anything
+        // If there is no real error, do not render anything
         if (!this.state.error || this.state.error.errorCode === ErrorCodes.loginRequired) {
             return  (
                 <>

@@ -17,9 +17,9 @@ export class LoginRequiredView extends React.Component<any, any> {
         return  (
             <div className='row'>
                 <div className='col-12 text-center mx-auto'>
-                    <h5>
+                    <h6>
                         You are logged out - click HOME to sign in ...
-                    </h5>
+                    </h6>
                 </div>
             </div>
         );

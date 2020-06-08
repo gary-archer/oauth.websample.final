@@ -8,6 +8,9 @@ export interface AppState {
     // Whether the app has started up, read configuration and created global objects
     isInitialised: boolean;
 
+    // Some UI elements are hidden when not logged in
+    isLoggedIn: boolean;
+
     // After login this is used to keep track of whether all views have loaded their API data
     isDataLoaded: boolean;
 
@@ -16,4 +19,5 @@ export interface AppState {
 
     // The application level error object
     error: UIError | null;
+
 }

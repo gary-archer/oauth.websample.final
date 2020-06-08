@@ -1,4 +1,4 @@
-import {Request, Response, Router} from 'express';
+import {Application, Request, Response} from 'express';
 import * as path from 'path';
 
 /*
@@ -11,10 +11,10 @@ const WEB_FILES_ROOT = '../../spa';
  */
 export class WebStaticContent {
 
-    private _expressApp: Router;
+    private _expressApp: Application;
     private _spaConfig: any;
 
-    public constructor(expressApp: Router, spaConfig: any) {
+    public constructor(expressApp: Application, spaConfig: any) {
         this._expressApp = expressApp;
         this._spaConfig = spaConfig;
         this._getSpaConfigurationFile = this._getSpaConfigurationFile.bind(this);
@@ -25,6 +25,10 @@ export class WebStaticContent {
      */
     public configure(): void {
 
+        // Disable caching
+        this._expressApp.set('etag', false);
+
+        // Define route values
         this._expressApp.get('/spa/spa.config.json', this._getSpaConfigurationFile);
         this._expressApp.get('/spa/*', this._getWebResource);
         this._expressApp.get('/spa', this._getWebRootResource);
