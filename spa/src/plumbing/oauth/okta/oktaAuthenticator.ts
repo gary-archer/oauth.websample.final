@@ -208,6 +208,12 @@ export class OktaAuthenticator implements Authenticator {
     }
 
     /*
+     * For the Okta case we do not use refresh tokens
+     */
+    public async expireRefreshToken(): Promise<void> {
+    }
+
+    /*
      * Redirect on an iframe using the Authorization Server session cookie and prompt=none
      * If required a new token with a different scope could be requested like this
      */

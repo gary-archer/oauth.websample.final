@@ -10,5 +10,6 @@ export interface HeaderButtonsViewProps {
     handleHomeClick: () => void;
     handleReloadDataClick: (causeApiError: boolean) => void;
     handleExpireAccessTokenClick: () => void;
+    handleExpireRefreshTokenClick: () => void;
     handleLogoutClick: () => void;
 }

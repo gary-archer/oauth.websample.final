@@ -138,6 +138,7 @@ export class App extends React.Component<any, AppState> {
             handleHomeClick: this._onHome,
             handleReloadDataClick: this._onReloadData,
             handleExpireAccessTokenClick: this._onExpireAccessToken,
+            handleExpireRefreshTokenClick: this._onExpireRefreshToken,
             handleLogoutClick: this._onLogout,
         };
 
@@ -174,6 +175,7 @@ export class App extends React.Component<any, AppState> {
             sessionButtonsEnabled: this.state.isDataLoaded,
             handleHomeClick: this._onHome,
             handleExpireAccessTokenClick: this._onExpireAccessToken,
+            handleExpireRefreshTokenClick: this._onExpireRefreshToken,
             handleReloadDataClick: this._onReloadData,
             handleLogoutClick: this._onLogout,
         };
@@ -355,6 +357,13 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
+     * For test purposes this makes the refresh token act expired
+     */
+    private async _onExpireRefreshToken(): Promise<void> {
+        await this._authenticator!.expireRefreshToken();
+    }
+
+    /*
      * Handle switching between mobile and main views
      */
     private _onResize(): void {
@@ -389,6 +398,7 @@ export class App extends React.Component<any, AppState> {
         this._onHome = this._onHome.bind(this);
         this._onLogout = this._onLogout.bind(this);
         this._onExpireAccessToken = this._onExpireAccessToken.bind(this);
+        this._onExpireRefreshToken = this._onExpireRefreshToken.bind(this);
         this._onResize = this._onResize.bind(this);
     }
 }

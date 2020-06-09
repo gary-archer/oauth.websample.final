@@ -210,8 +210,21 @@ export class CognitoAuthenticator implements Authenticator {
         const user = await this._userManager.getUser();
         if (user) {
 
-            // This will cause the next call to the API to return 401
             user.access_token = 'x' + user.access_token + 'x';
+            this._userManager.storeUser(user);
+        }
+    }
+
+    /*
+     * For testing, make the refresh token act like it is expired
+     */
+    public async expireRefreshToken(): Promise<void> {
+
+        const user = await this._userManager.getUser();
+        if (user) {
+
+            user.access_token = '';
+            user.refresh_token = 'x' + user.refresh_token + 'x';
             this._userManager.storeUser(user);
         }
     }

@@ -26,4 +26,7 @@ export interface Authenticator {
 
     // For testing, make the access token act like it is expired
     expireAccessToken(): Promise<void>;
+
+    // For testing, make the refresh token act like it is expired
+    expireRefreshToken(): Promise<void>;
 }
