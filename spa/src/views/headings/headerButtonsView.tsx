@@ -23,10 +23,10 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
      */
     public render(): React.ReactNode {
 
-        if (!isWebView(navigator.userAgent)) {
-            return this._renderStandardButtons();
-        } else {
+        if (isWebView(navigator.userAgent)) {
             return this._renderWebViewButtons();
+        } else {
+            return this._renderStandardButtons();
         }
     }
 
@@ -90,8 +90,7 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
         const disabled = !this.props.sessionButtonsEnabled;
         return  (
                 <div className='row'>
-                    <div className='col-1 my-2 d-flex p-1' />
-                    <div className='col-2 my-2 d-flex p-1'>
+                    <div className='col-one-fifth my-2 d-flex p-1'>
                         <button
                             onClick={this.props.handleHomeClick}
                             className='btn btn-primary btn-block p-1'
@@ -100,7 +99,7 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
                         </button>
                     </div>
                     <div
-                        className='col-2 my-2 d-flex p-1'
+                        className='col-one-fifth my-2 d-flex p-1'
                         onTouchStart={this._handleReloadPress}
                         onTouchEnd={this._handleReloadRelease}
                         onMouseDown={this._handleReloadPress}
@@ -113,7 +112,7 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
                             <small>Reload Data</small>
                         </button>
                     </div>
-                    <div className='col-2 my-2 d-flex p-1'>
+                    <div className='col-one-fifth my-2 d-flex p-1'>
                         <button
                             onClick={this.props.handleExpireAccessTokenClick}
                             className='btn btn-primary btn-block p-1'
@@ -122,7 +121,7 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
                             <small>Expire Access Token</small>
                         </button>
                     </div>
-                    <div className='col-2 my-2 d-flex p-1'>
+                    <div className='col-one-fifth my-2 d-flex p-1'>
                         <button
                             onClick={this.props.handleExpireRefreshTokenClick}
                             className='btn btn-primary btn-block p-1'
@@ -131,7 +130,7 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
                             <small>Expire Refresh Token</small>
                         </button>
                     </div>
-                    <div className='col-2 my-2 d-flex p-1'>
+                    <div className='col-one-fifth my-2 d-flex p-1'>
                         <button
                             onClick={this.props.handleLogoutClick}
                             className='btn btn-primary btn-block p-1'
@@ -140,7 +139,6 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
                             <small>Logout</small>
                         </button>
                     </div>
-                    <div className='col-1 my-2 d-flex p-1' />
                 </div>
         );
     }

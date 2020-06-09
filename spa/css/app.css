@@ -2,6 +2,10 @@
 {
     margin-top:5px;
 }
+.col-one-fifth {
+    width: 20%;
+    float: left;
+}
 .valuecolor
 {
     color: blue;
