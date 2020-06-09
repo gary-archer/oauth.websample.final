@@ -23,7 +23,7 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
      */
     public render(): React.ReactNode {
 
-        if (isWebView(navigator.userAgent) || true) {
+        if (isWebView(navigator.userAgent)) {
             return this._renderWebViewButtons();
         } else {
             return this._renderStandardButtons();
