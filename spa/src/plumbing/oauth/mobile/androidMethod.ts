@@ -1,9 +1,9 @@
 import {UIError} from '../../errors/uiError';
 
 /*
- * A utility class to deal with calling mobile methods, async completion and error responses
+ * A utility class to deal with calling Android methods, async completion and error responses
  */
-export class MobileMethod {
+export class AndroidMethod {
 
     /*
      * An interface to call the mobile app and wait for a deferred result
@@ -13,7 +13,7 @@ export class MobileMethod {
         return new Promise<string>((resolve, reject) => {
 
             // Get a callback name for this mobile method call
-            const callbackName = MobileMethod._getCallbackName(methodName, guid);
+            const callbackName = AndroidMethod._getCallbackName(methodName, guid);
             const customWindow = window as any;
 
             // First define callback behaviour
@@ -25,7 +25,7 @@ export class MobileMethod {
                 if (errorJson) {
 
                     // Handle other errors
-                    reject(MobileMethod.parseMobileError(errorJson));
+                    reject(AndroidMethod._parseMobileError(errorJson));
 
                 } else {
 
@@ -55,7 +55,7 @@ export class MobileMethod {
     /*
      * Parse JSON from the mobile app to our own UI error object
      */
-    public static parseMobileError(errorJson: string): UIError {
+    private static _parseMobileError(errorJson: string): UIError {
 
         const obj = JSON.parse(errorJson);
         const error = new UIError(obj.area, obj.errorCode, obj.userMessage);

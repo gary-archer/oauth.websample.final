@@ -2,7 +2,8 @@ import isWebView from 'is-ua-webview';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {Authenticator} from './authenticator';
 import {CognitoAuthenticator} from './cognito/cognitoAuthenticator';
-import {WebViewAuthenticator} from './mobile/webViewAuthenticator';
+import {AndroidAuthenticator} from './mobile/androidAuthenticator';
+import {IosAuthenticator} from './mobile/iosAuthenticator';
 import {OktaAuthenticator} from './okta/oktaAuthenticator';
 
 /*
@@ -17,8 +18,15 @@ export class AuthenticatorFactory {
 
         if (isWebView(navigator.userAgent)) {
 
-            // When running in a mobile web view we create an authenticator that calls back the mobile app
-            return new WebViewAuthenticator(postLoginAction);
+            // When running in a web view we create an authenticator that calls back the mobile app
+            if (navigator.userAgent.toLowerCase().indexOf('android') !== -1) {
+
+                return new AndroidAuthenticator(postLoginAction);
+
+            } else {
+
+                return new IosAuthenticator(postLoginAction);
+            }
 
         } else if (configuration.authority.toLowerCase().indexOf('cognito') !== -1) {
 
