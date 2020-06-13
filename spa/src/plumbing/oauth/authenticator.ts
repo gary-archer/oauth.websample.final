@@ -3,11 +3,8 @@
  */
 export interface Authenticator {
 
-    // Setup that requires async calls
-    initialise(): Promise<void>;
-
     // Return whether we have a user object and tokens
-    isLoggedIn(): boolean;
+    isLoggedIn(): Promise<boolean>;
 
     // Try to get an access token
     getAccessToken(): Promise<string>;

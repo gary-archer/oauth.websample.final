@@ -7,27 +7,18 @@ import {AndroidMethod} from './androidMethod';
  */
 export class AndroidAuthenticator implements Authenticator {
 
-    private _isLoggedIn: boolean;
     private _postLoginAction: () => void;
 
     public constructor(postLoginAction: () => void) {
-        this._isLoggedIn = false;
         this._postLoginAction = postLoginAction;
     }
 
     /*
-     * Make an initial async request to get the logged in state
+     * Return true if there are tokens
      */
-    public async initialise(): Promise<void> {
+    public async isLoggedIn(): Promise<boolean> {
         const result = await AndroidMethod.callAsync('isLoggedIn');
-        this._isLoggedIn = result === 'true';
-    }
-
-    /*
-     * A synchronous method that ReactJS can bind to when updating the UI based on logged in state
-     */
-    public isLoggedIn(): boolean {
-        return this._isLoggedIn;
+        return result === 'true';
     }
 
     /*
@@ -53,7 +44,6 @@ export class AndroidAuthenticator implements Authenticator {
         await AndroidMethod.callAsync('startLogin');
 
         // Run post login actions
-        this._isLoggedIn = true;
         this._postLoginAction();
     }
 
@@ -67,9 +57,7 @@ export class AndroidAuthenticator implements Authenticator {
      * Initiate a logout redirect, which does not involve redirecting the whole page
      */
     public async startLogout(): Promise<void> {
-
         await AndroidMethod.callAsync('startLogout');
-        this._isLoggedIn = false;
     }
 
     /*

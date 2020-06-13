@@ -98,9 +98,8 @@ export class App extends React.Component<any, AppState> {
             // First download configuration from the browser's web domain
             this._configuration = await ConfigurationLoader.download('spa.config.json');
 
-            // Initialise authentication processing and receive any login responses on the main window
+            // Create the authenticator and receive any login responses on the main window
             this._authenticator = this._createAuthenticator();
-            await this._authenticator.initialise();
             await this._authenticator.handleLoginResponse();
 
             // Create the API client
@@ -116,7 +115,7 @@ export class App extends React.Component<any, AppState> {
             // Update state
             this.setState({
                 isInitialised: true,
-                isLoggedIn: this._authenticator.isLoggedIn(),
+                isLoggedIn: await this._authenticator.isLoggedIn(),
             });
 
         } catch (e) {

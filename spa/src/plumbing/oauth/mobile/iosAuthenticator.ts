@@ -7,27 +7,18 @@ import {IosMethod} from './iosMethod';
  */
 export class IosAuthenticator implements Authenticator {
 
-    private _isLoggedIn: boolean;
     private _postLoginAction: () => void;
 
     public constructor(postLoginAction: () => void) {
-        this._isLoggedIn = false;
         this._postLoginAction = postLoginAction;
     }
 
     /*
-     * Make an initial async request to get the logged in state
+     * Return true if there are tokens
      */
-    public async initialise(): Promise<void> {
+    public async isLoggedIn(): Promise<boolean> {
         const result = await IosMethod.callAsync('isLoggedIn');
-        this._isLoggedIn = result === 'true';
-    }
-
-    /*
-     * A synchronous method that ReactJS can bind to when updating the UI based on logged in state
-     */
-    public isLoggedIn(): boolean {
-        return this._isLoggedIn;
+        return result === 'true';
     }
 
     /*
@@ -61,7 +52,6 @@ export class IosAuthenticator implements Authenticator {
         }
 
         // Run post login actions
-        this._isLoggedIn = true;
         this._postLoginAction();*/
     }
 
@@ -76,7 +66,6 @@ export class IosAuthenticator implements Authenticator {
      */
     public async startLogout(): Promise<void> {
         await IosMethod.callAsync('startLogout');
-        this._isLoggedIn = false;
     }
 
     /*

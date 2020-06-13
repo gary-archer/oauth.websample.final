@@ -20,9 +20,6 @@ export class OktaAuthenticator implements Authenticator {
     // A local storage key used to minimise full page redirects, such as when opening new browser tabs
     private readonly canRefreshKey = 'canSilentlyRenew';
 
-    // A flag that ReactJS can bind to
-    private _isLoggedIn: boolean;
-
     /*
      * Initialise OAuth settings and create the UserManager
      */
@@ -56,23 +53,15 @@ export class OktaAuthenticator implements Authenticator {
         // Initialise state
         this._userManager = new UserManager(settings);
         this._concurrencyHandler = new ConcurrentActionHandler();
-        this._isLoggedIn = false;
         this._setupCallbacks();
     }
 
     /*
-     * Set the logged in state at startup or if the user refreshes the page
+     * Return true if there are tokens
      */
-    public async initialise(): Promise<void> {
+    public async isLoggedIn(): Promise<boolean> {
         const user = await this._userManager.getUser();
-        this._isLoggedIn = !!user;
-    }
-
-    /*
-     * Return a denormalised flag synchronously to simplify React state and avoid duplication
-     */
-    public isLoggedIn(): boolean {
-        return this._isLoggedIn;
+        return !!user;
     }
 
     /*
@@ -168,9 +157,6 @@ export class OktaAuthenticator implements Authenticator {
                 // Also enable page refresh without logging in
                 localStorage.setItem(this.canRefreshKey, 'true');
 
-                // Update state returned synchronously to React
-                this._isLoggedIn = true;
-
             } catch (e) {
 
                 // Prevent back navigation problems after errors
@@ -188,11 +174,8 @@ export class OktaAuthenticator implements Authenticator {
     public async startLogout(): Promise<void> {
 
         try {
-            // First update state
-            this._isLoggedIn = false;
+            // Update state, then do the logout redirect
             localStorage.removeItem(this.canRefreshKey);
-
-            // Next do the logout redirect
             await this._userManager.signoutRedirect();
 
         } catch (e) {

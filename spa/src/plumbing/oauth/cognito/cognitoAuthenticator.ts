@@ -21,9 +21,6 @@ export class CognitoAuthenticator implements Authenticator {
     // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
 
-    // A flag that ReactJS can bind to
-    private _isLoggedIn: boolean;
-
     /*
      * Initialise OAuth settings and create the OIDC Client UserManager object
      */
@@ -55,23 +52,15 @@ export class CognitoAuthenticator implements Authenticator {
         this._userManager = new UserManager(settings);
         this._configuration = configuration;
         this._concurrencyHandler = new ConcurrentActionHandler();
-        this._isLoggedIn = false;
         this._setupCallbacks();
     }
 
     /*
-     * Set the logged in state at startup or if the user refreshes the page
+     * Return true if there are tokens
      */
-    public async initialise(): Promise<void> {
+    public async isLoggedIn(): Promise<boolean> {
         const user = await this._userManager.getUser();
-        this._isLoggedIn = !!user;
-    }
-
-    /*
-     * Return a denormalised flag synchronously to simplify React state and avoid duplication
-     */
-    public isLoggedIn(): boolean {
-        return this._isLoggedIn;
+        return !!user;
     }
 
     /*
@@ -167,9 +156,6 @@ export class CognitoAuthenticator implements Authenticator {
                 // Replace the browser location, to prevent tokens being available during back navigation
                 history.replaceState({}, document.title, data.hash);
 
-                // Update state returned synchronously to React
-                this._isLoggedIn = true;
-
             } catch (e) {
 
                 // Prevent back navigation problems after errors
@@ -190,7 +176,6 @@ export class CognitoAuthenticator implements Authenticator {
         try {
             // First update state
             await this._userManager.removeUser();
-            this._isLoggedIn = false;
 
             // Cognito requires the configured logout return URL to use a path segment
             // Therefore we configure https://web.authguidance-examples.com/spa/loggedout.html
@@ -247,11 +232,10 @@ export class CognitoAuthenticator implements Authenticator {
 
         } catch (e) {
 
-            // For invalid_grant errors, clear token data and return success, to force a login redirect
             if (e.message === ErrorCodes.refreshTokenExpired) {
 
+                // For invalid_grant errors, clear token data and return success, to force a login redirect
                 await this._userManager.removeUser();
-                this._isLoggedIn = false;
             }
             else {
 
