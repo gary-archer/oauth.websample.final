@@ -12,10 +12,16 @@ import {CognitoWebStorage} from './cognitoWebStorage';
  */
 export class CognitoAuthenticator implements Authenticator {
 
-    // Global OAuth fields
+    // The OIDC Client does all of the real security processing
     private readonly _userManager: UserManager;
+
+    // Our configuration settings
     private readonly _configuration: OAuthConfiguration;
+
+    // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
+
+    // A flag that ReactJS can bind to
     private _isLoggedIn: boolean;
 
     /*

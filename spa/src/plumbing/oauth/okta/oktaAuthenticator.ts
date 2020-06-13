@@ -11,10 +11,16 @@ import {Authenticator} from '../authenticator';
  */
 export class OktaAuthenticator implements Authenticator {
 
-    // The OIDC Client class does all of the real security processing
+    // The OIDC Client does all of the real security processing
     private readonly _userManager: UserManager;
+
+    // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
+
+    // A local storage key used to minimise full page redirects, such as when opening new browser tabs
     private readonly canRefreshKey = 'canSilentlyRenew';
+
+    // A flag that ReactJS can bind to
     private _isLoggedIn: boolean;
 
     /*
@@ -89,7 +95,7 @@ export class OktaAuthenticator implements Authenticator {
      */
     public async refreshAccessToken(): Promise<string> {
 
-        const canRefresh = sessionStorage.getItem(this.canRefreshKey);
+        const canRefresh = localStorage.getItem(this.canRefreshKey);
         if (canRefresh) {
 
             try {
@@ -120,7 +126,7 @@ export class OktaAuthenticator implements Authenticator {
      */
     public async startLogin(returnLocation?: string): Promise<void> {
 
-        // Store the SPA's location
+        // First store the SPA's client side location
         let hash = returnLocation;
         if (!hash) {
             hash = location.hash;
@@ -160,7 +166,7 @@ export class OktaAuthenticator implements Authenticator {
                 history.replaceState({}, document.title, data.hash);
 
                 // Also enable page refresh without logging in
-                sessionStorage.setItem(this.canRefreshKey, 'true');
+                localStorage.setItem(this.canRefreshKey, 'true');
 
                 // Update state returned synchronously to React
                 this._isLoggedIn = true;
@@ -184,7 +190,7 @@ export class OktaAuthenticator implements Authenticator {
         try {
             // First update state
             this._isLoggedIn = false;
-            sessionStorage.removeItem(this.canRefreshKey);
+            localStorage.removeItem(this.canRefreshKey);
 
             // Next do the logout redirect
             await this._userManager.signoutRedirect();
@@ -221,16 +227,17 @@ export class OktaAuthenticator implements Authenticator {
 
         try {
 
-            // Call the OIDC Client method
+            // Redirect on an iframe using the Authorization Server session cookie and prompt=none
+            // A different scope could be requested by also supplying an object with a scope= property
             await this._userManager.signinSilent();
 
         } catch (e) {
 
-            // For session expired errors, clear token data and return success, to force a login redirect
             if (e.error === ErrorCodes.loginRequired) {
 
+                // For session expired errors, clear token data and return success, to force a login redirect
                 await this._userManager.removeUser();
-                this._isLoggedIn = false;
+                localStorage.removeItem(this.canRefreshKey);
             }
             else {
 
