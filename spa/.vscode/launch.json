@@ -1,0 +1,29 @@
+{
+    // Debug the SPA directly in Visual Studio Code
+    // Requires the 'Debugger for Chrome' extension to be installed first
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch SPA",
+            "url": "https://web.mycompany.com/spa/",
+            "webRoot": "${workspaceRoot}/src",
+
+            // We need to point webpack source map output correctly
+            // https://github.com/angular/angular-cli/issues/2453
+            "sourceMaps": true,
+            "sourceMapPathOverrides":{
+                "webpack:///./*": "${webRoot}/*"
+            }
+            
+            // Output source map paths to the debug console, resulting in the below type of message
+            // It enables us to see any source map path overrides that are wrong
+            // 
+            //   Mapped /Users/gary/projects/authguidance.websample2/spa/src/plumbing/api/httpClient.ts 
+            //   to https://web.mycompany.com/spa/dist/bundle.min.js
+            //
+            // "trace": "verbose"
+        }
+    ]
+}

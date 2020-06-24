@@ -1,0 +1,13 @@
+{
+    "app": {
+        "apiBaseUrl":       "https://api.authguidance-examples.com/api"
+    },
+    "oauth": {
+        "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_mZ3NBYpTo",
+        "clientId":         "3iojt0uhtp0nqm0lc3rmvj92ck",
+        "appUri":           "https://web.mycompany.com/spa/",
+        "scope":            "openid profile email",
+        "logoutEndpoint":   "https://login.authguidance-examples.com/logout",
+        "postLogoutPath":   "loggedout"
+    }
+}
