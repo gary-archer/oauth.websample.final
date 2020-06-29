@@ -17,7 +17,7 @@ export class OktaAuthenticator implements Authenticator {
     // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
 
-    // A local storage key used to minimise full page redirects, such as when opening new browser tabs
+    // A session storage key used to minimise full page redirects, such as when opening new browser tabs
     private readonly canRefreshKey = 'canSilentlyRenew';
 
     /*
@@ -84,7 +84,7 @@ export class OktaAuthenticator implements Authenticator {
      */
     public async refreshAccessToken(): Promise<string> {
 
-        const canRefresh = localStorage.getItem(this.canRefreshKey);
+        const canRefresh = sessionStorage.getItem(this.canRefreshKey);
         if (canRefresh) {
 
             try {
@@ -159,7 +159,7 @@ export class OktaAuthenticator implements Authenticator {
                     redirectLocation = data.hash;
 
                     // Enable page refresh without a redirect
-                    localStorage.setItem(this.canRefreshKey, 'true');
+                    sessionStorage.setItem(this.canRefreshKey, 'true');
                 }
 
             } catch (e) {
@@ -182,7 +182,7 @@ export class OktaAuthenticator implements Authenticator {
 
         try {
             // Update state, then do the logout redirect
-            localStorage.removeItem(this.canRefreshKey);
+            sessionStorage.removeItem(this.canRefreshKey);
             await this._userManager.signoutRedirect();
 
         } catch (e) {
@@ -227,7 +227,7 @@ export class OktaAuthenticator implements Authenticator {
 
                 // For session expired errors, clear token data and return success, to force a login redirect
                 await this._userManager.removeUser();
-                localStorage.removeItem(this.canRefreshKey);
+                sessionStorage.removeItem(this.canRefreshKey);
             }
             else {
 
