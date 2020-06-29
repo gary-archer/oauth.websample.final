@@ -43,7 +43,7 @@ export class CognitoAuthenticator implements Authenticator {
             loadUserInfo: false,
             monitorSession: false,
 
-            // Use custom storage to work around Cognito problems
+            // Use custom storage of tokens to work around Cognito problems
             userStore: new WebStorageStateStore({ store: new CognitoWebStorage() }),
 
         } as UserManagerSettings;
@@ -142,27 +142,34 @@ export class CognitoAuthenticator implements Authenticator {
      */
     public async handleLoginResponse(): Promise<void> {
 
-        // If the page loads with a state query parameter we classify it as an OAuth response
+        // If the page loads with a state query parameter we c\\\11lassify it as an OAuth response
         const urlData = urlparse(location.href, true);
         if (urlData.query && urlData.query.state) {
 
+            let redirectLocation = '#';
             try {
-                // Handle the response
-                const user = await this._userManager.signinRedirectCallback();
 
-                // Get the hash URL before the redirect
-                const data = JSON.parse(user.state);
+                // Only try to process a login response if the state exists
+                const storedState = await this._userManager.settings.stateStore?.get(urlData.query.state);
+                if (storedState) {
 
-                // Replace the browser location, to prevent tokens being available during back navigation
-                history.replaceState({}, document.title, data.hash);
+                    // Handle the login response
+                    const user = await this._userManager.signinRedirectCallback();
+
+                    // Get the hash URL before the login redirect
+                    const data = JSON.parse(user.state);
+                    redirectLocation = data.hash;
+                }
 
             } catch (e) {
 
-                // Prevent back navigation problems after errors
-                history.replaceState({}, document.title, '#');
-
-                // Handle OAuth response errors
+                // Handle and rethrow OAuth response errors
                 throw ErrorHandler.getFromLoginResponse(e, ErrorCodes.loginResponseFailed);
+
+            } finally {
+
+                // Always replace the browser location, to remove OAuth details from back navigation
+                history.replaceState({}, document.title, redirectLocation);
             }
         }
     }
@@ -179,11 +186,10 @@ export class CognitoAuthenticator implements Authenticator {
 
             // Cognito requires the configured logout return URL to use a path segment
             // Therefore we configure https://web.authguidance-examples.com/spa/loggedout.html
-            const logoutReturnUri = encodeURIComponent(
-                `${this._configuration.appUri}${this._configuration.postLogoutPath}.html`);
+            const logoutReturnUri = encodeURIComponent(`${this._configuration.appUri}loggedout.html`);
 
             // We then use the above URL in the logout redirect request
-            // Upon return, loggedout.html redirects to https://web.authguidance-examples.com/spa/#loggedout
+            // Upon return, loggedout.html redirects to https://web.authguidance-examples.com/spa/#/loggedout
             let url = `${this._configuration.logoutEndpoint}`;
             url += `?client_id=${this._configuration.clientId}&logout_uri=${logoutReturnUri}`;
             location.replace(url);

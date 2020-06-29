@@ -248,7 +248,7 @@ export class App extends React.Component<any, AppState> {
             // Treat cancelled logins as a non error
             const error = ErrorHandler.getFromException(e);
             if (error.errorCode === ErrorCodes.redirectCancelled) {
-                location.hash = '#/loggedout';
+                location.hash = this._configuration!.oauth.postLogoutPath;
                 return;
             }
 
@@ -329,13 +329,13 @@ export class App extends React.Component<any, AppState> {
             ErrorConsoleReporter.output(error);
 
             // Ensure that we are in the login required view
-            location.hash = '#/loggedout';
+            location.hash = this._configuration!.oauth.postLogoutPath;
 
          } finally {
 
             // Move to login required if necessary
             if (!this._isInLoginRequired()) {
-                location.hash = '#/loggedout';
+                location.hash = this._configuration!.oauth.postLogoutPath;
             }
             this.setState({isLoggedIn: false});
          }

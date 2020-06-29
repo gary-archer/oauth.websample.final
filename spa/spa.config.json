@@ -8,6 +8,6 @@
         "appUri":           "https://web.mycompany.com/spa/",
         "scope":            "openid profile email",
         "logoutEndpoint":   "https://login.authguidance-examples.com/logout",
-        "postLogoutPath":   "loggedout"
+        "postLogoutPath":   "#/loggedout"
     }
 }

@@ -144,26 +144,33 @@ export class OktaAuthenticator implements Authenticator {
         const urlData = urlparse(location.href, true);
         if (urlData.query && urlData.query.state) {
 
+            let redirectLocation = '#';
             try {
-                // Handle the login response
-                const user = await this._userManager.signinRedirectCallback();
 
-                // Get the hash URL before the redirect
-                const data = JSON.parse(user.state);
+                // Only try to process a login response if the state exists
+                const storedState = await this._userManager.settings.stateStore?.get(urlData.query.state);
+                if (storedState) {
 
-                // Replace the browser location, to prevent tokens being available during back navigation
-                history.replaceState({}, document.title, data.hash);
+                    // Handle the login response
+                    const user = await this._userManager.signinRedirectCallback();
 
-                // Also enable page refresh without logging in
-                localStorage.setItem(this.canRefreshKey, 'true');
+                    // Get the hash URL before the login redirect
+                    const data = JSON.parse(user.state);
+                    redirectLocation = data.hash;
+
+                    // Enable page refresh without a redirect
+                    localStorage.setItem(this.canRefreshKey, 'true');
+                }
 
             } catch (e) {
 
-                // Prevent back navigation problems after errors
-                history.replaceState({}, document.title, '#');
-
-                // Handle OAuth response errors
+                // Handle and rethrow OAuth response errors
                 throw ErrorHandler.getFromLoginResponse(e, ErrorCodes.loginResponseFailed);
+
+            } finally {
+
+                // Always replace the browser location, to remove OAuth details from back navigation
+                history.replaceState({}, document.title, redirectLocation);
             }
         }
     }
