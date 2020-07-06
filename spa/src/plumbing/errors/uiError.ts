@@ -16,7 +16,7 @@ export class UIError extends Error {
     /*
      * All types of error supply at least these fields
      */
-     public constructor(area: string, errorCode: string, userMessage: string, stack?: string | undefined) {
+    public constructor(area: string, errorCode: string, userMessage: string, stack?: string | undefined) {
 
         super(userMessage);
 

@@ -27,14 +27,14 @@ export class MobileAuthenticator implements Authenticator {
      * Ask the mobile app for the current access token
      */
     public async getAccessToken(): Promise<string> {
-        return await this._methodCaller.callAsync('getAccessToken', Guid.create().toString());
+        return this._methodCaller.callAsync('getAccessToken', Guid.create().toString());
     }
 
     /*
      * Ask the mobile app to use its refresh token to get a new access token
      */
     public async refreshAccessToken(): Promise<string> {
-        return await this._methodCaller.callAsync('refreshAccessToken', Guid.create().toString());
+        return this._methodCaller.callAsync('refreshAccessToken', Guid.create().toString());
     }
 
     /*

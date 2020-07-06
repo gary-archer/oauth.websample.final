@@ -144,7 +144,7 @@ export class ErrorHandler {
         }
 
         let error = null;
-        if (statusCode === 0 ) {
+        if (statusCode === 0) {
 
             // This status is generally a CORS or availability problem
             error = new UIError(

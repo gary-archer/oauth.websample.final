@@ -79,7 +79,7 @@ export class OidcLogLevel {
 
         const levelToSet = level || 'none';
         const numericLevel = data[levelToSet];
-        if (numericLevel !== undefined ) {
+        if (numericLevel !== undefined) {
 
             sessionStorage.setItem(this.logLevelKey, levelToSet);
             Log.level = numericLevel;

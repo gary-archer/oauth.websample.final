@@ -1,13 +1,17 @@
-// Polyfills needed by Internet Explorer
-// https://github.com/damienbod/angular-auth-oidc-client/issues/345
+/*
+ * I have found this to be the simplest option to polyfill for Internet Explorer
+ * Solutions such as Babel add too much noise to the project for my liking
+ * https://github.com/damienbod/angular-auth-oidc-client/issues/345
+ */
 
-import 'core-js/es/array';
-import 'core-js/es/date';
-import 'core-js/es/function';
-import 'core-js/es/map';
-import 'core-js/es/number';
-import 'core-js/es/object';
-import 'core-js/es/promise';
-import 'core-js/es/regexp';
-import 'core-js/es/string';
-import 'core-js/es/symbol';
+/* tslint:disable:no-submodule-imports */
+import 'core-js/features/array';
+import 'core-js/features/date';
+import 'core-js/features/function';
+import 'core-js/features/map';
+import 'core-js/features/number';
+import 'core-js/features/object';
+import 'core-js/features/promise';
+import 'core-js/features/regexp';
+import 'core-js/features/string';
+import 'core-js/features/symbol';

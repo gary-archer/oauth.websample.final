@@ -1,4 +1,4 @@
-import {UserManager, UserManagerSettings} from 'oidc-client';
+import {UserManager} from 'oidc-client';
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 
@@ -22,7 +22,7 @@ export class OktaTokenRenewalResponseHandler {
             scope: configuration.scope,
             response_type: 'code',
             loadUserInfo: false,
-        } as UserManagerSettings;
+        };
 
         this._userManager = new UserManager(settings);
     }

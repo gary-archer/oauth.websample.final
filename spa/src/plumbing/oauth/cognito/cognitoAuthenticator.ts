@@ -1,4 +1,4 @@
-import {UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
+import {UserManager, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
@@ -45,8 +45,7 @@ export class CognitoAuthenticator implements Authenticator {
 
             // Use custom storage of tokens to work around Cognito problems
             userStore: new WebStorageStateStore({ store: new CognitoWebStorage() }),
-
-        } as UserManagerSettings;
+        };
 
         // Initialise state
         this._userManager = new UserManager(settings);

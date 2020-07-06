@@ -1,4 +1,4 @@
-import {InMemoryWebStorage, User, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
+import {InMemoryWebStorage, UserManager, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
@@ -48,7 +48,7 @@ export class OktaAuthenticator implements Authenticator {
             // https://auth0.com/docs/tokens/guides/store-tokens
             userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() }),
 
-        } as UserManagerSettings;
+        };
 
         // Initialise state
         this._userManager = new UserManager(settings);
@@ -76,7 +76,7 @@ export class OktaAuthenticator implements Authenticator {
         }
 
         // Try to refresh the access token otherwise
-        return await this.refreshAccessToken();
+        return this.refreshAccessToken();
     }
 
     /*
