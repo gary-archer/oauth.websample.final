@@ -91,22 +91,6 @@ export class UIError extends Error {
     }
 
     /*
-     * Output the stack frames in a readable format
-     */
-    public get stackFrames(): string[] {
-
-        const frames: string[] = [];
-        if (this.stack) {
-            const items = this.stack.split('\n').map((x: string) => x.trim()) as string[];
-            items.forEach((i) => {
-                frames.push(i);
-            });
-        }
-
-        return frames;
-    }
-
-    /*
      * Override details when an API 500 error is handled
      */
     public setApiErrorDetails(area: string, id: number, utcTime: string) {
