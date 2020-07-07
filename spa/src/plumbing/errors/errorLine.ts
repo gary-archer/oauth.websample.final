@@ -3,6 +3,6 @@
  */
 export interface ErrorLine {
     id: number;
-    title: string;
+    label: string;
     value: string;
 }

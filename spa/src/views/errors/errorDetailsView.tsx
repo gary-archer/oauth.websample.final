@@ -17,7 +17,10 @@ export class ErrorDetailsView extends React.Component<ErrorDetailsViewProps> {
      */
     public render(): React.ReactNode {
 
-        const lines = ErrorFormatter.getErrorLines(this.props.error);
+        const formatter = new ErrorFormatter();
+        const lines = formatter.getErrorLines(this.props.error);
+        const stack = formatter.getErrorStack(this.props.error);
+
         return  (
                     <div className='card border-0'>
                         <div className='row'>
@@ -32,6 +35,7 @@ export class ErrorDetailsView extends React.Component<ErrorDetailsViewProps> {
                             <div className='col-12'>
                                 <div className='align-items-center mx-auto'>
                                     {lines.map((line: any) => this._renderErrorLine(line))}
+                                    {this._renderErrorStack(stack)}
                                 </div>
                             </div>
                         </div>
@@ -47,7 +51,7 @@ export class ErrorDetailsView extends React.Component<ErrorDetailsViewProps> {
         return (
             <div className='row' key={line.id}>
                 <div className='col-4'>
-                    {line.title}
+                    {line.label}
                 </div>
                 {this._renderErrorLineValue(line)}
             </div>
@@ -59,7 +63,7 @@ export class ErrorDetailsView extends React.Component<ErrorDetailsViewProps> {
      */
     private _renderErrorLineValue(line: ErrorLine): React.ReactNode {
 
-        if (line.title === 'Id') {
+        if (line.label === 'Id') {
             return (
                 <div className='col-8 errorcolor font-weight-bold'>
                     {line.value}
@@ -71,6 +75,40 @@ export class ErrorDetailsView extends React.Component<ErrorDetailsViewProps> {
             <div className='col-8 valuecolor font-weight-bold'>
                 {line.value}
             </div>
+        );
+    }
+
+    /*
+     * Render stack trace details in debug builds
+     */
+    private _renderErrorStack(line: ErrorLine | null): React.ReactNode {
+
+        if (!line) {
+            return (
+                <>
+                </>
+            );
+        }
+
+        return (
+            <>
+                <div className='row' key={line.id}>
+                    <div className='col-4'>
+                        &nbsp;
+                    </div>
+                    <div className='col-8'>
+                        &nbsp;
+                    </div>
+                </div>
+                <div className='row' key={line.id + 1}>
+                    <div className='col-4'>
+                        {line.label}
+                    </div>
+                    <div className='col-8 small'>
+                        {line.value}
+                    </div>
+                </div>
+            </>
         );
     }
 }

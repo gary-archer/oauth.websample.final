@@ -11,9 +11,9 @@ export class ErrorConsoleReporter {
      */
     public static output(error: UIError) {
 
-        const lines = ErrorFormatter.getErrorLines(error);
+        const lines = new ErrorFormatter().getErrorLines(error);
         lines.forEach((l) => {
-            console.log(`${l.title}: ${l.value}`);
+            console.log(`${l.label}: ${l.value}`);
         });
     }
 }
