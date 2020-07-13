@@ -1,16 +1,15 @@
-import {UserManager, WebStorageStateStore} from 'oidc-client';
+import {InMemoryWebStorage, UserManager, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
-import {CognitoWebStorage} from './cognitoWebStorage';
 
 /*
- * Cognito specific implementation
+ * A custom web integration of OIDC Client, which uses cookies for token renewal
  */
-export class CognitoAuthenticator implements Authenticator {
+export class WebAuthenticator implements Authenticator {
 
     // The OIDC Client does all of the real security processing
     private readonly _userManager: UserManager;
@@ -26,9 +25,12 @@ export class CognitoAuthenticator implements Authenticator {
      */
     public constructor(configuration: OAuthConfiguration) {
 
-        // Cognito settings use customised session storage
         const settings = {
+
+            // The Open Id Connect base URL
             authority: configuration.authority,
+
+            // Basic settings
             client_id: configuration.clientId,
             redirect_uri: configuration.appUri,
             scope: configuration.scope,
@@ -36,15 +38,18 @@ export class CognitoAuthenticator implements Authenticator {
             // Use the Authorization Code Flow (PKCE)
             response_type: 'code',
 
-            // We are not using background silent token renewal
+            // We use a proxying cookie based solution to refresh access tokens
             automaticSilentRenew: false,
 
-            // We are not using these features and we get extended user info from our API
+            // We get extended user info from our API and do not use this feature
             loadUserInfo: false,
-            monitorSession: false,
 
-            // Use custom storage of tokens to work around Cognito problems
-            userStore: new WebStorageStateStore({ store: new CognitoWebStorage() }),
+            // Indicate the post logout return location
+            post_logout_redirect_uri: `${configuration.appUri}${configuration.postLogoutPath}`,
+
+            // Tokens are stored only in memory, which generally does best in security reviews and PEN tests
+            // https://auth0.com/docs/tokens/guides/store-tokens
+            userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() }),
         };
 
         // Initialise state
@@ -78,7 +83,7 @@ export class CognitoAuthenticator implements Authenticator {
     }
 
     /*
-     * Try to refresh an access token
+     * Try to refresh an access token via a refresh token grant message based on cookies
      */
     public async refreshAccessToken(): Promise<string> {
 
@@ -87,7 +92,6 @@ export class CognitoAuthenticator implements Authenticator {
 
             try {
 
-                // Refresh the access token via a refresh token grant message
                 // The concurrency handler will only do the refresh work for the first UI view that requests it
                 await this._concurrencyHandler.execute(this._performTokenRefresh);
 
@@ -174,24 +178,37 @@ export class CognitoAuthenticator implements Authenticator {
     }
 
     /*
-     * Implement the bespoke Cognito redirect to log out at the authorization server
-     * https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
+     * Do the logout redirect
      */
     public async startLogout(): Promise<void> {
 
+        /* Okta uses this */
+        await this._userManager.signoutRedirect();
+
         try {
-            // First update state
-            await this._userManager.removeUser();
 
-            // Cognito requires the configured logout return URL to use a path segment
-            // Therefore we configure https://web.authguidance-examples.com/spa/loggedout.html
-            const logoutReturnUri = encodeURIComponent(`${this._configuration.appUri}loggedout.html`);
+            // Cognito has a vendor specific logout solution
+            // https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
+            if (this._configuration.authority.indexOf('cognito') !== -1) {
 
-            // We then use the above URL in the logout redirect request
-            // Upon return, loggedout.html redirects to https://web.authguidance-examples.com/spa/#/loggedout
-            let url = `${this._configuration.logoutEndpoint}`;
-            url += `?client_id=${this._configuration.clientId}&logout_uri=${logoutReturnUri}`;
-            location.replace(url);
+                // First update state
+                await this._userManager.removeUser();
+
+                // Cognito requires the configured logout return URL to use a path segment
+                // Therefore we configure https://web.authguidance-examples.com/spa/loggedout.html
+                const logoutReturnUri = encodeURIComponent(`${this._configuration.appUri}loggedout.html`);
+
+                // We then use the above URL in the logout redirect request
+                // Upon return, loggedout.html redirects to https://web.authguidance-examples.com/spa/#/loggedout
+                let url = `${this._configuration.logoutEndpoint}`;
+                url += `?client_id=${this._configuration.clientId}&logout_uri=${logoutReturnUri}`;
+                location.replace(url);
+
+            } else {
+
+                // Otherwise do a standards based logout redirect
+                await this._userManager.signoutRedirect();
+            }
 
         } catch (e) {
             throw ErrorHandler.getFromLogoutRequest(e, ErrorCodes.logoutRequestFailed);
@@ -226,7 +243,7 @@ export class CognitoAuthenticator implements Authenticator {
     }
 
     /*
-     * Ask OIDC client to silently renew the access token using the Cognito refresh token
+     * Ask OIDC client to silently renew the access token using a cookie
      */
     private async _performTokenRefresh() {
 
