@@ -6,6 +6,7 @@ export interface OAuthConfiguration {
     clientId: string;
     appUri: string;
     postLogoutPath: string;
+    tokenEndpoint: string;
     logoutEndpoint: string;
     scope: string;
 }

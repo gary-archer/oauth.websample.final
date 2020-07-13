@@ -11,11 +11,11 @@ import {Authenticator} from '../authenticator';
  */
 export class WebAuthenticator implements Authenticator {
 
-    // The OIDC Client does all of the real security processing
-    private readonly _userManager: UserManager;
-
     // Our configuration settings
     private readonly _configuration: OAuthConfiguration;
+
+    // The OIDC Client does all of the real security handling
+    private readonly _userManager: UserManager;
 
     // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
@@ -47,9 +47,9 @@ export class WebAuthenticator implements Authenticator {
             // Indicate the post logout return location
             post_logout_redirect_uri: `${configuration.appUri}${configuration.postLogoutPath}`,
 
-            // Tokens are stored only in memory, which generally does best in security reviews and PEN tests
+            // Tokens are stored only in memory, as recommended for security reasons
             // https://auth0.com/docs/tokens/guides/store-tokens
-            userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() }),
+            userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() })
         };
 
         // Initialise state
@@ -57,6 +57,18 @@ export class WebAuthenticator implements Authenticator {
         this._configuration = configuration;
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();
+    }
+
+    /*
+     * Load and customise metadata, to route token requests via our reverse proxy
+     */
+    public async initialise(): Promise<void> {
+
+        if (!this._userManager.settings.metadata) {
+            await this._userManager.metadataService.getMetadata();
+        }
+
+        this._userManager.settings.metadata!.token_endpoint = this._configuration.tokenEndpoint;
     }
 
     /*
@@ -87,25 +99,24 @@ export class WebAuthenticator implements Authenticator {
      */
     public async refreshAccessToken(): Promise<string> {
 
-        let user = await this._userManager.getUser();
-        if (user && user.refresh_token) {
+        try {
 
-            try {
-
-                // The concurrency handler will only do the refresh work for the first UI view that requests it
+            // The concurrency handler will only do the refresh work for the first UI view that requests it
+            let user = await this._userManager.getUser();
+            if (user && user.refresh_token) {
                 await this._concurrencyHandler.execute(this._performTokenRefresh);
-
-                // Return the renewed access token
-                user = await this._userManager.getUser();
-                if (user && user.access_token) {
-                    return user.access_token;
-                }
-
-            } catch (e) {
-
-                // Rethrow errors
-                throw e;
             }
+
+            // Return the renewed access token
+            user = await this._userManager.getUser();
+            if (user && user.access_token) {
+                return user.access_token;
+            }
+
+        } catch (e) {
+
+            // Rethrow errors
+            throw e;
         }
 
         // Trigger a login redirect if there are no unexpected errors but we cannot refresh
@@ -145,7 +156,7 @@ export class WebAuthenticator implements Authenticator {
      */
     public async handleLoginResponse(): Promise<void> {
 
-        // If the page loads with a state query parameter we c\\\11lassify it as an OAuth response
+        // If the page loads with a state query parameter we classify it as an OAuth response
         const urlData = urlparse(location.href, true);
         if (urlData.query && urlData.query.state) {
 
@@ -156,7 +167,7 @@ export class WebAuthenticator implements Authenticator {
                 const storedState = await this._userManager.settings.stateStore?.get(urlData.query.state);
                 if (storedState) {
 
-                    // Handle the login response
+                    // Process the login response and send the authorization code grant message
                     const user = await this._userManager.signinRedirectCallback();
 
                     // Get the hash URL before the login redirect
@@ -182,14 +193,11 @@ export class WebAuthenticator implements Authenticator {
      */
     public async startLogout(): Promise<void> {
 
-        /* Okta uses this */
-        await this._userManager.signoutRedirect();
-
         try {
 
             // Cognito has a vendor specific logout solution
             // https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
-            if (this._configuration.authority.indexOf('cognito') !== -1) {
+            if (this._configuration.authority.indexOf('cognito') === -1) {
 
                 // First update state
                 await this._userManager.removeUser();
@@ -232,14 +240,6 @@ export class WebAuthenticator implements Authenticator {
      * For testing, make the refresh token act like it is expired
      */
     public async expireRefreshToken(): Promise<void> {
-
-        const user = await this._userManager.getUser();
-        if (user) {
-
-            user.access_token = '';
-            user.refresh_token = 'x' + user.refresh_token + 'x';
-            this._userManager.storeUser(user);
-        }
     }
 
     /*
@@ -249,7 +249,7 @@ export class WebAuthenticator implements Authenticator {
 
         try {
 
-            // Call the OIDC Client method
+            // Call the OIDC Client method to use the dummy refresh token
             await this._userManager.signinSilent();
 
         } catch (e) {

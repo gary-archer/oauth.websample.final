@@ -3,6 +3,9 @@
  */
 export interface Authenticator {
 
+    // A method called during page load to initialise the OIDC client library
+    initialise(): Promise<void>;
+
     // Return whether we have a user object and tokens
     isLoggedIn(): Promise<boolean>;
 

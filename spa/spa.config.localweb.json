@@ -7,6 +7,7 @@
         "clientId":         "3iojt0uhtp0nqm0lc3rmvj92ck",
         "appUri":           "https://web.mycompany.com/spa/",
         "scope":            "openid profile email",
+        "tokenEndpoint":    "https://api.mycompany.com:444/oauth2/token",
         "logoutEndpoint":   "https://login.authguidance-examples.com/logout",
         "postLogoutPath":   "#/loggedout"
     }
