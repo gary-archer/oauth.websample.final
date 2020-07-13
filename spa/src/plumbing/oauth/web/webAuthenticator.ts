@@ -1,10 +1,11 @@
-import {InMemoryWebStorage, UserManager, WebStorageStateStore} from 'oidc-client';
+import {UserManager, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
+import {MemoryTokenStorage} from './memoryTokenStorage';
 
 /*
  * A custom web integration of OIDC Client, which uses cookies for token renewal
@@ -49,7 +50,7 @@ export class WebAuthenticator implements Authenticator {
 
             // Tokens are stored only in memory, as recommended for security reasons
             // https://auth0.com/docs/tokens/guides/store-tokens
-            userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() })
+            userStore: new WebStorageStateStore({ store: new MemoryTokenStorage() })
         };
 
         // Initialise state
