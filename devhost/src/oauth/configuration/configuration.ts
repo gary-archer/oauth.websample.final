@@ -7,6 +7,6 @@ import {WebConfiguration} from './webConfiguration';
  */
 export interface Configuration {
     api: ApiConfiguration;
-    web: WebConfiguration;
     oauth: OAuthConfiguration;
+    web: WebConfiguration;
 }

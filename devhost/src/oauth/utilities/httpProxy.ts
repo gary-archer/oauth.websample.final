@@ -1,5 +1,5 @@
 import TunnelAgent from 'tunnel-agent';
-import Url from 'url';
+import url from 'url';
 
 /*
  * Some HTTP libraries require an agent to be expressed in order to see traffic in Fiddler or Charles
@@ -12,7 +12,7 @@ export class HttpProxy {
     public static initialize(useProxy: boolean, proxyUrl: string): void {
 
         if (useProxy) {
-            const opts = Url.parse(proxyUrl);
+            const opts = url.parse(proxyUrl);
             HttpProxy._agent = TunnelAgent.httpsOverHttp({
                 proxy: opts,
             });

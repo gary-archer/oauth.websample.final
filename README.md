@@ -3,7 +3,7 @@
 ### Overview
 
 * The final SPA code sample using OAuth 2.0 and Open Id Connect, referenced in my blog at https://authguidance.com
-* **The final sample uses a real world coding model, an easier developer setup and supports mobile web integration**
+* **The final sample uses cloud API endpoints including proxying of token renewal requests for best usability**
 
 ### Details
 
@@ -22,5 +22,6 @@
 ### Hosting
 
 * AWS API Gateway is used to host the SPA's OAuth 2.0 Secured API
+* AWS API Gateway also hosts a simple reverse proxy to manage refresh tokens 
 * AWS Cognito is used as the Authorization Server for the SPA and API
 * AWS CloudFront is used as the SPA's Content Delivery Network

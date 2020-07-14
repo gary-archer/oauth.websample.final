@@ -2,15 +2,17 @@
     "api": {
         "sslCertificateFileName": "mycompany.ssl.pfx",
         "sslCertificatePassword": "SslPassword1",
+        "sslPort": 443,
         "useProxy": false,
-        "proxyUrl": "http://127.0.0.1:8888"
-    },
-    "web": {
-        "trustedOrigins": [
+        "proxyUrl": "http://127.0.0.1:8888",
+        "webTrustedOrigins": [
             "https://web.mycompany.com"
         ]
     },
     "oauth": {
         "tokenEndpoint": "https://dev-843469.oktapreview.com/oauth2/default/v1/token"
+    },
+    "web": {
+        "configurationFileName": "spa.config.localapi.json"
     }
 }

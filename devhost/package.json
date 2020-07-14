@@ -1,11 +1,11 @@
 {
-  "name": "basicspahost",
+  "name": "devhost",
   "version": "1.0.0",
-  "description": "A small project to manage hosting of web content and utility APIs on a developer PC",
-  "main": "server.ts",
+  "description": "Hosts web content delivery and an OAuth Utility API on a developer PC",
+  "main": "app.ts",
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "build": "ts-node --files src/server.ts",
+    "build": "ts-node --files src/app.ts",
     "start": "nodemon -e ts --exec \"npm run build\"",
     "package": "ts-node src/customPackager.ts",
     "deploy": "aws s3 cp .package s3://web.authguidance-examples.com --recursive",
