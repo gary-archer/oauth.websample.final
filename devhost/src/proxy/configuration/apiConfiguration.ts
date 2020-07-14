@@ -7,5 +7,4 @@ export interface ApiConfiguration {
     sslPort: number;
     useProxy: boolean;
     proxyUrl: string;
-    webTrustedOrigins: string[];
 }

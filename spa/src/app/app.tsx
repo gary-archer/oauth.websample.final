@@ -41,6 +41,9 @@ export class App extends React.Component<any, AppState> {
     public constructor(props: any) {
         super(props);
 
+        // Accept cookies from the parent domain
+        document.domain = 'mycompany.com';
+
         // Set initial state, which will be used on the first render
         this.state = {
             isInitialised: false,

@@ -4,10 +4,7 @@
         "sslCertificatePassword": "SslPassword1",
         "sslPort": 443,
         "useProxy": true,
-        "proxyUrl": "http://127.0.0.1:8888",
-        "webTrustedOrigins": [
-            "https://web.mycompany.com"
-        ]
+        "proxyUrl": "http://127.0.0.1:8888"
     },
     "oauth": {
         "tokenEndpoint": "https://dev-843469.oktapreview.com/oauth2/default/v1/token"

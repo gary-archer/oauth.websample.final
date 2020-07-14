@@ -100,24 +100,25 @@ export class WebAuthenticator implements Authenticator {
      */
     public async refreshAccessToken(): Promise<string> {
 
-        try {
+        let user = await this._userManager.getUser();
+        if (user && user.refresh_token) {
+        
+            try {
 
-            // The concurrency handler will only do the refresh work for the first UI view that requests it
-            let user = await this._userManager.getUser();
-            if (user && user.refresh_token) {
+                // The concurrency handler will only do the refresh work for the first UI view that requests it
                 await this._concurrencyHandler.execute(this._performTokenRefresh);
+
+                // Return the renewed access token
+                const user = await this._userManager.getUser();
+                if (user && user.access_token) {
+                    return user.access_token;
+                }
+
+            } catch (e) {
+
+                // Rethrow errors
+                throw e;
             }
-
-            // Return the renewed access token
-            user = await this._userManager.getUser();
-            if (user && user.access_token) {
-                return user.access_token;
-            }
-
-        } catch (e) {
-
-            // Rethrow errors
-            throw e;
         }
 
         // Trigger a login redirect if there are no unexpected errors but we cannot refresh

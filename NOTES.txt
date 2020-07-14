@@ -1,22 +1,38 @@
-1. Get cookie sending up from SPA on refresh token grant request
-   Could be that I need to set withCredentials=true for the token client
+POLISH
+------
+1. Tidy up webAuthenticator class with a logout strategy
 
-2. Override UserManager to remove the dummy refresh token from the SPA request
-   This will ensure that messages are standard
+2. Get deployment linting and packaging working
 
-3. Get token refresh working
+SPA
+---
+1. Avoid sending refresh token to proxy - should be removed from message
+   Also try to avoid hacks of the form refresh token = 'R'
 
-4. Test cookies work in Safari, Firefox, Chrome on my MacBook
+2. Get multi tab browsing working without a redirect
 
-5. Tidy up webAuthenticator class with a logout strategy
+3. Include client app name in cookie
 
-6. Include client app name in cookie
+CLOUD
+-----
+1. Redeploy SPA to spa2
 
-7. Use encrypted cookies
+2. Lambda edge routing of some web requests to OAuth API
 
-8. Update repo to support express and serverless versions
-   Rename repo to OAuth API and add a useful README file
+3. Implement the Serverless OAuth API as an HTTP API, with a single pipeline stage
 
-9. Get configuration updated and making sense for developer scenarios
+4. Fix main Serverless API to use multiple pipeline stages, each with a single allowed CORS origin
 
-10. Test for Cognito, which has longer refresh tokens, and see if length is > 4KB
+COOKIES
+-------
+1. Use encrypted cookies
+
+2. Test for Cognito, which has longer refresh tokens, which could affect cookie length
+
+FINALISE
+--------
+1. Remove Web Static Content from .Net Core APIs
+
+2. Merge changes to master and redeploy main SPA
+
+3. Test on Android and iOS browsers

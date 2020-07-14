@@ -4,10 +4,10 @@
 
 import express from 'express';
 import fs from 'fs-extra';
-import {Configuration} from './oauth/configuration/configuration';
-import {ErrorHandler} from './oauth/errors/errorHandler';
-import {ApiLogger} from './oauth/utilities/apiLogger';
-import {HttpProxy} from './oauth/utilities/httpProxy';
+import {Configuration} from './proxy/configuration/configuration';
+import {ErrorHandler} from './proxy/errors/errorHandler';
+import {ApiLogger} from './proxy/utilities/apiLogger';
+import {HttpProxy} from './proxy/utilities/httpProxy';
 import {HttpServerConfiguration} from './httpServerConfiguration';
 
 (async () => {
@@ -31,8 +31,8 @@ import {HttpServerConfiguration} from './httpServerConfiguration';
         // The HTTP server delivers web static content on a developer PC
         httpServer.initializeWebStaticContentHosting();
 
-        // The HTTP server runs an OAuth utility API on a developer PC, to reduce components
-        await httpServer.initializeApi();
+        // The HTTP server runs a proxy API on a developer PC, to reduce components
+        await httpServer.initializeProxyApi();
 
         // Start listening for requests
         await httpServer.startListening();

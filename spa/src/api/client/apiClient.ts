@@ -1,4 +1,4 @@
-import axios, {Method} from 'axios';
+import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {Authenticator} from '../../plumbing/oauth/authenticator';

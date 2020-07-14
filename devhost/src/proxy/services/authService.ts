@@ -35,8 +35,6 @@ export class AuthService {
 
             // Write it to a cookie
             this._cookieService.write(refreshToken, response);
-        } else {
-            this._cookieService.write('dummy', response);
         }
 
         // Send access and id tokens to the SPA
@@ -51,7 +49,7 @@ export class AuthService {
         // Get the refresh token from the auth cookie
         ApiLogger.info('Proxying Refresh Token Grant');
         let refreshToken = this._cookieService.read(request);
-
+        
         // Send it to the Authorization Server
         const refreshTokenGrantData =
             await this._proxyService.sendRefreshTokenGrant(refreshToken, request, response);

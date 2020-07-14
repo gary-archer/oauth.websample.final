@@ -1,11 +1,10 @@
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
 import {Application, NextFunction, Request, Response, urlencoded} from 'express';
 import fs from 'fs-extra';
 import https from 'https';
-import {Configuration} from './oauth/configuration/configuration';
-import {ApiRouter} from './oauth/routing/apiRouter';
-import {WebRouter} from './web-content-delivery/webRouter';
+import {Configuration} from './proxy/configuration/configuration';
+import {ApiRouter} from './proxy/routing/apiRouter';
+import {WebRouter} from './content-delivery-network/webRouter';
 
 /*
  * Configure HTTP behaviour at application startup
@@ -25,23 +24,22 @@ export class HttpServerConfiguration {
     }
 
     /*
-     * Set up routes for the OAuth utility API
+     * Set up routes for the proxy API
      */
-    public async initializeApi(): Promise<void> {
+    public async initializeProxyApi(): Promise<void> {
 
         // We don't want API requests to be cached unless explicitly designed for caching
         this._expressApp.set('etag', false);
 
-        // Allow cross origin requests from the SPA
-        const corsOptions = { origin: this._configuration.api.webTrustedOrigins };
-        this._expressApp.use('/oauth2/*', cors(corsOptions));
-
-        // Process form URL encoded data and cookies
+        // Receive form URL encoded OAuth messages and also cookies
         this._expressApp.use('/oauth2/*', urlencoded({extended: true}));
         this._expressApp.use('/oauth2/*', cookieParser());
 
-        // Our single route manages forwarding to the Authorization Server and issuing cookies
+        // Our main route manages forwarding to the Authorization Server and issuing cookies
         this._expressApp.post('/oauth2/token', this._catch(this._apiRouter.tokenEndpointProxy));
+
+        // For testing 
+        this._expressApp.post('/oauth2/expire', this._catch(this._apiRouter.tokenEndpointProxy));
 
         // Error routes
         this._expressApp.use('/oauth2/*', this._apiRouter.notFoundHandler);

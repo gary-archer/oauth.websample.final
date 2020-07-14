@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 import {URLSearchParams} from 'url';
 import {Request, Response} from 'express';
 import {OAuthConfiguration} from '../configuration/oauthConfiguration';
@@ -22,7 +22,14 @@ export class ProxyService {
      */
     public async sendAuthorizationCodeGrant(request: Request, response: Response): Promise<any> {
 
-        return this._postMessage(request.headers, request.body, response);
+        const formData = new URLSearchParams();
+        for (const field in request.body) {
+            if (field && request.body[field]) {
+                formData.append(field, request.body[field]);
+            }
+        }
+
+        return this._postMessage(request.headers, formData, response);
     }
 
     /*
@@ -30,21 +37,25 @@ export class ProxyService {
      */
     public async sendRefreshTokenGrant(refreshToken: string, request: Request, response: Response): Promise<any>  {
 
-        return this._postMessage(request.headers, request.body, response);
+        const formData = new URLSearchParams();
+        for (const field in request.body) {
+            if (field && request.body[field]) {
+                formData.append(field, request.body[field]);
+            }
+        }
+
+        if (formData.has('refresh_token')) {
+            formData.delete('refresh_token');
+        }
+
+        formData.append('refresh_token', refreshToken);
+        return this._postMessage(request.headers, formData, response);
     }
 
     /*
      * Route a message to the Authorization Server
      */
-    private async _postMessage(headers: any, jsonData: any, response: Response): Promise<void> {
-
-        // Get form URL encoded data
-        const formData = new URLSearchParams();
-        for (const field in jsonData) {
-            if (field && jsonData[field]) {
-                formData.append(field, jsonData[field]);
-            }
-        }
+    private async _postMessage(headers: any, formData: URLSearchParams, response: Response): Promise<void> {
 
         // Define request options
         const options = {

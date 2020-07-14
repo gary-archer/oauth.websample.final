@@ -7,7 +7,7 @@ import path from 'path';
 const WEB_FILES_ROOT = '../../../spa';
 
 /*
- * Resolve web requests for static content
+ * A very basic CDN to run on a developer PC, whereas a real world solution would use something like AWS Cloudfront
  */
 export class WebRouter {
 

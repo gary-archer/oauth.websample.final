@@ -15,13 +15,10 @@ export class CookieService {
      */
     public write(refreshToken: string, response: Response): void {
 
-        console.log('WRITING COOKIE: ' + refreshToken);
         const options = {
-            domain: 'api.mycompany.com',
-            path: '/oauth2',
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            path: '/oauth2',
         };
 
         response.cookie(this.cookieName, refreshToken, options as CookieOptions);
