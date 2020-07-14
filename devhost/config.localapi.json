@@ -3,7 +3,7 @@
         "sslCertificateFileName": "mycompany.ssl.pfx",
         "sslCertificatePassword": "SslPassword1",
         "sslPort": 443,
-        "useProxy": false,
+        "useProxy": true,
         "proxyUrl": "http://127.0.0.1:8888",
         "webTrustedOrigins": [
             "https://web.mycompany.com"

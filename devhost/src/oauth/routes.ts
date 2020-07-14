@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response} from 'express';
-import {Configuration} from '../configuration/configuration';
-import {ErrorHandler} from '../errors/errorHandler';
-import {ResponseWriter} from '../utilities/responseWriter';
-import {AuthService} from '../services/authService';
+import {Configuration} from './configuration/configuration';
+import {ErrorHandler} from './errors/errorHandler';
+import {ResponseWriter} from './utilities/responseWriter';
+import {AuthService} from './services/authService';
 
 /*
  * A class to route API requests to business logic classes
@@ -52,10 +52,7 @@ export class Router {
         ErrorHandler.handleError(clientError);
 
         // Return an error to the client
-        ResponseWriter.writeObjectResponse(
-            response,
-            clientError.statusCode,
-            clientError.toResponseFormat());
+        ResponseWriter.writeObjectResponse(response, clientError.statusCode, clientError.toResponseFormat());
     }
 
     /*
@@ -67,10 +64,7 @@ export class Router {
         const clientError = ErrorHandler.handleError(unhandledException);
 
         // Return an error to the client
-        ResponseWriter.writeObjectResponse(
-            response,
-            clientError.statusCode,
-            clientError.toResponseFormat());
+        ResponseWriter.writeObjectResponse(response, clientError.statusCode, clientError.toResponseFormat());
     }
 
     /*

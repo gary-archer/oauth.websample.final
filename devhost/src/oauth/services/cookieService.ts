@@ -1,6 +1,7 @@
-import {Request, Response} from 'express';
+import {CookieOptions, Request, Response} from 'express';
 import {ClientError} from '../errors/clientError';
 import {ErrorCodes} from '../errors/errorCodes';
+
 
 /*
  * Our cookie service class will deal with cookie handling during requests to the token endpoint
@@ -14,16 +15,16 @@ export class CookieService {
      */
     public write(refreshToken: string, response: Response): void {
 
-        console.log('WRITING COOKIE');
-        console.log('REFRESH TOKEN: ' + refreshToken);
+        console.log('WRITING COOKIE: ' + refreshToken);
         const options = {
-            domain: '.mycompany.com',
+            domain: 'api.mycompany.com',
+            path: '/oauth2',
             httpOnly: true,
             secure: true,
+            sameSite: 'none',
         };
 
-        response.cookie(this.cookieName, refreshToken, options);
-        console.log('WRITTEN COOKIE');
+        response.cookie(this.cookieName, refreshToken, options as CookieOptions);
     }
 
     /*

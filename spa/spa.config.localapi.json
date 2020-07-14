@@ -4,9 +4,9 @@
     },
     "oauth": {
         "authority":        "https://dev-843469.oktapreview.com/oauth2/default",
-        "clientId":         "0oac5m78icnW3C06L0h7",
+        "clientId":         "0oasnwpqivYKRaLJl0h7",
         "appUri":           "https://web.mycompany.com/spa",
-        "scope":            "openid profile email",
+        "scope":            "openid profile email offline_access",
         "tokenEndpoint":    "https://api.mycompany.com/oauth2/token",
         "postLogoutPath":   "#loggedout"
     }
