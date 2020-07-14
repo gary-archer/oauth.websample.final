@@ -6,7 +6,7 @@ import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
 import {CognitoLogoutUrlBuilder} from './cognitoLogoutUrlBuilder';
-import {MemoryTokenStorage} from './memoryTokenStorage';
+import {HybridTokenStorage} from './hybridTokenStorage';
 
 /*
  * A custom web integration of OIDC Client, which uses cookies for token renewal
@@ -46,15 +46,14 @@ export class WebAuthenticator implements Authenticator {
             // We get extended user info from our API and do not use this feature
             loadUserInfo: false,
 
-            // Tokens are stored only in memory, as recommended for security reasons
+            // Tokens are stored only in memory, as a security best practice
             // https://auth0.com/docs/tokens/guides/store-tokens
-            userStore: new WebStorageStateStore({ store: new MemoryTokenStorage() }),
+            userStore: new WebStorageStateStore({ store: new HybridTokenStorage() }),
 
             // Indicate the full logout redirect path
             post_logout_redirect_uri: `${configuration.appUri}${configuration.postLogoutPath}`,
         };
 
-        // Initialise state
         this._userManager = new UserManager(settings);
         this._configuration = configuration;
         this._concurrencyHandler = new ConcurrentActionHandler();
@@ -97,19 +96,20 @@ export class WebAuthenticator implements Authenticator {
     }
 
     /*
-     * Try to refresh an access token via a refresh token grant message based on cookies
+     * Try to refresh an access token via a cookie containing a refresh token
      */
     public async refreshAccessToken(): Promise<string> {
 
+        // See if the user is logged in on any browser tab
         let user = await this._userManager.getUser();
-        if (user && user.refresh_token) {
+        if (user) {
 
             try {
 
                 // The concurrency handler will only do the refresh work for the first UI view that requests it
                 await this._concurrencyHandler.execute(this._performTokenRefresh);
 
-                // Return the renewed access token
+                // Return the renewed access token if possible
                 user = await this._userManager.getUser();
                 if (user && user.access_token) {
                     return user.access_token;
@@ -246,7 +246,7 @@ export class WebAuthenticator implements Authenticator {
 
         try {
 
-            // Call the OIDC Client method to use the dummy refresh token
+            // Call the OIDC Client method, which will send a refresh token grant message
             await this._userManager.signinSilent();
 
         } catch (e) {
