@@ -1,13 +1,13 @@
 {
     "app": {
-        "apiBaseUrl":       "https://api.mycompany.com/api"
+        "apiBaseUrl":       "https://api.mycompany.com:444/api"
     },
     "oauth": {
         "authority":        "https://dev-843469.oktapreview.com/oauth2/default",
         "clientId":         "0oac5m78icnW3C06L0h7",
         "appUri":           "https://web.mycompany.com/spa",
         "scope":            "openid profile email",
-        "tokenEndpoint":    "https://api.mycompany.com:444/oauth2/token",
+        "tokenEndpoint":    "https://api.mycompany.com/oauth2/token",
         "postLogoutPath":   "#loggedout"
     }
 }

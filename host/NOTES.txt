@@ -1,0 +1,23 @@
+1. Get cookie writing for auth code grant Ajax request
+
+2. Override UserManager to remove the dummy refresh token from the SPA request
+   This will ensure that messages are standard
+
+3. Create a new Okta client for the Final SPA, using a native app client
+
+4. Get token refresh working
+
+5. Test cookies work in Safari, Firefox, Chrome on my MacBook
+
+6. Tidy up webAuthenticator class with a logout strategy
+
+7. Include client app name in cookie
+
+8. Use encrypted cookies
+
+9. Update repo to support express and serverless versions
+   Rename repo to OAuth API and add a useful README file
+
+10. Get configuration updated and making sense for developer scenarios
+
+11. Test for Cognito, which has longer refresh tokens, and see if length is > 4KB

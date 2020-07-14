@@ -1,5 +1,5 @@
 import {Application, Request, Response} from 'express';
-import * as path from 'path';
+import path from 'path';
 
 /*
  * The relative path to web files
@@ -25,7 +25,7 @@ export class WebStaticContent {
      */
     public configure(): void {
 
-        // Disable caching
+        // Disable caching on a development PC
         this._expressApp.set('etag', false);
 
         // Define route values

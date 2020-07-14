@@ -8,12 +8,12 @@ class Packager {
      */
     public async execute(): Promise<void> {
 
+        // Clear from last time
         await fs.remove('.package');
         await fs.ensureDir('.package/spa');
 
-        // Configuration
-        await fs.copy('../spa/spa.config.json', '.package/spa/spa.config.json');
-        await this._updateConfiguration('.package/spa/spa.config.json');
+        // Use the deployed configuration
+        await fs.copy('../spa/spa.config.deployed.json', '.package/spa/spa.config.json');
 
         // HTML
         await fs.copy('../spa/index.html', '.package/spa/index.html');
@@ -29,23 +29,6 @@ class Packager {
 
         // Images
         await fs.copy('../spa/images', '.package/spa/images');
-    }
-
-    /*
-     * Before deploying to the cloud, overwrite the local development URL with the cloud version
-     */
-    private async _updateConfiguration(filePath: string): Promise<void> {
-
-        // Read existing data
-        const configBuffer = await fs.readFile(filePath);
-        const spaConfig = JSON.parse(configBuffer.toString());
-
-        // Replace the redirect URI
-        spaConfig.oauth.appUri = 'https://web.authguidance-examples.com/spa/';
-
-        // Write back the data
-        const dataToWrite = JSON.stringify(spaConfig, null, 2)
-        await fs.writeFile(filePath, dataToWrite);
     }
 }
 

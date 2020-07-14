@@ -2,9 +2,9 @@
  * A simple script to host our SPA locally and connect to AWS Cognito and an AWS hosted API
  */
 
-import * as express from 'express';
-import * as fs from 'fs-extra';
-import * as https from 'https';
+import express from 'express';
+import fs from 'fs-extra';
+import https from 'https';
 import {WebStaticContent} from './webStaticContent';
 
 // Read the config file
