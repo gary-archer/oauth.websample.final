@@ -102,14 +102,14 @@ export class WebAuthenticator implements Authenticator {
 
         let user = await this._userManager.getUser();
         if (user && user.refresh_token) {
-        
+
             try {
 
                 // The concurrency handler will only do the refresh work for the first UI view that requests it
                 await this._concurrencyHandler.execute(this._performTokenRefresh);
 
                 // Return the renewed access token
-                const user = await this._userManager.getUser();
+                user = await this._userManager.getUser();
                 if (user && user.access_token) {
                     return user.access_token;
                 }

@@ -49,7 +49,7 @@ export class AuthService {
         // Get the refresh token from the auth cookie
         ApiLogger.info('Proxying Refresh Token Grant');
         let refreshToken = this._cookieService.read(request);
-        
+
         // Send it to the Authorization Server
         const refreshTokenGrantData =
             await this._proxyService.sendRefreshTokenGrant(refreshToken, request, response);

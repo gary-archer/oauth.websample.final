@@ -38,7 +38,7 @@ export class HttpServerConfiguration {
         // Our main route manages forwarding to the Authorization Server and issuing cookies
         this._expressApp.post('/oauth2/token', this._catch(this._apiRouter.tokenEndpointProxy));
 
-        // For testing 
+        // For testing
         this._expressApp.post('/oauth2/expire', this._catch(this._apiRouter.tokenEndpointProxy));
 
         // Error routes
