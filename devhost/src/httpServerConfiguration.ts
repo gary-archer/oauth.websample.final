@@ -20,7 +20,7 @@ export class HttpServerConfiguration {
         this._expressApp = expressApp;
         this._configuration = configuration;
         this._apiRouter = new ApiRouter(this._configuration);
-        this._webRouter = new WebRouter(this._configuration.web.configurationFileName);
+        this._webRouter = new WebRouter();
     }
 
     /*
@@ -55,8 +55,7 @@ export class HttpServerConfiguration {
         this._expressApp.set('etag', false);
 
         // Define route values
-        const spaConfigFileName = this._configuration.web.configurationFileName;
-        this._expressApp.get(`/spa/${spaConfigFileName}`, this._webRouter.getSpaConfigurationFile);
+        this._expressApp.get(`/spa/spa.config.*`, this._webRouter.getSpaConfigurationFile);
         this._expressApp.get('/spa/*', this._webRouter.getWebResource);
         this._expressApp.get('/spa', this._webRouter.getWebRootResource);
         this._expressApp.get('/favicon.ico', this._webRouter.getFavicon);

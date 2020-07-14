@@ -5,6 +5,7 @@ import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
+import {CognitoLogoutUrlBuilder} from './cognitoLogoutUrlBuilder';
 import {MemoryTokenStorage} from './memoryTokenStorage';
 
 /*
@@ -31,7 +32,7 @@ export class WebAuthenticator implements Authenticator {
             // The Open Id Connect base URL
             authority: configuration.authority,
 
-            // Basic settings
+            // Core OAuth settings
             client_id: configuration.clientId,
             redirect_uri: configuration.appUri,
             scope: configuration.scope,
@@ -45,12 +46,12 @@ export class WebAuthenticator implements Authenticator {
             // We get extended user info from our API and do not use this feature
             loadUserInfo: false,
 
-            // Indicate the post logout return location
-            post_logout_redirect_uri: `${configuration.appUri}${configuration.postLogoutPath}`,
-
             // Tokens are stored only in memory, as recommended for security reasons
             // https://auth0.com/docs/tokens/guides/store-tokens
-            userStore: new WebStorageStateStore({ store: new MemoryTokenStorage() })
+            userStore: new WebStorageStateStore({ store: new MemoryTokenStorage() }),
+
+            // Indicate the full logout redirect path
+            post_logout_redirect_uri: `${configuration.appUri}${configuration.postLogoutPath}`,
         };
 
         // Initialise state
@@ -197,22 +198,16 @@ export class WebAuthenticator implements Authenticator {
 
         try {
 
-            // Cognito has a vendor specific logout solution
-            // https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
-            if (this._configuration.authority.indexOf('cognito') === -1) {
+            // Handle Cognito logout specially
+            if (this._configuration.authority.indexOf('cognito') !== -1) {
 
-                // First update state
+                // First remove tokens from memory
                 await this._userManager.removeUser();
 
-                // Cognito requires the configured logout return URL to use a path segment
-                // Therefore we configure https://web.authguidance-examples.com/spa/loggedout.html
-                const logoutReturnUri = encodeURIComponent(`${this._configuration.appUri}loggedout.html`);
-
-                // We then use the above URL in the logout redirect request
-                // Upon return, loggedout.html redirects to https://web.authguidance-examples.com/spa/#/loggedout
-                let url = `${this._configuration.logoutEndpoint}`;
-                url += `?client_id=${this._configuration.clientId}&logout_uri=${logoutReturnUri}`;
-                location.replace(url);
+                // Do the redirect
+                const builder = new CognitoLogoutUrlBuilder(this._configuration);
+                const logoutRedirectUrl = builder.buildUrl();
+                location.replace(logoutRedirectUrl);
 
             } else {
 

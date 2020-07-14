@@ -34,9 +34,14 @@ class Packager {
 
 (async () => {
     try {
+
+        // Run the packager
         const packager = new Packager();
         await packager.execute();
+
     } catch (e) {
+
+        // Do basic error reporting to the console
         console.log(`Packaging error: ${e}`);
         process.exit(1);
     }

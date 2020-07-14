@@ -11,13 +11,6 @@ const WEB_FILES_ROOT = '../../../spa';
  */
 export class WebRouter {
 
-    private _configurationFileName: any;
-
-    public constructor(configurationFileName: string) {
-        this._configurationFileName = configurationFileName;
-        this._setupCallbacks();
-    }
-
     /*
      * Serve up the requested web file
      */
@@ -37,7 +30,8 @@ export class WebRouter {
      */
     public getSpaConfigurationFile(request: Request, response: Response): void {
 
-        const configFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/${this._configurationFileName}`);
+        const resourcePath = request.path.replace('/spa', '/');
+        const configFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/${resourcePath}`);
         response.setHeader('Content-Type', 'application/json');
         response.sendFile(configFilePath);
     }
@@ -58,12 +52,5 @@ export class WebRouter {
 
         const webFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/favicon.ico`);
         response.sendFile(webFilePath);
-    }
-
-    /*
-     * Set up async callbacks
-     */
-    private _setupCallbacks(): void {
-        this.getSpaConfigurationFile = this.getSpaConfigurationFile.bind(this);
     }
 }

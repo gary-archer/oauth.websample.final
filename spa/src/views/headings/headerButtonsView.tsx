@@ -1,5 +1,4 @@
 import React from 'react';
-import {UserAgentHelper} from '../../plumbing/utilities/userAgentHelper';
 import {HeaderButtonsViewProps} from './headerButtonsViewProps';
 
 /*
@@ -22,70 +21,6 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
      * Render buttons and callback the parent when clicked
      */
     public render(): React.ReactNode {
-
-        if (UserAgentHelper.isAndroidWebView() || UserAgentHelper.isIosWebView()) {
-            return this._renderWebViewButtons();
-        } else {
-            return this._renderStandardButtons();
-        }
-    }
-
-    /*
-     * Render the button row for the standard case
-     */
-    private _renderStandardButtons() {
-
-        const disabled = !this.props.sessionButtonsEnabled;
-        return  (
-                <div className='row'>
-                    <div className='col-3 my-2 d-flex'>
-                        <button
-                            onClick={this.props.handleHomeClick}
-                            className='btn btn-primary btn-block p-1'
-                        >
-                            <small>Home</small>
-                        </button>
-                    </div>
-                    <div
-                        className='col-3 my-2 d-flex'
-                        onTouchStart={this._handleReloadPress}
-                        onTouchEnd={this._handleReloadRelease}
-                        onMouseDown={this._handleReloadPress}
-                        onMouseUp={this._handleReloadRelease}
-                    >
-                        <button
-                            className='btn btn-primary btn-block p-1'
-                            disabled={disabled}
-                        >
-                            <small>Reload Data</small>
-                        </button>
-                    </div>
-                    <div className='col-3 my-2 d-flex'>
-                        <button
-                            onClick={this.props.handleExpireAccessTokenClick}
-                            className='btn btn-primary btn-block p-1'
-                            disabled={disabled}
-                        >
-                            <small>Expire Access Token</small>
-                        </button>
-                    </div>
-                    <div className='col-3 my-2 d-flex'>
-                        <button
-                            onClick={this.props.handleLogoutClick}
-                            className='btn btn-primary btn-block p-1'
-                            disabled={disabled}
-                        >
-                            <small>Logout</small>
-                        </button>
-                    </div>
-                </div>
-        );
-    }
-
-    /*
-     * Render the button row for the mobile webview case
-     */
-    private _renderWebViewButtons(): React.ReactNode {
 
         const disabled = !this.props.sessionButtonsEnabled;
         return  (

@@ -1,6 +1,5 @@
 import {ApiConfiguration} from './apiConfiguration';
 import {OAuthConfiguration} from './oauthConfiguration';
-import {WebConfiguration} from './webConfiguration';
 
 /*
  * A holder for configuration settings
@@ -8,5 +7,4 @@ import {WebConfiguration} from './webConfiguration';
 export interface Configuration {
     api: ApiConfiguration;
     oauth: OAuthConfiguration;
-    web: WebConfiguration;
 }

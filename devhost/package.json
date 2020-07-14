@@ -7,7 +7,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "build": "ts-node --files src/app.ts",
     "start": "nodemon -e ts --exec \"npm run build\"",
-    "package": "ts-node src/customPackager.ts",
+    "package": "ts-node deployment/customPackager.ts",
     "deploy": "aws s3 cp .package s3://web.authguidance-examples.com --recursive",
     "clearcache": "aws cloudfront create-invalidation --distribution-id=E1KK6YUBAK08ZY --paths \"/*\""
   },

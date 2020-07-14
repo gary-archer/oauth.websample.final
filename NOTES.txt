@@ -1,9 +1,3 @@
-POLISH
-------
-1. Tidy up webAuthenticator class with a logout strategy
-
-2. Get deployment linting and packaging working
-
 SPA
 ---
 1. Avoid sending refresh token to proxy - should be removed from message
@@ -11,7 +5,17 @@ SPA
 
 2. Get multi tab browsing working without a redirect
 
-3. Include client app name in cookie
+3. Include client app name in a request header
+
+COOKIES
+-------
+1. Get expire cookie working
+
+2. Validate client names before putting them in response cookies
+
+3. Use encrypted cookies
+
+4. Test for Cognito refresh tokens, which could affect cookie length
 
 CLOUD
 -----
@@ -23,11 +27,9 @@ CLOUD
 
 4. Fix main Serverless API to use multiple pipeline stages, each with a single allowed CORS origin
 
-COOKIES
--------
-1. Use encrypted cookies
+5. Use a different client id temporarily, and get rid of trailing backslash in redirect uri
 
-2. Test for Cognito, which has longer refresh tokens, which could affect cookie length
+6. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
 
 FINALISE
 --------
