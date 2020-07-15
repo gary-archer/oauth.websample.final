@@ -84,13 +84,15 @@ export class ProxyService {
             // Handle OAuth error responses
             if (e.response && e.response.status && e.response.data) {
                 const errorData = e.response.data;
-                if (errorData.error && errorData.error_description) {
-                    throw new ClientError(e.response.status, errorData.error, errorData.error_description);
+                if (errorData.error) {
+
+                    const description = errorData.error_description ?? 'Problem encountered calling the Authorization Server';
+                    throw new ClientError(e.response.status, errorData.error, description);
                 }
             }
 
             // Handle client connectivity errors
-            throw ErrorHandler.fromRequestError(e);
+            const error = ErrorHandler.fromRequestError(e, options.url);
         }
     }
 }

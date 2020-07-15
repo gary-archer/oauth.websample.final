@@ -1,6 +1,6 @@
 CLOUD WEB
 ---------
-1. Capture web.authguidance-examples.com/proxy requests in lambda and output console.log
+1. Capture web.authguidance-examples.com/proxy requests in edge lambda and output console.log
 
 SPA
 ---
@@ -16,9 +16,6 @@ CLOUD REVERSE PROXY API
 
 2. Fix main Serverless API to use multiple pipeline stages, each with a single allowed CORS origin
 
-CONFIGURATION
--------------
-1. Use package.json to set configuration --> npm run localweb ???
 
 SECURITY
 --------

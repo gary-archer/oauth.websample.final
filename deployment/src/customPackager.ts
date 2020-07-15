@@ -1,5 +1,5 @@
-import * as fs from 'fs-extra';
-import * as process from 'process';
+import fs from 'fs-extra';
+import process from 'process';
 
 class Packager {
 
@@ -13,7 +13,7 @@ class Packager {
         await fs.ensureDir('.package/spa2');
 
         // Use the deployed configuration
-        await fs.copy('../spa/spa.config.deployed.json', '.package/spa2/spa.config.deployed.json');
+        await fs.copy('../spa/spa.config.deployed.json', '.package/spa2/spa.config.json');
 
         // HTML
         await fs.copy('../spa/index.html', '.package/spa2/index.html');

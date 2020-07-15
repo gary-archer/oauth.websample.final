@@ -82,13 +82,14 @@ export class ErrorHandler {
     /*
      * Handle failed HTTP connectivity
      */
-    public static fromRequestError(exception: any): ApiError {
+    public static fromRequestError(exception: any, url: string): ApiError {
 
         const apiError = new ApiError(
             ErrorCodes.httpRequestError,
             'Unable to connect to the Authorization Server',
             exception.stack);
 
+        apiError.url = url;
         apiError.details = this._getExceptionDetails(exception);
         return apiError;
     }

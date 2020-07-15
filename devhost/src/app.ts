@@ -3,9 +3,8 @@
  */
 
 import express from 'express';
-import fs from 'fs-extra';
 import {HttpServerConfiguration} from './httpServerConfiguration';
-import {Configuration} from './reverse-proxy-api/configuration/configuration';
+import {ConfigurationLoader} from './reverse-proxy-api/configuration/configurationLoader';
 import {ErrorHandler} from './reverse-proxy-api/errors/errorHandler';
 import {ApiLogger} from './reverse-proxy-api/utilities/apiLogger';
 import {HttpProxy} from './reverse-proxy-api/utilities/httpProxy';
@@ -18,8 +17,8 @@ import {HttpProxy} from './reverse-proxy-api/utilities/httpProxy';
     try {
 
         // First load configuration
-        const configBuffer = await fs.readFile('reverseproxy.config.localweb.json');
-        const config = JSON.parse(configBuffer.toString()) as Configuration;
+        const loader = new ConfigurationLoader();
+        const config = await loader.load();
 
         // Initialize HTTP proxy behaviour
         HttpProxy.initialize(config.api.useProxy, config.api.proxyUrl);

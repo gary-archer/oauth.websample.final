@@ -10,6 +10,7 @@ export class ApiError extends Error {
 
     private readonly _statusCode: number;
     private readonly _errorCode: string;
+    private _url: any;
     private _details: any;
 
     /*
@@ -22,6 +23,7 @@ export class ApiError extends Error {
         // Give fields their default values
         this._statusCode = 500;
         this._errorCode = errorCode;
+        this._url = '';
         this._details = '';
 
         // Record the stack trace of the original error
@@ -31,6 +33,14 @@ export class ApiError extends Error {
 
         // Ensure that instanceof works
         Object.setPrototypeOf(this, new.target.prototype);
+    }
+
+    public get url(): any {
+        return this._url;
+    }
+
+    public set url(url: any) {
+        this._url = url;
     }
 
     public get details(): any {
@@ -49,6 +59,9 @@ export class ApiError extends Error {
         const serviceError: any = {
         };
 
+        if (this.url) {
+            serviceError.url =  this._url;
+        }
         if (this.details) {
             serviceError.details =  this._details;
         }

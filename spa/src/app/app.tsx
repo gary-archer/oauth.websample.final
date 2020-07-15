@@ -96,7 +96,8 @@ export class App extends React.Component<any, AppState> {
 
         try {
             // First download configuration from the browser's web domain
-            this._configuration = await ConfigurationLoader.download('spa.config.deployed.json');
+            const loader = new ConfigurationLoader();
+            this._configuration = await loader.download();
 
             // Create the authenticator and receive any login responses on the main window
             this._authenticator = this._createAuthenticator();
