@@ -1,40 +1,36 @@
-GOALS
------
-1. SPA delivered directly via CDN without proxy in front
-2. Calls to APIs not reverse proxied and compromised under load
-3. SPA uses OIDC Client security to validate all responses in a standard way
-4. Secure browser with no refresh tokens and in memory access / id tokens
+CLOUD WEB
+---------
+1. Capture web.authguidance-examples.com/proxy requests in lambda and output console.log
 
 SPA
 ---
-1. Try monitor session
+1. Single log out
 
-2. Refine local storage further - remove token items completely
-   Restrict to just the needed protocol claims
+2. Get rid of trailing backslash in redirect uri
 
-3. Understand state storage better - in local storage
-   Can I use session storage?
+3. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout   
 
-CLOUD
------
-1. Redeploy SPA to spa2
-   Needs packager to use an spa2 folder
+CLOUD REVERSE PROXY API
+-----------------------
+1. Implement the Serverless OAuth API as an HTTP API, with a single pipeline stage
 
-2. Lambda edge proxying of web.mycompany.com/proxy requests to OAuth API, resulting in not found
+2. Fix main Serverless API to use multiple pipeline stages, each with a single allowed CORS origin
 
-3. Implement the Serverless OAuth API as an HTTP API, with a single pipeline stage
-
-4. Fix main Serverless API to use multiple pipeline stages, each with a single allowed CORS origin
-
-5. Use a different SPA client id temporarily, and get rid of trailing backslash in redirect uri
-
-6. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
+CONFIGURATION
+-------------
+1. Use package.json to set configuration --> npm run localweb ???
 
 SECURITY
 --------
-1. Use encrypted cookies
+1. Refine local storage further - remove token items completely
+   Restrict to just the needed protocol claims
 
-2. Use CSRF protection to token endpoint
+2. Understand state storage better - in local storage
+   Can I use session storage?
+
+3. Use encrypted cookies
+
+4. Use CSRF protection to token endpoint
 
 FINALISE
 --------
@@ -44,12 +40,14 @@ FINALISE
 
 3. Test on Android and iOS browsers
 
-4. Update blog instructions on how to run sample
+4. Update blog instructions on how to run Final SPA and Final APIs
 
-HACKS SO FAR
-------------
-1. authenticator.initialise to update token endpoint - not too bad
+GOALS
+-----
+1. SPA delivered directly via CDN without proxy in front
 
-2. Custom token storage - not too bad
+2. Calls to APIs not reverse proxied and compromised under load
 
-3. Okta using a mobile client for an SPA - not too bad - Okta not up to date with OAuth 2.1
+3. SPA uses OIDC Client security to validate all responses in a standard way
+
+4. Secure browser with no refresh tokens and in memory access / id tokens

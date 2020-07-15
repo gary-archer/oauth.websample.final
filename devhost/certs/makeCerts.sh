@@ -28,24 +28,24 @@ WILDCARD_DOMAIN_NAME='*.mycompany.com'
 #
 # Create the root certificate public + private key protected by a passphrase
 #
-#echo 'START'
-#openssl genrsa -out $ROOT_CERT_DOMAIN_NAME.key 2048 -passout pass:$ROOT_CERT_PASSWORD
-#echo '*** Successfully created Root CA key'
+echo 'START'
+openssl genrsa -out $ROOT_CERT_DOMAIN_NAME.key 2048 -passout pass:$ROOT_CERT_PASSWORD
+echo '*** Successfully created Root CA key'
 
 #
 # Create the public key root certificate file
 #
-#openssl req -x509 \
-#            -new \
-#			-nodes \
-#  			-key $ROOT_CERT_DOMAIN_NAME.key \
-#			-out $ROOT_CERT_DOMAIN_NAME.crt \
-#			-subj "/CN=$ROOT_CERT_DESCRIPTION" \
-#			-reqexts v3_req \
-#			-extensions v3_ca \
-#			-sha256 \
-#			-days 365
-#echo '*** Successfully created Root CA'
+openssl req -x509 \
+            -new \
+			-nodes \
+  			-key $ROOT_CERT_DOMAIN_NAME.key \
+			-out $ROOT_CERT_DOMAIN_NAME.crt \
+			-subj "/CN=$ROOT_CERT_DESCRIPTION" \
+			-reqexts v3_req \
+			-extensions v3_ca \
+			-sha256 \
+			-days 365
+echo '*** Successfully created Root CA'
 
 #
 # Create the certificate public + private key

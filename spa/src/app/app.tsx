@@ -41,9 +41,6 @@ export class App extends React.Component<any, AppState> {
     public constructor(props: any) {
         super(props);
 
-        // Accept cookies from the parent domain
-        document.domain = 'mycompany.com';
-
         // Set initial state, which will be used on the first render
         this.state = {
             isInitialised: false,
@@ -99,7 +96,7 @@ export class App extends React.Component<any, AppState> {
 
         try {
             // First download configuration from the browser's web domain
-            this._configuration = await ConfigurationLoader.download('spa.config.localweb.json');
+            this._configuration = await ConfigurationLoader.download('spa.config.deployed.json');
 
             // Create the authenticator and receive any login responses on the main window
             this._authenticator = this._createAuthenticator();
