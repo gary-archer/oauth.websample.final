@@ -1,22 +1,19 @@
 CLOUD WEB
 ---------
-1. Capture web.authguidance-examples.com/proxy requests in edge lambda and output console.log
+1. Implement the Serverless Edge Lambdas with a single pipeline stage
+   Get a hello world working for requests to https://web.authguidance-examples.com/spa2/reverse-proxy
 
-CLOUD REVERSE PROXY API
------------------------
-1. Implement the Serverless OAuth API as an HTTP API, with a single pipeline stage
-
-2. Fix main Serverless API to use multiple pipeline stages, each with a single allowed CORS origin
+2. Port cookie logic to the above lambda and ensure I can run the logic locally
 
 SECURITY
 --------
-1. Refine local storage further - remove token items completely
+1. Refine local storage further - remove token keys from storage
    Restrict to just the needed protocol claims
 
 2. Understand state storage better - in local storage
    Can I use session storage?
 
-3. Use encrypted cookies
+3. Use NodeJS encrypted cookies
 
 4. Use CSRF protection for token endpoint methods that receive a cookie
 
@@ -25,6 +22,10 @@ SPA
 1. Get rid of trailing backslash in redirect uri
 
 2. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout   
+
+CLOUD API
+---------
+1. Fix main Serverless API to use multiple pipeline stages, each with a single allowed CORS origin
 
 FINALISE ONCE PAST ALL RISKS
 ----------------------------
@@ -36,7 +37,7 @@ FINALISE ONCE PAST ALL RISKS
 
 4. Update blog instructions on how to run Final SPA and Final APIs
 
-GOALS FOR CLOG POST ON REVERSE PROXY
+GOALS FOR BLOG POST ON REVERSE PROXY
 ------------------------------------
 1. SPA delivered directly via CDN without proxy in front
 
