@@ -11,11 +11,11 @@ export class SessionManager {
     public static get(): string {
 
         const key = 'apiSessionId';
-        let sessionId = sessionStorage.getItem(key);
+        let sessionId = localStorage.getItem(key);
         if (!sessionId) {
 
             sessionId = Guid.create().toString();
-            sessionStorage.setItem(key, sessionId);
+            localStorage.setItem(key, sessionId);
         }
 
         return sessionId;

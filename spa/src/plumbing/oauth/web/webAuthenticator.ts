@@ -6,8 +6,8 @@ import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
 import {CognitoLogoutUrlBuilder} from './cognitoLogoutUrlBuilder';
+import {ExpireTokenClient} from './expireTokenClient';
 import {HybridTokenStorage} from './hybridTokenStorage';
-import { ExpireTokenClient } from './expireTokenClient';
 
 /*
  * A custom web integration of OIDC Client, which uses cookies for token renewal
@@ -47,7 +47,7 @@ export class WebAuthenticator implements Authenticator {
             // We get extended user info from our API and do not use this feature
             loadUserInfo: false,
 
-            // Tokens are stored only in memory, as a security best practice
+            // Tokens are stored only in memory, but we store multi tab state in local storage
             // https://auth0.com/docs/tokens/guides/store-tokens
             userStore: new WebStorageStateStore({ store: new HybridTokenStorage() }),
 
@@ -55,6 +55,7 @@ export class WebAuthenticator implements Authenticator {
             post_logout_redirect_uri: `${configuration.appUri}${configuration.postLogoutPath}`,
         };
 
+        // Create the OIDC Client with the above settings
         this._userManager = new UserManager(settings);
         this._configuration = configuration;
         this._concurrencyHandler = new ConcurrentActionHandler();

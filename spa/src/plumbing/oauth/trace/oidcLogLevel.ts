@@ -60,7 +60,7 @@ export class OidcLogLevel {
      */
     private _getStoredLogLevel(): string | null {
 
-        const found = sessionStorage.getItem(this.logLevelKey);
+        const found = localStorage.getItem(this.logLevelKey);
         return found || null;
     }
 
@@ -81,7 +81,7 @@ export class OidcLogLevel {
         const numericLevel = data[levelToSet];
         if (numericLevel !== undefined) {
 
-            sessionStorage.setItem(this.logLevelKey, levelToSet);
+            localStorage.setItem(this.logLevelKey, levelToSet);
             Log.level = numericLevel;
         }
     }

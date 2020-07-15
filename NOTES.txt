@@ -2,20 +2,11 @@ CLOUD WEB
 ---------
 1. Capture web.authguidance-examples.com/proxy requests in edge lambda and output console.log
 
-SPA
----
-1. Single log out
-
-2. Get rid of trailing backslash in redirect uri
-
-3. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout   
-
 CLOUD REVERSE PROXY API
 -----------------------
 1. Implement the Serverless OAuth API as an HTTP API, with a single pipeline stage
 
 2. Fix main Serverless API to use multiple pipeline stages, each with a single allowed CORS origin
-
 
 SECURITY
 --------
@@ -27,10 +18,16 @@ SECURITY
 
 3. Use encrypted cookies
 
-4. Use CSRF protection to token endpoint
+4. Use CSRF protection for token endpoint methods that receive a cookie
 
-FINALISE
---------
+SPA
+---
+1. Get rid of trailing backslash in redirect uri
+
+2. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout   
+
+FINALISE ONCE PAST ALL RISKS
+----------------------------
 1. Remove Web Static Content from .Net Core APIs
 
 2. Merge changes to master and redeploy main SPA
@@ -39,8 +36,8 @@ FINALISE
 
 4. Update blog instructions on how to run Final SPA and Final APIs
 
-GOALS
------
+GOALS FOR CLOG POST ON REVERSE PROXY
+------------------------------------
 1. SPA delivered directly via CDN without proxy in front
 
 2. Calls to APIs not reverse proxied and compromised under load

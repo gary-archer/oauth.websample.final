@@ -74,7 +74,7 @@ export class HybridTokenStorage {
     }
 
     /*
-     * Forward to the indexer property of sessionStorage
+     * Forward to the indexer property
      */
     public key(index: number): string | null {
         return localStorage[index];
