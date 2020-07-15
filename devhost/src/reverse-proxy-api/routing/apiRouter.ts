@@ -1,13 +1,13 @@
 import {NextFunction, Request, Response} from 'express';
-import {Configuration} from './configuration/configuration';
-import {ErrorHandler} from './errors/errorHandler';
-import {ResponseWriter} from './utilities/responseWriter';
-import {AuthService} from './services/authService';
+import {Configuration} from '../configuration/configuration';
+import {ErrorHandler} from '../errors/errorHandler';
+import {ResponseWriter} from '../utilities/responseWriter';
+import {AuthService} from '../services/authService';
 
 /*
  * A class to route API requests to business logic classes
  */
-export class Router {
+export class ApiRouter {
 
     private readonly _authService: AuthService;
 
@@ -17,9 +17,9 @@ export class Router {
     }
 
     /*
-     * The entry point to the token endpoint
+     * The entry point for requests to the token endpoint
      */
-    public async tokenEndpointProxy(request: Request, response: Response, next: NextFunction): Promise<void> {
+    public async tokenEndpoint(request: Request, response: Response, next: NextFunction): Promise<void> {
 
         if (request.body && request.body.grant_type) {
 
@@ -39,7 +39,15 @@ export class Router {
         }
 
         // Other grants are not supported
-        throw ErrorHandler.fromRequestNotFound();
+        throw ErrorHandler.fromRequestNotFound('A token endpoint request was received without a valid grant type');
+    }
+
+    /*
+     * Do the work of making a refresh token act expired
+     */
+    public async expireRefreshToken(request: Request, response: Response, next: NextFunction): Promise<void> {
+        
+        await this._authService.expireRefreshToken(request, response);
     }
 
     /*
@@ -71,7 +79,8 @@ export class Router {
      * Set up async callbacks
      */
     private _setupCallbacks(): void {
-        this.tokenEndpointProxy = this.tokenEndpointProxy.bind(this);
+        this.tokenEndpoint = this.tokenEndpoint.bind(this);
+        this.expireRefreshToken = this.expireRefreshToken.bind(this);
         this.notFoundHandler = this.notFoundHandler.bind(this);
         this.unhandledExceptionHandler = this.unhandledExceptionHandler.bind(this);
     }

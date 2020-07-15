@@ -16,7 +16,7 @@ export class HybridTokenStorage {
     public constructor() {
         this._accessToken = '';
         this._idToken = '';
-        this._refreshToken = 'R';
+        this._refreshToken = '-';
     }
 
     /*
@@ -30,8 +30,8 @@ export class HybridTokenStorage {
         this._idToken = deserialized.id_token;
 
         // Save only protocol claims to local storage
-        deserialized.access_token = 'A';
-        deserialized.id_token = 'I';
+        deserialized.access_token = '';
+        deserialized.id_token = '';
         deserialized.refresh_token = this._refreshToken;
         localStorage.setItem(key, JSON.stringify(deserialized));
     }

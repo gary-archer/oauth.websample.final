@@ -69,12 +69,14 @@ export class ErrorHandler {
     /*
      * Handle requests to API routes that don't exist
      */
-    public static fromRequestNotFound(): ClientError {
+    public static fromRequestNotFound(context?: string): ClientError {
 
-        return new ClientError(
+        const error = new ClientError(
             404,
             ErrorCodes.requestNotFound,
-            'A request was sent to a route that does not exist');
+            context ?? 'A request was sent to a route that does not exist');
+        error.logContext = context!;
+        return error;
     }
 
     /*

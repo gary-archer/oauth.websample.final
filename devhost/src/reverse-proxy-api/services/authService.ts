@@ -3,6 +3,7 @@ import {Configuration} from '../configuration/configuration';
 import {ApiLogger} from '../utilities/apiLogger';
 import {CookieService} from './cookieService';
 import {ProxyService} from './proxyService';
+import {ClientError} from '../errors/clientError';
 
 /*
  * The entry point for token endpoint related operations
@@ -23,18 +24,17 @@ export class AuthService {
     public async authorizationCodeGrant(request: Request, response: Response): Promise<void> {
 
         // Proxy the request to the authorization server
-        ApiLogger.info('Proxying Authorization Code Grant');
+        const clientId = this._getClientId(request);
+        ApiLogger.info(`Proxying Authorization Code Grant for client ${clientId}`);
         const authCodeGrantData = await this._proxyService.sendAuthorizationCodeGrant(request, response);
 
         // Get the refresh token
         const refreshToken = authCodeGrantData.refresh_token;
         if (refreshToken) {
 
-            // If it exists, remove it from the response to the SPA
+            // If it exists, remove it from the response to the SPA and write it to a cookie
             delete authCodeGrantData.refresh_token;
-
-            // Write it to a cookie
-            this._cookieService.write(refreshToken, response);
+            this._cookieService.write(clientId, refreshToken, response);
         }
 
         // Send access and id tokens to the SPA
@@ -47,8 +47,9 @@ export class AuthService {
     public async refreshTokenGrant(request: Request, response: Response): Promise<void> {
 
         // Get the refresh token from the auth cookie
-        ApiLogger.info('Proxying Refresh Token Grant');
-        let refreshToken = this._cookieService.read(request);
+        const clientId = this._getClientId(request);
+        ApiLogger.info(`Proxying Refresh Token Grant for client ${clientId}`);
+        let refreshToken = this._cookieService.read(clientId, request);
 
         // Send it to the Authorization Server
         const refreshTokenGrantData =
@@ -65,9 +66,40 @@ export class AuthService {
 
         // Update the cookie
         const cookie = new CookieService();
-        cookie.write(refreshToken, response);
+        cookie.write(clientId, refreshToken, response);
 
         // Send access and id tokens to the SPA
         response.send(JSON.stringify(refreshTokenGrantData));
+    }
+
+    /*
+     * Make the refresh token act expired
+     */
+    public async expireRefreshToken(request: Request, response: Response): Promise<void> {
+
+        const clientId = this._getClientId(request);
+        ApiLogger.info(`Expiring Refresh Token for client ${clientId}`);
+
+        // Get the current refresh token
+        const cookie = new CookieService();
+        const refreshToken = this._cookieService.read(clientId, request);
+
+        // Write a corrupted refresh token to the cookie, which will fail on the next token renewal attempt
+        cookie.expire(clientId, refreshToken, request, response);
+        response.status(204).send();
+    }
+
+    /*
+     * Do some initial verification that we have a request body and client id
+     */
+    private _getClientId(request: Request): string {
+
+        if (request.body) {
+            if (request.body.client_id) {
+                return request.body.client_id;
+            }
+        }
+
+        throw ClientError.invalidGrant('No client_id was found in the received form url encoded data');
     }
 }

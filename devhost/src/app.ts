@@ -4,11 +4,11 @@
 
 import express from 'express';
 import fs from 'fs-extra';
-import {Configuration} from './proxy/configuration/configuration';
-import {ErrorHandler} from './proxy/errors/errorHandler';
-import {ApiLogger} from './proxy/utilities/apiLogger';
-import {HttpProxy} from './proxy/utilities/httpProxy';
 import {HttpServerConfiguration} from './httpServerConfiguration';
+import {Configuration} from './reverse-proxy-api/configuration/configuration';
+import {ErrorHandler} from './reverse-proxy-api/errors/errorHandler';
+import {ApiLogger} from './reverse-proxy-api/utilities/apiLogger';
+import {HttpProxy} from './reverse-proxy-api/utilities/httpProxy';
 
 (async () => {
 
@@ -18,7 +18,7 @@ import {HttpServerConfiguration} from './httpServerConfiguration';
     try {
 
         // First load configuration
-        const configBuffer = await fs.readFile('config.localapi.json');
+        const configBuffer = await fs.readFile('reverseproxy.config.localapi.json');
         const config = JSON.parse(configBuffer.toString()) as Configuration;
 
         // Initialize HTTP proxy behaviour
@@ -32,7 +32,7 @@ import {HttpServerConfiguration} from './httpServerConfiguration';
         httpServer.initializeWebStaticContentHosting();
 
         // The HTTP server runs a proxy API on a developer PC, to reduce components
-        await httpServer.initializeProxyApi();
+        await httpServer.initializeReverseProxyApi();
 
         // Start listening for requests
         await httpServer.startListening();
@@ -41,7 +41,7 @@ import {HttpServerConfiguration} from './httpServerConfiguration';
 
         // Report startup errors
         const error = ErrorHandler.fromException(e);
-        ApiLogger.error(JSON.stringify(error.toLogFormat()));
+        ApiLogger.error(JSON.stringify(error.toLogFormat(), null, 2));
     }
 })();
 

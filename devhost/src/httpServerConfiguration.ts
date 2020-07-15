@@ -2,9 +2,9 @@ import cookieParser from 'cookie-parser';
 import {Application, NextFunction, Request, Response, urlencoded} from 'express';
 import fs from 'fs-extra';
 import https from 'https';
-import {Configuration} from './proxy/configuration/configuration';
-import {ApiRouter} from './proxy/routing/apiRouter';
 import {WebRouter} from './content-delivery-network/webRouter';
+import {Configuration} from './reverse-proxy-api/configuration/configuration';
+import {ApiRouter} from './reverse-proxy-api/routing/apiRouter';
 
 /*
  * Configure HTTP behaviour at application startup
@@ -24,26 +24,26 @@ export class HttpServerConfiguration {
     }
 
     /*
-     * Set up routes for the proxy API
+     * Set up routes for the reverse proxy API
      */
-    public async initializeProxyApi(): Promise<void> {
+    public async initializeReverseProxyApi(): Promise<void> {
 
         // We don't want API requests to be cached unless explicitly designed for caching
         this._expressApp.set('etag', false);
 
         // Receive form URL encoded OAuth messages and also cookies
-        this._expressApp.use('/oauth2/*', urlencoded({extended: true}));
-        this._expressApp.use('/oauth2/*', cookieParser());
+        this._expressApp.use('/reverse-proxy/*', urlencoded({extended: true}));
+        this._expressApp.use('/reverse-proxy/*', cookieParser());
 
         // Our main route manages forwarding to the Authorization Server and issuing cookies
-        this._expressApp.post('/oauth2/token', this._catch(this._apiRouter.tokenEndpointProxy));
+        this._expressApp.post('/reverse-proxy/token', this._catch(this._apiRouter.tokenEndpoint));
 
-        // For testing
-        this._expressApp.post('/oauth2/expire', this._catch(this._apiRouter.tokenEndpointProxy));
+        // For testing we provide an endpoint to make the refresh token act as expired
+        this._expressApp.post('/reverse-proxy/expire', this._catch(this._apiRouter.expireRefreshToken));
 
         // Error routes
-        this._expressApp.use('/oauth2/*', this._apiRouter.notFoundHandler);
-        this._expressApp.use('/oauth2/*', this._apiRouter.unhandledExceptionHandler);
+        this._expressApp.use('/reverse-proxy/*', this._apiRouter.notFoundHandler);
+        this._expressApp.use('/reverse-proxy/*', this._apiRouter.unhandledExceptionHandler);
     }
 
     /*
@@ -83,7 +83,7 @@ export class HttpServerConfiguration {
         httpsServer.listen(listenOptions, () => {
 
             // Render a startup message
-            console.log(`Development Host is listening on HTTPS port ${listenOptions.port}`);
+            console.log(`Development Web Host is listening on HTTPS port ${listenOptions.port}`);
         });
     }
 

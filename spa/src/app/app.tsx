@@ -363,7 +363,19 @@ export class App extends React.Component<any, AppState> {
      * For test purposes this makes the refresh token act expired
      */
     private async _onExpireRefreshToken(): Promise<void> {
-        await this._authenticator!.expireRefreshToken();
+
+        try {
+
+            // Try to call the token endpoint to make the refresh token in the cookie act expired
+            await this._authenticator!.expireRefreshToken();
+
+        } catch (e) {
+
+            // Report errors
+            const error = ErrorHandler.getFromException(e);
+            this.setState({error: ErrorHandler.getFromException(e)});
+
+        }
     }
 
     /*

@@ -4,13 +4,13 @@ import * as process from 'process';
 class Packager {
 
     /*
-     * Copy files into a folder that is easier to deploy to AWS
+     * Copy files into a folder that can be deployed directly to AWS
      */
     public async execute(): Promise<void> {
 
         // Clear from last time
         await fs.remove('.package');
-        await fs.ensureDir('.package/spa');
+        await fs.ensureDir('.package/spa2');
 
         // Use the deployed configuration
         await fs.copy('../spa/spa.config.deployed.json', '.package/spa/spa.config.json');

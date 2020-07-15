@@ -10,7 +10,7 @@ export class SessionManager {
      */
     public static get(): string {
 
-        const key = 'ApiSessionId';
+        const key = 'apiSessionId';
         let sessionId = sessionStorage.getItem(key);
         if (!sessionId) {
 

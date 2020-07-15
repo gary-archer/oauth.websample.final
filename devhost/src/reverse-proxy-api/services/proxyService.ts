@@ -29,7 +29,7 @@ export class ProxyService {
             }
         }
 
-        return this._postMessage(request.headers, formData, response);
+        return this._postMessage(formData, response);
     }
 
     /*
@@ -49,13 +49,13 @@ export class ProxyService {
         }
 
         formData.append('refresh_token', refreshToken);
-        return this._postMessage(request.headers, formData, response);
+        return this._postMessage(formData, response);
     }
 
     /*
      * Route a message to the Authorization Server
      */
-    private async _postMessage(headers: any, formData: URLSearchParams, response: Response): Promise<void> {
+    private async _postMessage(formData: URLSearchParams, response: Response): Promise<void> {
 
         // Define request options
         const options = {
@@ -74,7 +74,7 @@ export class ProxyService {
             // Call the Authorization Server
             const authServerResponse = await axios.request(options as AxiosRequestConfig);
 
-            // Handle success responses
+            // Update the response for the success case and return data
             response.status(authServerResponse.status);
             response.setHeader('content-type', 'application/json');
             return authServerResponse.data;

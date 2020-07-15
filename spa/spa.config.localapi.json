@@ -7,7 +7,7 @@
         "clientId":         "0oasnwpqivYKRaLJl0h7",
         "appUri":           "https://web.mycompany.com/spa",
         "scope":            "openid profile email offline_access",
-        "tokenEndpoint":    "https://web.mycompany.com/oauth2/token",
+        "reverseProxyUrl":  "https://web.mycompany.com/reverse-proxy",
         "postLogoutPath":   "#loggedout"
     }
 }

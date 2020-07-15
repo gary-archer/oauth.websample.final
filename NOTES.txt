@@ -1,32 +1,31 @@
 GOALS
 -----
-1. SPA delivered via web static content
-2. Calls to APIs not compromised under load
+1. SPA delivered directly via CDN without proxy in front
+2. Calls to APIs not reverse proxied and compromised under load
 3. SPA uses OIDC Client security to validate all responses in a standard way
-4. No refresh tokens in the browser, only short lived credentials
-
-SPA
----
-1. Put back custom memory storage and store contextual fields in local storage
-
-2. Avoid sending refresh token to proxy - should be removed from message
-   Also try to avoid hacks of the form refresh token = 'R'
-
-3. Include client app name in a request header during auth code grant message
+4. Secure browser with no refresh tokens and in memory access / id tokens
 
 COOKIES
 -------
-1. Get expire cookie working
+A1. Get expire cookie working
+    Client errors to log context
 
-2. Validate client names before putting them in response cookies
+SPA
+---
+B1. Try monitor session
 
-3. Use encrypted cookies
+2. Refine local storage further - remove token items completely
+   Restrict to just the needed protocol claims
 
-4. Test for Cognito refresh tokens, which could affect cookie length
+3. Understand state storage better - in local storage
+   Can I use session storage?
+
+4. Revoke token on logout and remove API cached claims
 
 CLOUD
 -----
-1. Redeploy SPA to spa2
+C1. Redeploy SPA to spa2
+    Needs packager to use an spa2 folder
 
 2. Lambda edge proxying of web.mycompany.com/proxy requests to OAuth API, resulting in not found
 
@@ -37,6 +36,12 @@ CLOUD
 5. Use a different SPA client id temporarily, and get rid of trailing backslash in redirect uri
 
 6. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
+
+SECURITY
+--------
+1. Use encrypted cookies
+
+2. Use CSRF protection to token endpoint
 
 FINALISE
 --------
@@ -52,6 +57,6 @@ HACKS SO FAR
 ------------
 1. authenticator.initialise to update token endpoint
 
-2. Overriding private method to send token refresh
+2. Custom token storage is reasonable
 
 3. Okta using a mobile client for an SPA

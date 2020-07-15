@@ -7,6 +7,7 @@ import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
 import {CognitoLogoutUrlBuilder} from './cognitoLogoutUrlBuilder';
 import {HybridTokenStorage} from './hybridTokenStorage';
+import { ExpireTokenClient } from './expireTokenClient';
 
 /*
  * A custom web integration of OIDC Client, which uses cookies for token renewal
@@ -61,7 +62,7 @@ export class WebAuthenticator implements Authenticator {
     }
 
     /*
-     * Load and customise metadata, to route token requests via our reverse proxy
+     * Load and customise metadata, to route refresh token related requests via our reverse proxy
      */
     public async initialise(): Promise<void> {
 
@@ -69,7 +70,7 @@ export class WebAuthenticator implements Authenticator {
             await this._userManager.metadataService.getMetadata();
         }
 
-        this._userManager.settings.metadata!.token_endpoint = this._configuration.tokenEndpoint;
+        this._userManager.settings.metadata!.token_endpoint = `${this._configuration.reverseProxyUrl}/token`;
     }
 
     /*
@@ -237,6 +238,13 @@ export class WebAuthenticator implements Authenticator {
      * For testing, make the refresh token act like it is expired
      */
     public async expireRefreshToken(): Promise<void> {
+
+        // First expire the access token so that the next API call returns a 401
+        await this.expireAccessToken();
+
+        // Next make token renewal fail also
+        const client = new ExpireTokenClient();
+        await client.expireRefreshToken(this._configuration);
     }
 
     /*
