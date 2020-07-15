@@ -126,7 +126,7 @@ export class ApiClient {
             'Authorization': `Bearer ${accessToken}`,
 
             // Context headers included in API logs
-            'x-mycompany-api-client':     'BasicSPA',
+            'x-mycompany-api-client':     'FinalSPA',
             'x-mycompany-session-id':     this._sessionId,
             'x-mycompany-correlation-id': Guid.create().toString(),
         };

@@ -17,11 +17,12 @@
 
 ### SPA Middleware Used
 
-* The [Oidc-Client Library](https://github.com/IdentityModel/oidc-client-js) is used to implement SPA logins and for token handling
+* The [Oidc-Client Library](https://github.com/IdentityModel/oidc-client-js) is used to implement SPA logins and token handling
 
 ### Hosting
 
 * AWS API Gateway is used to host the SPA's OAuth 2.0 Secured API
-* AWS API Gateway also hosts a simple reverse proxy to manage refresh tokens 
-* AWS Cognito is used as the Authorization Server for the SPA and API
 * AWS CloudFront is used as the SPA's Content Delivery Network
+* AWS Cognito is used as the Authorization Server for the SPA and API
+* An AWS Cloudfront Edge Lambda is used to issue a web domain cookie containing a refresh token
+

@@ -1,0 +1,25 @@
+{
+  "name": "deployment",
+  "version": "1.0.0",
+  "description": "Deploys our Final SPA to AWS Cloudfront, a Content Delivery Network",
+  "main": "customPackager.ts",
+  "scripts": {
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "package": "ts-node src/customPackager.ts",
+    "deploy": "aws s3 cp .package s3://web.authguidance-examples.com --recursive",
+    "clearcache": "aws cloudfront create-invalidation --distribution-id=E1KK6YUBAK08ZY --paths \"/*\""
+  },
+  "keywords": [],
+  "author": "Gary Archer",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^8.0.1",
+    "@types/node": "^12.11.7",
+    "ts-node": "^8.4.1",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.5"
+  }
+}

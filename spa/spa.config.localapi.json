@@ -5,7 +5,7 @@
     "oauth": {
         "authority":        "https://dev-843469.oktapreview.com/oauth2/default",
         "clientId":         "0oasnwpqivYKRaLJl0h7",
-        "appUri":           "https://web.mycompany.com/spa",
+        "appUri":           "https://web.mycompany.com/spa2",
         "scope":            "openid profile email offline_access",
         "reverseProxyUrl":  "https://web.mycompany.com/reverse-proxy",
         "postLogoutPath":   "#loggedout"

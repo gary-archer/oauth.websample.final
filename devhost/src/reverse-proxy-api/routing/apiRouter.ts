@@ -46,7 +46,7 @@ export class ApiRouter {
      * Do the work of making a refresh token act expired
      */
     public async expireRefreshToken(request: Request, response: Response, next: NextFunction): Promise<void> {
-        
+
         await this._authService.expireRefreshToken(request, response);
     }
 

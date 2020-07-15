@@ -38,7 +38,7 @@ export class CookieService {
     }
 
     /*
-     * Rewrite the cookie with a new 
+     * Cause an invalid_grant error when the refresh token is next sent to the Authorization Server
      */
     public expire(clientId: string, refreshToken: string, request: Request, response: Response): void {
 

@@ -16,24 +16,13 @@ export class WebRouter {
      */
     public getWebResource(request: Request, response: Response): void {
 
-        let resourcePath = request.path.replace('/spa', '/');
+        let resourcePath = request.path.replace('/spa2', '/');
         if (resourcePath === '/') {
            resourcePath = 'index.html';
         }
 
         const webFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/${resourcePath}`);
         response.sendFile(webFilePath);
-    }
-
-    /*
-     * Serve the cloud configuration so that the SPA points to AWS
-     */
-    public getSpaConfigurationFile(request: Request, response: Response): void {
-
-        const resourcePath = request.path.replace('/spa', '/');
-        const configFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/${resourcePath}`);
-        response.setHeader('Content-Type', 'application/json');
-        response.sendFile(configFilePath);
     }
 
     /*

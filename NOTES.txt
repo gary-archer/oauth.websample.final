@@ -5,14 +5,9 @@ GOALS
 3. SPA uses OIDC Client security to validate all responses in a standard way
 4. Secure browser with no refresh tokens and in memory access / id tokens
 
-COOKIES
--------
-A1. Get expire cookie working
-    Client errors to log context
-
 SPA
 ---
-B1. Try monitor session
+1. Try monitor session
 
 2. Refine local storage further - remove token items completely
    Restrict to just the needed protocol claims
@@ -20,12 +15,10 @@ B1. Try monitor session
 3. Understand state storage better - in local storage
    Can I use session storage?
 
-4. Revoke token on logout and remove API cached claims
-
 CLOUD
 -----
-C1. Redeploy SPA to spa2
-    Needs packager to use an spa2 folder
+1. Redeploy SPA to spa2
+   Needs packager to use an spa2 folder
 
 2. Lambda edge proxying of web.mycompany.com/proxy requests to OAuth API, resulting in not found
 
@@ -55,8 +48,8 @@ FINALISE
 
 HACKS SO FAR
 ------------
-1. authenticator.initialise to update token endpoint
+1. authenticator.initialise to update token endpoint - not too bad
 
-2. Custom token storage is reasonable
+2. Custom token storage - not too bad
 
-3. Okta using a mobile client for an SPA
+3. Okta using a mobile client for an SPA - not too bad - Okta not up to date with OAuth 2.1

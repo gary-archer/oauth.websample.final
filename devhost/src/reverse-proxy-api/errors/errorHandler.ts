@@ -22,7 +22,7 @@ export class ErrorHandler {
 
             // Log the error
             const errorToLog = clientError.toLogFormat();
-            ApiLogger.error(JSON.stringify(errorToLog, null, '  '));
+            ApiLogger.error(JSON.stringify(errorToLog, null, 2));
 
             // Return the API response to the caller
             return clientError;
@@ -34,7 +34,7 @@ export class ErrorHandler {
 
             // Log the error with an id
             const errorToLog = apiError.toLogFormat();
-            ApiLogger.error(JSON.stringify(errorToLog, null, '  '));
+            ApiLogger.error(JSON.stringify(errorToLog, null, 2));
 
             // Return the API response to the caller
             return apiError.toClientError();

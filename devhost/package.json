@@ -1,15 +1,12 @@
 {
   "name": "devhost",
   "version": "1.0.0",
-  "description": "Hosts web content delivery and an OAuth Utility API on a developer PC",
+  "description": "Developer PC hosting for a Content Delivery Network and a Reverse Proxy API",
   "main": "app.ts",
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "build": "ts-node --files src/app.ts",
-    "start": "nodemon -e ts --exec \"npm run build\"",
-    "package": "ts-node deployment/customPackager.ts",
-    "deploy": "aws s3 cp .package s3://web.authguidance-examples.com --recursive",
-    "clearcache": "aws cloudfront create-invalidation --distribution-id=E1KK6YUBAK08ZY --paths \"/*\""
+    "start": "nodemon -e ts --exec \"npm run build\""
   },
   "keywords": [],
   "author": "Gary Archer",
@@ -26,7 +23,6 @@
     "@types/express": "^4.17.1",
     "@types/fs-extra": "^8.0.1",
     "@types/node": "^12.11.7",
-    "core-js": "^3.3.5",
     "nodemon": "^2.0.3",
     "ts-node": "^8.4.1",
     "tslint": "^6.1.2",

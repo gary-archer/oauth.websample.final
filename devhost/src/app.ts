@@ -18,7 +18,7 @@ import {HttpProxy} from './reverse-proxy-api/utilities/httpProxy';
     try {
 
         // First load configuration
-        const configBuffer = await fs.readFile('reverseproxy.config.localapi.json');
+        const configBuffer = await fs.readFile('reverseproxy.config.localweb.json');
         const config = JSON.parse(configBuffer.toString()) as Configuration;
 
         // Initialize HTTP proxy behaviour
