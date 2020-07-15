@@ -1,9 +1,12 @@
 CLOUD WEB
 ---------
-1. Implement the Serverless Edge Lambdas with a single pipeline stage
-   Get a hello world working for requests to https://web.authguidance-examples.com/spa2/reverse-proxy
+1. Get the Serverless Edge Lambda doing something in an adhoc manner
+   Set a response header and limit it to the below scope:
+   POST https://web.authguidance-examples.com/spa2/reverse-proxy
 
-2. Port cookie logic to the above lambda and ensure I can run the logic locally
+2. Understand Serverless Lambda Edge execution on local PC
+
+3. Port cookie logic to the above lambda and ensure I can run the logic locally
 
 SECURITY
 --------
