@@ -49,7 +49,7 @@ export class AuthService {
         // Get the refresh token from the auth cookie
         const clientId = this._getClientId(request);
         ApiLogger.info(`Proxying Refresh Token Grant for client ${clientId}`);
-        let refreshToken = this._cookieService.read(clientId, request);
+        const refreshToken = this._cookieService.read(clientId, request);
 
         // Send it to the Authorization Server
         const refreshTokenGrantData =
@@ -59,13 +59,10 @@ export class AuthService {
         const rollingRefreshToken = refreshTokenGrantData.refresh_token;
         if (rollingRefreshToken) {
 
-            // If a new refresh token has been issued, remove it from the response to the SPA
-            refreshToken = rollingRefreshToken;
+            // If a new refresh token has been issued, remove it from the response to the SPA and update the cookie
             delete refreshTokenGrantData.refresh_token;
+            this._cookieService.write(clientId, rollingRefreshToken, response);
         }
-
-        // Update the cookie
-        this._cookieService.write(clientId, refreshToken, response);
 
         // Send access and id tokens to the SPA
         response.send(JSON.stringify(refreshTokenGrantData));

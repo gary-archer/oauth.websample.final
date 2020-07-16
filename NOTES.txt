@@ -1,24 +1,13 @@
-CLOUD WEB
----------
-1. Get the Serverless Edge Lambda doing something in an adhoc manner
-   Set a response header and limit it to the below scope:
-   POST https://web.authguidance-examples.com/spa2/reverse-proxy
-
-2. Understand Serverless Lambda Edge execution on local PC
-
-3. Port cookie logic to the above lambda and ensure I can run the logic locally
-
 SECURITY
 --------
-1. Refine local storage further - remove token keys from storage
+1. Use CSRF protection for token endpoint methods that receive a cookie
+
+2. Refine local storage further - remove token keys from storage
    Restrict to just the needed protocol claims
 
-2. Understand state storage better - in local storage
-   Can I use session storage?
-
-3. Use NodeJS encrypted cookies
-
-4. Use CSRF protection for token endpoint methods that receive a cookie
+3. Understand OIDC state storage better - in local storage
+   Can I use session storage for this?
+   Afterwards, test expiring refresh token on a different tab to the one that got it
 
 SPA
 ---
@@ -26,13 +15,9 @@ SPA
 
 2. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout   
 
-CLOUD API
----------
-1. Fix main Serverless API to use multiple pipeline stages, each with a single allowed CORS origin
-
 FINALISE ONCE PAST ALL RISKS
 ----------------------------
-1. Remove Web Static Content from .Net Core APIs
+1. Remove Web Static Content from .Net Core and Java APIs
 
 2. Merge changes to master and redeploy main SPA
 
@@ -40,12 +25,5 @@ FINALISE ONCE PAST ALL RISKS
 
 4. Update blog instructions on how to run Final SPA and Final APIs
 
-GOALS FOR BLOG POST ON REVERSE PROXY
-------------------------------------
-1. SPA delivered directly via CDN without proxy in front
-
-2. Calls to APIs not reverse proxied and compromised under load
-
-3. SPA uses OIDC Client security to validate all responses in a standard way
-
-4. Secure browser with no refresh tokens and in memory access / id tokens
+5. Design Articles to end SPA theme - and describe pattern
+   Then describe Final SPA as part of Cloud theme
