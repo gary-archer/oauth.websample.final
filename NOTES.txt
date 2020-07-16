@@ -13,9 +13,11 @@ SECURITY
 
 SPA
 ---
+0. Improve GitHub README
+
 1. Get rid of trailing backslash in redirect uri
 
-2. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout   
+2. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
 
 FINALISE ONCE PAST ALL RISKS
 ----------------------------
