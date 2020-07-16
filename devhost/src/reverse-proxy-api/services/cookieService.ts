@@ -1,3 +1,4 @@
+import {encryptCookie, decryptCookie} from 'cookie-encrypter'
 import {CookieOptions, Request, Response} from 'express';
 import {ClientError} from '../errors/clientError';
 
@@ -6,7 +7,12 @@ import {ClientError} from '../errors/clientError';
  */
 export class CookieService {
 
-    private readonly cookieName = 'mycompany-auth';
+    private readonly _cookieName = 'mycompany-auth';
+    private readonly _encryptionKey: Buffer;
+
+    public constructor(base64encryptionKey: string) {
+        this._encryptionKey = Buffer.from(base64encryptionKey, 'base64');
+    }
 
     /*
      * Write a parent domain response cookie containing the refresh token
@@ -19,7 +25,8 @@ export class CookieService {
             path: '/reverse-proxy',
         };
 
-        response.cookie(`${this.cookieName}-${clientId}`, refreshToken, options as CookieOptions);
+        const encryptedData = encryptCookie(refreshToken, {key: this._encryptionKey});
+        response.cookie(`${this._cookieName}-${clientId}`, encryptedData, options as CookieOptions);
     }
 
     /*
@@ -28,13 +35,13 @@ export class CookieService {
     public read(clientId: string, request: Request): string {
 
         if (request.cookies) {
-            const refreshToken = request.cookies[`${this.cookieName}-${clientId}`];
-            if (refreshToken) {
-                return refreshToken;
+            const encryptedData = request.cookies[`${this._cookieName}-${clientId}`];
+            if (encryptedData) {
+                return decryptCookie(encryptedData, {key: this._encryptionKey});
             }
         }
 
-        throw ClientError.invalidGrant('No auth cookie was found in the incoming request');
+        throw ClientError.invalidGrant('No valid auth cookie was found in the incoming request');
     }
 
     /*

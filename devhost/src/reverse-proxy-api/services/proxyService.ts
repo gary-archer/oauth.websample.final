@@ -1,7 +1,6 @@
 import axios, {AxiosRequestConfig} from 'axios';
 import {URLSearchParams} from 'url';
 import {Request, Response} from 'express';
-import {OAuthConfiguration} from '../configuration/oauthConfiguration';
 import {ClientError} from '../errors/clientError';
 import {ErrorHandler} from '../errors/errorHandler';
 import {HttpProxy} from '../utilities/httpProxy';
@@ -11,10 +10,10 @@ import {HttpProxy} from '../utilities/httpProxy';
  */
 export class ProxyService {
 
-    private readonly _configuration: OAuthConfiguration;
+    private readonly _tokenEndpoint: string;
 
-    public constructor(configuration: OAuthConfiguration) {
-        this._configuration = configuration;
+    public constructor(_tokenEndpoint: string) {
+        this._tokenEndpoint = _tokenEndpoint;
     }
 
     /*
@@ -59,7 +58,7 @@ export class ProxyService {
 
         // Define request options
         const options = {
-            url: this._configuration.tokenEndpoint,
+            url: this._tokenEndpoint,
             method: 'POST',
             data: formData,
             headers: {

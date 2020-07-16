@@ -14,8 +14,8 @@ export class AuthService {
     private readonly _cookieService: CookieService;
 
     public constructor(configuration: Configuration) {
-        this._proxyService = new ProxyService(configuration.oauth);
-        this._cookieService = new CookieService();
+        this._proxyService = new ProxyService(configuration.oauth.tokenEndpoint);
+        this._cookieService = new CookieService(configuration.oauth.cookieEncryptionKey);
     }
 
     /*
@@ -65,8 +65,7 @@ export class AuthService {
         }
 
         // Update the cookie
-        const cookie = new CookieService();
-        cookie.write(clientId, refreshToken, response);
+        this._cookieService.write(clientId, refreshToken, response);
 
         // Send access and id tokens to the SPA
         response.send(JSON.stringify(refreshTokenGrantData));
@@ -81,11 +80,10 @@ export class AuthService {
         ApiLogger.info(`Expiring Refresh Token for client ${clientId}`);
 
         // Get the current refresh token
-        const cookie = new CookieService();
         const refreshToken = this._cookieService.read(clientId, request);
 
         // Write a corrupted refresh token to the cookie, which will fail on the next token renewal attempt
-        cookie.expire(clientId, refreshToken, request, response);
+        this._cookieService.expire(clientId, refreshToken, request, response);
         response.status(204).send();
     }
 

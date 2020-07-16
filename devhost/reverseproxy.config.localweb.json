@@ -7,6 +7,7 @@
         "proxyUrl": "http://127.0.0.1:8888"
     },
     "oauth": {
-        "tokenEndpoint": "https://login.authguidance-examples.com/oauth2/token"
+        "tokenEndpoint": "https://login.authguidance-examples.com/oauth2/token",
+        "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8="
     }
 }

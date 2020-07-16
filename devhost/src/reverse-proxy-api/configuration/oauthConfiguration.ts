@@ -3,4 +3,5 @@
  */
 export interface OAuthConfiguration {
     tokenEndpoint: string;
+    cookieEncryptionKey: string;
 }

@@ -12,6 +12,8 @@ $rootCertPassword = 'RootPassw0rd1'
 $sslCertFileName = 'mycompany.ssl'
 $sslCertPassword = 'SslPassword1'
 $wildcardDomainName = '*.mycompany.com'
+$apiDomainName = 'api.mycompany.com'
+$webDomainName = 'web.mycompany.com'
 
 <#
  # A general run process function
