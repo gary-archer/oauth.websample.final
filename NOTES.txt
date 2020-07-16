@@ -1,6 +1,8 @@
 SECURITY
 --------
 1. Use CSRF protection for token endpoint methods that receive a cookie
+   https://stackoverflow.com/questions/30619782/csrf-protection-for-refresh-token-cookie-in-spa
+   https://security.stackexchange.com/questions/133787/securely-using-jwts-with-csrf-protection-and-refresh-tokens
 
 2. Refine local storage further - remove token keys from storage
    Restrict to just the needed protocol claims
