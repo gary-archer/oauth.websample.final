@@ -5,7 +5,7 @@ SECURITY
    Remove token keys from storage
    Restrict to just the needed protocol claims
    Use better key names for my own storage
-   Try to get CSRF field saving there
+   Try to get CSRF field saving there - filterProtocolClaims etc
 
 SPA
 ---

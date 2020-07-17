@@ -232,7 +232,7 @@ export class WebAuthenticator implements Authenticator {
 
         } catch (e) {
 
-            if (e.message === ErrorCodes.refreshTokenExpired) {
+            if (e.message === ErrorCodes.invalidGrant) {
 
                 // For invalid_grant errors, clear token data and return success, to force a login redirect
                 await this._userManager.removeUser();
