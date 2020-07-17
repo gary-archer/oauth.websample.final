@@ -3,8 +3,8 @@ import {Application, NextFunction, Request, Response, urlencoded} from 'express'
 import fs from 'fs-extra';
 import https from 'https';
 import {WebRouter} from './content-delivery-network/webRouter';
-import {Configuration} from './reverse-proxy-api/configuration/configuration';
-import {ApiRouter} from './reverse-proxy-api/routing/apiRouter';
+import {Configuration} from './web-reverse-proxy/configuration/configuration';
+import {ApiRouter} from './web-reverse-proxy/routing/apiRouter';
 
 /*
  * Configure HTTP behaviour at application startup
@@ -66,15 +66,15 @@ export class HttpServerConfiguration {
     public async startListening(): Promise<void> {
 
         // Set HTTPS server options
-        const pfxFile = await fs.readFile(`certs/${this._configuration.api.sslCertificateFileName}`);
+        const pfxFile = await fs.readFile(`certs/${this._configuration.sslCertificateFileName}`);
         const serverOptions = {
             pfx: pfxFile,
-            passphrase: this._configuration.api.sslCertificatePassword,
+            passphrase: this._configuration.sslCertificatePassword,
         };
 
         // Set listener options
         const listenOptions = {
-            port: this._configuration.api.sslPort,
+            port: this._configuration.sslPort,
         };
 
         // Start listening

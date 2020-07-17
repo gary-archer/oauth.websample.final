@@ -1,13 +1,12 @@
 {
-    "api": {
-        "sslCertificateFileName": "mycompany.ssl.pfx",
-        "sslCertificatePassword": "SslPassword1",
-        "sslPort": 443,
-        "useProxy": false,
-        "proxyUrl": "http://127.0.0.1:8888"
-    },
-    "oauth": {
-        "tokenEndpoint": "https://login.authguidance-examples.com/oauth2/token",
-        "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8="
-    }
+    "sslCertificateFileName": "mycompany.ssl.pfx",
+    "sslCertificatePassword": "SslPassword1",
+    "sslPort": 443,
+    "tokenEndpoint": "https://login.authguidance-examples.com/oauth2/token",
+    "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
+    "trustedWebOrigins": [
+        "https://web.mycompany.com"
+    ],
+    "useHttpProxy": false,
+    "httpProxyUrl": "http://127.0.0.1:8888"
 }

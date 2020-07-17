@@ -1,8 +1,6 @@
 SECURITY
 --------
-1. Use CSRF protection for token endpoint methods that receive a cookie
-   https://stackoverflow.com/questions/30619782/csrf-protection-for-refresh-token-cookie-in-spa
-   https://security.stackexchange.com/questions/133787/securely-using-jwts-with-csrf-protection-and-refresh-tokens
+1. Override JSON Service to refine the refresh_token_grant message
 
 2. Refine local storage further - remove token keys from storage
    Restrict to just the needed protocol claims
@@ -13,11 +11,12 @@ SECURITY
 
 SPA
 ---
-0. Improve GitHub README
+1. Improve GitHub README of main web sample to indicate the proxy pattern being implemented
+   Result is multi tab browsing with tokens in memory and standard use of CDN and API calls
 
-1. Get rid of trailing backslash in redirect uri
+2. Get rid of trailing backslash in redirect uri
 
-2. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
+3. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
 
 FINALISE ONCE PAST ALL RISKS
 ----------------------------
