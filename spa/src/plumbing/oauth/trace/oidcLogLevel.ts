@@ -6,7 +6,7 @@ import urlparse from 'url-parse';
  */
 export class OidcLogLevel {
 
-    private readonly logLevelKey = 'oidcloglevel';
+    private readonly _logLevelKey = 'oidcloglevel';
 
     /*
      * Set the initial log level
@@ -60,7 +60,7 @@ export class OidcLogLevel {
      */
     private _getStoredLogLevel(): string | null {
 
-        const found = localStorage.getItem(this.logLevelKey);
+        const found = localStorage.getItem(this._logLevelKey);
         return found || null;
     }
 
@@ -81,7 +81,7 @@ export class OidcLogLevel {
         const numericLevel = data[levelToSet];
         if (numericLevel !== undefined) {
 
-            localStorage.setItem(this.logLevelKey, levelToSet);
+            localStorage.setItem(this._logLevelKey, levelToSet);
             Log.level = numericLevel;
         }
     }

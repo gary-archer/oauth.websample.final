@@ -1,5 +1,5 @@
 /*
- * A hybrid token storage class that saves tokens in memory
+ * A hybrid token storage class that saves tokens only in memory in private class members
  * Multi tab browsing is supported by saving protocol claims to local storage
  * This enables validation checks in OIDC Client to pass across all browser tabs
  */

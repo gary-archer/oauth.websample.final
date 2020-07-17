@@ -1,13 +1,11 @@
 SECURITY
 --------
-1. Override JSON Service to refine the refresh_token_grant message
-
-2. Refine local storage further - remove token keys from storage
+1. Improve local storage further
+   Understand state storage + cleanup
+   Remove token keys from storage
    Restrict to just the needed protocol claims
-
-3. Understand OIDC state storage better - in local storage
-   Can I use session storage for this?
-   Afterwards, test expiring refresh token on a different tab to the one that got it
+   Use better key names for my own storage
+   Try to get CSRF field saving there
 
 SPA
 ---

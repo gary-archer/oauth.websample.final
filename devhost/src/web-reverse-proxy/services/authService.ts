@@ -11,6 +11,7 @@ import {ClientError} from '../errors/clientError';
  */
 export class AuthService {
 
+    private readonly _csrfFieldName = 'csrf_field';
     private readonly _configuration: Configuration
     private readonly _proxyService: ProxyService;
     private readonly _cookieService: CookieService;
@@ -39,10 +40,12 @@ export class AuthService {
             delete authCodeGrantData.refresh_token;
             this._cookieService.writeAuthCookie(clientId, refreshToken, response);
 
-            // Also write a CSRF cookie and return it in the response
+            // Write a CSRF HTTP only cookie
             const randomValue = randomBytes(32).toString('base64');
             this._cookieService.writeCsrfCookie(clientId, response, randomValue);
-            authCodeGrantData.csrf_token = randomValue;
+
+            // Include a CSRF field that the client must send on the next request
+            authCodeGrantData.csrf_field = randomValue;
         }
 
         // Send access and id tokens to the SPA
@@ -146,16 +149,17 @@ export class AuthService {
      */
     private _validateCsrfCookie(clientId: string, request: Request) {
 
-        // Check for a CSRF value in the request
-        const cookieName = this._cookieService.getCsrfCookieName(clientId);
-        if (!request.body || !request.body[cookieName]) {
-            throw ClientError.invalidGrant('No value CSRF field was found in the request body');
+        // Get the CSRF cookie
+        const cookieValue = this._cookieService.readCsrfCookie(clientId, request);
+
+        // Check there is a matching CSRF request field
+        if (!request.body || !request.body[this._csrfFieldName]) {
+            throw ClientError.invalidGrant('No CSRF field was found in the request body');
         }
 
-        // Next check for a matching cookie
-        const cookieValue = this._cookieService.readCsrfCookie(clientId, request);
-        if (request.headers[cookieName] !== cookieValue) {
-            throw ClientError.invalidGrant('The CSRF cookie request does not match the CSRF cookie value');
+        // Check that the values match
+        if (cookieValue !== request.body[this._csrfFieldName]) {
+            throw ClientError.invalidGrant('The CSRF request field does not match the CSRF cookie value');
         }
     }
 }

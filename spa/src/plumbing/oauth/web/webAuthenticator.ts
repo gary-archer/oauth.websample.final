@@ -1,4 +1,4 @@
-import {UserManager, WebStorageStateStore} from 'oidc-client';
+
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
@@ -6,8 +6,8 @@ import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
 import {CognitoLogoutUrlBuilder} from './cognitoLogoutUrlBuilder';
+import {CustomUserManager} from './customUserManager';
 import {ExpireTokenClient} from './expireTokenClient';
-import {HybridTokenStorage} from './hybridTokenStorage';
 
 /*
  * A custom web integration of OIDC Client, which uses cookies for token renewal
@@ -18,7 +18,7 @@ export class WebAuthenticator implements Authenticator {
     private readonly _configuration: OAuthConfiguration;
 
     // The OIDC Client does all of the real security handling
-    private readonly _userManager: UserManager;
+    private readonly _userManager: CustomUserManager;
 
     // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
@@ -28,35 +28,7 @@ export class WebAuthenticator implements Authenticator {
      */
     public constructor(configuration: OAuthConfiguration) {
 
-        const settings = {
-
-            // The Open Id Connect base URL
-            authority: configuration.authority,
-
-            // Core OAuth settings
-            client_id: configuration.clientId,
-            redirect_uri: configuration.appUri,
-            scope: configuration.scope,
-
-            // Use the Authorization Code Flow (PKCE)
-            response_type: 'code',
-
-            // We use a proxying cookie based solution to refresh access tokens
-            automaticSilentRenew: false,
-
-            // We get extended user info from our API and do not use this feature
-            loadUserInfo: false,
-
-            // Tokens are stored only in memory, but we store multi tab state in local storage
-            // https://auth0.com/docs/tokens/guides/store-tokens
-            userStore: new WebStorageStateStore({ store: new HybridTokenStorage() }),
-
-            // Indicate the full logout redirect path
-            post_logout_redirect_uri: `${configuration.appUri}${configuration.postLogoutPath}`,
-        };
-
-        // Create the OIDC Client with the above settings
-        this._userManager = new UserManager(settings);
+        this._userManager = new CustomUserManager(configuration);
         this._configuration = configuration;
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();

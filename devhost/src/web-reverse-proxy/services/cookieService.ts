@@ -1,5 +1,4 @@
 import {encryptCookie, decryptCookie} from 'cookie-encrypter'
-import {randomBytes} from 'crypto';
 import {CookieOptions, Request, Response} from 'express';
 import {ClientError} from '../errors/clientError';
 
@@ -71,20 +70,13 @@ export class CookieService {
     public readCsrfCookie(clientId: string, request: Request): string {
 
         if (request.cookies) {
-            const encryptedData = request.cookies[`${this._csrfCookieName}-${clientId}`];
-            if (encryptedData) {
-                return decryptCookie(encryptedData, {key: this._encryptionKey});
+            const value = request.cookies[`${this._csrfCookieName}-${clientId}`];
+            if (value) {
+                return value;
             }
         }
 
         throw ClientError.invalidGrant('No valid CSRF cookie was found in the incoming request');
-    }
-
-    /*
-     * Return a name to check against a header
-     */
-    public getCsrfCookieName(clientId: string): string {
-        return `${this._csrfCookieName}-${clientId}`;
     }
 
     /*
