@@ -14,8 +14,8 @@ export interface Configuration {
     // The encryption key for cookies
     cookieEncryptionKey: string;
 
-    // Web origins we accept requests from
-    trustedWebOrigins: string[];
+    // The web origin we accept requests from
+    trustedWebOrigin: string;
 
     // HTTP debugging details
     useHttpProxy: boolean;

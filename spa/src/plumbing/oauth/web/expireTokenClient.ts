@@ -1,7 +1,6 @@
 import axios, {AxiosRequestConfig} from 'axios';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
-import {SecureCookieHelper} from './secureCookieHelper';
 
 /*
  * A helper class for testing
@@ -16,7 +15,6 @@ export class ExpireTokenClient {
         // Send our request form URL encoded, as for other requests to the reverse proxy
         const formData = new URLSearchParams();
         formData.append('client_id', oauthConfiguration.clientId);
-        SecureCookieHelper.addCsrfFieldToRequest(formData);
 
         // Define request options
         const url = `${oauthConfiguration.reverseProxyUrl}/expire`;

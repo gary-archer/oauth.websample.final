@@ -8,7 +8,6 @@ import {ClientError} from '../errors/clientError';
 export class CookieService {
 
     private readonly _authCookieName = 'mycompany-auth';
-    private readonly _csrfCookieName = 'mycompany-csrf';
     private readonly _encryptionKey: Buffer;
 
     public constructor(base64encryptionKey: string) {
@@ -46,37 +45,6 @@ export class CookieService {
         }
 
         throw ClientError.invalidGrant('No valid auth cookie was found in the incoming request');
-    }
-
-    /*
-     * Write a CSRF cookie to make it harder for malicious code to successfully post to the token refresh endpoint
-     */
-    public writeCsrfCookie(clientId: string, response: Response, value: string): void {
-
-        const options = {
-            httpOnly: true,
-            secure: true,
-            path: '/reverse-proxy',
-            sameSite: 'strict',
-        };
-
-        // Encrypt the cookie, since it contains a refresh token
-        response.cookie(`${this._csrfCookieName}-${clientId}`, value, options as CookieOptions);
-    }
-
-    /*
-     * Write a response cookie that the client must also send in a request field on subsequent requests
-     */
-    public readCsrfCookie(clientId: string, request: Request): string {
-
-        if (request.cookies) {
-            const value = request.cookies[`${this._csrfCookieName}-${clientId}`];
-            if (value) {
-                return value;
-            }
-        }
-
-        throw ClientError.invalidGrant('No valid CSRF cookie was found in the incoming request');
     }
 
     /*

@@ -1,7 +1,6 @@
 import {SigninResponse, StateStore, User, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {HybridTokenStorage} from './hybridTokenStorage';
-import {SecureCookieHelper} from './secureCookieHelper';
 
 /*
  * Extend the OIDC Client class to specialise some behaviour
@@ -50,23 +49,29 @@ export class CustomUserManager extends UserManager {
 
     /*
      * Capture the response from the Authorization Code Grant message
-     * Store a field we will send later in Refresh Token Grant requests
      */
     public async processSigninResponse(url?: string, stateStore?: StateStore): Promise<SigninResponse> {
 
         const response = await super.processSigninResponse(url, stateStore) as any;
-        SecureCookieHelper.readCsrfFieldFromResponse(response);
+
+        /*
+         * We could read custom fields from the response here if needed, such as a CSRF value
+         */
+
         return response;
     }
 
     /*
      * Send the Refresh Token Grant message, but with an empty refresh token in the request body
-     * Instead we send an auth cookie containing the refresh token, along with a CSRF field
+     * The refresh token is instead implicitly sent in an encrypted auth cookie
      */
     public async signinSilent(): Promise<User> {
 
+        /*
+         * We could add extra fields to the request body here if needed, such as a CSRF value
+         */
+
         const options = {};
-        SecureCookieHelper.addCsrfFieldToRequest(options);
         return super.signinSilent(options)
     }
 }

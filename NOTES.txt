@@ -5,16 +5,12 @@ SECURITY
    Remove token keys from storage
    Restrict to just the needed protocol claims
    Use better key names for my own storage
-   Try to get CSRF field saving there - filterProtocolClaims etc
 
 SPA
 ---
-1. Improve GitHub README of main web sample to indicate the proxy pattern being implemented
-   Result is multi tab browsing with tokens in memory and standard use of CDN and API calls
+1. Get rid of trailing backslash in redirect uri
 
-2. Get rid of trailing backslash in redirect uri
-
-3. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
+2. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
 
 FINALISE ONCE PAST ALL RISKS
 ----------------------------
