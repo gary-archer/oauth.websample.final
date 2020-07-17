@@ -114,8 +114,8 @@ export class AuthService {
                - They have injected code into our SPA via a successful XSS attack
                  They have then done a POST https://web.mycompany.com/reverse-proxy/token
 
-               If the attacker knows how to do any of these things
-               Then they will have reverse engineered our app and CSRF only adds obfuscation, not real security
+               If the attacker knows how to do either of these things
+               Then they have reverse engineered our app and CSRF only adds obfuscation, not real security
              */
         }
 

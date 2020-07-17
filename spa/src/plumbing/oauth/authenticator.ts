@@ -1,5 +1,5 @@
 /*
- * An interface to abstract aiuthentication differences between providers
+ * An interface to abstract authentication differences between web and mobile hosts
  */
 export interface Authenticator {
 
