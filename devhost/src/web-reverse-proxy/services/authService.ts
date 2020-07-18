@@ -1,3 +1,4 @@
+import {randomBytes} from 'crypto';
 import {Request, Response} from 'express';
 import {Configuration} from '../configuration/configuration';
 import {ApiLogger} from '../utilities/apiLogger';
@@ -10,6 +11,7 @@ import {ClientError} from '../errors/clientError';
  */
 export class AuthService {
 
+    private readonly _csrfFieldName = 'csrf_field';
     private readonly _configuration: Configuration;
     private readonly _proxyService: ProxyService;
     private readonly _cookieService: CookieService;
@@ -34,13 +36,14 @@ export class AuthService {
         const refreshToken = authCodeGrantData.refresh_token;
         if (refreshToken) {
 
-            // If it exists, remove it from the response to the SPA and write it to a cookie
+            // Write the refresh token to an HTTP only cookie
             delete authCodeGrantData.refresh_token;
             this._cookieService.writeAuthCookie(clientId, refreshToken, response);
 
-            /*
-             * We could write extra fields here if needed, such as a CSRF value
-             */
+            // Write a CSRF HTTP only cookie and also give the UI the value in a response field
+            const randomValue = randomBytes(32).toString('base64');
+            this._cookieService.writeCsrfCookie(clientId, response, randomValue);
+            authCodeGrantData[this._csrfFieldName] = randomValue;
         }
 
         // Send access and id tokens to the SPA
@@ -93,7 +96,7 @@ export class AuthService {
     /*
      * Do some initial verification and then return the client id from the request body
      */
-    private _validateAndGetClientId(request: Request, makeIncomingCookieChecks: boolean): string {
+    private _validateAndGetClientId(request: Request, requireCsrfCookie: boolean): string {
 
         // Check the HTTP request has the expected web origin
         this._validateOrigin(request);
@@ -101,29 +104,16 @@ export class AuthService {
         // Get the client id from the request body
         const clientId = this._getClientId(request);
 
-        // We could make extra checks here on received cookies
-        // https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
-        if (makeIncomingCookieChecks) {
-
-            /*
-               However, if an attacker is able to call this endpoint then one of the following is true:
-
-               - They have stolen a cookie for a valid login session, using an HTTP tool such as Fiddler
-                 They have then sent it, along with an HTTP header of Origin=https://web.mycompany.com
-
-               - They have injected code into our SPA via a successful XSS attack
-                 They have then done a POST https://web.mycompany.com/reverse-proxy/token
-
-               If the attacker knows how to do either of these things
-               Then they have reverse engineered our app and CSRF only adds obfuscation, not real security
-             */
+        // For token refresh requests, also check that the HTTP request has an extra header
+        if (requireCsrfCookie) {
+            this._validateCsrfCookie(clientId, request);
         }
 
         return clientId;
     }
 
     /*
-     * Make sure that older browsers can't post here from other domains, by checking the origin header
+     * Make sure that older browsers can't post requests here from other domains, by checking the origin header
      */
     private _validateOrigin(request: Request): void {
 
@@ -148,5 +138,25 @@ export class AuthService {
         }
 
         throw ClientError.invalidGrant('No client_id was found in the received form url encoded data');
+    }
+
+    /*
+     * Extra mitigation in the event of malicious code trying to POST a refresh token grant request via a scripted form
+     * https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
+     */
+    private _validateCsrfCookie(clientId: string, request: Request) {
+
+        // Get the CSRF cookie
+        const cookieValue = this._cookieService.readCsrfCookie(clientId, request);
+
+        // Check there is a matching CSRF request field
+        if (!request.headers || !request.headers[this._csrfFieldName]) {
+            throw ClientError.invalidGrant('No CSRF request header field was supplied');
+        }
+
+        // Check that the values match
+        if (cookieValue !== request.body[this._csrfFieldName]) {
+            throw ClientError.invalidGrant('The CSRF request header does not match the CSRF cookie value');
+        }
     }
 }

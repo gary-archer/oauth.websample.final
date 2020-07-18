@@ -1,6 +1,6 @@
 import {Log, Logger} from 'oidc-client';
-import {EventEmitter} from '../../events/eventEmitter';
-import {EventNames} from '../../events/eventNames';
+import {EventEmitter} from '../../../events/eventEmitter';
+import {EventNames} from '../../../events/eventNames';
 import {OidcLogLevel} from './oidcLogLevel';
 
 /*

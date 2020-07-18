@@ -1,6 +1,8 @@
 import {SigninResponse, StateStore, User, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
+import {CognitoLogoutUrlBuilder} from './cognitoLogoutUrlBuilder';
 import {HybridTokenStorage} from './hybridTokenStorage';
+import {SecureCookieHelper} from './secureCookieHelper';
 
 /*
  * Extend the OIDC Client class to specialise some behaviour
@@ -8,14 +10,20 @@ import {HybridTokenStorage} from './hybridTokenStorage';
 export class CustomUserManager extends UserManager {
 
     private readonly _configuration: OAuthConfiguration;
+    private readonly _secureCookieHelper: SecureCookieHelper;
 
-    public constructor(configuration: OAuthConfiguration) {
+    public constructor(configuration: OAuthConfiguration, secureCookieHelper: SecureCookieHelper) {
+        
+        // Construct the settings class in order to initialise the base class
         super(CustomUserManager.getSettings(configuration))
+
+        // Store other fields
         this._configuration = configuration;
+        this._secureCookieHelper = secureCookieHelper;
     }
 
     /*
-     * Supply  OIDC Client settings
+     * Create settings for the OIDC Client UserManager class
      */
     public static getSettings(configuration: OAuthConfiguration): UserManagerSettings {
 
@@ -53,25 +61,29 @@ export class CustomUserManager extends UserManager {
     public async processSigninResponse(url?: string, stateStore?: StateStore): Promise<SigninResponse> {
 
         const response = await super.processSigninResponse(url, stateStore) as any;
-
-        /*
-         * We could read custom fields from the response here if needed, such as a CSRF value
-         */
-
+        this._secureCookieHelper.readCsrfFieldFromResponse(response);
         return response;
     }
 
     /*
-     * Send the Refresh Token Grant message, but with an empty refresh token in the request body
-     * The refresh token is instead implicitly sent in an encrypted auth cookie
-     */
-    public async signinSilent(): Promise<User> {
+     * Override login to implement the Cognito vendor specific solution
+     */ 
+    public async signoutRedirect(): Promise<void> {
 
-        /*
-         * We could add extra fields to the request body here if needed, such as a CSRF value
-         */
+        if (this._configuration.authority.indexOf('cognito') !== -1) {
 
-        const options = {};
-        return super.signinSilent(options)
+            // First remove tokens from memory
+            await super.removeUser();
+
+            // Handle Cognito logout specially
+            const builder = new CognitoLogoutUrlBuilder(this._configuration);
+            const logoutRedirectUrl = builder.buildUrl();
+            location.replace(logoutRedirectUrl);
+
+        } else {
+
+            // Otherwise call OIDC Client which will do all of the right things
+            await super.signoutRedirect();
+        }
     }
 }

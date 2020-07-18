@@ -11,7 +11,7 @@ import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorFactory} from '../plumbing/oauth/authenticatorFactory';
-import {TraceListener} from '../plumbing/oauth/trace/traceListener';
+import {TraceListener} from '../plumbing/oauth/web/trace/traceListener';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';

@@ -5,9 +5,8 @@ import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
-import {CognitoLogoutUrlBuilder} from './cognitoLogoutUrlBuilder';
 import {CustomUserManager} from './customUserManager';
-import {ExpireTokenClient} from './expireTokenClient';
+import {SecureCookieHelper} from './secureCookieHelper';
 
 /*
  * A custom web integration of OIDC Client, which uses cookies for token renewal
@@ -20,6 +19,9 @@ export class WebAuthenticator implements Authenticator {
     // The OIDC Client does all of the real security handling
     private readonly _userManager: CustomUserManager;
 
+    // A utility class to manage our refresh token in a secure cookie
+    private readonly _secureCookieHelper: SecureCookieHelper;
+    
     // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
 
@@ -28,8 +30,9 @@ export class WebAuthenticator implements Authenticator {
      */
     public constructor(configuration: OAuthConfiguration) {
 
-        this._userManager = new CustomUserManager(configuration);
         this._configuration = configuration;
+        this._secureCookieHelper = new SecureCookieHelper(configuration);
+        this._userManager = new CustomUserManager(configuration, this._secureCookieHelper);
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();
     }
@@ -44,6 +47,7 @@ export class WebAuthenticator implements Authenticator {
         }
 
         this._userManager.settings.metadata!.token_endpoint = `${this._configuration.reverseProxyUrl}/token`;
+        this._secureCookieHelper.initialise();
     }
 
     /*
@@ -172,22 +176,11 @@ export class WebAuthenticator implements Authenticator {
 
         try {
 
-            // Handle Cognito logout specially
-            if (this._configuration.authority.indexOf('cognito') !== -1) {
+            // Do a standards based logout redirect
+            await this._userManager.signoutRedirect();
 
-                // First remove tokens from memory
-                await this._userManager.removeUser();
-
-                // Do the redirect
-                const builder = new CognitoLogoutUrlBuilder(this._configuration);
-                const logoutRedirectUrl = builder.buildUrl();
-                location.replace(logoutRedirectUrl);
-
-            } else {
-
-                // Otherwise do a standards based logout redirect
-                await this._userManager.signoutRedirect();
-            }
+            // Then ensure that the auth cookie is gone
+            await this.expireRefreshToken();
 
         } catch (e) {
             throw ErrorHandler.getFromLogoutRequest(e, ErrorCodes.logoutRequestFailed);
@@ -215,9 +208,8 @@ export class WebAuthenticator implements Authenticator {
         // First expire the access token so that the next API call returns a 401
         await this.expireAccessToken();
 
-        // Next make token renewal fail also
-        const client = new ExpireTokenClient();
-        await client.expireRefreshToken(this._configuration);
+        // Also make the refresh token in the secure cookie act expired
+        await this._secureCookieHelper.expireRefreshToken(this._configuration);
     }
 
     /*
@@ -234,8 +226,11 @@ export class WebAuthenticator implements Authenticator {
 
             if (e.message === ErrorCodes.invalidGrant) {
 
-                // For invalid_grant errors, clear token data and return success, to force a login redirect
+                // For invalid_grant errors, clear token data, which will force a login redirect
                 await this._userManager.removeUser();
+
+                // Also remove the refresh token
+                await this._secureCookieHelper.expireRefreshToken(this._configuration);
             }
             else {
 

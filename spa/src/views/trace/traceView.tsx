@@ -1,7 +1,7 @@
 import React from 'react';
 import {EventEmitter} from '../../plumbing/events/eventEmitter';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {TraceLine} from '../../plumbing/oauth/trace/traceLine';
+import {TraceLine} from '../../plumbing/oauth/web/trace/traceLine';
 import {TraceViewState} from './traceViewState';
 
 /*

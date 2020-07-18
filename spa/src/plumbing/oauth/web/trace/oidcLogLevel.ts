@@ -6,7 +6,7 @@ import urlparse from 'url-parse';
  */
 export class OidcLogLevel {
 
-    private readonly _logLevelKey = 'oidcloglevel';
+    private readonly _logLevelKey = 'finalspa.oidcloglevel';
 
     /*
      * Set the initial log level

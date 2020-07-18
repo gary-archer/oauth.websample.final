@@ -1,26 +1,28 @@
-SECURITY
---------
-1. Improve local storage further
-   Understand state storage + cleanup
-   Remove token keys from storage
-   Restrict to just the needed protocol claims
-   Use better key names for my own storage
-
 SPA
 ---
-1. Get rid of trailing backslash in redirect uri
+1. Add a header with CSRF field
+   Make SecureCookieHelper a singleton rather than using statics
 
-2. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
+2. Local storage review
+   Understand OIDC state storage + why not cleaned up
+   Remove token keys from storage
+   Restrict to just the needed protocol claims
 
-FINALISE ONCE PAST ALL RISKS
-----------------------------
-1. Remove Web Static Content from .Net Core and Java APIs
+3. Get rid of trailing backslash in Cognito redirect uri for spa2
 
-2. Merge changes to master and redeploy main SPA
+4. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
 
-3. Test on Android and iOS browsers
+SERVERLESS
+----------
+1. Sunday job is to get this coded
 
-4. Update blog instructions on how to run Final SPA and Final APIs
+2. Remove Web Static Content from .Net Core and Java APIs
 
-5. Design Articles to end SPA theme - and describe pattern
+3. Merge changes to master and redeploy main SPA
+
+4. Test on Android and iOS browsers
+
+5. Update blog instructions on how to run Final SPA and Final APIs
+
+6. Design Articles to end SPA theme - and describe pattern
    Then describe Final SPA as part of Cloud theme
