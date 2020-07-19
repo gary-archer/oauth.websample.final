@@ -89,6 +89,7 @@ export class ReverseProxyRouter {
     private _setupCallbacks(): void {
         this.tokenEndpoint = this.tokenEndpoint.bind(this);
         this.expireRefreshToken = this.expireRefreshToken.bind(this);
+        this.clearCookies = this.clearCookies.bind(this);
         this.notFoundHandler = this.notFoundHandler.bind(this);
         this.unhandledExceptionHandler = this.unhandledExceptionHandler.bind(this);
     }

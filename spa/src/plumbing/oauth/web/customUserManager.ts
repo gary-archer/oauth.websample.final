@@ -61,7 +61,7 @@ export class CustomUserManager extends UserManager {
     public async processSigninResponse(url?: string, stateStore?: StateStore): Promise<SigninResponse> {
 
         const response = await super.processSigninResponse(url, stateStore) as any;
-        this._secureCookieHelper.readCsrfFieldFromResponse(response);
+        this._secureCookieHelper.setCsrfFieldFromResponse(response);
         return response;
     }
 

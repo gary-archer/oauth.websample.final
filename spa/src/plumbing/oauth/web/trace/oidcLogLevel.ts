@@ -1,5 +1,6 @@
 import {Log} from 'oidc-client';
 import urlparse from 'url-parse';
+import {HtmlStorageHelper} from '../../../utilities/htmlStorageHelper';
 
 /*
  * A helper class to deal with calculating and storing the log level
@@ -13,11 +14,9 @@ export class OidcLogLevel {
      */
     public constructor() {
 
-        // Use the URL if specified
+        // Use the URL if specified, or the stored value otherwise
         let level = this._getUrlLogLevel();
-
-        // Use session storage if found
-        if (level == null) {
+        if (!level) {
             level = this._getStoredLogLevel();
         }
 
@@ -30,18 +29,15 @@ export class OidcLogLevel {
     public updateLevelIfRequired(): void {
 
         const newLevel = this._getUrlLogLevel();
-        if (newLevel != null) {
-
-            if (newLevel !== this._getStoredLogLevel()) {
-                this._setLogLevel(newLevel);
-            }
+        if (newLevel !== this._getStoredLogLevel()) {
+            this._setLogLevel(newLevel);
         }
     }
 
     /*
      * Get the log level from a query parameter in the hash URL, such as #/companies=2&log=info
      */
-    private _getUrlLogLevel(): string | null {
+    private _getUrlLogLevel(): string {
 
         if (location.hash.startsWith('#')) {
 
@@ -52,22 +48,20 @@ export class OidcLogLevel {
             }
         }
 
-        return null;
+        return '';
     }
 
     /*
      * Get the value from session storage if it exists
      */
-    private _getStoredLogLevel(): string | null {
-
-        const found = localStorage.getItem(this._logLevelKey);
-        return found || null;
+    private _getStoredLogLevel(): string {
+        return HtmlStorageHelper.oidcLogLevel;
     }
 
     /*
      * Set the log level in the session so that it is inherited on page reloads and by the renewal iframe
      */
-    private _setLogLevel(level: string | null): void {
+    private _setLogLevel(level: string): void {
 
         const data: { [key: string]: number | undefined } = {
             none:  Log.NONE,
@@ -80,8 +74,7 @@ export class OidcLogLevel {
         const levelToSet = level || 'none';
         const numericLevel = data[levelToSet];
         if (numericLevel !== undefined) {
-
-            localStorage.setItem(this._logLevelKey, levelToSet);
+            HtmlStorageHelper.oidcLogLevel = levelToSet;
             Log.level = numericLevel;
         }
     }

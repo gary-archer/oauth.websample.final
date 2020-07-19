@@ -28,9 +28,6 @@ export class HttpServerConfiguration {
      */
     public async initializeReverseProxyApi(): Promise<void> {
 
-        // We don't want API requests to be cached unless explicitly designed for caching
-        this._expressApp.set('etag', false);
-
         // Receive form URL encoded OAuth messages and also cookies
         this._expressApp.use('/reverse-proxy/*', urlencoded({extended: true}));
         this._expressApp.use('/reverse-proxy/*', cookieParser());

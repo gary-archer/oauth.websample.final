@@ -1,5 +1,8 @@
 SPA
 ---
+0. Header sent twice
+   Test freezing + DoHacks
+
 1. Local storage review
    Understand OIDC state storage + why not cleaned up
    Remove token keys from storage
@@ -11,7 +14,7 @@ SPA
 
 SERVERLESS
 ----------
-1. Sunday job is to get coding completed and merged
+1. Sunday job is to get coding completed and merged + fix above issues
 
 2. Remove Web Static Content from .Net Core and Java APIs
 

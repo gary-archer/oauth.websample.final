@@ -1,7 +1,8 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
-import {ErrorHandler} from '../../errors/errorHandler';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
+import {ErrorHandler} from '../../errors/errorHandler';
 import {ErrorConsoleReporter} from '../../errors/errorConsoleReporter';
+import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 
 /*
  * A helper class to deal with aspects related to our secure cookie
@@ -9,7 +10,6 @@ import {ErrorConsoleReporter} from '../../errors/errorConsoleReporter';
 export class SecureCookieHelper {
 
     private readonly _configuration: OAuthConfiguration;
-    private readonly _localStorageKeyName = 'finalspa.cookie.csrf';
     private readonly _responseBodyFieldName = 'csrf_field';
     private readonly _requestHeaderFieldName = 'x-mycompany-finalspa-refresh-csrf';
 
@@ -18,30 +18,29 @@ export class SecureCookieHelper {
     }
 
     /*
-     * Initialise calls to our web reverse proxy
+     * Override the prototype to add an extra CSRF header when needed, to help protect our secure cookie
      */
     public initialise() {
 
-        // Override the prototype to add an extra header in some cases
         // tslint:disable:no-this-assignment
         const that = this;
         const orig = XMLHttpRequest.prototype.open as any;
         XMLHttpRequest.prototype.open = function (method: string, url: string) {
             orig.call(this, method, url);
-            that._addCsrfFieldToOidcClientRequestHeader(this, method, url);
+            that._addCsrfFieldToRequestHeader(this, url);
         };
 
-        // Then freeze it so that malicious code is unable to intercept the bearer header
+        // Then freeze the prototype so that malicious code is unable to intercept the bearer header
         Object.freeze(XMLHttpRequest.prototype);
     }
 
     /*
      * Store the CSRF field when the web reverse proxy returns it in the Authorization Code Grant response
      */
-    public readCsrfFieldFromResponse(response: any) {
+    public setCsrfFieldFromResponse(response: any) {
 
-        if (response.csrf_field) {
-            localStorage.setItem(this._localStorageKeyName, response[this._responseBodyFieldName]);
+        if (response[this._responseBodyFieldName]) {
+            HtmlStorageHelper.tokenEndpointCookieCsrfField = response[this._responseBodyFieldName];
         }
     }
 
@@ -53,11 +52,8 @@ export class SecureCookieHelper {
         // Send a delete request to the reverse proxy's token endpoint to clear resources for secure cookies
         await this._sendCookieRequest('DELETE', 'token');
 
-        // Remove the CSRF value once finished
-        const csrfField = localStorage.getItem(this._localStorageKeyName);
-        if (csrfField) {
-            localStorage.removeItem(this._localStorageKeyName);
-        }
+        // Also remove the CSRF field from local storage
+        HtmlStorageHelper.removeTokenEndpointCookieCsrfField();
     }
 
     /*
@@ -88,9 +84,6 @@ export class SecureCookieHelper {
             },
         };
 
-        // Add the CSRF header
-        this._addCsrfFieldToAxiosRequestHeader(options as AxiosRequestConfig)
-
         try {
             // Call our reverse proxy
             await axios.request(options as AxiosRequestConfig);
@@ -106,25 +99,14 @@ export class SecureCookieHelper {
     /*
      * Protect the web reverse proxy's token endpoint from HTML form attacks
      */
-    private _addCsrfFieldToOidcClientRequestHeader(request: XMLHttpRequest, method: string, url: string) {
+    private _addCsrfFieldToRequestHeader(request: XMLHttpRequest, url: string) {
 
-        if (method.toLowerCase() === 'post' && url.toLowerCase().startsWith(this._configuration.reverseProxyUrl)) {
+        if (url.toLowerCase().startsWith(this._configuration.reverseProxyUrl)) {
 
-            const value = localStorage.getItem(this._localStorageKeyName);
+            const value = HtmlStorageHelper.tokenEndpointCookieCsrfField;
             if (value) {
                 request.setRequestHeader(this._requestHeaderFieldName, value);
             }
-        }
-    }
-
-    /*
-     * Add the CSRF field for calls initiated from this class
-     */
-    private _addCsrfFieldToAxiosRequestHeader(options: AxiosRequestConfig) {
-
-        const value = localStorage.getItem(this._localStorageKeyName);
-        if (value) {
-            options.headers[this._requestHeaderFieldName] = value;
         }
     }
 }

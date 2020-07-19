@@ -104,7 +104,7 @@ export class AuthService {
 
         // Validate and get client details
         const clientId = this._validateAndGetClientId(request, true);
-        ApiLogger.info(`Expiring Refresh Token for client ${clientId}`);
+        ApiLogger.info(`Clearing Cookies for client ${clientId}`);
 
         // Clear all cookies for this client
         this._cookieService.clearAll(clientId, response);
