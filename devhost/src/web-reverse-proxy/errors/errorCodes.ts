@@ -15,6 +15,6 @@ export class ErrorCodes {
     // A problem making an HTTP request
     public static readonly httpRequestError = 'http_request_error';
 
-    // Indicate that a request to refresh a token is not valid due to a missing cookie
+    // Indicate that a request to refresh a token is not valid
     public static readonly invalidGrant = 'invalid_grant';
 }

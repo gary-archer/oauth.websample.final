@@ -1,6 +1,3 @@
-/*
- * A range for random error ids
- */
 import {ClientError} from './clientError';
 
 /*
