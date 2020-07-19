@@ -85,7 +85,7 @@ export class ProxyService {
                 const errorData = e.response.data;
                 if (errorData.error) {
 
-                    const description = errorData.error_description ?? 'The Authorization Server rejected the Refresh Token';
+                    const description = errorData.error_description ?? 'The Authorization Server rejected the request';
                     throw new ClientError(e.response.status, errorData.error, description);
                 }
             }
