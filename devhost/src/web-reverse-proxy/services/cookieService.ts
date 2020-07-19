@@ -20,17 +20,9 @@ export class CookieService {
      */
     public writeAuthCookie(clientId: string, refreshToken: string, response: Response): void {
 
-        // The auth cookie is HTTP only, requires SSL and browsers can only send it from our web origin
-        const options = {
-            httpOnly: true,
-            secure: true,
-            path: '/reverse-proxy',
-            sameSite: 'strict',
-        };
-
         // Encrypt the cookie, since it contains a refresh token
         const encryptedData = encryptCookie(refreshToken, {key: this._encryptionKey});
-        response.cookie(`${this._authCookieName}-${clientId}`, encryptedData, options as CookieOptions);
+        response.cookie(`${this._authCookieName}-${clientId}`, encryptedData, this._getCookieOptions());
     }
 
     /*
@@ -61,7 +53,7 @@ export class CookieService {
         };
 
         // Encrypt the cookie, since it contains a refresh token
-        response.cookie(`${this._csrfCookieName}-${clientId}`, value, options as CookieOptions);
+        response.cookie(`${this._csrfCookieName}-${clientId}`, value, this._getCookieOptions());
     }
 
     /*
@@ -87,5 +79,36 @@ export class CookieService {
 
         const expiredRefreshToken = `x${refreshToken}x`;
         this.writeAuthCookie(clientId, expiredRefreshToken, response);
+    }
+
+    /*
+     * Clear all cookies when the user session expires
+     */
+    public clearAll(clientId: string, response: Response): void {
+
+        response.clearCookie(`${this._authCookieName}-${clientId}`, this._getCookieOptions());
+        response.clearCookie(`${this._csrfCookieName}-${clientId}`, this._getCookieOptions());
+    }
+
+    /*
+     * Both our auth cookie and CSRF cookie use the same options
+     */
+    private _getCookieOptions(): CookieOptions {
+
+        return {
+
+            // The cookie cannot be read by Javascript code, but any logged in user can get the cookie via HTTP tools
+            httpOnly: true,
+
+            // The cookie can only be sent over an HTTPS connection
+            secure: true,
+
+            // The cookie is only used for OAuth token endpoint requests, and not for Web / API requests
+            path: '/reverse-proxy',
+
+            // The cookie's intended usage is same domain only
+            // Newer browsers will honour this by not sending it from other web domains
+            sameSite: 'strict',
+        };
     }
 }

@@ -11,10 +11,14 @@ import {ClientError} from '../errors/clientError';
  */
 export class AuthService {
 
-    private readonly _csrfFieldName = 'csrf_field';
+    // Worker classes
     private readonly _configuration: Configuration;
     private readonly _proxyService: ProxyService;
     private readonly _cookieService: CookieService;
+
+    // CSRF constants
+    private readonly _responseBodyFieldName = 'csrf_field';
+    private readonly _requestHeaderFieldName = 'x-mycompany-finalspa-refresh-csrf';
 
     public constructor(configuration: Configuration) {
         this._configuration = configuration;
@@ -43,7 +47,7 @@ export class AuthService {
             // Write a CSRF HTTP only cookie and also give the UI the value in a response field
             const randomValue = randomBytes(32).toString('base64');
             this._cookieService.writeCsrfCookie(clientId, response, randomValue);
-            authCodeGrantData[this._csrfFieldName] = randomValue;
+            authCodeGrantData[this._responseBodyFieldName] = randomValue;
         }
 
         // Send access and id tokens to the SPA
@@ -90,6 +94,20 @@ export class AuthService {
 
         // Write a corrupted refresh token to the cookie, which will fail on the next token renewal attempt
         this._cookieService.expire(clientId, refreshToken, request, response);
+        response.status(204).send();
+    }
+
+    /*
+     * An operation to clear cookies when the user session ends
+     */
+    public async clearCookies(request: Request, response: Response): Promise<void> {
+
+        // Validate and get client details
+        const clientId = this._validateAndGetClientId(request, true);
+        ApiLogger.info(`Expiring Refresh Token for client ${clientId}`);
+
+        // Clear all cookies for this client
+        this._cookieService.clearAll(clientId, response);
         response.status(204).send();
     }
 
@@ -150,12 +168,12 @@ export class AuthService {
         const cookieValue = this._cookieService.readCsrfCookie(clientId, request);
 
         // Check there is a matching CSRF request field
-        if (!request.headers || !request.headers[this._csrfFieldName]) {
+        if (!request.headers || !request.headers[this._requestHeaderFieldName]) {
             throw ClientError.invalidGrant('No CSRF request header field was supplied');
         }
 
         // Check that the values match
-        if (cookieValue !== request.body[this._csrfFieldName]) {
+        if (cookieValue !== request.headers[this._requestHeaderFieldName]) {
             throw ClientError.invalidGrant('The CSRF request header does not match the CSRF cookie value');
         }
     }

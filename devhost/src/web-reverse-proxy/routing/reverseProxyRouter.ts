@@ -5,9 +5,9 @@ import {ResponseWriter} from '../utilities/responseWriter';
 import {AuthService} from '../services/authService';
 
 /*
- * A class to route API requests to business logic classes
+ * A class to route incoming requests to the auth service, and to handle error responses
  */
-export class ApiRouter {
+export class ReverseProxyRouter {
 
     private readonly _authService: AuthService;
 
@@ -40,6 +40,14 @@ export class ApiRouter {
 
         // Other grants are not supported
         throw ErrorHandler.fromRequestNotFound('A token endpoint request was received without a valid grant type');
+    }
+
+    /*
+     * Clear cookies when the user session ends
+     */
+    public async clearCookies(request: Request, response: Response, next: NextFunction): Promise<void> {
+
+        await this._authService.clearCookies(request, response);
     }
 
     /*

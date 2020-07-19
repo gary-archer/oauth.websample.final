@@ -1,20 +1,17 @@
 SPA
 ---
-1. Add a header with CSRF field
-   Make SecureCookieHelper a singleton rather than using statics
-
-2. Local storage review
+1. Local storage review
    Understand OIDC state storage + why not cleaned up
    Remove token keys from storage
    Restrict to just the needed protocol claims
 
-3. Get rid of trailing backslash in Cognito redirect uri for spa2
+2. Get rid of trailing backslash in Cognito redirect uri for spa2
 
-4. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
+3. Fix weird ReactJS logout effect of redirecting from #/loggedout to #loggedout to #/loggedout
 
 SERVERLESS
 ----------
-1. Sunday job is to get this coded
+1. Sunday job is to get coding completed and merged
 
 2. Remove Web Static Content from .Net Core and Java APIs
 

@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import https from 'https';
 import {WebRouter} from './content-delivery-network/webRouter';
 import {Configuration} from './web-reverse-proxy/configuration/configuration';
-import {ApiRouter} from './web-reverse-proxy/routing/apiRouter';
+import {ReverseProxyRouter} from './web-reverse-proxy/routing/reverseProxyRouter';
 
 /*
  * Configure HTTP behaviour at application startup
@@ -13,13 +13,13 @@ export class HttpServerConfiguration {
 
     private readonly _expressApp: Application;
     private readonly _configuration: Configuration;
-    private readonly _apiRouter: ApiRouter;
+    private readonly _reverseProxyRouter: ReverseProxyRouter;
     private readonly _webRouter: WebRouter;
 
     public constructor(expressApp: Application, configuration: Configuration) {
         this._expressApp = expressApp;
         this._configuration = configuration;
-        this._apiRouter = new ApiRouter(this._configuration);
+        this._reverseProxyRouter = new ReverseProxyRouter(this._configuration);
         this._webRouter = new WebRouter();
     }
 
@@ -35,15 +35,16 @@ export class HttpServerConfiguration {
         this._expressApp.use('/reverse-proxy/*', urlencoded({extended: true}));
         this._expressApp.use('/reverse-proxy/*', cookieParser());
 
-        // Our main route manages forwarding to the Authorization Server and issuing cookies
-        this._expressApp.post('/reverse-proxy/token', this._catch(this._apiRouter.tokenEndpoint));
+        // Our main route forwards to the Authorization Server, then manages refresh tokens in cookies
+        this._expressApp.post('/reverse-proxy/token', this._catch(this._reverseProxyRouter.tokenEndpoint));
 
-        // For testing we provide an endpoint to make the refresh token act as expired
-        this._expressApp.post('/reverse-proxy/expire', this._catch(this._apiRouter.expireRefreshToken));
+        // Routes for testing and to remove cookies completely when the session expires
+        this._expressApp.post('/reverse-proxy/expire', this._catch(this._reverseProxyRouter.expireRefreshToken));
+        this._expressApp.delete('/reverse-proxy/token', this._catch(this._reverseProxyRouter.clearCookies));
 
         // Error routes
-        this._expressApp.use('/reverse-proxy/*', this._apiRouter.notFoundHandler);
-        this._expressApp.use('/reverse-proxy/*', this._apiRouter.unhandledExceptionHandler);
+        this._expressApp.use('/reverse-proxy/*', this._reverseProxyRouter.notFoundHandler);
+        this._expressApp.use('/reverse-proxy/*', this._reverseProxyRouter.unhandledExceptionHandler);
     }
 
     /*
@@ -97,7 +98,7 @@ export class HttpServerConfiguration {
             Promise
                 .resolve(fn(request, response, next))
                 .catch((e) => {
-                    this._apiRouter.unhandledExceptionHandler(e, request, response);
+                    this._reverseProxyRouter.unhandledExceptionHandler(e, request, response);
                 });
         };
     }
