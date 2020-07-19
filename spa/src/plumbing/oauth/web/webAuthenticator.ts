@@ -21,7 +21,7 @@ export class WebAuthenticator implements Authenticator {
 
     // A utility class to manage our refresh token in a secure cookie
     private readonly _secureCookieHelper: SecureCookieHelper;
-    
+
     // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
 
@@ -180,7 +180,7 @@ export class WebAuthenticator implements Authenticator {
             await this._userManager.signoutRedirect();
 
             // Then ensure that the auth cookie is gone
-            await this.expireRefreshToken();
+            await this._secureCookieHelper.clearRefreshToken();
 
         } catch (e) {
             throw ErrorHandler.getFromLogoutRequest(e, ErrorCodes.logoutRequestFailed);
@@ -209,7 +209,7 @@ export class WebAuthenticator implements Authenticator {
         await this.expireAccessToken();
 
         // Also make the refresh token in the secure cookie act expired
-        await this._secureCookieHelper.expireRefreshToken(this._configuration);
+        await this._secureCookieHelper.expireRefreshToken();
     }
 
     /*
@@ -230,7 +230,7 @@ export class WebAuthenticator implements Authenticator {
                 await this._userManager.removeUser();
 
                 // Also remove the refresh token
-                await this._secureCookieHelper.expireRefreshToken(this._configuration);
+                await this._secureCookieHelper.clearRefreshToken();
             }
             else {
 

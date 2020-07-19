@@ -13,7 +13,7 @@ export class CustomUserManager extends UserManager {
     private readonly _secureCookieHelper: SecureCookieHelper;
 
     public constructor(configuration: OAuthConfiguration, secureCookieHelper: SecureCookieHelper) {
-        
+
         // Construct the settings class in order to initialise the base class
         super(CustomUserManager.getSettings(configuration))
 
@@ -67,7 +67,7 @@ export class CustomUserManager extends UserManager {
 
     /*
      * Override login to implement the Cognito vendor specific solution
-     */ 
+     */
     public async signoutRedirect(): Promise<void> {
 
         if (this._configuration.authority.indexOf('cognito') !== -1) {

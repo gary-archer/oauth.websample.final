@@ -1,4 +1,4 @@
-import {TraceLine} from '../../plumbing/oauth/trace/traceLine';
+import {TraceLine} from '../../plumbing/oauth/web/trace/traceLine';
 
 /*
  * State managed by the trace view
