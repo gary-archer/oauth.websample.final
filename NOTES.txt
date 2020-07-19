@@ -1,12 +1,6 @@
 SPA
 ---
-0. Header sent twice
-   Test freezing + DoHacks
-
-1. Local storage review
-   Understand OIDC state storage + why not cleaned up
-   Remove token keys from storage
-   Restrict to just the needed protocol claims
+1. Trim down hybrid storage
 
 2. Get rid of trailing backslash in Cognito redirect uri for spa2
 

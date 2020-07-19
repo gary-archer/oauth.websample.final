@@ -7,6 +7,7 @@ import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
 import {CustomUserManager} from './customUserManager';
 import {SecureCookieHelper} from './secureCookieHelper';
+import { relativeTimeThreshold } from 'moment';
 
 /*
  * A custom web integration of OIDC Client, which uses cookies for token renewal
