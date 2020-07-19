@@ -7,37 +7,27 @@ export class HybridTokenStorage {
 
     private _accessToken: string;
     private _idToken: string;
-    private _refreshToken: string;
 
-    /*
-     * There is no refresh token visible in the SPA
-     * The dummy value is just to get the OIDC Client library to send refresh token grant messages
-     */
     public constructor() {
         this._accessToken = '';
         this._idToken = '';
-        this._refreshToken = '-';
     }
 
     /*
-     * Override the setItem method to remote tokens from data stored and to store them in memory instead
+     * Customise token storage after login, so that sensitive data is only in memory
      */
     public setItem(key: string, value: any): any {
 
         // Store the real tokens in memory
         const deserialized = JSON.parse(value);
-        this._accessToken = deserialized.access_token;
-        this._idToken = deserialized.id_token;
+        this._removeSensitiveDataWhenStoring(deserialized);
 
-        // Save only protocol claims to local storage
-        deserialized.access_token = '';
-        deserialized.id_token = '';
-        deserialized.refresh_token = this._refreshToken;
+        // Save protocol claims to local storage, needed to support page refreshes and multi tab browsing
         localStorage.setItem(key, JSON.stringify(deserialized));
     }
 
     /*
-     * Override the getItem method to use the in memory tokens, with a dummy value for the refresh token
+     * When UserManager.getUser is called, this supplies tokens from memory
      */
     public getItem(key: string): any {
 
@@ -47,9 +37,7 @@ export class HybridTokenStorage {
 
             // Update with in memory token values
             const deserialized = JSON.parse(rawData);
-            deserialized.access_token = this._accessToken;
-            deserialized.id_token = this._idToken;
-            deserialized.refresh_token = this._refreshToken;
+            this._setSensitiveDataWhenLoading(deserialized);
             return JSON.stringify(deserialized);
         }
 
@@ -78,5 +66,40 @@ export class HybridTokenStorage {
      */
     public key(index: number): string | null {
         return localStorage[index];
+    }
+
+    /*
+     * Avoid storing tokens in local storage
+     */
+    private _removeSensitiveDataWhenStoring(tokenData: any) {
+
+        // Save tokens to in memory class members
+        this._accessToken = tokenData.access_token;
+        this._idToken = tokenData.id_token;
+
+        // Remove tokens from HTML storage
+        delete tokenData.access_token;
+        delete tokenData.id_token;
+
+        // Also remove profile claims from the id token, since our SPA gets this data from our API
+        if (tokenData.profile) {
+            delete tokenData.profile.given_name;
+            delete tokenData.profile.family_name;
+            delete tokenData.profile.email;
+        }
+    }
+
+    /*
+     * Return our in memory tokens to the OIDC Client library
+     */
+    private _setSensitiveDataWhenLoading(tokenData: any) {
+
+        // Set token values
+        tokenData.access_token = this._accessToken;
+        tokenData.id_token = this._idToken;
+
+        // This ensures that OIDC Client silently renews tokens via a refresh token grant message
+        // It also ensures that OIDC Client never attempts to use iframe based token renewal
+        tokenData.refresh_token = '-';
     }
 }

@@ -19,7 +19,7 @@ export class CognitoLogoutUrlBuilder {
 
         // Cognito requires the configured logout return URL to use a path segment, so we use /loggedout.html
         const clientId = encodeURIComponent(this._configuration.clientId);
-        const logoutReturnUri = encodeURIComponent(`${this._configuration.appUri}loggedout.html`);
+        const logoutReturnUri = encodeURIComponent(`${this._configuration.appUri}/loggedout.html`);
 
         // Upon return, loggedout.html redirects to https://web.authguidance-examples.com/spa/#/loggedout
         return `${this._configuration.logoutEndpoint}?client_id=${clientId}&logout_uri=${logoutReturnUri}`;

@@ -8,6 +8,6 @@
         "appUri":           "https://web.mycompany.com/spa2",
         "scope":            "openid profile email offline_access",
         "reverseProxyUrl":  "https://web.mycompany.com/reverse-proxy",
-        "postLogoutPath":   "#loggedout"
+        "postLogoutPath":   "#/loggedout"
     }
 }
