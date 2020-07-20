@@ -91,7 +91,7 @@ export class ProxyService {
             }
 
             // Handle client connectivity errors
-            const error = ErrorHandler.fromRequestError(e, options.url);
+            throw ErrorHandler.fromRequestError(e, options.url);
         }
     }
 }

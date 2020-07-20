@@ -6,6 +6,9 @@ export class ErrorCodes {
     // An API request to an invalid route
     public static readonly requestNotFound = 'request_not_found';
 
+    // A generic error code for security verification failures when dealing with refresh tokens
+    public static readonly requestFailedVerification = 'token_request_failed';
+
     // A problem reading file data
     public static readonly fileReadError = 'file_read_error';
 
@@ -14,7 +17,4 @@ export class ErrorCodes {
 
     // A problem making an HTTP request
     public static readonly httpRequestError = 'http_request_error';
-
-    // Indicate that a request to refresh a token is not valid
-    public static readonly invalidGrant = 'invalid_grant';
 }

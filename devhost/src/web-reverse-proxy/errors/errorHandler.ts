@@ -95,6 +95,21 @@ export class ErrorHandler {
     }
 
     /*
+     * Handle failed cookie decryption
+     */
+    public static fromCookieDecryptionError(name: string, exception: any): ApiError {
+
+        const apiError = new ApiError(
+            ErrorCodes.requestFailedVerification,
+            'An invalid cookie was sent in a token request',
+            exception.stack);
+
+        apiError.statusCode = 400;
+        apiError.details = `Name: ${name}, Details: ${this._getExceptionDetails(exception)}`;
+        return apiError;
+    }
+
+    /*
      * Get the message from an exception and avoid returning [object Object]
      */
     private static _getExceptionDetails(e: any): string {

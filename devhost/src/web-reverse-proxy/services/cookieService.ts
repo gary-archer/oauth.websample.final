@@ -30,14 +30,15 @@ export class CookieService {
      */
     public readAuthCookie(clientId: string, request: Request): string {
 
+        const cookieName = `${this._authCookieName}-${clientId}`;
         if (request.cookies) {
             const encryptedData = request.cookies[`${this._authCookieName}-${clientId}`];
             if (encryptedData) {
-                return decryptCookie(encryptedData, {key: this._encryptionKey});
+                return this._decryptCookie(cookieName, encryptedData);
             }
         }
 
-        throw ClientError.invalidGrant('No valid auth cookie was found in the incoming request');
+        throw ClientError.requestFailedVerification('No valid auth cookie was found in the incoming request');
     }
 
     /*
@@ -52,8 +53,9 @@ export class CookieService {
             sameSite: 'strict',
         };
 
-        // Encrypt the cookie, since it contains a refresh token
-        response.cookie(`${this._csrfCookieName}-${clientId}`, value, this._getCookieOptions());
+        // Encrypt the cookie
+        const encryptedData = encryptCookie(value, {key: this._encryptionKey});
+        response.cookie(`${this._csrfCookieName}-${clientId}`, encryptedData, this._getCookieOptions());
     }
 
     /*
@@ -61,14 +63,15 @@ export class CookieService {
      */
     public readCsrfCookie(clientId: string, request: Request): string {
 
+        const cookieName = `${this._csrfCookieName}-${clientId}`;
         if (request.cookies) {
-            const value = request.cookies[`${this._csrfCookieName}-${clientId}`];
-            if (value) {
-                return value;
+            const encryptedData = request.cookies[`${this._csrfCookieName}-${clientId}`];
+            if (encryptedData) {
+                return this._decryptCookie(cookieName, encryptedData);
             }
         }
 
-        throw ClientError.invalidGrant('No valid CSRF cookie was found in the incoming request');
+        throw ClientError.requestFailedVerification('No valid CSRF cookie was found in the incoming request');
     }
 
     /*
@@ -110,5 +113,19 @@ export class CookieService {
             // Newer browsers will honour this by not sending it from other web domains
             sameSite: 'strict',
         };
+    }
+
+    /*
+     * A helper method to decrypt a cookie and report errors clearly
+     */
+    private _decryptCookie(cookieName: string, encryptedData: string) {
+
+        try {
+            return decryptCookie(encryptedData, {key: this._encryptionKey});
+
+        } catch (e) {
+
+            throw ClientError.requestFailedVerification(`Cookie decryption failed for cookie ${cookieName}`);
+        }
     }
 }

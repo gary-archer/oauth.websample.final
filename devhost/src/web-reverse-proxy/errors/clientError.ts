@@ -12,8 +12,8 @@ export class ClientError extends Error {
     /*
      * This error is thrown in a few places so provide a factory method
      */
-    public static invalidGrant(logContext: string): ClientError {
-        const error = new ClientError(400, ErrorCodes.invalidGrant, 'The session is invalid or expired');
+    public static requestFailedVerification(logContext: string): ClientError {
+        const error = new ClientError(400, ErrorCodes.requestFailedVerification, 'The request failed security verification');
         error.logContext = logContext;
         return error;
     }

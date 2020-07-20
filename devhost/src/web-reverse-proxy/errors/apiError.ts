@@ -5,8 +5,8 @@ import {ClientError} from './clientError';
  */
 export class ApiError extends Error {
 
-    private readonly _statusCode: number;
-    private readonly _errorCode: string;
+    private _statusCode: number;
+    private _errorCode: string;
     private _url: any;
     private _details: any;
 
@@ -38,6 +38,10 @@ export class ApiError extends Error {
 
     public set url(url: any) {
         this._url = url;
+    }
+
+    public set statusCode(statusCode: any) {
+        this._statusCode = statusCode;
     }
 
     public get details(): any {
