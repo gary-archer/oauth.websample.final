@@ -20,7 +20,7 @@ export class WebRouter {
      */
     public getWebResource(request: Request, response: Response): void {
 
-        let resourcePath = request.path.toLowerCase().replace('/spa2', '/');
+        let resourcePath = request.path.toLowerCase().replace('/spa', '/');
         if (resourcePath === '/') {
            resourcePath = 'index.html';
         }

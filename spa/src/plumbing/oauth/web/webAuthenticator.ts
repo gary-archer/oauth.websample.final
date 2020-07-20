@@ -224,7 +224,7 @@ export class WebAuthenticator implements Authenticator {
 
         } catch (e) {
 
-            if (e.message === ErrorCodes.invalidGrant) {
+            if (this._isSessionExpired(e)) {
 
                 // For invalid_grant errors, clear token data, which will force a login redirect
                 await this._userManager.removeUser();
@@ -238,6 +238,25 @@ export class WebAuthenticator implements Authenticator {
                 throw ErrorHandler.getFromTokenError(e, ErrorCodes.tokenRenewalError);
             }
         }
+    }
+
+    /*
+     * Treat certain errors as session expired
+     */
+    private _isSessionExpired(e: any): boolean {
+
+        // An invalid_grant error code from the Authorization Server means an expired refresh token
+        if (e.message === ErrorCodes.invalidGrant) {
+            return true;
+        }
+
+        // This can happen when providers are not standards based, in which case we treat it as an invalid_grant
+        // https://github.com/IdentityModel/oidc-client-js/issues/1058
+        if (e.message === 'auth_time in id_token does not match original auth_time') {
+            return true;
+        }
+
+        return false;
     }
 
     /*

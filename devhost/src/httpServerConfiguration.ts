@@ -53,8 +53,8 @@ export class HttpServerConfiguration {
         this._expressApp.set('etag', false);
 
         // Define route values
-        this._expressApp.get('/spa2/*', this._webRouter.getWebResource);
-        this._expressApp.get('/spa2', this._webRouter.getWebRootResource);
+        this._expressApp.get('/spa/*', this._webRouter.getWebResource);
+        this._expressApp.get('/spa', this._webRouter.getWebRootResource);
         this._expressApp.get('/favicon.ico', this._webRouter.getFavicon);
     }
 
