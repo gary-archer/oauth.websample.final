@@ -3,7 +3,7 @@
 ### Overview
 
 * The final SPA code sample using OAuth 2.0 and Open Id Connect, referenced in my blog at https://authguidance.com
-* **The final sample uses a real world coding model, an easier developer setup and supports mobile web integration**
+* **The final sample delivers best multi tab usability, hardened security and uses an AWS Serverless back end**
 
 ### Details
 
@@ -17,10 +17,12 @@
 
 ### SPA Middleware Used
 
-* The [Oidc-Client Library](https://github.com/IdentityModel/oidc-client-js) is used to implement SPA logins and for token handling
+* The [Oidc-Client Library](https://github.com/IdentityModel/oidc-client-js) is used to implement SPA logins and token handling
 
 ### Hosting
 
+* AWS CloudFront is used as the SPA's Content Delivery Network
 * AWS API Gateway is used to host the SPA's OAuth 2.0 Secured API
 * AWS Cognito is used as the Authorization Server for the SPA and API
-* AWS CloudFront is used as the SPA's Content Delivery Network
+* An AWS Cloudfront Edge Lambda is used to issue a web domain cookie containing a refresh token
+

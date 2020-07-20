@@ -1,10 +1,13 @@
 {
 	"folders": [
 		{
-			"path": "host"
+			"path": "spa"
 		},
 		{
-			"path": "spa"
+			"path": "devhost"
+		},
+		{
+			"path": "deployment"
 		}
 	]
 }

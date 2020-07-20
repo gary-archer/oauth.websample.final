@@ -11,7 +11,7 @@ import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorFactory} from '../plumbing/oauth/authenticatorFactory';
-import {TraceListener} from '../plumbing/oauth/trace/traceListener';
+import {TraceListener} from '../plumbing/oauth/web/trace/traceListener';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
@@ -96,10 +96,12 @@ export class App extends React.Component<any, AppState> {
 
         try {
             // First download configuration from the browser's web domain
-            this._configuration = await ConfigurationLoader.download('spa.config.json');
+            const loader = new ConfigurationLoader();
+            this._configuration = await loader.download();
 
             // Create the authenticator and receive any login responses on the main window
             this._authenticator = this._createAuthenticator();
+            await this._authenticator.initialise();
             await this._authenticator.handleLoginResponse();
 
             // Create the API client
@@ -359,7 +361,19 @@ export class App extends React.Component<any, AppState> {
      * For test purposes this makes the refresh token act expired
      */
     private async _onExpireRefreshToken(): Promise<void> {
-        await this._authenticator!.expireRefreshToken();
+
+        try {
+
+            // Try to call the token endpoint to make the refresh token in the cookie act expired
+            await this._authenticator!.expireRefreshToken();
+
+        } catch (e) {
+
+            // Report errors
+            const error = ErrorHandler.getFromException(e);
+            this.setState({error: ErrorHandler.getFromException(e)});
+
+        }
     }
 
     /*

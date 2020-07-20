@@ -1,4 +1,5 @@
 import {Guid} from 'guid-typescript';
+import {HtmlStorageHelper} from './htmlStorageHelper';
 
 /*
  * A custom session id header is added on each API call that is included in API logs
@@ -10,12 +11,11 @@ export class SessionManager {
      */
     public static get(): string {
 
-        const key = 'ApiSessionId';
-        let sessionId = sessionStorage.getItem(key);
+        let sessionId = HtmlStorageHelper.apiSessionId;
         if (!sessionId) {
 
             sessionId = Guid.create().toString();
-            sessionStorage.setItem(key, sessionId);
+            HtmlStorageHelper.apiSessionId = sessionId;
         }
 
         return sessionId;

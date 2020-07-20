@@ -4,9 +4,10 @@
     },
     "oauth": {
         "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_mZ3NBYpTo",
-        "clientId":         "3iojt0uhtp0nqm0lc3rmvj92ck",
-        "appUri":           "https://web.mycompany.com/spa/",
+        "clientId":         "17tdmrprhcc7fk2drc7n4bmv7f",
+        "appUri":           "https://web.mycompany.com/spa2",
         "scope":            "openid profile email",
+        "reverseProxyUrl":  "https://web.mycompany.com/reverse-proxy",
         "logoutEndpoint":   "https://login.authguidance-examples.com/logout",
         "postLogoutPath":   "#/loggedout"
     }

@@ -1,22 +1,26 @@
-import {UserManager, WebStorageStateStore} from 'oidc-client';
+
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {Authenticator} from '../authenticator';
-import {CognitoWebStorage} from './cognitoWebStorage';
+import {CustomUserManager} from './customUserManager';
+import {SecureCookieHelper} from './secureCookieHelper';
 
 /*
- * Cognito specific implementation
+ * A custom web integration of OIDC Client, which uses cookies for token renewal
  */
-export class CognitoAuthenticator implements Authenticator {
-
-    // The OIDC Client does all of the real security processing
-    private readonly _userManager: UserManager;
+export class WebAuthenticator implements Authenticator {
 
     // Our configuration settings
     private readonly _configuration: OAuthConfiguration;
+
+    // The OIDC Client does all of the real security handling
+    private readonly _userManager: CustomUserManager;
+
+    // A utility class to manage our refresh token in a secure cookie
+    private readonly _secureCookieHelper: SecureCookieHelper;
 
     // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
@@ -26,32 +30,24 @@ export class CognitoAuthenticator implements Authenticator {
      */
     public constructor(configuration: OAuthConfiguration) {
 
-        // Cognito settings use customised session storage
-        const settings = {
-            authority: configuration.authority,
-            client_id: configuration.clientId,
-            redirect_uri: configuration.appUri,
-            scope: configuration.scope,
-
-            // Use the Authorization Code Flow (PKCE)
-            response_type: 'code',
-
-            // We are not using background silent token renewal
-            automaticSilentRenew: false,
-
-            // We are not using these features and we get extended user info from our API
-            loadUserInfo: false,
-            monitorSession: false,
-
-            // Use custom storage of tokens to work around Cognito problems
-            userStore: new WebStorageStateStore({ store: new CognitoWebStorage() }),
-        };
-
-        // Initialise state
-        this._userManager = new UserManager(settings);
         this._configuration = configuration;
+        this._secureCookieHelper = new SecureCookieHelper(configuration);
+        this._userManager = new CustomUserManager(configuration, this._secureCookieHelper);
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();
+    }
+
+    /*
+     * Load and customise metadata, to route refresh token related requests via our reverse proxy
+     */
+    public async initialise(): Promise<void> {
+
+        if (!this._userManager.settings.metadata) {
+            await this._userManager.metadataService.getMetadata();
+        }
+
+        this._userManager.settings.metadata!.token_endpoint = `${this._configuration.reverseProxyUrl}/token`;
+        this._secureCookieHelper.initialise();
     }
 
     /*
@@ -78,20 +74,20 @@ export class CognitoAuthenticator implements Authenticator {
     }
 
     /*
-     * Try to refresh an access token
+     * Try to refresh an access token via a cookie containing a refresh token
      */
     public async refreshAccessToken(): Promise<string> {
 
+        // See if the user is logged in on any browser tab
         let user = await this._userManager.getUser();
-        if (user && user.refresh_token) {
+        if (user) {
 
             try {
 
-                // Refresh the access token via a refresh token grant message
                 // The concurrency handler will only do the refresh work for the first UI view that requests it
                 await this._concurrencyHandler.execute(this._performTokenRefresh);
 
-                // Return the renewed access token
+                // Return the renewed access token if possible
                 user = await this._userManager.getUser();
                 if (user && user.access_token) {
                     return user.access_token;
@@ -141,7 +137,7 @@ export class CognitoAuthenticator implements Authenticator {
      */
     public async handleLoginResponse(): Promise<void> {
 
-        // If the page loads with a state query parameter we c\\\11lassify it as an OAuth response
+        // If the page loads with a state query parameter we classify it as an OAuth response
         const urlData = urlparse(location.href, true);
         if (urlData.query && urlData.query.state) {
 
@@ -152,7 +148,7 @@ export class CognitoAuthenticator implements Authenticator {
                 const storedState = await this._userManager.settings.stateStore?.get(urlData.query.state);
                 if (storedState) {
 
-                    // Handle the login response
+                    // Process the login response and send the authorization code grant message
                     const user = await this._userManager.signinRedirectCallback();
 
                     // Get the hash URL before the login redirect
@@ -174,24 +170,17 @@ export class CognitoAuthenticator implements Authenticator {
     }
 
     /*
-     * Implement the bespoke Cognito redirect to log out at the authorization server
-     * https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
+     * Do the logout redirect
      */
     public async startLogout(): Promise<void> {
 
         try {
-            // First update state
-            await this._userManager.removeUser();
 
-            // Cognito requires the configured logout return URL to use a path segment
-            // Therefore we configure https://web.authguidance-examples.com/spa/loggedout.html
-            const logoutReturnUri = encodeURIComponent(`${this._configuration.appUri}loggedout.html`);
+            // Do a standards based logout redirect
+            await this._userManager.signoutRedirect();
 
-            // We then use the above URL in the logout redirect request
-            // Upon return, loggedout.html redirects to https://web.authguidance-examples.com/spa/#/loggedout
-            let url = `${this._configuration.logoutEndpoint}`;
-            url += `?client_id=${this._configuration.clientId}&logout_uri=${logoutReturnUri}`;
-            location.replace(url);
+            // Then ensure that the auth cookie is gone
+            await this._secureCookieHelper.clearRefreshToken();
 
         } catch (e) {
             throw ErrorHandler.getFromLogoutRequest(e, ErrorCodes.logoutRequestFailed);
@@ -216,31 +205,32 @@ export class CognitoAuthenticator implements Authenticator {
      */
     public async expireRefreshToken(): Promise<void> {
 
-        const user = await this._userManager.getUser();
-        if (user) {
+        // First expire the access token so that the next API call returns a 401
+        await this.expireAccessToken();
 
-            user.access_token = '';
-            user.refresh_token = 'x' + user.refresh_token + 'x';
-            this._userManager.storeUser(user);
-        }
+        // Also make the refresh token in the secure cookie act expired
+        await this._secureCookieHelper.expireRefreshToken();
     }
 
     /*
-     * Ask OIDC client to silently renew the access token using the Cognito refresh token
+     * Ask OIDC client to silently renew the access token using a cookie
      */
     private async _performTokenRefresh() {
 
         try {
 
-            // Call the OIDC Client method
+            // Call the OIDC Client method, which will send a refresh token grant message
             await this._userManager.signinSilent();
 
         } catch (e) {
 
-            if (e.message === ErrorCodes.refreshTokenExpired) {
+            if (e.message === ErrorCodes.invalidGrant) {
 
-                // For invalid_grant errors, clear token data and return success, to force a login redirect
+                // For invalid_grant errors, clear token data, which will force a login redirect
                 await this._userManager.removeUser();
+
+                // Also remove the refresh token
+                await this._secureCookieHelper.clearRefreshToken();
             }
             else {
 

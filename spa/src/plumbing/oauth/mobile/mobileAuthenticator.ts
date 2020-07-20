@@ -16,6 +16,12 @@ export class MobileAuthenticator implements Authenticator {
     }
 
     /*
+     * This is a no op in the mobile case
+     */
+    public async initialise(): Promise<void> {
+    }
+
+    /*
      * Return true if there are tokens
      */
     public async isLoggedIn(): Promise<boolean> {

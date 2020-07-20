@@ -1,7 +1,7 @@
 {
-  "name": "basicspa",
+  "name": "finalspa",
   "version": "3.0.0",
-  "description": "A Basic SPA using the OIDC Client security library and ReactJS",
+  "description": "The Final SPA using the OIDC Client security library and ReactJS",
   "main": "index.tsx",
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
