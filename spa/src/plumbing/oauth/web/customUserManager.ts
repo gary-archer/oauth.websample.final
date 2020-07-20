@@ -1,5 +1,6 @@
 import {SigninResponse, StateStore, User, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
+import {UrlHelper} from '../../utilities/urlHelper';
 import {CognitoLogoutUrlBuilder} from './cognitoLogoutUrlBuilder';
 import {HybridTokenStorage} from './hybridTokenStorage';
 import {SecureCookieHelper} from './secureCookieHelper';
@@ -51,7 +52,7 @@ export class CustomUserManager extends UserManager {
             userStore: new WebStorageStateStore({ store: new HybridTokenStorage() }),
 
             // Indicate the path in our app to return to after logout
-            post_logout_redirect_uri: CustomUserManager._getPostLogoutRedirectUri(configuration),
+            post_logout_redirect_uri: UrlHelper.append(configuration.appUri, configuration.postLogoutPath),
         };
     }
 
@@ -85,15 +86,5 @@ export class CustomUserManager extends UserManager {
             // Otherwise call OIDC Client which will do all of the right things
             await super.signoutRedirect();
         }
-    }
-
-    /*
-     * Calculate the value to use, depending on where we are running
-     */
-    private static _getPostLogoutRedirectUri(configuration: OAuthConfiguration): string {
-
-        // In AWS the redirect URI ends with a trailing slash, to prevent problems where /spa?code=xxx redirects to /spa/
-        const baseUri = configuration.appUri.endsWith('/') ? configuration.appUri : configuration.appUri + '/';
-        return `${baseUri}${configuration.postLogoutPath}`;
     }
 }
