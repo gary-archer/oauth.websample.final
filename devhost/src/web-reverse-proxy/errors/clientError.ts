@@ -1,5 +1,3 @@
-import {ErrorCodes} from './errorCodes';
-
 /*
  * Our client error format consists of an error and error_description
  */
@@ -8,15 +6,6 @@ export class ClientError extends Error {
     private readonly _statusCode: number;
     private readonly _errorCode: string;
     private _logContext: string;
-
-    /*
-     * This error is thrown in a few places so provide a factory method
-     */
-    public static requestFailedVerification(logContext: string): ClientError {
-        const error = new ClientError(400, ErrorCodes.requestFailedVerification, 'The request failed security verification');
-        error.logContext = logContext;
-        return error;
-    }
 
     /*
      * Construct from fields returned to the client

@@ -1,6 +1,6 @@
 import {encryptCookie, decryptCookie} from 'cookie-encrypter'
 import {CookieOptions, Request, Response} from 'express';
-import {ClientError} from '../errors/clientError';
+import {ErrorHandler} from '../errors/errorHandler';
 
 /*
  * Our cookie service class will deal with cookie handling during requests to the token endpoint
@@ -20,7 +20,6 @@ export class CookieService {
      */
     public writeAuthCookie(clientId: string, refreshToken: string, response: Response): void {
 
-        // Encrypt the cookie, since it contains a refresh token
         const encryptedData = encryptCookie(refreshToken, {key: this._encryptionKey});
         response.cookie(`${this._authCookieName}-${clientId}`, encryptedData, this._getCookieOptions());
     }
@@ -38,7 +37,7 @@ export class CookieService {
             }
         }
 
-        throw ClientError.requestFailedVerification('No valid auth cookie was found in the incoming request');
+        throw ErrorHandler.fromMissingCookieError('No auth cookie was found in the incoming request');
     }
 
     /*
@@ -46,14 +45,6 @@ export class CookieService {
      */
     public writeCsrfCookie(clientId: string, response: Response, value: string): void {
 
-        const options = {
-            httpOnly: true,
-            secure: true,
-            path: '/reverse-proxy',
-            sameSite: 'strict',
-        };
-
-        // Encrypt the cookie
         const encryptedData = encryptCookie(value, {key: this._encryptionKey});
         response.cookie(`${this._csrfCookieName}-${clientId}`, encryptedData, this._getCookieOptions());
     }
@@ -71,7 +62,7 @@ export class CookieService {
             }
         }
 
-        throw ClientError.requestFailedVerification('No valid CSRF cookie was found in the incoming request');
+        throw ErrorHandler.fromMissingCookieError('No CSRF cookie was found in the incoming request');
     }
 
     /*
@@ -124,8 +115,7 @@ export class CookieService {
             return decryptCookie(encryptedData, {key: this._encryptionKey});
 
         } catch (e) {
-
-            throw ClientError.requestFailedVerification(`Cookie decryption failed for cookie ${cookieName}`);
+            throw ErrorHandler.fromCookieDecryptionError(cookieName, e);
         }
     }
 }

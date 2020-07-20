@@ -82,7 +82,7 @@ export class ErrorHandler {
     /*
      * Handle failed HTTP connectivity
      */
-    public static fromRequestError(exception: any, url: string): ApiError {
+    public static fromHttpRequestError(exception: any, url: string): ApiError {
 
         const apiError = new ApiError(
             ErrorCodes.httpRequestError,
@@ -95,13 +95,34 @@ export class ErrorHandler {
     }
 
     /*
+     * These can occur in normal usage when a cookie expires or a new browser session is started
+     * We return the standard invalid_grant error code which our SPA checks for
+     */
+    public static fromMissingCookieError(logContext: string): ClientError {
+
+        const error = new ClientError(400, ErrorCodes.invalidGrant, 'A required cookie was missing from a token request');
+        error.logContext = logContext;
+        return error;
+    }
+
+    /*
+     * Other security failures such as invalid CSRF requests
+     */
+    public static fromSecurityVerificationError(logContext: string): ClientError {
+
+        const error = new ClientError(400, ErrorCodes.securityVerificationFailed, 'The request failed security verification');
+        error.logContext = logContext;
+        return error;
+    }
+
+    /*
      * Handle failed cookie decryption
      */
     public static fromCookieDecryptionError(name: string, exception: any): ApiError {
 
         const apiError = new ApiError(
-            ErrorCodes.requestFailedVerification,
-            'An invalid cookie was sent in a token request',
+            ErrorCodes.securityVerificationFailed,
+            'A cookie supplied in a token request failed decryption',
             exception.stack);
 
         apiError.statusCode = 400;

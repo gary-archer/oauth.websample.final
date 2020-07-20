@@ -4,7 +4,7 @@ import {Configuration} from '../configuration/configuration';
 import {ApiLogger} from '../utilities/apiLogger';
 import {CookieService} from './cookieService';
 import {ProxyService} from './proxyService';
-import {ClientError} from '../errors/clientError';
+import {ErrorHandler} from '../errors/errorHandler';
 
 /*
  * The entry point for token endpoint related operations
@@ -136,11 +136,11 @@ export class AuthService {
     private _validateOrigin(request: Request): void {
 
         if (!request.headers || !request.headers.origin) {
-            throw ClientError.requestFailedVerification('The request did not include the web origin header');
+            throw ErrorHandler.fromSecurityVerificationError('The request did not include the web origin header');
         }
 
         if (request.headers.origin.toLowerCase() !== this._configuration.trustedWebOrigin.toLowerCase()) {
-            throw ClientError.requestFailedVerification(`The origin header had an untrusted value of ${request.headers.origin}`);
+            throw ErrorHandler.fromSecurityVerificationError(`The origin header had an untrusted value of ${request.headers.origin}`);
         }
     }
 
@@ -155,7 +155,7 @@ export class AuthService {
             }
         }
 
-        throw ClientError.requestFailedVerification('No client_id was found in the received form url encoded data');
+        throw ErrorHandler.fromSecurityVerificationError('No client_id was found in the received form url encoded data');
     }
 
     /*
@@ -169,12 +169,12 @@ export class AuthService {
 
         // Check there is a matching CSRF request field
         if (!request.headers || !request.headers[this._requestHeaderFieldName]) {
-            throw ClientError.requestFailedVerification('No CSRF request header field was supplied');
+            throw ErrorHandler.fromSecurityVerificationError('No CSRF request header field was supplied');
         }
 
         // Check that the values match
         if (cookieValue !== request.headers[this._requestHeaderFieldName]) {
-            throw ClientError.requestFailedVerification('The CSRF request header does not match the CSRF cookie value');
+            throw ErrorHandler.fromSecurityVerificationError('The CSRF request header does not match the CSRF cookie value');
         }
     }
 }

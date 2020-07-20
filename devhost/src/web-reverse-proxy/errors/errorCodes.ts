@@ -6,8 +6,11 @@ export class ErrorCodes {
     // An API request to an invalid route
     public static readonly requestNotFound = 'request_not_found';
 
+    // The standard error code for when the user session has expired, and which the SPA must check for
+    public static readonly invalidGrant = 'invalid_grant';
+
     // A generic error code for security verification failures when dealing with refresh tokens
-    public static readonly requestFailedVerification = 'token_request_failed';
+    public static readonly securityVerificationFailed = 'security_verification_failed';
 
     // A problem reading file data
     public static readonly fileReadError = 'file_read_error';
@@ -15,6 +18,6 @@ export class ErrorCodes {
     // A generic server error
     public static readonly serverError = 'server_error';
 
-    // A problem making an HTTP request
+    // A problem making an HTTP request to the Authorization Server
     public static readonly httpRequestError = 'http_request_error';
 }

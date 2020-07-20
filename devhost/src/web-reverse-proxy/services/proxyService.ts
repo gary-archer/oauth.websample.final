@@ -91,7 +91,7 @@ export class ProxyService {
             }
 
             // Handle client connectivity errors
-            throw ErrorHandler.fromRequestError(e, options.url);
+            throw ErrorHandler.fromHttpRequestError(e, options.url);
         }
     }
 }
