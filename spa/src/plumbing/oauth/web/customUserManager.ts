@@ -51,7 +51,7 @@ export class CustomUserManager extends UserManager {
             userStore: new WebStorageStateStore({ store: new HybridTokenStorage() }),
 
             // Indicate the path in our app to return to after logout
-            post_logout_redirect_uri: CustomUserManager.getPostLogoutRedirectUri(configuration),
+            post_logout_redirect_uri: CustomUserManager._getPostLogoutRedirectUri(configuration),
         };
     }
 
@@ -90,9 +90,9 @@ export class CustomUserManager extends UserManager {
     /*
      * Calculate the value to use, depending on where we are running
      */
-    private static getPostLogoutRedirectUri(configuration: OAuthConfiguration): string {
+    private static _getPostLogoutRedirectUri(configuration: OAuthConfiguration): string {
 
-        // In AWS the redirect URI ends with a trailing slash, to prevent problems where /spa?code=hu2fe redirects to /spa/
+        // In AWS the redirect URI ends with a trailing slash, to prevent problems where /spa?code=xxx redirects to /spa/
         const baseUri = configuration.appUri.endsWith('/') ? configuration.appUri : configuration.appUri + '/';
         return `${baseUri}${configuration.postLogoutPath}`;
     }
