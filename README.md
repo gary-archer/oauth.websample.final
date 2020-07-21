@@ -3,7 +3,7 @@
 ### Overview
 
 * The final SPA code sample using OAuth 2.0 and Open Id Connect, from my blog at https://authguidance.com
-* **The final sample delivers best multi tab usability, hardened security and AWS Serverless hosting**
+* **The sample delivers best Multi Tab Usability, Hardened Security and AWS Serverless Hosting**
 
 ### Details
 
