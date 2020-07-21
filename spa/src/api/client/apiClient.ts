@@ -131,7 +131,7 @@ export class ApiClient {
             'x-mycompany-correlation-id': Guid.create().toString(),
         };
 
-        // A special header can be sent to thr API to cause a simulated exception
+        // A special header can be sent to ask the API to throw a simulated exception
         if (options && options.causeError) {
             headers['x-mycompany-test-exception'] = 'SampleApi';
         }
