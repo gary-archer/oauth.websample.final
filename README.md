@@ -14,7 +14,7 @@
 ### Programming Languages
 
 * TypeScript and ReactJS are used to implement the SPA
-* Typescript is used to implement a Development Reverse Proxy to store refresh tokens in cookies
+* Typescript is used to implement a [Development Reverse Proxy](https://authguidance.com/2020/07/21/spa-reverse-proxy-based-token-renewal/) to store refresh tokens in cookies
 
 ### SPA Middleware Used
 
@@ -25,4 +25,4 @@
 * AWS CloudFront is used as the SPA's Content Delivery Network
 * AWS API Gateway is used to host the SPA's OAuth 2.0 Secured API
 * AWS Cognito is used as the Authorization Server for the SPA and API
-* An AWS Cloudfront Edge Lambda is used to issue a web domain cookie containing a refresh token
+* The [AWS Web Reverse Proxy](https://authguidance.com/2020/07/21/spa-reverse-proxy-implementation/) is implemented as an AWS Cloudfront Edge Lambda
