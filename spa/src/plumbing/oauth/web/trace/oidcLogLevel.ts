@@ -41,10 +41,13 @@ export class OidcLogLevel {
 
         if (location.hash.startsWith('#')) {
 
-            const data = urlparse('?' + location.hash.substring(1), true);
-            const logLevel = data.query.log;
-            if (logLevel) {
-                return logLevel.toLowerCase();
+            const hashFragment = location.hash.substring(1).replace(/^\//, '');
+            if (hashFragment) {
+                const data = urlparse('?' + hashFragment, true);
+                const logLevel = data.query.log;
+                if (logLevel) {
+                    return logLevel.toLowerCase();
+                }
             }
         }
 
