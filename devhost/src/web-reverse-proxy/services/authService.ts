@@ -131,16 +131,14 @@ export class AuthService {
     }
 
     /*
-     * Make sure that older browsers can't post requests here from other domains, by checking the origin header
+     * If there is an origin header it must be our web domain
      */
     private _validateOrigin(request: Request): void {
 
-        if (!request.headers || !request.headers.origin) {
-            throw ErrorHandler.fromSecurityVerificationError('The request did not include the web origin header');
-        }
-
-        if (request.headers.origin.toLowerCase() !== this._configuration.trustedWebOrigin.toLowerCase()) {
-            throw ErrorHandler.fromSecurityVerificationError(`The origin header had an untrusted value of ${request.headers.origin}`);
+        if (request.headers && request.headers.origin) {
+            if (request.headers.origin.toLowerCase() !== this._configuration.trustedWebOrigin.toLowerCase()) {
+                throw ErrorHandler.fromSecurityVerificationError(`The origin header had an untrusted value of ${request.headers.origin}`);
+            }
         }
     }
 

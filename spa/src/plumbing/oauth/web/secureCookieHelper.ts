@@ -69,22 +69,23 @@ export class SecureCookieHelper {
      */
     private async _sendCookieRequest(method: Method, operationPath: string): Promise<void> {
 
-        // Send our request form URL encoded, as for other requests to the reverse proxy
-        const formData = new URLSearchParams();
-        formData.append('client_id', this._configuration.clientId);
-
-        // Define request options
         const url = `${this._configuration.reverseProxyUrl}/${operationPath}`;
-        const options = {
-            url,
-            method,
-            data: formData,
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded',
-            },
-        };
-
         try {
+
+            // Send our request form URL encoded, as for other requests to the reverse proxy
+            const formData = new URLSearchParams();
+            formData.append('client_id', this._configuration.clientId);
+
+            // Define request options
+            const options = {
+                url,
+                method,
+                data: formData,
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded',
+                },
+            };
+
             // Call our reverse proxy
             await axios.request(options as AxiosRequestConfig);
 

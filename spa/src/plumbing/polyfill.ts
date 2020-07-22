@@ -15,3 +15,4 @@ import 'core-js/features/promise';
 import 'core-js/features/regexp';
 import 'core-js/features/string';
 import 'core-js/features/symbol';
+import 'core-js/features/url-search-params';
