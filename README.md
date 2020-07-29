@@ -3,12 +3,13 @@
 ### Overview
 
 * The final SPA code sample using OAuth 2.0 and Open Id Connect, from my blog at https://authguidance.com
-* **The sample delivers Best Multi Tab Usability, Improved NFRs and AWS Serverless Hosting**
+* **The sample delivers a Modern Coding Model, AWS Serverless Hosting and an advanced Token Renewal Solution**
 
 ### Details
 
 * See the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup/) for a summary of behaviour
 * See the [Final SPA Instructions](https://authguidance.com/2019/04/08/how-to-run-the-react-js-spa/) for details on how to run the code
+* see the [SPA Reverse Proxy Token Renewal](https://authguidance.com/2020/07/21/spa-reverse-proxy-based-token-renewal/) blog post for advanced details
 * See the [Web Content Delivery](https://authguidance.com/2018/12/02/spa-content-deployment/) post for instructions on cloud deployment
 
 ### Programming Languages
