@@ -14,8 +14,7 @@
 
 ### Programming Languages
 
-* TypeScript and ReactJS are used to implement an SPA that uses access tokens
-* Typescript is used to implement a [Development Reverse Proxy](https://authguidance.com/2020/07/21/spa-reverse-proxy-based-token-renewal/) to store refresh tokens in cookies
+* TypeScript and ReactJS are used to develop the SPA and its non functional requirements
 
 ### SPA Middleware Used
 
