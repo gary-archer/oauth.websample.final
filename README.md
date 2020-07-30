@@ -14,7 +14,7 @@
 
 ### Programming Languages
 
-* TypeScript and ReactJS are used to develop the SPA and its non functional requirements
+* TypeScript and ReactJS are used to implement the SPA
 
 ### SPA Middleware Used
 
@@ -25,4 +25,4 @@
 * AWS CloudFront is used as the SPA's Content Delivery Network
 * AWS API Gateway is used to host the SPA's OAuth 2.0 Secured API
 * AWS Cognito is used as the Authorization Server for the SPA and API
-* The [AWS Web Reverse Proxy](https://authguidance.com/2020/07/21/spa-reverse-proxy-implementation/) is implemented as an AWS Cloudfront Edge Lambda
+* An Edge Lambda is used to implement an [AWS Web Reverse Proxy](https://authguidance.com/2020/07/21/spa-reverse-proxy-implementation/)

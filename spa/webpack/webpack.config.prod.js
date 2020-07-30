@@ -1,3 +1,4 @@
+var WebpackObfuscator = require('webpack-obfuscator');
 const webpack = require('webpack');
 const {merge} = require('webpack-merge');
 const baseConfig = require('./webpack.config.base.js');
@@ -12,10 +13,16 @@ module.exports = merge(baseConfig, {
     hints: false
   },
 
-  // Pass a variable through to our Web UI to tell it to not display stack traces
   plugins:[
+    
+    // Pass a variable through to our Web UI to tell it to not display stack traces
     new webpack.DefinePlugin({
       SHOW_STACK_TRACE: 'false',
-    })
+    }),
+
+    // Obfuscate our app's production code but not vendor code
+    new WebpackObfuscator ({
+      rotateStringArray: true
+    }, ['vendor.bundle.js'])
   ]
 });
