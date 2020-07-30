@@ -3,7 +3,7 @@
 ### Overview
 
 * The final SPA code sample using OAuth 2.0 and Open Id Connect, from my blog at https://authguidance.com
-* **The sample delivers a Modern Coding Model, AWS Serverless Hosting and an advanced Token Renewal Solution**
+* **The sample uses a Modern Coding Model, AWS Serverless Hosting and an advanced Token Renewal Solution**
 
 ### Details
 
