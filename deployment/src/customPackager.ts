@@ -22,6 +22,7 @@ class Packager {
         // Javascript
         await fs.copy('../spa/dist/vendor.bundle.js', '.package/spa/dist/vendor.bundle.js');
         await fs.copy('../spa/dist/app.bundle.js', '.package/spa/dist/app.bundle.js');
+        await fs.copy('../spa/dist/loggedOut.js', '.package/spa/dist/loggedOut.js');
 
         // CSS
         await fs.copy('../spa/css/bootstrap.min.css', '.package/spa/css/bootstrap.min.css');
