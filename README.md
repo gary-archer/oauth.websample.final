@@ -1,5 +1,7 @@
 # authguidance.websample.final
 
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg)](https://snyk.io/test/github/gary-archer/authguidance.websample.final)
+
 ### Overview
 
 * The final SPA code sample using OAuth 2.0 and Open Id Connect, from my blog at https://authguidance.com
