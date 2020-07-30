@@ -7,7 +7,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "start": "npm run clean && webpack --config webpack/webpack.config.dev.js --watch",
     "build": "npm run clean && webpack --config webpack/webpack.config.prod.js",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist/*bundle*"
   },
   "keywords": [],
   "author": "Gary Archer",
