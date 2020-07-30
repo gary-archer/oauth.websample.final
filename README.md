@@ -1,6 +1,8 @@
 # authguidance.websample.final
 
-[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg?targetFile=deployment/package.json)](https://snyk.io/test/github/gary-archer/authguidance.websample.final?targetFile=deployment/package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg?targetFile=spa/package.json)](https://snyk.io/test/github/gary-archer/authguidance.websample.final?targetFile=spa/package.json)
+
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg?targetFile=devhost/package.json)](https://snyk.io/test/github/gary-archer/authguidance.websample.final?targetFile=devhost/package.json)
 
 ### Overview
 
