@@ -30,6 +30,7 @@ export class WebRouter {
         }
 
         const webFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/${resourcePath}`);
+        this._addSecurityHeaders(response);
         response.sendFile(webFilePath);
     }
 
@@ -39,6 +40,7 @@ export class WebRouter {
     public getWebRootResource(request: Request, response: Response): void {
 
         const webFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/index.html`);
+        this._addSecurityHeaders(response);
         response.sendFile(webFilePath);
     }
 
@@ -48,6 +50,7 @@ export class WebRouter {
     public getFavicon(request: Request, response: Response): void {
 
         const webFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/favicon.ico`);
+        this._addSecurityHeaders(response);
         response.sendFile(webFilePath);
     }
 
@@ -66,9 +69,25 @@ export class WebRouter {
     }
 
     /*
+     * Add standard security headers to the response
+     * https://aws.amazon.com/blogs/networking-and-content-delivery/adding-http-security-headers-using-lambdaedge-and-amazon-cloudfront/
+     */
+    private _addSecurityHeaders(response: Response) {
+
+        response.setHeader('content-security-policy', `script-src 'self'`);
+        response.setHeader('strict-transport-security', 'max-age=63072000; includeSubdomains; preload');
+        response.setHeader('x-frame-options', 'DENY');
+        response.setHeader('x-xss-protection', '1; mode=block');
+        response.setHeader('x-content-type-options', 'nosniff');
+        response.setHeader('referrer-policy', 'same-origin');
+    }
+
+    /*
      * Set up async callbacks
      */
     private _setupCallbacks(): void {
         this.getWebResource = this.getWebResource.bind(this);
+        this.getWebRootResource = this.getWebRootResource.bind(this);
+        this.getFavicon = this.getFavicon.bind(this);
     }
 }
