@@ -1,9 +1,13 @@
 # authguidance.websample.final
 
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg?targetFile=spa/package.json)](https://snyk.io/test/github/gary-archer/authguidance.websample.final?targetFile=spa/package.json)
+
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg?targetFile=devhost/package.json)](https://snyk.io/test/github/gary-archer/authguidance.websample.final?targetFile=devhost/package.json)
+
 ### Overview
 
 * The final SPA code sample using OAuth 2.0 and Open Id Connect, from my blog at https://authguidance.com
-* **The sample delivers a Modern Coding Model, AWS Serverless Hosting and an advanced Token Renewal Solution**
+* **The sample uses a Modern Coding Model, AWS Serverless Hosting and an advanced Token Renewal Solution**
 
 ### Details
 
