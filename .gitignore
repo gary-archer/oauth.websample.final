@@ -1,5 +1,3 @@
 node_modules
-dist
-!dist/loggedOut.js
 .DS_Store
 .package
