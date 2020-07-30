@@ -1,6 +1,6 @@
 # authguidance.websample.final
 
-[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg)](https://snyk.io/test/github/gary-archer/authguidance.websample.final)
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg?targetFile=deployment/package.json)](https://snyk.io/test/github/gary-archer/authguidance.websample.final?targetFile=deployment/package.json)
 
 ### Overview
 
