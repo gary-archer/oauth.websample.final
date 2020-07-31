@@ -7,7 +7,7 @@
 ### Overview
 
 * The final SPA code sample using OAuth 2.0 and Open Id Connect, from my blog at https://authguidance.com
-* **The sample uses a Cloud Hosting, Hardened Security, and Optimal Token Renewal**
+* **The sample uses Cloud Hosting, Hardened Security, and Improved Token Renewal**
 
 ### Details
 
