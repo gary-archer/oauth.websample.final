@@ -1,12 +1,7 @@
 /*
  * A holder for configuration settings
  */
-export interface Configuration {
-
-    // SSL listener details
-    sslCertificateFileName: string;
-    sslCertificatePassword: string;
-    sslPort: number;
+export interface ReverseProxyConfiguration {
 
     // The token endpoint from which we get refresh tokens
     tokenEndpoint: string;
@@ -16,8 +11,4 @@ export interface Configuration {
 
     // The web origin we accept requests from
     trustedWebOrigin: string;
-
-    // HTTP debugging details
-    useHttpProxy: boolean;
-    httpProxyUrl: string;
 }

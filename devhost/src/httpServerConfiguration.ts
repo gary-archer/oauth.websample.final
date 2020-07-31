@@ -2,8 +2,8 @@ import cookieParser from 'cookie-parser';
 import {Application, NextFunction, Request, Response, urlencoded} from 'express';
 import fs from 'fs-extra';
 import https from 'https';
+import {Configuration} from './configuration/configuration';
 import {WebRouter} from './content-delivery-network/webRouter';
-import {Configuration} from './web-reverse-proxy/configuration/configuration';
 import {ReverseProxyRouter} from './web-reverse-proxy/routing/reverseProxyRouter';
 
 /*
@@ -19,8 +19,8 @@ export class HttpServerConfiguration {
     public constructor(expressApp: Application, configuration: Configuration) {
         this._expressApp = expressApp;
         this._configuration = configuration;
-        this._reverseProxyRouter = new ReverseProxyRouter(this._configuration);
-        this._webRouter = new WebRouter();
+        this._reverseProxyRouter = new ReverseProxyRouter(this._configuration.reverseProxy);
+        this._webRouter = new WebRouter(this._configuration.cdn);
     }
 
     /*
@@ -63,16 +63,18 @@ export class HttpServerConfiguration {
      */
     public async startListening(): Promise<void> {
 
+        const hostConfiguration = this._configuration.host;
+
         // Set HTTPS server options
-        const pfxFile = await fs.readFile(`certs/${this._configuration.sslCertificateFileName}`);
+        const pfxFile = await fs.readFile(`certs/${hostConfiguration.sslCertificateFileName}`);
         const serverOptions = {
             pfx: pfxFile,
-            passphrase: this._configuration.sslCertificatePassword,
+            passphrase: hostConfiguration.sslCertificatePassword,
         };
 
         // Set listener options
         const listenOptions = {
-            port: this._configuration.sslPort,
+            port: hostConfiguration.sslPort,
         };
 
         // Start listening

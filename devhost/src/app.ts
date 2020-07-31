@@ -3,8 +3,8 @@
  */
 
 import express from 'express';
+import {ConfigurationLoader} from './configuration/configurationLoader';
 import {HttpServerConfiguration} from './httpServerConfiguration';
-import {ConfigurationLoader} from './web-reverse-proxy/configuration/configurationLoader';
 import {ErrorHandler} from './web-reverse-proxy/errors/errorHandler';
 import {ApiLogger} from './web-reverse-proxy/utilities/apiLogger';
 import {HttpProxy} from './web-reverse-proxy/utilities/httpProxy';
@@ -21,7 +21,7 @@ import {HttpProxy} from './web-reverse-proxy/utilities/httpProxy';
         const configuration = await loader.load();
 
         // Initialize HTTP proxy behaviour
-        HttpProxy.initialize(configuration.useHttpProxy, configuration.httpProxyUrl);
+        HttpProxy.initialize(configuration.host.useHttpProxy, configuration.host.httpProxyUrl);
 
         // Create the HTTP server
         const expressApp = express();

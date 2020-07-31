@@ -1,0 +1,21 @@
+{
+    "host": {
+        "sslCertificateFileName": "mycompany.ssl.pfx",
+        "sslCertificatePassword": "SslPassword1",
+        "sslPort": 443,
+        "useHttpProxy": false,
+        "httpProxyUrl": "http://127.0.0.1:8888"
+    },
+    "contentDeliveryNetwork": {
+        "contentSecurityPolicyHosts": [
+            "https://web.mycompany.com",
+            "https://api.mycompany.com",
+            "https://dev-843469.oktapreview.com"
+        ]
+    },
+    "reverseProxy": {
+        "tokenEndpoint": "https://dev-843469.oktapreview.com/oauth2/default/v1/token",
+        "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
+        "trustedWebOrigin": "https://web.mycompany.com"
+    }
+}

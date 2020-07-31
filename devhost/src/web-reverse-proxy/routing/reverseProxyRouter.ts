@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
-import {Configuration} from '../configuration/configuration';
+import {ReverseProxyConfiguration} from '../../configuration/reverseProxyConfiguration';
 import {ErrorHandler} from '../errors/errorHandler';
 import {ResponseWriter} from '../utilities/responseWriter';
 import {AuthService} from '../services/authService';
@@ -11,7 +11,7 @@ export class ReverseProxyRouter {
 
     private readonly _authService: AuthService;
 
-    public constructor(configuration: Configuration) {
+    public constructor(configuration: ReverseProxyConfiguration) {
         this._authService = new AuthService(configuration);
         this._setupCallbacks();
     }

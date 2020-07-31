@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import path from 'path';
+import {ContentDeliveryNetworkConfiguration} from '../configuration/contentDeliveryNetworkConfiguration';
 
 /*
  * The relative path to web files
@@ -11,7 +12,10 @@ const WEB_FILES_ROOT = '../../../spa';
  */
 export class WebRouter {
 
-    public constructor() {
+    private readonly _configuration: ContentDeliveryNetworkConfiguration;
+
+    public constructor(configuration: ContentDeliveryNetworkConfiguration) {
+        this._configuration = configuration;
         this._setupCallbacks();
     }
 

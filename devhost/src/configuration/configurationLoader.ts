@@ -22,6 +22,6 @@ export class ConfigurationLoader {
     private _getConfigurationFileName(): string {
 
         const shortFileName = (process.env.DEV_CONFIG === 'localapi') ? 'localapi' : 'localweb';
-        return `reverseproxy.config.${shortFileName}.json`;
+        return `config.${shortFileName}.json`;
     }
 }

@@ -12,8 +12,8 @@ export class ProxyService {
 
     private readonly _tokenEndpoint: string;
 
-    public constructor(_tokenEndpoint: string) {
-        this._tokenEndpoint = _tokenEndpoint;
+    public constructor(tokenEndpoint: string) {
+        this._tokenEndpoint = tokenEndpoint;
     }
 
     /*
