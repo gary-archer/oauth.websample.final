@@ -7,6 +7,6 @@ import {ReverseProxyConfiguration} from './reverseProxyConfiguration';
  */
 export interface Configuration {
     host: HostConfiguration;
-    cdn: ContentDeliveryNetworkConfiguration;
+    contentDeliveryNetwork: ContentDeliveryNetworkConfiguration;
     reverseProxy: ReverseProxyConfiguration;
 }

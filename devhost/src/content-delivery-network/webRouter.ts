@@ -73,12 +73,17 @@ export class WebRouter {
     }
 
     /*
-     * Add standard security headers to the response
+     * Add standard security headers to the response to prevent various browser attacks
      * https://aws.amazon.com/blogs/networking-and-content-delivery/adding-http-security-headers-using-lambdaedge-and-amazon-cloudfront/
      */
     private _addSecurityHeaders(response: Response) {
 
-        response.setHeader('content-security-policy', `script-src 'self'`);
+        // The connect-src value is used to prevent Javascript code sending OAuth tokens or data from the browser to remote hosts
+        const trustedHosts = this._configuration.contentSecurityPolicyHosts.join(' ');
+        const policy = `default-src 'none'; connect-src ${trustedHosts}; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'`;
+
+        // Add the headers
+        response.setHeader('content-security-policy', policy);
         response.setHeader('strict-transport-security', 'max-age=63072000; includeSubdomains; preload');
         response.setHeader('x-frame-options', 'DENY');
         response.setHeader('x-xss-protection', '1; mode=block');

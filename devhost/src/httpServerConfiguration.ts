@@ -20,7 +20,7 @@ export class HttpServerConfiguration {
         this._expressApp = expressApp;
         this._configuration = configuration;
         this._reverseProxyRouter = new ReverseProxyRouter(this._configuration.reverseProxy);
-        this._webRouter = new WebRouter(this._configuration.cdn);
+        this._webRouter = new WebRouter(this._configuration.contentDeliveryNetwork);
     }
 
     /*
