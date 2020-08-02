@@ -80,7 +80,7 @@ export class WebRouter {
 
         // The connect-src value is used to prevent Javascript code sending OAuth tokens or data from the browser to remote hosts
         const trustedHosts = this._configuration.contentSecurityPolicyHosts.join(' ');
-        const policy = `default-src 'none'; connect-src ${trustedHosts}; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'`;
+        const policy = `default-src 'none'; script-src 'self'; connect-src 'self' ${trustedHosts}; img-src 'self'; style-src 'self'; object-src 'none'`;
 
         // Add the headers
         response.setHeader('content-security-policy', policy);
