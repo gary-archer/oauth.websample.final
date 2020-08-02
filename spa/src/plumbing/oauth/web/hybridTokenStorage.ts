@@ -86,6 +86,14 @@ export class HybridTokenStorage {
             delete tokenData.profile.given_name;
             delete tokenData.profile.family_name;
             delete tokenData.profile.email;
+
+            // These are set when we use Okta as an Authorization Server
+            if (tokenData.profile.name) {
+                delete tokenData.profile.name;
+            }
+            if (tokenData.preferred_username) {
+                delete tokenData.profile.preferred_username;
+            }
         }
     }
 
