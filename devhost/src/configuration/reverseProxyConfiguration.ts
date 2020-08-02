@@ -9,6 +9,9 @@ export interface ReverseProxyConfiguration {
     // The encryption key for cookies
     cookieEncryptionKey: string;
 
+    // The root domain of the refresh token cookie
+    cookieRootDomain: string;
+
     // The web origin we accept requests from
     trustedWebOrigin: string;
 }

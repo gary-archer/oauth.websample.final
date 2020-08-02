@@ -15,6 +15,7 @@
     },
     "reverseProxy": {
         "tokenEndpoint": "https://login.authguidance-examples.com/oauth2/token",
+        "cookieRootDomain": "mycompany.com",
         "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
         "trustedWebOrigin": "https://web.mycompany.com"
     }

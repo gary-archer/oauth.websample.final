@@ -23,7 +23,7 @@ export class AuthService {
     public constructor(configuration: ReverseProxyConfiguration) {
         this._configuration = configuration;
         this._proxyService = new ProxyService(configuration.tokenEndpoint);
-        this._cookieService = new CookieService(configuration.cookieEncryptionKey);
+        this._cookieService = new CookieService(configuration.cookieRootDomain, configuration.cookieEncryptionKey);
     }
 
     /*

@@ -12,8 +12,6 @@ $rootCertPassword = 'RootPassw0rd1'
 $sslCertFileName = 'mycompany.ssl'
 $sslCertPassword = 'SslPassword1'
 $wildcardDomainName = '*.mycompany.com'
-$apiDomainName = 'api.mycompany.com'
-$webDomainName = 'web.mycompany.com'
 
 <#
  # A general run process function
@@ -50,7 +48,7 @@ function CreateRootCertPrivateKey()
  function CreateRootCertPublicKeyCertificate()
  {
 	 $args = "req -x509 -new -nodes -key ${rootCertDomainName}.key -out ${rootCertDomainName}.crt"
-	 $args += " -subj `"/CN=${rootCertDescription}`" -reqexts v3_req -extensions v3_ca -sha256 -days 3650"
+	 $args += " -subj `"/CN=${rootCertDescription}`" -reqexts v3_req -extensions v3_ca -sha256 -days 365"
 	 RunOpenSslCommand $args
  }
 
@@ -78,7 +76,7 @@ function CreateSslCertificateSigningRequest()
  function CreateSslCertificate()
  {
 	$args = "x509 -req -in ${sslCertFileName}.csr -CA ${rootCertDomainName}.crt -CAkey ${rootCertDomainName}.key -CAcreateserial"
-	$args += " -out ${sslCertFileName}.crt -sha256 -days 3650 -extfile extended/server.ext"
+	$args += " -out ${sslCertFileName}.crt -sha256 -days 365 -extfile extended/server.ext"
 	RunOpenSslCommand $args
 }
 

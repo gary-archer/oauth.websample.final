@@ -9,9 +9,11 @@ export class CookieService {
 
     private readonly _authCookieName = 'mycompany-auth';
     private readonly _csrfCookieName = 'mycompany-csrf';
+    private readonly _rootDomain: string;
     private readonly _encryptionKey: Buffer;
 
-    public constructor(base64encryptionKey: string) {
+    public constructor(rootDomain: string, base64encryptionKey: string) {
+        this._rootDomain = rootDomain;
         this._encryptionKey = Buffer.from(base64encryptionKey, 'base64');
     }
 
@@ -91,17 +93,19 @@ export class CookieService {
 
         return {
 
-            // The cookie cannot be read by Javascript code, but any logged in user can get the cookie via HTTP tools
+            // The cookie cannot be read by Javascript code
             httpOnly: true,
 
             // The cookie can only be sent over an HTTPS connection
             secure: true,
 
-            // The cookie is only used for OAuth token endpoint requests, and not for Web / API requests
+            // The cookie can be sent to child domains of the root domain
+            domain: `.${this._rootDomain}`,
+
+            // The cookie is only used for OAuth token renewal requests, and not for Web / API requests
             path: '/reverse-proxy',
 
-            // The cookie's intended usage is same domain only
-            // Newer browsers will honour this by not sending it from other web domains
+            // Other domains cannot send the cookie, which reduces cross site scripting risks
             sameSite: 'strict',
         };
     }

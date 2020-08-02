@@ -24,8 +24,6 @@ ROOT_CERT_PASSWORD=RootPassword1
 SSL_CERT_FILE_NAME='mycompany.ssl'
 SSL_CERT_PASSWORD='SslPassword1'
 WILDCARD_DOMAIN_NAME='*.mycompany.com'
-API_DOMAIN_NAME='api.mycompany.com'
-WEB_DOMAIN_NAME='web.mycompany.com'
 
 #
 # Create the root certificate public + private key protected by a passphrase
@@ -46,7 +44,7 @@ openssl req -x509 \
 			-reqexts v3_req \
 			-extensions v3_ca \
 			-sha256 \
-			-days 3650
+			-days 365
 echo '*** Successfully created Root CA'
 
 #
@@ -75,7 +73,7 @@ openssl x509 -req \
 			-CAcreateserial \
 			-out $SSL_CERT_FILE_NAME.crt \
 			-sha256 \
-			-days 3650 \
+			-days 365 \
 			-extfile extended/server.ext
 echo '*** Successfully created SSL certificate'
 
