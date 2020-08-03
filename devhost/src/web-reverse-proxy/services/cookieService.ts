@@ -99,7 +99,7 @@ export class CookieService {
             // The cookie can only be sent over an HTTPS connection
             secure: true,
 
-            // The cookie can be sent to child domains of the root domain
+            // The cookie written by this app will be sent to other web applications
             domain: `.${this._rootDomain}`,
 
             // The cookie is only used for OAuth token renewal requests, and not for Web / API requests

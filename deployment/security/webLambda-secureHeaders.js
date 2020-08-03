@@ -16,7 +16,7 @@ exports.handler = async (event) => {
     }
     
     // Only allow Ajax calls from the browser to the below domains
-    const policy = `default-src 'none'; script-src 'self'; connect-src 'self' https://api.authguidance-examples.com https://login.authguidance-examples.com https://cognito-idp.eu-west-2.amazonaws.com; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'self'`;
+    const policy = `default-src 'none'; script-src 'self'; connect-src 'self' https://api.authsamples.com https://login.authsamples.com https://cognito-idp.eu-west-2.amazonaws.com; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'self'`;
     headers['content-security-policy'] = [{key: 'Content-Security-Policy', value: policy}]; 
 
     // Set other security headers according to the above AWS article

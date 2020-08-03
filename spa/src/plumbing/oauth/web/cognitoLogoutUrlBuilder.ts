@@ -22,7 +22,7 @@ export class CognitoLogoutUrlBuilder {
         const clientId = encodeURIComponent(this._configuration.clientId);
         const logoutReturnUri = encodeURIComponent(UrlHelper.append(this._configuration.appUri, 'loggedout.html'));
 
-        // Upon return, loggedout.html redirects to https://web.authguidance-examples.com/spa/#/loggedout
+        // Upon return, loggedout.html redirects to https://web.authsamples.com/spa/#/loggedout
         return `${this._configuration.logoutEndpoint}?client_id=${clientId}&logout_uri=${logoutReturnUri}`;
     }
 }

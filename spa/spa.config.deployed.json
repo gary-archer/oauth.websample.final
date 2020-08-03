@@ -1,14 +1,14 @@
 {
     "app": {
-        "apiBaseUrl":       "https://api.authguidance-examples.com/api"
+        "apiBaseUrl":       "https://api.authsamples.com/api"
     },
     "oauth": {
         "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_mZ3NBYpTo",
         "clientId":         "7e2hmrk000o4r1s1q3hu2ttnp6",
-        "appUri":           "https://web.authguidance-examples.com/spa/",
+        "appUri":           "https://web.authsamples.com/spa/",
         "scope":            "openid profile email",
-        "reverseProxyUrl":  "https://web.authguidance-examples.com/reverse-proxy",
-        "logoutEndpoint":   "https://login.authguidance-examples.com/logout",
+        "reverseProxyUrl":  "https://web.authsamples.com/reverse-proxy",
+        "logoutEndpoint":   "https://login.authsamples.com/logout",
         "postLogoutPath":   "#/loggedout"
     }
 }

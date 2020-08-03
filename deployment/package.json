@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "package": "ts-node src/customPackager.ts",
-    "deploy": "aws s3 cp .package s3://web.authguidance-examples.com --recursive",
+    "deploy": "aws s3 cp .package s3://web.authsamples.com --recursive",
     "clearcache": "aws cloudfront create-invalidation --distribution-id=E1KK6YUBAK08ZY --paths \"/*\""
   },
   "keywords": [],

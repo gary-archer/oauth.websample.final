@@ -8,13 +8,13 @@
     },
     "contentDeliveryNetwork": {
         "contentSecurityPolicyHosts": [
-            "https://api.authguidance-examples.com",
-            "https://login.authguidance-examples.com",
+            "https://api.authsamples.com",
+            "https://login.authsamples.com",
             "https://cognito-idp.eu-west-2.amazonaws.com"
         ]
     },
     "reverseProxy": {
-        "tokenEndpoint": "https://login.authguidance-examples.com/oauth2/token",
+        "tokenEndpoint": "https://login.authsamples.com/oauth2/token",
         "cookieRootDomain": "mycompany.com",
         "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
         "trustedWebOrigin": "https://web.mycompany.com"
