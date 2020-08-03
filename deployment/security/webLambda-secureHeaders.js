@@ -4,17 +4,9 @@
  */
 exports.handler = async (event) => {
 
-    const request = event.Records[0].cf.request;
     const response = event.Records[0].cf.response;
     const headers = response.headers;
   
-    // Only apply the headers to our SPA and not to other web content such as interstitial mobile pages
-    const request = event.Records[0].cf.request;
-    const requestUri = request.uri.toLowerCase();
-    if (!requestUri.startsWith('/spa/')) {
-        return response;
-    }
-    
     // Only allow Ajax calls from the browser to the below domains
     const policy = `default-src 'none'; script-src 'self'; connect-src 'self' https://api.authsamples.com https://login.authsamples.com https://cognito-idp.eu-west-2.amazonaws.com; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'self'`;
     headers['content-security-policy'] = [{key: 'Content-Security-Policy', value: policy}]; 
