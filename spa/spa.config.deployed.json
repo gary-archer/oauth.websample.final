@@ -3,7 +3,7 @@
         "apiBaseUrl":       "https://api.authsamples.com/api"
     },
     "oauth": {
-        "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_mZ3NBYpTo",
+        "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
         "clientId":         "7e2hmrk000o4r1s1q3hu2ttnp6",
         "appUri":           "https://web.authsamples.com/spa/",
         "scope":            "openid profile email",
