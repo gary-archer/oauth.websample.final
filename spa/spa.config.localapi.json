@@ -1,6 +1,6 @@
 {
     "app": {
-        "apiBaseUrl":       "https://api.mycompany.com/api"
+        "apiBaseUrl":       "https://api.mycompany.com:444/api"
     },
     "oauth": {
         "authority":        "https://dev-843469.oktapreview.com/oauth2/default",
