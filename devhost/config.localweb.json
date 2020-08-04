@@ -8,7 +8,7 @@
     },
     "contentDeliveryNetwork": {
         "contentSecurityPolicyHosts": [
-            "https://api.mycompany.com",
+            "https://api.authsamples.com",
             "https://login.authsamples.com",
             "https://cognito-idp.eu-west-2.amazonaws.com"
         ]

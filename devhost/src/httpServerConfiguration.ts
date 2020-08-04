@@ -19,7 +19,7 @@ export class HttpServerConfiguration {
     public constructor(expressApp: Application, configuration: Configuration) {
         this._expressApp = expressApp;
         this._configuration = configuration;
-        this._reverseProxyRouter = new ReverseProxyRouter(this._configuration.reverseProxy);
+        this._reverseProxyRouter = new ReverseProxyRouter(this._configuration.webReverseProxy);
         this._webRouter = new WebRouter(this._configuration.contentDeliveryNetwork);
     }
 

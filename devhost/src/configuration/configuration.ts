@@ -1,6 +1,6 @@
 import {ContentDeliveryNetworkConfiguration} from './contentDeliveryNetworkConfiguration';
 import {HostConfiguration} from './hostConfiguration';
-import {ReverseProxyConfiguration} from './reverseProxyConfiguration';
+import {WebReverseProxyConfiguration} from './webReverseProxyConfiguration';
 
 /*
  * A holder for configuration settings
@@ -8,5 +8,5 @@ import {ReverseProxyConfiguration} from './reverseProxyConfiguration';
 export interface Configuration {
     host: HostConfiguration;
     contentDeliveryNetwork: ContentDeliveryNetworkConfiguration;
-    reverseProxy: ReverseProxyConfiguration;
+    webReverseProxy: WebReverseProxyConfiguration;
 }
