@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "spa"
+		},
+		{
+			"path": "devhost"
+		},
+		{
+			"path": "deployment"
+		}
+	]
+}

@@ -1,0 +1,14 @@
+{
+    "app": {
+        "apiBaseUrl":       "https://api.authsamples.com/api"
+    },
+    "oauth": {
+        "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
+        "clientId":         "4co5uvgmse68utsekh7p2sc0lg",
+        "appUri":           "https://web.mycompany.com/spa/",
+        "scope":            "openid profile email",
+        "reverseProxyUrl":  "https://web.mycompany.com/reverse-proxy",
+        "logoutEndpoint":   "https://login.authsamples.com/logout",
+        "postLogoutPath":   "#/loggedout"
+    }
+}

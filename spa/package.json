@@ -1,0 +1,43 @@
+{
+  "name": "finalspa",
+  "version": "3.0.0",
+  "description": "The Final SPA using the OIDC Client security library and ReactJS",
+  "main": "index.tsx",
+  "scripts": {
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "start": "npm run clean && webpack --config webpack/webpack.config.dev.js --watch",
+    "build": "npm run clean && webpack --config webpack/webpack.config.prod.js",
+    "clean": "rimraf dist/*bundle*"
+  },
+  "keywords": [],
+  "author": "Gary Archer",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "core-js": "^3.5.0",
+    "guid-typescript": "^1.0.9",
+    "moment": "^2.24.0",
+    "oidc-client": "^1.10.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.11.0",
+    "react-modal": "^3.11.1",
+    "react-router-dom": "^5.1.2",
+    "url-parse": "^1.4.7"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
+    "@types/react-modal": "^3.10.1",
+    "@types/react-router-dom": "^5.1.3",
+    "@types/url-parse": "^1.4.3",
+    "rimraf": "^3.0.0",
+    "ts-loader": "^6.2.1",
+    "tslint": "^6.1.2",
+    "tslint-react": "^4.1.0",
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.10",
+    "webpack-merge": "^5.0.0",
+    "webpack-obfuscator": "^1.8.3"
+  }
+}
