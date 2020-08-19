@@ -1,10 +1,10 @@
 import {Context} from 'aws-lambda';
 import {ConfigurationLoader} from './configuration/configurationLoader';
-import {LambdaEdgeRequest} from './edge/lambdaEdgeRequest';
-import {LambdaEdgeResponse} from './edge/lambdaEdgeResponse';
-import {ErrorHandler} from './errors/errorHandler';
-import {Router} from './routing/router';
-import {HttpProxy} from './utilities/httpProxy';
+import {LambdaEdgeRequest} from './reverse-proxy/edge/lambdaEdgeRequest';
+import {LambdaEdgeResponse} from './reverse-proxy/edge/lambdaEdgeResponse';
+import {ErrorHandler} from './reverse-proxy/errors/errorHandler';
+import {Router} from './reverse-proxy/routing/router';
+import {HttpProxy} from './reverse-proxy/utilities/httpProxy';
 
 /*
  * The lambda runs at the deployed edge location for every single web request

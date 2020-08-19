@@ -1,10 +1,10 @@
-import {Configuration} from '../configuration/configuration';
+import {Configuration} from '../../configuration/configuration';
 import {LambdaEdgeRequest} from '../edge/lambdaEdgeRequest';
 import {LambdaEdgeResponse} from '../edge/lambdaEdgeResponse';
 import {ErrorHandler} from '../errors/errorHandler';
 import {AuthService} from '../services/authService';
 import {MockProxyServiceImpl} from '../services/mockProxyServiceImpl';
-import {ProxyService} from '../services/proxyService';
+import {ProxyService} from '../services/proxyService'
 import {ProxyServiceImpl} from '../services/proxyServiceImpl';
 
 /*
