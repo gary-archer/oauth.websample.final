@@ -1,5 +1,5 @@
 import {Context} from 'aws-lambda';
-import {ConfigurationLoader} from './configuration/configurationLoader';
+import {ConfigurationLoader} from './reverse-proxy/configuration/configurationLoader';
 import {LambdaEdgeRequest} from './reverse-proxy/edge/lambdaEdgeRequest';
 import {LambdaEdgeResponse} from './reverse-proxy/edge/lambdaEdgeResponse';
 import {ErrorHandler} from './reverse-proxy/errors/errorHandler';

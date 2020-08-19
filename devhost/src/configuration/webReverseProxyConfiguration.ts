@@ -1,5 +1,5 @@
 /*
- * A holder for configuration settings
+ * A holder for reverse proxy settings
  */
 export interface WebReverseProxyConfiguration {
 

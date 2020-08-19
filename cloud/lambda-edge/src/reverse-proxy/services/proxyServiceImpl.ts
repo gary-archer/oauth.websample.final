@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig} from 'axios';
 import {randomBytes} from 'crypto';
 import {URLSearchParams} from 'url';
-import {Configuration} from '../../configuration/configuration';
+import {Configuration} from '../configuration/configuration';
 import {LambdaEdgeRequest} from '../edge/lambdaEdgeRequest';
 import {LambdaEdgeResponse} from '../edge/lambdaEdgeResponse';
 import {ClientError} from '../errors/clientError';

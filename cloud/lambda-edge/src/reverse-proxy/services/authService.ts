@@ -1,4 +1,4 @@
-import {Configuration} from '../../configuration/configuration';
+import {Configuration} from '../configuration/configuration';
 import {LambdaEdgeRequest} from '../edge/lambdaEdgeRequest';
 import {LambdaEdgeResponse} from '../edge/lambdaEdgeResponse';
 import {ApiLogger} from '../utilities/apiLogger';
