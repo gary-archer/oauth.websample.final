@@ -4,7 +4,6 @@ import {LambdaEdgeRequest} from './reverse-proxy/edge/lambdaEdgeRequest';
 import {LambdaEdgeResponse} from './reverse-proxy/edge/lambdaEdgeResponse';
 import {ErrorHandler} from './reverse-proxy/errors/errorHandler';
 import {Router} from './reverse-proxy/routing/router';
-import {HttpProxy} from './reverse-proxy/utilities/httpProxy';
 
 /*
  * The lambda runs at the deployed edge location for every single web request
@@ -24,9 +23,8 @@ const handler = async (event: any, context: Context) => {
 
     try {
 
-        // Load configuration and configure a proxy on a developer PC if required, so that we can view messages
+        // Load configuration
         const configuration = await ConfigurationLoader.load();
-        await HttpProxy.initialize(configuration.useHttpProxy, configuration.httpProxyUrl);
 
         // Route the operation to update the response
         const router = new Router(configuration);

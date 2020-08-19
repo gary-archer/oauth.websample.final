@@ -6,7 +6,6 @@ import {LambdaEdgeRequest} from '../edge/lambdaEdgeRequest';
 import {LambdaEdgeResponse} from '../edge/lambdaEdgeResponse';
 import {ClientError} from '../errors/clientError';
 import {ErrorHandler} from '../errors/errorHandler';
-import {HttpProxy} from '../utilities/httpProxy';
 import {ProxyService} from './proxyService';
 
 /*
@@ -78,7 +77,6 @@ export class ProxyServiceImpl implements ProxyService {
                 'content-type': 'application/x-www-form-urlencoded',
                 'accept': 'application/json',
             },
-            httpsAgent: HttpProxy.get(),
         };
 
         try {

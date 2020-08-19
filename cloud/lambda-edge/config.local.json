@@ -3,7 +3,5 @@
     "cookieRootDomain": "mycompany.com",
     "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
     "trustedWebOrigin": "https://web.authsamples.com",
-    "useMockResponses": true,
-    "useHttpProxy": false,
-    "httpProxyUrl": "http://127.0.0.1:8888"
+    "useMockResponses": true
 }

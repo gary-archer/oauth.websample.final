@@ -15,8 +15,4 @@ export interface Configuration {
 
     // For local development, support mock responses from the Authorization Server
     useMockResponses: boolean;
-
-    // HTTP debugging details when running on a developer PC via sls invoke
-    useHttpProxy: boolean;
-    httpProxyUrl: string;
 }
