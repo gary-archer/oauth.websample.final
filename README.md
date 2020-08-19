@@ -4,6 +4,8 @@
 
 [![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg?targetFile=devhost/package.json)](https://snyk.io/test/github/gary-archer/authguidance.websample.final?targetFile=devhost/package.json)
 
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg?targetFile=cloud/lambda-edge/package.json)](https://snyk.io/test/github/gary-archer/authguidance.websample.final?targetFile=cloud/lambda-edge/package.json)
+
 ### Overview
 
 * The final SPA code sample using OAuth 2.x and Open Id Connect, from my blog at https://authguidance.com
