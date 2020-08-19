@@ -1,0 +1,39 @@
+{
+  "name": "edgelambdas",
+  "version": "1.0.0",
+  "description": "A lambda edge function to manage refresh tokens in cookies",
+  "scripts": {
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "build": "rimraf dist && tsc --sourceMap true",
+    "defaultDocument": "cross-env DEV_CONFIG=local sls invoke local -f defaultDocument -p test/defaultDocument.json",
+    "securityHeaders": "cross-env DEV_CONFIG=local sls invoke local -f securityHeaders -p test/securityHeaders.json",
+    "authorizationCodeGrant": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/authorizationCodeGrant.json",
+    "refreshTokenGrant": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/refreshTokenGrant.json",
+    "expireRefreshToken": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/expireRefreshToken.json",
+    "clearCookies": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/clearCookies.json",
+    "package": "npm run buildRelease && sls package",
+    "buildRelease": "rimraf dist && tsc",
+    "deploy": "sls deploy --package .serverless",
+    "remove": "sls remove"
+  },
+  "author": "Gary Archer",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cookie": "^0.4.1",
+    "cookie-encrypter": "^1.0.1",
+    "fs-extra": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.51",
+    "@types/cookie": "^0.4.0",
+    "@types/fs-extra": "^9.0.1",
+    "@types/node": "^14.0.4",
+    "cross-env": "^7.0.2",
+    "rimraf": "^3.0.2",
+    "serverless": "^1.79.0",
+    "serverless-lambda-edge-pre-existing-cloudfront": "^1.1.1",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.5"
+  }
+}
