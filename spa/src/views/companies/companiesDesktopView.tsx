@@ -26,7 +26,7 @@ export class CompaniesDesktopView extends React.Component<CompaniesViewProps> {
                     <div className='col-2 font-weight-bold text-right'>Investment USD</div>
                     <div className='col-2 font-weight-bold text-right'># Investors</div>
                 </div>
-                <div>
+                <div className='card-body'>
                     {this.props.companies.map((company) => this._renderItem(company))}
                 </div>
             </div>
@@ -39,7 +39,7 @@ export class CompaniesDesktopView extends React.Component<CompaniesViewProps> {
     private _renderItem(company: Company) {
 
         return (
-                <div className='row card-body imageRow' key={company.id}>
+                <div className='row imageRow' key={company.id}>
                     <div className='col-1 my-auto'>
                         <img src={`images/${company.id}.svg`}/>
                     </div>
