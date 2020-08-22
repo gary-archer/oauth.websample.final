@@ -3,7 +3,7 @@
         "sslCertificateFileName": "mycompany.ssl.pfx",
         "sslCertificatePassword": "SslPassword1",
         "sslPort": 443,
-        "useHttpProxy": true,
+        "useHttpProxy": false,
         "httpProxyUrl": "http://127.0.0.1:8888"
     },
     "contentDeliveryNetwork": {
