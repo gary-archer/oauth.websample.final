@@ -80,18 +80,36 @@ export class ProxyService {
 
         } catch (e) {
 
-            // Handle OAuth error responses
-            if (e.response && e.response.status && e.response.data) {
-                const errorData = e.response.data;
-                if (errorData.error) {
-
-                    const description = errorData.error_description ?? 'The Authorization Server rejected the request';
-                    throw new ClientError(e.response.status, errorData.error, description);
-                }
-            }
-
-            // Handle client connectivity errors
-            throw ErrorHandler.fromHttpRequestError(e, options.url);
+            // Handle errors
+            this._reportAuthorizationServerError(e, options.url);
         }
+    }
+
+    /*
+     * Do the work of collecting OAuth errors
+     */
+    private _reportAuthorizationServerError(e: any, url: string): void {
+
+        // Handle OAuth error responses if we have data
+        if (e.response && e.response.status && e.response.data) {
+
+            // Get error values and note that error / error_description are the standard values
+            // Okta may use non standard fields of errorCode / errorSummary in places though
+            const errorData = e.response.data;
+            const errorCode = errorData.error || errorData.errorCode;
+            const errorDescription = errorData.error_description || errorData.errorSummary;
+
+            if (errorCode) {
+
+                // Throw the error
+                throw new ClientError(
+                    e.response.status,
+                    errorCode,
+                    errorDescription || 'The Authorization Server rejected the request');
+            }
+        }
+
+        // Handle client connectivity errors
+        throw ErrorHandler.fromHttpRequestError(e, url);
     }
 }

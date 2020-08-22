@@ -74,12 +74,11 @@ export class WebRouter {
 
     /*
      * Add standard security headers to the response to prevent various browser attacks
-     * https://aws.amazon.com/blogs/networking-and-content-delivery/adding-http-security-headers-using-lambdaedge-and-amazon-cloudfront/
      */
     private _addSecurityHeaders(response: Response) {
 
         // The connect-src value is used to prevent Javascript code sending OAuth tokens or data from the browser to remote hosts
-        const trustedHosts = this._configuration.contentSecurityPolicyHosts.join(' ');
+        const trustedHosts = this._getTrustedHosts(this._configuration).join(' ');
         const policy = `default-src 'none'; script-src 'self'; connect-src 'self' ${trustedHosts}; img-src 'self'; style-src 'self'; object-src 'none'`;
 
         // Add the headers
@@ -89,6 +88,22 @@ export class WebRouter {
         response.setHeader('x-xss-protection', '1; mode=block');
         response.setHeader('x-content-type-options', 'nosniff');
         response.setHeader('referrer-policy', 'same-origin');
+    }
+
+    /*
+     * Get the hosts for our Content Security Policy connect-src value
+     * https://aws.amazon.com/blogs/networking-and-content-delivery/adding-http-security-headers-using-lambdaedge-and-amazon-cloudfront/
+     */
+    private _getTrustedHosts(configuration: ContentDeliveryNetworkConfiguration): string[] {
+
+        // The hosts this SPA needs to trust
+        const cspHosts = this._configuration.contentSecurityPolicyHosts;
+
+        // These hosts just prevent cached CSP problems for web.mycompany.com when running other samples
+        const otherTrustedHosts = this._configuration.otherTrustedHosts;
+
+        // Return all hosts
+        return cspHosts.concat(otherTrustedHosts);
     }
 
     /*

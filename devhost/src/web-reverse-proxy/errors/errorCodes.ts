@@ -9,7 +9,7 @@ export class ErrorCodes {
     // The standard error code for when the user session has expired, and which the SPA must check for
     public static readonly invalidGrant = 'invalid_grant';
 
-    // A generic error code for security verification failures when dealing with refresh tokens
+    // A generic error code to indicate that cookies or other fields were not supplied correctly
     public static readonly securityVerificationFailed = 'security_verification_failed';
 
     // A problem reading file data
