@@ -6,10 +6,9 @@
 {
     height: 80px;
 }
-.imageRowText
+.mobileRow
 {
-    line-height: 80px;
-    text-align: center;
+    height: 40px;
 }
 .col-one-fifth
 {

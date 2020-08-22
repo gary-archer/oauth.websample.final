@@ -43,21 +43,21 @@ export class CompaniesDesktopView extends React.Component<CompaniesViewProps> {
                     <div className='col-1 my-auto'>
                         <img src={`images/${company.id}.svg`}/>
                     </div>
-                    <div className='col-2 my-auto imageRowText'>
+                    <div className='col-2 my-auto text-center'>
                         {company.name}
                     </div>
-                    <div className='col-3 my-auto imageRowText'>
+                    <div className='col-3 my-auto text-center'>
                         <a href={`#/company=${company.id}`}>
                             View Transactions
                         </a>
                     </div>
-                    <div className='col-2 my-auto moneycolor font-weight-bold imageRowText text-right'>
+                    <div className='col-2 my-auto moneycolor font-weight-bold text-right'>
                         {Number(company.targetUsd).toLocaleString()}
                     </div>
-                    <div className='col-2 my-auto moneycolor font-weight-bold imageRowText text-right'>
+                    <div className='col-2 my-auto moneycolor font-weight-bold text-right'>
                         {Number(company.investmentUsd).toLocaleString()}
                     </div>
-                    <div className='col-2 my-auto font-weight-bold imageRowText text-right'>
+                    <div className='col-2 my-auto font-weight-bold text-right'>
                         {company.noInvestors}
                     </div>
                 </div>

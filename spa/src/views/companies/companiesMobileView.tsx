@@ -37,7 +37,7 @@ export class CompaniesMobileView extends React.Component<CompaniesViewProps> {
 
         return (
                 <div key={company.id}>
-                    <div className='row'>
+                    <div className='row imageRow'>
                         <div className='col-2 my-auto'>
                             <img src={`images/${company.id}.svg`}/>
                         </div>
@@ -48,7 +48,7 @@ export class CompaniesMobileView extends React.Component<CompaniesViewProps> {
                             </a>
                         </div>
                     </div>
-                    <div className='row'>
+                    <div className='row mobileRow'>
                         <div className='col-6'>
                             Target USD
                         </div>
@@ -56,7 +56,7 @@ export class CompaniesMobileView extends React.Component<CompaniesViewProps> {
                             {Number(company.targetUsd).toLocaleString()}
                         </div>
                     </div>
-                    <div className='row'>
+                    <div className='row mobileRow'>
                         <div className='col-6'>
                             Investment USD
                         </div>
@@ -64,7 +64,7 @@ export class CompaniesMobileView extends React.Component<CompaniesViewProps> {
                             {Number(company.investmentUsd).toLocaleString()}
                         </div>
                     </div>
-                    <div className='row'>
+                    <div className='row mobileRow'>
                         <div className='col-6'>
                             # Investors
                         </div>
