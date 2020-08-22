@@ -31,7 +31,9 @@ export class SecureCookieHelper {
         };
 
         // Then freeze the prototype so that malicious code is unable to intercept the bearer header
-        Object.freeze(XMLHttpRequest.prototype);
+        if (!Object.isFrozen(XMLHttpRequest.prototype)) {
+            Object.freeze(XMLHttpRequest.prototype);
+        }
     }
 
     /*
