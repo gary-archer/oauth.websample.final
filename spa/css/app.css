@@ -1,8 +1,18 @@
 .row
 {
-    margin-top:5px;
+    margin-top: 5px;
 }
-.col-one-fifth {
+.imageRow
+{
+    height: 80px;
+}
+.imageRowText
+{
+    line-height: 80px;
+    text-align: center;
+}
+.col-one-fifth
+{
     width: 20%;
     float: left;
 }
@@ -36,7 +46,7 @@
 {
     body
     {
-        font-size: 0.9em;
+        font-size: 0.85em;
     }
 }
 
