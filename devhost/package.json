@@ -2,7 +2,7 @@
   "name": "devhost",
   "version": "1.0.0",
   "description": "Developer PC hosting for a Content Delivery Network and a Reverse Proxy API",
-  "main": "app.ts",
+  "type": "module",
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "build": "ts-node --files src/app.ts",

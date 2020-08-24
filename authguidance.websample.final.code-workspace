@@ -7,7 +7,10 @@
 			"path": "devhost"
 		},
 		{
-			"path": "deployment"
+			"path": "cloud/deployment"
+		},
+		{
+			"path": "cloud/lambda-edge"
 		}
 	]
 }

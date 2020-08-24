@@ -9,7 +9,7 @@
 
             // Execute ts-node in the debugger
             "runtimeArgs": ["-r", "ts-node/register"],
-            "args": ["src/server.ts"],
+            "args": ["src/app.ts"],
 
             // Output API logs to the debug console
             "outputCapture": "std",
