@@ -79,9 +79,14 @@ export class WebRouter {
 
         if (this._configuration.enabled) {
 
-            // The connect-src value is used to prevent Javascript code sending OAuth tokens or data from the browser to remote hosts
+            // The connect-src value prevents Javascript code from interacting with malicious hosts
             const trustedHosts = this._configuration.contentSecurityPolicyHosts.join(' ');
-            const policy = `default-src 'none'; script-src 'self'; connect-src 'self' ${trustedHosts}; img-src 'self'; style-src 'self'; object-src 'none'`;
+            let policy = `default-src 'none';`;
+            policy += ` script-src 'self';`;
+            policy += ` connect-src 'self' ${trustedHosts};`;
+            policy += ` img-src 'self';`;
+            policy += ` style-src 'self';`;
+            policy += ` object-src 'none'`;
 
             // Add the headers
             response.setHeader('content-security-policy', policy);

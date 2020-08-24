@@ -42,7 +42,7 @@ functions:
       - preExistingCloudFront:
           distributionId: E1P4XPOL1PNE6Z
           eventType: viewer-request
-          pathPattern: '*'
+          pathPattern: '/reverse-proxy/*'
           includeBody: true
 
 # By default all files are included so remove files we don't need for any lambda

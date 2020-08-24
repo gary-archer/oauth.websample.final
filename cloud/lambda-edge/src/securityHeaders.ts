@@ -1,7 +1,9 @@
+import {Context} from 'aws-lambda';
+
 /*
  * This lambda runs during responses from the origin, to set security headers
  */
-const handler = async (event: any) => {
+const handler = async (event: any, context: Context) => {
 
     const response = event.Records[0].cf.response;
     const headers = response.headers;
@@ -14,7 +16,12 @@ const handler = async (event: any) => {
     ];
 
     // Only allow Ajax calls from the browser to our own domains
-    const policy = `default-src 'none'; script-src 'self'; connect-src 'self' ${trustedHosts.join(' ')}; img-src 'self'; style-src 'self'; object-src 'self';`;
+    let policy = `default-src 'none';`;
+            policy += ` script-src 'self';`;
+            policy += ` connect-src 'self' ${trustedHosts.join(' ')};`;
+            policy += ` img-src 'self';`;
+            policy += ` style-src 'self';`;
+            policy += ` object-src 'none'`;
     headers['content-security-policy'] = [{key: 'Content-Security-Policy', value: policy}];
 
     // Set other security headers according to the above AWS article
