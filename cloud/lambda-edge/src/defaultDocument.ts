@@ -1,7 +1,9 @@
+import {Context} from 'aws-lambda';
+
 /*
  * This lambda runs during requests to the origin, to set the default document
  */
-const handler = async (event: any) => {
+const handler = async (event: any, context: Context) => {
 
     // Get the request path
     const request = event.Records[0].cf.request;
@@ -11,15 +13,35 @@ const handler = async (event: any) => {
     const applicationRootPaths = [
         'spa',
     ];
+    const extensions = [
+        '.html',
+        '.json',
+        '.js',
+        '.css',
+        '.svg',
+    ]
 
-    // See if the user has browsed to /spa or /spa/
-    const found = applicationRootPaths.find((path) => {
-        return requestUri === `/${path}` || requestUri === `/${path}/`;
+    // See if the user has browsed to a location within one of the above root paths
+    const foundRootPath = applicationRootPaths.find((path) => {
+        return requestUri.startsWith(`/${path}`);
     });
 
-    // If so then return index.html to prevent a CloudFront access denied error
-    if (found) {
-        request.uri = `/${found}/index.html`;
+    if (foundRootPath) {
+
+        // See if this is a known extension
+        const knownExtension = extensions.find((ext) => {
+            return requestUri.endsWith(`${ext}`);
+        });
+
+        // If not then serve the root document
+        if (!knownExtension) {
+            request.uri = `/${foundRootPath}/index.html`;
+        }
+    } else {
+
+        // Otherwise serve the index document for the first root path
+        request.uri = `/${applicationRootPaths[0]}/index.html`;
+
     }
 
     return request;

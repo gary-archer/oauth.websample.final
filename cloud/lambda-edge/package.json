@@ -5,14 +5,13 @@
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "build": "rimraf dist && tsc --sourceMap true",
-   
+  
     "defaultDocument": "cross-env DEV_CONFIG=local sls invoke local -f defaultDocument -p test/defaultDocument.json",
     "securityHeaders": "cross-env DEV_CONFIG=local sls invoke local -f securityHeaders -p test/securityHeaders.json",
     "authorizationCodeGrant": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/authorizationCodeGrant.json",
     "refreshTokenGrant": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/refreshTokenGrant.json",
     "expireRefreshToken": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/expireRefreshToken.json",
     "clearCookies": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/clearCookies.json",
-
     "package": "npm run buildRelease && sls package",
     "buildRelease": "rimraf dist && tsc",
     "deploy": "sls deploy --package .serverless",
