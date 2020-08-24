@@ -6,8 +6,9 @@
         "type": "node",
         "request": "launch",
         "name": "Launch Lambda",
-        "program": "${workspaceFolder}/cloud/lambda-edge/node_modules/serverless/bin/serverless",
-        "args": ["invoke", "local", "-f", "authorizationCodeGrant", "-p", "test/authorizationCodeGrant.json"]
+        "env": {"DEV_CONFIG":"local"},
+        "program": "${workspaceFolder}/node_modules/serverless/bin/serverless",
+        "args": ["invoke", "local", "-f", "reverseProxy", "-p", "test/authorizationCodeGrant.json"]
       }
     ]
   }
