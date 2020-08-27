@@ -1,9 +1,8 @@
 {
   "name": "devhost",
   "version": "1.0.0",
-  "description": "Developer PC hosting for a Content Delivery Network and a Reverse Proxy API",
-  "main": "app.ts",
-  "type": "module",
+  "description": "Developer PC hosting for a Content Delivery Network and a Web Reverse Proxy",
+  "main": "src/app.ts",
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "build": "ts-node --files src/app.ts",
@@ -28,7 +27,7 @@
     "@types/node": "^12.11.7",
     "cross-env": "^7.0.2",
     "nodemon": "^2.0.3",
-    "ts-node": "^8.4.1",
+    "ts-node": "^9.0.0",
     "tslint": "^6.1.2",
     "typescript": "^3.9.5"
   }
