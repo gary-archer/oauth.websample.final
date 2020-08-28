@@ -241,7 +241,7 @@ export class ErrorHandler {
         if (exception.error) {
             oauthError = exception.error;
             if (exception.error_description) {
-                oauthError += ` : ${exception.error_description}`;
+                oauthError += ` : ${(exception.error_description.replace(/\+/g, ' '))}`;
             }
         }
 
