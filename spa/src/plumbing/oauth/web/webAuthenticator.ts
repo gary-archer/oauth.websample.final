@@ -4,6 +4,7 @@ import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
+import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 import {Authenticator} from '../authenticator';
 import {CustomUserManager} from './customUserManager';
 import {SecureCookieHelper} from './secureCookieHelper';
@@ -101,18 +102,32 @@ export class WebAuthenticator implements Authenticator {
      */
     public async startLogin(returnLocation?: string): Promise<void> {
 
-        // Store the SPA's location
-        let hash = returnLocation;
-        if (!hash) {
-            hash = location.hash;
-        }
-        const data = {
-            hash,
-        };
-
         try {
+
+            // Get the SPA's location
+            let hash = returnLocation;
+            if (!hash) {
+                hash = location.hash;
+            }
+
+            // Get the identity provider to use or default to unknown
+            const idp = this._getRuntimeIdentityProvider();
+            const extraQueryParams: any = {};
+            if (idp) {
+                extraQueryParams.identity_provider = idp;
+            }
+
+            // Store data during the redirect
+            const data = {
+                hash,
+                idp,
+            };
+
             // Start a login redirect
-            await this._userManager.signinRedirect({state: JSON.stringify(data)});
+            await this._userManager.signinRedirect({
+                state: data,
+                extraQueryParams,
+            });
 
             // Short circuit normal SPA page execution and do not try to render the view
             throw ErrorHandler.getFromLoginRequired();
@@ -143,9 +158,16 @@ export class WebAuthenticator implements Authenticator {
                     // Process the login response and send the authorization code grant message
                     const user = await this._userManager.signinRedirectCallback();
 
-                    // Get the hash URL before the login redirect
-                    const data = JSON.parse(user.state);
-                    redirectLocation = data.hash;
+                    // If an identity provider query parameter was set, save it after a successful login
+                    if (user.state.idp) {
+                        HtmlStorageHelper.identityProvider = user.state.idp;
+                    }
+
+                    // Redirect to the hash URL before the login redirect
+                    redirectLocation = user.state.hash;
+
+                    // Make sure any stored state is cleared after a successful login
+                    await this._userManager.settings.stateStore?.remove(urlData.query.state);
                 }
 
             } catch (e) {
@@ -230,6 +252,27 @@ export class WebAuthenticator implements Authenticator {
                 throw ErrorHandler.getFromTokenError(e, ErrorCodes.tokenRenewalError);
             }
         }
+    }
+
+    /*
+     * Handle the idp query parameter when redirecting
+     */
+    private _getRuntimeIdentityProvider(): string {
+
+        // Use idp= to remove the identity provider from storage
+        const urlData = urlparse(location.href, true);
+        if (urlData.query && urlData.query.idp === '') {
+            HtmlStorageHelper.removeIdentityProvider();
+            return '';
+        }
+
+        // Use a value such as idp=Okta to select an identity provider
+        if (urlData.query && urlData.query.idp) {
+            return urlData.query.idp;
+        }
+
+        // Use a local storage value if it exists
+        return HtmlStorageHelper.identityProvider;
     }
 
     /*
