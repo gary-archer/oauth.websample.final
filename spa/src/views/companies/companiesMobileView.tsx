@@ -52,7 +52,7 @@ export class CompaniesMobileView extends React.Component<CompaniesViewProps> {
                         <div className='col-6'>
                             Target USD
                         </div>
-                        <div className='col-6 moneycolor font-weight-bold'>
+                        <div className='col-6 highlightcolor font-weight-bold'>
                             {Number(company.targetUsd).toLocaleString()}
                         </div>
                     </div>
@@ -60,7 +60,7 @@ export class CompaniesMobileView extends React.Component<CompaniesViewProps> {
                         <div className='col-6'>
                             Investment USD
                         </div>
-                        <div className='col-6 moneycolor font-weight-bold'>
+                        <div className='col-6 highlightcolor font-weight-bold'>
                             {Number(company.investmentUsd).toLocaleString()}
                         </div>
                     </div>

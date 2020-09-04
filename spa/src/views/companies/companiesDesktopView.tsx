@@ -51,10 +51,10 @@ export class CompaniesDesktopView extends React.Component<CompaniesViewProps> {
                             View Transactions
                         </a>
                     </div>
-                    <div className='col-2 my-auto moneycolor font-weight-bold text-right'>
+                    <div className='col-2 my-auto highlightcolor font-weight-bold text-right'>
                         {Number(company.targetUsd).toLocaleString()}
                     </div>
-                    <div className='col-2 my-auto moneycolor font-weight-bold text-right'>
+                    <div className='col-2 my-auto highlightcolor font-weight-bold text-right'>
                         {Number(company.investmentUsd).toLocaleString()}
                     </div>
                     <div className='col-2 my-auto font-weight-bold text-right'>

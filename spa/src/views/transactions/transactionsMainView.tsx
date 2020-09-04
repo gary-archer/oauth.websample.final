@@ -60,7 +60,7 @@ export class TransactionsMainView extends React.Component<TransactionsViewProps>
                             <div className='col-6'>
                                 Amount USD
                             </div>
-                            <div className='col-6 text-right moneycolor font-weight-bold'>
+                            <div className='col-6 text-right highlightcolor font-weight-bold'>
                                 {Number(transaction.amountUsd).toLocaleString()}
                             </div>
                         </div>

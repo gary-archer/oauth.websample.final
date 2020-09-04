@@ -53,27 +53,9 @@ export class ErrorDetailsView extends React.Component<ErrorDetailsViewProps> {
                 <div className='col-4'>
                     {line.label}
                 </div>
-                {this._renderErrorLineValue(line)}
-            </div>
-        );
-    }
-
-    /*
-     * Highlight the looked up error id in red
-     */
-    private _renderErrorLineValue(line: ErrorLine): React.ReactNode {
-
-        if (line.label === 'Id') {
-            return (
-                <div className='col-8 errorcolor font-weight-bold'>
+                <div className={`col-8 ${line.valueStyle} font-weight-bold`}>
                     {line.value}
                 </div>
-            );
-        }
-
-        return (
-            <div className='col-8 valuecolor font-weight-bold'>
-                {line.value}
             </div>
         );
     }

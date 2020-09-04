@@ -17,6 +17,8 @@ export class ErrorFormatter {
         const lines: ErrorLine[] = [];
 
         // Display technical details that are OK to show to users
+        lines.push(this._createErrorLine('User Action', error.userAction, 'highlightcolor'));
+
         if (error.message.length > 0) {
             lines.push(this._createErrorLine('Info', error.message));
         }
@@ -34,7 +36,7 @@ export class ErrorFormatter {
         }
 
         if (error.instanceId > 0) {
-            lines.push(this._createErrorLine('Id', error.instanceId.toString()));
+            lines.push(this._createErrorLine('Id', error.instanceId.toString(), 'errorcolor'));
         }
 
         if (error.appAuthCode.length > 0) {
@@ -76,12 +78,13 @@ export class ErrorFormatter {
     /*
      * Return an error line as an object
      */
-    private _createErrorLine(label: string, value: string): ErrorLine {
+    private _createErrorLine(label: string, value: string, valueStyle: string = 'valuecolor'): ErrorLine {
 
         return {
             id: ++this._count,
             label,
             value,
+            valueStyle,
         };
     }
 }
