@@ -148,12 +148,12 @@ export class WebAuthenticator implements Authenticator {
         const urlData = urlparse(location.href, true);
         if (urlData.query && urlData.query.state) {
 
-            let redirectLocation = '#';
-            try {
+            // Only try to process a login response if the state exists
+            const storedState = await this._userManager.settings.stateStore?.get(urlData.query.state);
+            if (storedState) {
 
-                // Only try to process a login response if the state exists
-                const storedState = await this._userManager.settings.stateStore?.get(urlData.query.state);
-                if (storedState) {
+                let redirectLocation = '#';
+                try {
 
                     // Process the login response and send the authorization code grant message
                     const user = await this._userManager.signinRedirectCallback();
@@ -166,19 +166,19 @@ export class WebAuthenticator implements Authenticator {
                     // Redirect to the hash URL before the login redirect
                     redirectLocation = user.state.hash;
 
-                    // Make sure any stored state is cleared after a successful login
+                } catch (e) {
+
+                    // Handle and rethrow OAuth response errors
+                    throw ErrorHandler.getFromLoginResponse(e, ErrorCodes.loginResponseFailed);
+
+                } finally {
+
+                    // Make sure any stored OIDC Client state is cleared after a successful login
                     await this._userManager.settings.stateStore?.remove(urlData.query.state);
+
+                    // Always replace the browser location, to remove OAuth details from back navigation
+                    history.replaceState({}, document.title, redirectLocation);
                 }
-
-            } catch (e) {
-
-                // Handle and rethrow OAuth response errors
-                throw ErrorHandler.getFromLoginResponse(e, ErrorCodes.loginResponseFailed);
-
-            } finally {
-
-                // Always replace the browser location, to remove OAuth details from back navigation
-                history.replaceState({}, document.title, redirectLocation);
             }
         }
     }
