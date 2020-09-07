@@ -9,12 +9,13 @@
     "contentDeliveryNetwork": {
         "contentSecurityPolicyHosts": [
             "https://api.mycompany.com:444",
-            "https://dev-843469.oktapreview.com"
+            "https://login.authsamples.com",
+            "https://cognito-idp.eu-west-2.amazonaws.com"
         ],
         "enabled": false
     },
     "webReverseProxy": {
-        "tokenEndpoint": "https://dev-843469.oktapreview.com/oauth2/default/v1/token",
+        "tokenEndpoint": "https://login.authsamples.com/oauth2/token",
         "cookieRootDomain": "mycompany.com",
         "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
         "trustedWebOrigin": "https://web.mycompany.com"

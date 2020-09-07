@@ -3,11 +3,12 @@
         "apiBaseUrl":       "https://api.mycompany.com:444/api"
     },
     "oauth": {
-        "authority":        "https://dev-843469.oktapreview.com/oauth2/default",
-        "clientId":         "0oasnwpqivYKRaLJl0h7",
+        "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
+        "clientId":         "4co5uvgmse68utsekh7p2sc0lg",
         "appUri":           "https://web.mycompany.com/spa/",
-        "scope":            "openid profile email offline_access",
+        "scope":            "openid profile email",
         "reverseProxyUrl":  "https://web.mycompany.com/reverse-proxy",
+        "logoutEndpoint":   "https://login.authsamples.com/logout",
         "postLogoutPath":   "#/loggedout"
     }
 }
