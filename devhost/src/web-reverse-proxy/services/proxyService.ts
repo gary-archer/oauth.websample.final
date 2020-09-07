@@ -94,11 +94,8 @@ export class ProxyService {
         if (e.response && e.response.status && e.response.data) {
 
             // Get error values and note that error / error_description are the standard values
-            // Okta may use non standard fields of errorCode / errorSummary in places though
-            const errorData = e.response.data;
-            const errorCode = errorData.error || errorData.errorCode;
-            const errorDescription = errorData.error_description || errorData.errorSummary;
-
+            const errorCode = e.response.error;
+            const errorDescription = e.response.error_description;
             if (errorCode) {
 
                 // Throw the error
