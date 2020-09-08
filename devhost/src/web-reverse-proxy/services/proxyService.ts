@@ -94,8 +94,8 @@ export class ProxyService {
         if (e.response && e.response.status && e.response.data) {
 
             // Get error values and note that error / error_description are the standard values
-            const errorCode = e.response.error;
-            const errorDescription = e.response.error_description;
+            const errorCode = e.response.data.error;
+            const errorDescription = e.response.data.error_description;
             if (errorCode) {
 
                 // Throw the error
