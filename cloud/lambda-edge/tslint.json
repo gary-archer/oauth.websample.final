@@ -1,0 +1,17 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:latest"
+    ],
+    "jsRules": {},
+    "rules": {
+        "quotemark": [true, "single"],
+        "object-literal-sort-keys": false,
+        "variable-name": [true, "allow-leading-underscore"],
+        "interface-name": [true, "never-prefix"],
+        "no-implicit-dependencies": [true, "", ["aws-lambda", "tunnel-agent"]],
+        "no-console": false,
+        "no-empty": false
+    },
+    "rulesDirectory": []
+}
