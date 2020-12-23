@@ -11,7 +11,6 @@
     "refreshTokenGrant": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/refreshTokenGrant.json",
     "expireRefreshToken": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/expireRefreshToken.json",
     "clearCookies": "cross-env DEV_CONFIG=local sls invoke local -f reverseProxy -p test/clearCookies.json",
-
     "package": "npm run buildRelease && sls package",
     "buildRelease": "rimraf dist && tsc",
     "deploy": "sls deploy --package .serverless",
@@ -20,7 +19,7 @@
   "author": "Gary Archer",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "cookie-encrypter": "^1.0.1",
     "fs-extra": "^9.0.1"

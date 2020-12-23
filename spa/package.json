@@ -13,7 +13,7 @@
   "author": "Gary Archer",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "core-js": "^3.8.0",
     "guid-typescript": "^1.0.9",
     "moment": "^2.24.0",

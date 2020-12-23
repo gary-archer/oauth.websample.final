@@ -13,7 +13,7 @@
   "author": "Gary Archer",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "cookie-encrypter": "^1.0.1",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
