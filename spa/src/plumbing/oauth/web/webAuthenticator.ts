@@ -193,9 +193,6 @@ export class WebAuthenticator implements Authenticator {
 
                 } finally {
 
-                    // Make sure any stored OIDC Client state is cleared after a successful login
-                    await this._userManager.settings.stateStore?.remove(urlData.query.state);
-
                     // Always replace the browser location, to remove OAuth details from back navigation
                     history.replaceState({}, document.title, redirectLocation);
                 }
