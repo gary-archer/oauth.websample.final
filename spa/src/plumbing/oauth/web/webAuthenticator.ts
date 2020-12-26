@@ -94,7 +94,7 @@ export class WebAuthenticator implements Authenticator {
         }
 
         // Try to refresh the access token otherwise
-        return this.refreshAccessToken();
+        return await this.refreshAccessToken();
     }
 
     /*
