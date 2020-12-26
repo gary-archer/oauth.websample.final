@@ -152,9 +152,6 @@ export class WebAuthenticator implements Authenticator {
                 extraQueryParams,
             });
 
-            // Short circuit normal SPA page execution and do not try to render the view
-            throw ErrorHandler.getFromLoginRequired();
-
         } catch (e) {
 
             // Handle OAuth specific errors, such as those calling the metadata endpoint
