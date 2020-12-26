@@ -78,8 +78,13 @@ export class WebAuthenticator implements Authenticator {
      * Return true if there are tokens
      */
     public async isLoggedIn(): Promise<boolean> {
+
         const user = await this._userManager.getUser();
-        return !!user;
+        if (user && user.access_token) {
+            return true;
+        }
+
+        return false;
     }
 
     /*
