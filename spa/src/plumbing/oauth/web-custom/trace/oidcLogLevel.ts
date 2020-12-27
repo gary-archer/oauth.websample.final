@@ -68,10 +68,10 @@ export class OidcLogLevel {
 
         const data: { [key: string]: number | undefined } = {
             none:  Log.NONE,
-            debug: Log.DEBUG,
-            info:  Log.INFO,
-            warn:  Log.WARN,
             error: Log.ERROR,
+            warn:  Log.WARN,
+            info:  Log.INFO,
+            debug: Log.DEBUG,
         };
 
         const levelToSet = level || 'none';
