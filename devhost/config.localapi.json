@@ -9,12 +9,13 @@
     "contentDeliveryNetwork": {
         "contentSecurityPolicyHosts": [
             "https://api.mycompany.com:444",
-            "https://login.mycompany.com"
+            "https://login.authsamples.com",
+            "https://cognito-idp.eu-west-2.amazonaws.com"
         ],
         "enabled": false
     },
     "webReverseProxy": {
-        "tokenEndpoint": "https://login.mycompany.com/oauth/v2/oauth-token",
+        "tokenEndpoint": "https://login.authsamples.com/oauth2/token",
         "cookieRootDomain": "mycompany.com",
         "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
         "trustedWebOrigin": "https://web.mycompany.com"
