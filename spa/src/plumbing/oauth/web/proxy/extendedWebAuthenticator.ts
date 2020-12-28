@@ -1,6 +1,7 @@
 import { suppressDeprecationWarnings } from 'moment';
 import {UserManager, UserManagerSettings} from 'oidc-client';
 import {OAuthConfiguration} from '../../../../configuration/oauthConfiguration';
+import { ErrorConsoleReporter } from '../../../errors/errorConsoleReporter';
 import {UrlHelper} from '../../../utilities/urlHelper';
 import {WebAuthenticator} from '../webAuthenticator';
 import {ExtendedUserManager} from './extendedUserManager';

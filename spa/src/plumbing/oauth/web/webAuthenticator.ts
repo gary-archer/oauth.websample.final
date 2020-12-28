@@ -225,9 +225,6 @@ export class WebAuthenticator implements Authenticator {
 
         try {
 
-            // First clean up state
-            await this._onSessionExpired();
-
             // See if the provider supports standards based logout
             const endSessionEndpoint = await this._userManager!.metadataService.getEndSessionEndpoint();
             if (endSessionEndpoint) {
@@ -251,10 +248,14 @@ export class WebAuthenticator implements Authenticator {
                 location.replace(fullLogoutUrl);
             }
 
+            // Allow derived classes to clean up their state
+            await this._onSessionExpired();
+
         } catch (e) {
             
             // Handle any technical errors
             throw ErrorHandler.getFromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
+
         }
     }
 
