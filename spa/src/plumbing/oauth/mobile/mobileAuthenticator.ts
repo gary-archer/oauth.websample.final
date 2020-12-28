@@ -8,11 +8,11 @@ import {MobileMethodCaller} from './mobileMethodCaller';
 export class MobileAuthenticator implements Authenticator {
 
     private _methodCaller: MobileMethodCaller;
-    private _postLoginAction: () => void;
+    private _onLoggedInAction: () => void;
 
-    public constructor(postLoginAction: () => void) {
+    public constructor(_onLoggedInAction: () => void) {
         this._methodCaller = new MobileMethodCaller();
-        this._postLoginAction = postLoginAction;
+        this._onLoggedInAction = _onLoggedInAction;
     }
 
     /*
@@ -57,7 +57,7 @@ export class MobileAuthenticator implements Authenticator {
         }
 
         // Run other post login actions
-        this._postLoginAction();
+        this._onLoggedInAction();
     }
 
     /*

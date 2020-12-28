@@ -167,7 +167,7 @@ export class App extends React.Component<any, AppState> {
         const titleProps = {
             userInfo: {
                 apiClient: this._apiClient!,
-                viewManager: this._viewManager!,
+                viewManager: this._viewManager,
                 shouldLoad: !this._isInLoginRequired(),
             },
         };
@@ -229,14 +229,15 @@ export class App extends React.Component<any, AppState> {
      */
     private _createAuthenticator(): Authenticator {
 
-        const postLoginAction = () => {
+        const onLoggedIn = () => {
             this._onReloadData(false);
         };
 
         return AuthenticatorFactory.createAuthenticator(
             this._configuration!.app.webBaseUrl,
             this._configuration!.oauth,
-            postLoginAction);
+            onLoggedIn,
+            this._onLoggedOut);
     }
 
     /*
@@ -325,7 +326,7 @@ export class App extends React.Component<any, AppState> {
 
         } catch (e) {
 
-            // Treat cancelled logouts as a non error
+            // Treat cancelled logouts as a non error, when running in a mobile web view
             const error = ErrorHandler.getFromException(e);
             if (error.errorCode === ErrorCodes.redirectCancelled) {
                 return;
@@ -334,17 +335,26 @@ export class App extends React.Component<any, AppState> {
             // Only output logout errors to the console
             ErrorConsoleReporter.output(error);
 
-            // Ensure that we are in the login required view
-            location.hash = this._configuration!.oauth.postLogoutHashLocation;
-
         } finally {
 
-            // Move to login required if necessary
-            if (!this._isInLoginRequired()) {
-                location.hash = this._configuration!.oauth.postLogoutHashLocation;
-            }
-            this.setState({isLoggedIn: false});
+            // Move to logged out view if necessary
+            this._onLoggedOut();
         }
+    }
+
+    /*
+     * Handle logout completed or failed, or a logout from another tab
+     */
+    private _onLoggedOut(): void {
+
+        if (!this._isInLoginRequired()) {
+            location.hash = this._configuration!.oauth.postLogoutHashLocation;
+        }
+
+        this.setState({
+            isDataLoaded: false,
+            isLoggedIn: false,
+        });
     }
 
     /*
@@ -375,7 +385,6 @@ export class App extends React.Component<any, AppState> {
 
             // Report errors
             this.setState({error: ErrorHandler.getFromException(e)});
-
         }
     }
 

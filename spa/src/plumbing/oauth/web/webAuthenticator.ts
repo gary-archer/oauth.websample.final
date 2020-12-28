@@ -1,5 +1,5 @@
 
-import {WebStorageStateStore} from 'oidc-client';
+import {UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
@@ -8,33 +8,36 @@ import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 import {UrlHelper} from '../../utilities/urlHelper';
 import {Authenticator} from '../authenticator';
-import {CustomUserManager} from './customUserManager';
-import {HybridTokenStorage} from './hybridTokenStorage';
+import {CustomLogoutManager} from './logout/customLogoutManager';
+import {HybridTokenStorage} from './storage/hybridTokenStorage';
 
 /*
- * A custom web integration of OIDC Client, which uses cookies for token renewal
+ * A web authenticator with standard behaviour that can be extended via a subclass
  */
 export class WebAuthenticator implements Authenticator {
 
-    // Our OAuth configuration
+    private readonly _webBaseUrl: string;
     private readonly _configuration: OAuthConfiguration;
-
-    // The OIDC Client does all of the real security handling
-    private readonly _userManager: CustomUserManager;
-
-    // Tokens are stored only in memory, but we store multi tab state in local storage
+    private readonly _userManagerSettings: UserManagerSettings;
     private readonly _tokenStorage: HybridTokenStorage;
-
-    // A class to prevent multiple UI views initiating the same OAuth operation at once
     private readonly _concurrencyHandler: ConcurrentActionHandler;
+    private readonly _onLoggedOut: () => void;
+    private _userManager?: UserManager;
+    
+    public constructor(
+        webBaseUrl: string,
+        configuration: OAuthConfiguration,
+        onLoggedOut: () => void) {
 
-    /*
-     * Initialise OAuth settings and create the OIDC Client UserManager object
-     */
-    public constructor(webBaseUrl: string, configuration: OAuthConfiguration) {
-
+        // Store settings
+        this._webBaseUrl = webBaseUrl;
+        this._configuration = configuration;
         this._tokenStorage = new HybridTokenStorage();
-        const userManagerSettings = {
+        this._concurrencyHandler = new ConcurrentActionHandler();
+        this._onLoggedOut = onLoggedOut;
+
+        // Configure main OAuth settings
+        this._userManagerSettings = {
 
             // The Open Id Connect base URL
             authority: configuration.authority,
@@ -47,39 +50,49 @@ export class WebAuthenticator implements Authenticator {
             // Use the Authorization Code Flow (PKCE)
             response_type: 'code',
 
-            // We use a proxying cookie based solution to refresh access tokens
-            automaticSilentRenew: false,
-
-            // We do not use these features
-            monitorSession: false,
-            loadUserInfo: false,
-
             // Store tokens in memory and multi tab state in local storage
             userStore: new WebStorageStateStore({ store: this._tokenStorage }),
 
-            // Indicate the path in our app to return to after logout
+            // Renew on the app's main URL and do so explicitly rather than via a background timer
+            silent_redirect_uri: UrlHelper.append(webBaseUrl, configuration.redirectUri),
+            automaticSilentRenew: false,
+
+            // Our Web UI gets user info from its API, so that it is not limited to only OAuth user info
+            loadUserInfo: false,
+
+            // Indicate the logout return path and listen for logout events from other browser tabs
+            monitorSession: true,
             post_logout_redirect_uri: UrlHelper.append(webBaseUrl, configuration.postLogoutRedirectUri),
         };
 
-        this._configuration = configuration;
-        this._userManager = new CustomUserManager(webBaseUrl, configuration, this._tokenStorage, userManagerSettings);
-        this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();
     }
 
     /*
-     * Do custom initialisation of our user manager class
+     * Create the user manager during initialisation
      */
     public async initialise(): Promise<void> {
-        await this._userManager.initialise();
+
+        // First create the user manager from settings
+        this._userManager = this._createUserManager(this._userManagerSettings);
+
+        // When the user signs out from another browser tab, also remove tokens from this browser tab
+        // This will only work if the Authorization Server has a check_session_iframe endpoint
+        this._userManager.events.addUserSignedOut(async () => {
+            this._userManager!.removeUser();
+            this._onLoggedOut();
+        });
+
+        // Allow any derived classes to do extra work
+        await this._onInitialise();
     }
 
     /*
-     * Return true if there are tokens
+     * Return true if login state existing and there are tokens in memory
      */
     public async isLoggedIn(): Promise<boolean> {
 
-        const user = await this._userManager.getUser();
+        const user = await this._userManager!.getUser();
         if (user && user.access_token) {
             return true;
         }
@@ -93,7 +106,7 @@ export class WebAuthenticator implements Authenticator {
     public async getAccessToken(): Promise<string> {
 
         // Get tokens from OIDC client
-        const user = await this._userManager.getUser();
+        const user = await this._userManager!.getUser();
         if (user && user.access_token) {
             return user.access_token;
         }
@@ -108,14 +121,14 @@ export class WebAuthenticator implements Authenticator {
     public async refreshAccessToken(): Promise<string> {
 
         // See if the user is stored on any browser tab
-        let user = await this._userManager.getUser();
+        let user = await this._userManager!.getUser();
         if (user) {
 
             // The concurrency handler will only do the refresh work for the first UI view that requests it
             await this._concurrencyHandler.execute(this._performTokenRefresh);
 
             // Return the renewed access token if possible
-            user = await this._userManager.getUser();
+            user = await this._userManager!.getUser();
             if (user && user.access_token) {
                 return user.access_token;
             }
@@ -152,7 +165,7 @@ export class WebAuthenticator implements Authenticator {
             };
 
             // Start a login redirect
-            await this._userManager.signinRedirect({
+            await this._userManager!.signinRedirect({
                 state: data,
                 extraQueryParams,
             });
@@ -174,14 +187,14 @@ export class WebAuthenticator implements Authenticator {
         if (urlData.query && urlData.query.state) {
 
             // Only try to process a login response if the state exists
-            const storedState = await this._userManager.settings.stateStore?.get(urlData.query.state);
+            const storedState = await this._userManager!.settings.stateStore?.get(urlData.query.state);
             if (storedState) {
 
                 let redirectLocation = '#';
                 try {
 
                     // Process the login response and send the authorization code grant message
-                    const user = await this._userManager.signinRedirectCallback();
+                    const user = await this._userManager!.signinRedirectCallback();
 
                     // If an identity provider query parameter was set, save it after a successful login
                     if (user.state.idp) {
@@ -211,9 +224,36 @@ export class WebAuthenticator implements Authenticator {
     public async startLogout(): Promise<void> {
 
         try {
-            await this._userManager.signoutRedirect();
+
+            // First clean up state
+            await this._onSessionExpired();
+
+            // See if the provider supports standards based logout
+            const endSessionEndpoint = await this._userManager!.metadataService.getEndSessionEndpoint();
+            if (endSessionEndpoint) {
+
+                // With some providers, during multi tab browsing we may not have an id token on the current tab
+                if (!this._tokenStorage.getIdToken()) {
+                    throw new Error('No id token is present so cannot perform standards based logout');
+                }
+
+                // Clean up state then invoke the standard behaviour
+                await this._userManager!.signoutRedirect();
+
+            } else {
+
+                // Remove tokens from memory
+                await this._userManager?.removeUser();
+
+                // Then format the vendor specific URL and do the redirect
+                const logoutManager = new CustomLogoutManager(this._webBaseUrl, this._configuration);
+                const fullLogoutUrl = logoutManager.getCustomLogoutUrl();
+                location.replace(fullLogoutUrl);
+            }
 
         } catch (e) {
+            
+            // Handle any technical errors
             throw ErrorHandler.getFromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
         }
     }
@@ -223,45 +263,68 @@ export class WebAuthenticator implements Authenticator {
      */
     public async expireAccessToken(): Promise<void> {
 
-        const user = await this._userManager.getUser();
+        const user = await this._userManager!.getUser();
         if (user) {
 
             user.access_token = 'x' + user.access_token + 'x';
-            this._userManager.storeUser(user);
+            this._userManager!.storeUser(user);
         }
     }
 
     /*
-     * For testing, make the refresh token act like it is expired
+     * For testing, make the refresh token act like it is expired, when applicable
      */
     public async expireRefreshToken(): Promise<void> {
 
         // First expire the access token so that the next API call returns a 401
         await this.expireAccessToken();
 
-        // Also make the refresh token in the secure cookie act expired
-        await this._userManager.expireRefreshToken();
+        // Expire the refresh token if we have one
+        const user = await this._userManager!.getUser();
+        if (user && user.refresh_token) {
+            user.refresh_token = 'x' + user.refresh_token + 'x';
+            this._userManager!.storeUser(user);
+        }
+    }
+
+    /*
+     * The default implementation of creating the user manager
+     */
+    protected _createUserManager(settings: UserManagerSettings): UserManager {
+        return new UserManager(settings);
+    }
+
+    /*
+     * Can be overridden by derived classes to do further initialisation
+     */
+    protected async _onInitialise(): Promise<void> {
+    }
+
+    /*
+     * Can be overridden by derived classes to do further work when a session expires
+     */
+    protected async _onSessionExpired(): Promise<void> {
     }
 
     /*
      * Ask OIDC client to silently renew the access token using a cookie
      */
-    private async _performTokenRefresh() {
+    private async _performTokenRefresh(): Promise<void> {
 
         try {
 
             // Call the OIDC Client method, which will send a refresh token grant message
-            await this._userManager.signinSilent();
+            await this._userManager!.signinSilent();
 
         } catch (e) {
 
             if (this._isSessionExpired(e)) {
 
-                // For invalid_grant errors, clear token data, which will force a login redirect
-                await this._userManager.removeUser();
+                // Remove token data, which will result in triggering a login redirect later
+                await this._userManager!.removeUser();
 
-                // Also remove the refresh token
-                await this._userManager.expireRefreshToken();
+                // Inform derived classes where applicable
+                await this._onSessionExpired();
 
             } else {
 
@@ -299,6 +362,11 @@ export class WebAuthenticator implements Authenticator {
 
         // An invalid_grant error code from the Authorization Server means an expired refresh token
         if (e.message === ErrorCodes.invalidGrant) {
+            return true;
+        }
+
+        // A login_required error code means iframe silent renewal has failed
+        if (e.error === ErrorCodes.loginRequired) {
             return true;
         }
 

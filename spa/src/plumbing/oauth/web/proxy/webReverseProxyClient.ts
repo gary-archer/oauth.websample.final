@@ -1,8 +1,8 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
-import {ErrorHandler} from '../../errors/errorHandler';
-import {ErrorConsoleReporter} from '../../errors/errorConsoleReporter';
-import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
-import {UrlHelper} from '../../utilities/urlHelper';
+import {ErrorHandler} from '../../../errors/errorHandler';
+import {ErrorConsoleReporter} from '../../../errors/errorConsoleReporter';
+import {HtmlStorageHelper} from '../../../utilities/htmlStorageHelper';
+import {UrlHelper} from '../../../utilities/urlHelper';
 
 /*
  * A helper class to deal with the web reverse proxy, its auth cookie, and its CSRF field

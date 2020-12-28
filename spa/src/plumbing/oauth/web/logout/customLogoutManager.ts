@@ -1,24 +1,28 @@
-import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
-import {UrlHelper} from '../../utilities/urlHelper';
+import {UrlHelper} from '../../../utilities/urlHelper';
+import {OAuthConfiguration} from '../../../../configuration/oauthConfiguration';
 
 /*
- * A helper class to build the logout URL for Cognito in a vendor specific manner
- * https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
+ * A class to manage logout via a vendor specific URL
  */
-export class CognitoLogoutUrlBuilder {
+export class CustomLogoutManager {
 
-    private readonly _configuration: OAuthConfiguration;
     private readonly _webBaseUrl: string;
+    private readonly _configuration: OAuthConfiguration;
 
     public constructor(webBaseUrl: string, configuration: OAuthConfiguration) {
-        this._configuration = configuration;
         this._webBaseUrl = webBaseUrl;
+        this._configuration = configuration;
     }
 
     /*
      * Format the vendor specific logout URL
      */
-    public buildUrl(): string {
+    public getCustomLogoutUrl(): string {
+
+        // We currently only support this provider
+        if (this._configuration.authority.indexOf('cognito') === -1) {
+            throw new Error('Custom logout is only supported for AWS Cognito')
+        }
 
         // Form the full logout redirect URI
         const clientId = encodeURIComponent(this._configuration.clientId);
