@@ -21,6 +21,7 @@ import {TitleView} from '../views/headings/titleView';
 import {LoginRequiredView} from '../views/loginRequired/loginRequiredView';
 import {TraceView} from '../views/trace/traceView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
+import {RouteHelper} from '../views/utilities/routeHelper';
 import {ViewManager} from '../views/viewManager';
 import {AppState} from './appState';
 
@@ -29,7 +30,8 @@ import {AppState} from './appState';
  */
 export class App extends React.Component<any, AppState> {
 
-    private _viewManager: ViewManager;
+    private readonly _viewManager: ViewManager;
+    private readonly _routeHelper: RouteHelper;
     private _configuration?: Configuration;
     private _authenticator?: Authenticator;
     private _apiClient?: ApiClient;
@@ -56,6 +58,9 @@ export class App extends React.Component<any, AppState> {
         // Create a helper class to do multiple view coordination
         this._viewManager = new ViewManager(this._startLoginRedirect, this._onLoadStateChanged);
         this._viewManager.setViewCount(2);
+
+        // Initialise a helper class for routing
+        this._routeHelper = new RouteHelper();
 
         // Initialise the modal dialog system used for error popups
         Modal.setAppElement('#root');
@@ -168,7 +173,7 @@ export class App extends React.Component<any, AppState> {
             userInfo: {
                 apiClient: this._apiClient!,
                 viewManager: this._viewManager,
-                shouldLoad: !this._isInLoginRequired(),
+                shouldLoad: !this._routeHelper.isInLoggedOutView(),
             },
         };
 
@@ -293,22 +298,22 @@ export class App extends React.Component<any, AppState> {
         // If there is a startup error then reinitialise the app
         if (!this.state.isInitialised) {
             await this._initialiseApp();
-            return;
         }
 
-        // When in the login required view and home is clicked, force a login redirect
-        if (!this.state.isLoggedIn) {
-            await this._startLoginRedirect('#');
-            return;
-        }
+        if (this.state.isInitialised) {
 
-        // Force views to reload if there have been view errors
-        if (!this.state.isDataLoaded) {
-            this._onReloadData(false);
-        }
+            const routeHelper = new RouteHelper();
+            if (routeHelper.isInHomeView()) {
 
-        // Navigate to the home view
-        location.hash = '#';
+                // Force a reload if we are already in the home view
+                this._onReloadData(false);
+
+            } else {
+
+                // Otherwise navigate to the home view
+                location.hash = '#';
+            }
+        }
     }
 
     /*
@@ -347,7 +352,7 @@ export class App extends React.Component<any, AppState> {
      */
     private _onLoggedOut(): void {
 
-        if (!this._isInLoginRequired()) {
+        if (!this._routeHelper.isInLoggedOutView()) {
             location.hash = this._configuration!.oauth.postLogoutHashLocation;
         }
 
@@ -355,13 +360,6 @@ export class App extends React.Component<any, AppState> {
             isDataLoaded: false,
             isLoggedIn: false,
         });
-    }
-
-    /*
-     * Return true if our location is the login required view
-     */
-    private _isInLoginRequired(): boolean {
-        return location.hash.indexOf('loggedout') !== -1;
     }
 
     /*

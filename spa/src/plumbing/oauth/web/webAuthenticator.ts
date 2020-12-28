@@ -201,8 +201,11 @@ export class WebAuthenticator implements Authenticator {
                         HtmlStorageHelper.identityProvider = user.state.idp;
                     }
 
-                    // Redirect to the hash URL before the login redirect
+                    // We will redirect to the hash URL before the login redirect
                     redirectLocation = user.state.hash;
+
+                    // Finally, clear up any stale redirect state from older login redirects
+                    this._userManager?.clearStaleState();
 
                 } catch (e) {
 

@@ -42,7 +42,7 @@ export class ExtendedUserManager extends UserManager {
     public async signinSilent(args?: any): Promise<User> {
 
         await this._updateMetadata();
-        return super.signinSilent(args);
+        return await super.signinSilent(args);
     }
 
     /*
