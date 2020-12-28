@@ -32,6 +32,7 @@ export class App extends React.Component<any, AppState> {
 
     private readonly _viewManager: ViewManager;
     private readonly _routeHelper: RouteHelper;
+
     private _configuration?: Configuration;
     private _authenticator?: Authenticator;
     private _apiClient?: ApiClient;
@@ -217,7 +218,7 @@ export class App extends React.Component<any, AppState> {
                 <ErrorSummaryView {...errorProps} />
                 <SessionView {...sessionProps} />
                 <TraceView />
-                <HashRouter>
+                <HashRouter hashType='noslash'>
                     <Switch>
                         <Route exact={true} path='/'            render={renderCompaniesView} />
                         <Route exact={true} path='/company=:id' render={renderTransactionsView} />
@@ -259,7 +260,7 @@ export class App extends React.Component<any, AppState> {
             // Treat cancelled logins as a non error
             const error = ErrorHandler.getFromException(e);
             if (error.errorCode === ErrorCodes.redirectCancelled) {
-                location.hash = this._configuration!.oauth.postLogoutHashLocation;
+                location.hash = '#loggedout';
                 return;
             }
 
@@ -353,7 +354,7 @@ export class App extends React.Component<any, AppState> {
     private _onLoggedOut(): void {
 
         if (!this._routeHelper.isInLoggedOutView()) {
-            location.hash = this._configuration!.oauth.postLogoutHashLocation;
+            location.hash = '#loggedout';
         }
 
         this.setState({

@@ -29,7 +29,7 @@ export class CustomLogoutManager {
         const logoutPath = UrlHelper.append(this._webBaseUrl, this._configuration.postLogoutRedirectUri);
         const postLogoutReturnUri = encodeURIComponent(logoutPath);
 
-        // Upon return, loggedout.html redirects to https://web.authsamples.com/spa/#/loggedout
+        // Upon return, loggedout.html redirects to https://web.authsamples.com/spa#loggedout
         return `${this._configuration.customLogoutEndpoint}?client_id=${clientId}&logout_uri=${postLogoutReturnUri}`;
     }
 }
