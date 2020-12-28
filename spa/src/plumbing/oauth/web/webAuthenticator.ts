@@ -23,7 +23,7 @@ export class WebAuthenticator implements Authenticator {
     private readonly _concurrencyHandler: ConcurrentActionHandler;
     private readonly _onLoggedOut: () => void;
     private _userManager?: UserManager;
-    
+
     public constructor(
         webBaseUrl: string,
         configuration: OAuthConfiguration,
@@ -252,7 +252,7 @@ export class WebAuthenticator implements Authenticator {
             await this._onSessionExpired();
 
         } catch (e) {
-            
+
             // Handle any technical errors
             throw ErrorHandler.getFromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
 

@@ -21,7 +21,7 @@ export class CustomLogoutManager {
 
         // We currently only support this provider
         if (this._configuration.authority.indexOf('cognito') === -1) {
-            throw new Error('Custom logout is only supported for AWS Cognito')
+            throw new Error('Custom logout is only supported for AWS Cognito');
         }
 
         // Form the full logout redirect URI

@@ -1,7 +1,5 @@
-import { suppressDeprecationWarnings } from 'moment';
 import {UserManager, UserManagerSettings} from 'oidc-client';
 import {OAuthConfiguration} from '../../../../configuration/oauthConfiguration';
-import { ErrorConsoleReporter } from '../../../errors/errorConsoleReporter';
 import {UrlHelper} from '../../../utilities/urlHelper';
 import {WebAuthenticator} from '../webAuthenticator';
 import {ExtendedUserManager} from './extendedUserManager';
@@ -64,7 +62,7 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
     private _onSignInResponse(response: any): void {
         this._webReverseProxyClient.storeCsrfFieldFromProxy(response);
     }
-    
+
     /*
      * When a user session ends, ensure that the refresh token cookie is removed
      */
