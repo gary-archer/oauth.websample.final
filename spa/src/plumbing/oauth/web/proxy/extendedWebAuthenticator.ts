@@ -25,6 +25,7 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
         // Create a client that will proxy refresh token requests later
         this._webReverseProxyBaseUrl = UrlHelper.append(webBaseUrl, configuration.reverseProxyPath);
         this._webReverseProxyClient = new WebReverseProxyClient(configuration.clientId, this._webReverseProxyBaseUrl);
+        this._setupDerivedCallbacks();
     }
 
     /*
@@ -53,6 +54,7 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
      * Do extra initialisation for the proxy client
      */
     protected async _onInitialise(): Promise<void> {
+        await this._extendedUserManager!.initialise();
         this._webReverseProxyClient.initialise();
     }
 
@@ -68,5 +70,12 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
      */
     protected async _onSessionExpired(): Promise<void> {
         await this._webReverseProxyClient.clearRefreshToken();
+    }
+
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    private _setupDerivedCallbacks(): void {
+        this._onSignInResponse = this._onSignInResponse.bind(this);
     }
 }
