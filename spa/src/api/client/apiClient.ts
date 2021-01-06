@@ -30,7 +30,7 @@ export class ApiClient {
     }
 
     /*
-     * We download user info from the API so that we can get any data we need
+     * We download user info from the API rather than using the id token
      */
     public async getUserInfo(options?: ApiRequestOptions): Promise<UserInfoClaims> {
 
@@ -38,7 +38,7 @@ export class ApiClient {
     }
 
     /*
-     * We download user info from the API so that we can get any data we need
+     * Get a list of companies
      */
     public async getCompanyList(options?: ApiRequestOptions): Promise<Company[]> {
 
@@ -46,7 +46,7 @@ export class ApiClient {
     }
 
     /*
-     * We download user info from the API so that we can get any data we need
+     * Get a list of transactions for a single company
      */
     public async getCompanyTransactions(id: string, options?: ApiRequestOptions): Promise<CompanyTransactions> {
 
