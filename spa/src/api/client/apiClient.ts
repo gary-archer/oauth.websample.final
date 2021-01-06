@@ -105,8 +105,14 @@ export class ApiClient {
         accessToken: string,
         options?: ApiRequestOptions): Promise<any> {
 
+        // Force IE11 to bypass the browser cache by changing the request URL every time
+        let requestUrl = url;
+        if (navigator.userAgent.toLowerCase().indexOf('trident') !== -1) {
+            requestUrl += `?time=${new Date().getTime()}`;
+        }
+
         const response = await axios.request({
-            url,
+            url: requestUrl,
             method,
             data: dataToSend,
             headers: this._getHeaders(accessToken, options),
