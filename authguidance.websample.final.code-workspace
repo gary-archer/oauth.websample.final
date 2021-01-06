@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "spa"
+		},
+		{
+			"path": "devhost"
+		},
+		{
+			"path": "cloud/deployment"
+		},
+		{
+			"path": "cloud/lambda-edge"
+		}
+	]
+}
