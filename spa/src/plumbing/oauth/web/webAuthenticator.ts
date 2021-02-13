@@ -8,6 +8,7 @@ import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 import {UrlHelper} from '../../utilities/urlHelper';
 import {Authenticator} from '../authenticator';
 import {CustomLogoutManager} from './logout/customLogoutManager';
+import {CustomMetadataService} from './metadata/customMetadataService';
 import {HybridTokenStorage} from './storage/hybridTokenStorage';
 
 /*
@@ -62,6 +63,15 @@ export class WebAuthenticator implements Authenticator {
             // Indicate the logout return path and listen for logout events from other browser tabs
             monitorSession: true,
             post_logout_redirect_uri: UrlHelper.append(webBaseUrl, configuration.postLogoutRedirectUri),
+
+            // Use a custom metadata implementation that we can override
+            // @ts-expect-error - MetadataServiceCtor cannot be implemented in Typescript due to the unnamed method
+            MetadataServiceCtor: settings => {
+                const metadataService = new CustomMetadataService(settings);
+                metadataService.customTokenEndpoint = UrlHelper.append(webBaseUrl, 'reverse-proxy/token');
+                console.log('*** CTOR CALLED');
+                return metadataService;
+            }
         };
 
         this._setupCallbacks();
@@ -70,7 +80,7 @@ export class WebAuthenticator implements Authenticator {
     /*
      * Create the user manager during initialisation
      */
-    public async initialise(): Promise<void> {
+    public initialise(): void {
 
         // First create the user manager from settings
         this._userManager = this._createUserManager(this._userManagerSettings);
@@ -83,7 +93,7 @@ export class WebAuthenticator implements Authenticator {
         });
 
         // Allow any derived classes to do extra work
-        await this._onInitialise();
+        this._onInitialise();
     }
 
     /*
@@ -166,12 +176,12 @@ export class WebAuthenticator implements Authenticator {
         const urlData = urlparse(location.href, true);
         if (urlData.query && urlData.query.state) {
 
-            // Only try to process a login response if the state exists
-            const storedState = await this._userManager!.settings.stateStore?.get(urlData.query.state);
-            if (storedState) {
+            let redirectLocation = '#';
+            try {
 
-                let redirectLocation = '#';
-                try {
+                // Only try to process a login response if the state exists
+                const storedState = await this._userManager!.settings.stateStore?.get(urlData.query.state);
+                if (storedState) {
 
                     // Process the login response and send the authorization code grant message
                     const user = await this._userManager!.signinRedirectCallback();
@@ -186,17 +196,17 @@ export class WebAuthenticator implements Authenticator {
 
                     // Delete any local storage redirect state older than 5 minutes for incomplete login redirects
                     await this._userManager!.clearStaleState();
-
-                } catch (e) {
-
-                    // Handle and rethrow OAuth response errors
-                    throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
-
-                } finally {
-
-                    // Always replace the browser location, to remove OAuth details from back navigation
-                    history.replaceState({}, document.title, redirectLocation);
                 }
+
+            } catch (e) {
+
+                // Handle and rethrow OAuth response errors
+                throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
+
+            } finally {
+
+                // Always replace the browser location, to remove OAuth details from back navigation
+                history.replaceState({}, document.title, redirectLocation);
             }
         }
     }
@@ -282,7 +292,7 @@ export class WebAuthenticator implements Authenticator {
     /*
      * Can be overridden by derived classes to do further initialisation
      */
-    protected async _onInitialise(): Promise<void> {
+    protected _onInitialise(): void {
     }
 
     /*

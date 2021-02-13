@@ -53,8 +53,7 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
     /*
      * Do extra initialisation for the proxy client
      */
-    protected async _onInitialise(): Promise<void> {
-        await this._extendedUserManager!.initialise();
+    protected _onInitialise(): void {
         this._webReverseProxyClient.initialise();
     }
 

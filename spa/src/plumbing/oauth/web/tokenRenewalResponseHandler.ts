@@ -14,7 +14,7 @@ export class TokenRenewalResponseHandler {
         const settings = {
             authority: configuration.authority,
             client_id: configuration.clientId,
-        } ;
+        };
 
         this._userManager = new UserManager(settings);
     }
