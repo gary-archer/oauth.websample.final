@@ -43,6 +43,13 @@ export class WebReverseProxyClient {
     }
 
     /*
+     * Return the location of the token endpoint
+     */
+    public getTokenEndpoint(): string {
+        return UrlHelper.append(this._reverseProxyBaseUrl, 'token');
+    }
+
+    /*
      * Store the CSRF field when the web reverse proxy returns it in the Authorization Code Grant response
      */
     public storeCsrfFieldFromProxy(response: any): void {

@@ -105,7 +105,7 @@ export class App extends React.Component<any, AppState> {
 
             // Create the authenticator and receive any login responses on the main window
             this._authenticator = this._createAuthenticator();
-            this._authenticator.initialise();
+            await this._authenticator.initialise();
             await this._authenticator.handleLoginResponse();
 
             // Create the API client

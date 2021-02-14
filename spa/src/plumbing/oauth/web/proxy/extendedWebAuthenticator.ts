@@ -1,10 +1,8 @@
 import {UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
-import {UrlHelper} from '../../../utilities/urlHelper';
 import {HybridTokenStorage} from '../storage/hybridTokenStorage';
 import {WebAuthenticator} from '../webAuthenticator';
 import {WebAuthenticatorOptions} from '../webAuthenticatorOptions';
 import {ExtendedUserManager} from './extendedUserManager';
-import {CustomMetadataService} from './customMetadataService';
 import {WebReverseProxyClient} from './webReverseProxyClient';
 
 /*
@@ -22,14 +20,6 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
         // We store OIDC state, but not tokens, in local storage
         // This is needed to make the library send token refresh grant messages for new browser tabs
         (this._options.settings as any).userStore = new WebStorageStateStore({ store: new HybridTokenStorage() });
-
-        // Use a custom metadata implementation, so that we can override the token endpoint
-        // @ts-expect-error - MetadataServiceCtor cannot be implemented in Typescript due to the unnamed method
-        (this._options.settings as any).MetadataServiceCtor = settings => {
-            const metadataService = new CustomMetadataService(settings);
-            metadataService.setTokenEndpoint(UrlHelper.append(this._options.webBaseUrl, 'reverse-proxy/token'));
-            return metadataService;
-        };
 
         // Create an object to manage explicit calls to the web reverse proxy when required
         this._webReverseProxyClient = new WebReverseProxyClient(
@@ -54,14 +44,25 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
      */
     protected _createUserManager(settings: UserManagerSettings): UserManager {
 
-        this._extendedUserManager = new ExtendedUserManager(settings, this._onSignInResponse);
+        this._extendedUserManager = new ExtendedUserManager(
+            settings,
+            this._webReverseProxyClient,
+            this._onSignInResponse);
         return this._extendedUserManager;
     }
 
     /*
-     * Do extra initialisation for the proxy client
+     * Updates needed to proxy refresh tokens in an HTTP only cookie, along with a CSRF field
      */
-    protected _onInitialise(): void {
+    protected async _onInitialise(): Promise<void> {
+
+        // Update the metadata's token endpoint field to point to a proxy location
+        // Note that metadata is stored against the settings object and the MetadataService is not properly overridable
+        const settings = this._extendedUserManager!.settings;
+        await this._extendedUserManager!.metadataService.getMetadata();
+        settings.metadata!.token_endpoint = this._webReverseProxyClient.getTokenEndpoint();
+
+        // Initialise the web reverse proxy, so that it sends a CSRF field later
         this._webReverseProxyClient.initialise();
     }
 

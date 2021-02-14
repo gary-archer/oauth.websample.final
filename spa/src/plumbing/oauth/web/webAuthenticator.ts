@@ -29,7 +29,7 @@ export class WebAuthenticator implements Authenticator {
     /*
      * Create the user manager during initialisation
      */
-    public initialise(): void {
+    public async initialise(): Promise<void> {
 
         // First create the user manager from settings
         this._userManager = this._createUserManager(this._options.settings);
@@ -42,7 +42,7 @@ export class WebAuthenticator implements Authenticator {
         });
 
         // Allow any derived classes to do extra work
-        this._onInitialise();
+        await this._onInitialise();
     }
 
     /*
@@ -241,7 +241,7 @@ export class WebAuthenticator implements Authenticator {
     /*
      * Can be overridden by derived classes to do further initialisation
      */
-    protected _onInitialise(): void {
+    protected async _onInitialise(): Promise<void> {
     }
 
     /*

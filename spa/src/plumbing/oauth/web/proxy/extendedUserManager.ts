@@ -1,4 +1,5 @@
 import {SigninResponse, StateStore, User, UserManager, UserManagerSettings} from 'oidc-client';
+import {WebReverseProxyClient} from './webReverseProxyClient';
 
 /*
  * Extend the OIDC User Manager class to deal with proxying refresh token related requests
@@ -6,11 +7,16 @@ import {SigninResponse, StateStore, User, UserManager, UserManagerSettings} from
  */
 export class ExtendedUserManager extends UserManager {
 
+    private readonly _webReverseProxyClient: WebReverseProxyClient;
     private readonly _onSignInResponse: (response: any) => void;
 
-    public constructor(settings: UserManagerSettings, onSignInResponse: (response: any) => void) {
+    public constructor(
+        settings: UserManagerSettings,
+        webReverseProxyClient: WebReverseProxyClient,
+        onSignInResponse: (response: any) => void) {
 
         super(settings);
+        this._webReverseProxyClient = webReverseProxyClient;
         this._onSignInResponse = onSignInResponse;
     }
 
@@ -18,6 +24,9 @@ export class ExtendedUserManager extends UserManager {
      * Override the base method to capture a CSRF token from the authorization code grant response
      */
     public async processSigninResponse(url?: string, stateStore?: StateStore): Promise<SigninResponse> {
+
+        const metadata = await this.metadataService.getMetadata();
+        metadata.token_endpoint = this._webReverseProxyClient.getTokenEndpoint();
 
         const response = await super.processSigninResponse(url, stateStore) as any;
         this._onSignInResponse(response);

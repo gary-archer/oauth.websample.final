@@ -4,7 +4,7 @@
 export interface Authenticator {
 
     // A method called during page load to initialise the OIDC client library
-    initialise(): void;
+    initialise(): Promise<void>;
 
     // Try to get an access token
     getAccessToken(): Promise<string>;
