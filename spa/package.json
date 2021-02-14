@@ -17,7 +17,7 @@
     "core-js": "^3.8.0",
     "guid-typescript": "^1.0.9",
     "moment": "^2.24.0",
-    "oidc-client": "^1.11.3",
+    "oidc-client": "^1.11.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-modal": "^3.12.1",

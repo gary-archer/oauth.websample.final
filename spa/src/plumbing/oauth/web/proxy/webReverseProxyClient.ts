@@ -14,9 +14,9 @@ export class WebReverseProxyClient {
     private readonly _responseBodyFieldName = 'csrf_field';
     private readonly _requestHeaderFieldName = 'x-mycompany-finalspa-refresh-csrf';
 
-    public constructor(clientId: string, reverseProxyBaseUrl: string) {
+    public constructor(clientId: string, webBaseUrl: string, reverseProxyPath: string) {
         this._clientId = clientId;
-        this._reverseProxyBaseUrl = reverseProxyBaseUrl;
+        this._reverseProxyBaseUrl = UrlHelper.append(webBaseUrl, reverseProxyPath);
     }
 
     /*

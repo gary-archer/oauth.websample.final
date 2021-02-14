@@ -1,79 +1,28 @@
-import {UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
+import {InMemoryWebStorage, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
 import urlparse from 'url-parse';
-import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
-import {UrlHelper} from '../../utilities/urlHelper';
 import {Authenticator} from '../authenticator';
 import {CustomLogoutManager} from './logout/customLogoutManager';
-import {CustomMetadataService} from './metadata/customMetadataService';
-import {HybridTokenStorage} from './storage/hybridTokenStorage';
+import {WebAuthenticatorOptions} from './webAuthenticatorOptions';
 
 /*
  * A web authenticator with standard behaviour that can be extended via a subclass
  */
 export class WebAuthenticator implements Authenticator {
 
-    private readonly _webBaseUrl: string;
-    private readonly _configuration: OAuthConfiguration;
-    private readonly _userManagerSettings: UserManagerSettings;
-    private readonly _tokenStorage: HybridTokenStorage;
+    protected _options: WebAuthenticatorOptions;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
-    private readonly _onLoggedOut: () => void;
     private _userManager?: UserManager;
 
-    public constructor(
-        webBaseUrl: string,
-        configuration: OAuthConfiguration,
-        onLoggedOut: () => void) {
+    public constructor(options: WebAuthenticatorOptions) {
 
-        // Store settings
-        this._webBaseUrl = webBaseUrl;
-        this._configuration = configuration;
-        this._tokenStorage = new HybridTokenStorage();
+        this._options = options;
+        (this._options.settings as any).userStore = new WebStorageStateStore({ store: new InMemoryWebStorage() });
+
         this._concurrencyHandler = new ConcurrentActionHandler();
-        this._onLoggedOut = onLoggedOut;
-
-        // Configure main OAuth settings
-        this._userManagerSettings = {
-
-            // The Open Id Connect base URL
-            authority: configuration.authority,
-
-            // Core OAuth settings for our app
-            client_id: configuration.clientId,
-            redirect_uri: UrlHelper.append(webBaseUrl, configuration.redirectUri),
-            scope: configuration.scope,
-
-            // Use the Authorization Code Flow (PKCE)
-            response_type: 'code',
-
-            // Store tokens in memory and multi tab state in local storage
-            userStore: new WebStorageStateStore({ store: this._tokenStorage }),
-
-            // Renew on the app's main URL and do so explicitly rather than via a background timer
-            silent_redirect_uri: UrlHelper.append(webBaseUrl, configuration.redirectUri),
-            automaticSilentRenew: false,
-
-            // Our Web UI gets user info from its API, so that it is not limited to only OAuth user info
-            loadUserInfo: false,
-
-            // Indicate the logout return path and listen for logout events from other browser tabs
-            monitorSession: true,
-            post_logout_redirect_uri: UrlHelper.append(webBaseUrl, configuration.postLogoutRedirectUri),
-
-            // Use a custom metadata implementation that we can override
-            // @ts-expect-error - MetadataServiceCtor cannot be implemented in Typescript due to the unnamed method
-            MetadataServiceCtor: settings => {
-                const metadataService = new CustomMetadataService(settings);
-                metadataService.customTokenEndpoint = UrlHelper.append(webBaseUrl, 'reverse-proxy/token');
-                console.log('*** CTOR CALLED');
-                return metadataService;
-            }
-        };
-
         this._setupCallbacks();
     }
 
@@ -83,13 +32,13 @@ export class WebAuthenticator implements Authenticator {
     public initialise(): void {
 
         // First create the user manager from settings
-        this._userManager = this._createUserManager(this._userManagerSettings);
+        this._userManager = this._createUserManager(this._options.settings);
 
         // When the user signs out from another browser tab, also remove tokens from this browser tab
         // This will only work if the Authorization Server has a check_session_iframe endpoint
         this._userManager.events.addUserSignedOut(async () => {
             this._userManager!.removeUser();
-            this._onLoggedOut();
+            this._options.onLoggedOut();
         });
 
         // Allow any derived classes to do extra work
@@ -145,7 +94,7 @@ export class WebAuthenticator implements Authenticator {
             const idp = this._getRuntimeIdentityProvider();
             const extraQueryParams: any = {};
             if (idp) {
-                extraQueryParams[this._configuration.idpParameterName] = idp;
+                extraQueryParams[this._options.configuration.idpParameterName] = idp;
             }
 
             // Store data during the redirect
@@ -241,7 +190,7 @@ export class WebAuthenticator implements Authenticator {
                 await this._userManager?.removeUser();
 
                 // Then format the vendor specific URL and do the redirect
-                const logoutManager = new CustomLogoutManager(this._webBaseUrl, this._configuration);
+                const logoutManager = new CustomLogoutManager(this._options.webBaseUrl, this._options.configuration);
                 const fullLogoutUrl = logoutManager.getCustomLogoutUrl();
                 location.replace(fullLogoutUrl);
             }

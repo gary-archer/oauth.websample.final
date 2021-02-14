@@ -236,8 +236,8 @@ export class App extends React.Component<any, AppState> {
     private _createAuthenticator(): Authenticator {
 
         return AuthenticatorFactory.createAuthenticator(
-            this._configuration!.app.webBaseUrl,
             this._configuration!.oauth,
+            this._configuration!.app.webBaseUrl,
             this._onMobileWebViewLogin,
             this._onMoveToLoggedOutView);
     }

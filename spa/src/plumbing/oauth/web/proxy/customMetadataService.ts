@@ -4,29 +4,36 @@ import {ErrorHandler} from '../../../errors/errorHandler';
 import {AxiosUtils} from '../../../utilities/axiosUtils';
 
 /*
- * A custom metadata service to allow us to override endpoints when required
+ * A custom metadata service to allow us to override endpoints for proxying purposes
  */
 // @ts-expect-error - The MetadataService interface cannot be implemented in Typescript due to the 'new' method
 export class CustomMetadataService implements MetadataService {
 
-    public metadataUrl?: string = undefined;
-    private _customTokenEndpoint: string | null;
+    private _metadataUrl: string;
+    private _tokenEndpointUrl: string | null;
     private _metadata: OidcMetadata | null;
     private _signingKeys: any;
 
     public constructor(settings: OidcClientSettings) {
 
-        this.metadataUrl = `${settings.authority!}/.well-known/openid-configuration`;
-        this._customTokenEndpoint = null;
+        this._metadataUrl = `${settings.authority!}/.well-known/openid-configuration`;
+        this._tokenEndpointUrl = null;
         this._metadata = null;
         this._signingKeys = null;
     }
 
     /*
+     * Implement the interface member
+     */
+    public get metadataUrl(): string {
+        return this._metadataUrl;
+    }
+
+    /*
      * Support overriding this endpoint
      */
-    public set customTokenEndpoint(value: string) {
-        this._customTokenEndpoint = value;
+    public setTokenEndpoint(value: string): void {
+        this._tokenEndpointUrl = value;
     }
 
     /*
@@ -35,9 +42,10 @@ export class CustomMetadataService implements MetadataService {
     public async getMetadata(): Promise<OidcMetadata> {
 
         if (!this._metadata) {
-            console.log('*** GETTING METADATA');
-            this._metadata = await this.getJson(this.metadataUrl!);
-            console.log('*** GOT METADATA');
+            this._metadata = await this.getJson(this.metadataUrl);
+            if (this._tokenEndpointUrl) {
+                this._metadata!.token_endpoint = this._tokenEndpointUrl;
+            }
         }
 
         return this._metadata!;
@@ -68,11 +76,6 @@ export class CustomMetadataService implements MetadataService {
      * Return the endpoint from which we get tokens
      */
     public async getTokenEndpoint(): Promise<string | undefined> {
-
-        if (this._customTokenEndpoint) {
-            return this._customTokenEndpoint;
-        }
-
         return (await this.getMetadata()).token_endpoint;
     }
 
@@ -110,10 +113,8 @@ export class CustomMetadataService implements MetadataService {
     public async getSigningKeys(): Promise<any> {
 
         if (!this._signingKeys) {
-            console.log('*** GET SIGNING KEYS');
             const keySet = await this.getJson(this._metadata!.jwks_uri);
             this._signingKeys = keySet.keys;
-            console.log('*** YAY GOT KEYS');
         }
 
         return this._signingKeys;
