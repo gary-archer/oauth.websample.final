@@ -19,5 +19,4 @@ export interface AppState {
 
     // The application level error object
     error: UIError | null;
-
 }

@@ -173,7 +173,9 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
             // User typed an id value outside of allowed company ids
             return true;
 
-        } else if (error.statusCode === 400 && error.errorCode === ErrorCodes.invalidCompanyId) {
+        }
+
+        if (error.statusCode === 400 && error.errorCode === ErrorCodes.invalidCompanyId) {
 
             // User typed an invalid id such as 'abc'
             return true;
