@@ -21,7 +21,7 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
         // This is needed to make the library send token refresh grant messages for new browser tabs
         (this._options.settings as any).userStore = new WebStorageStateStore({ store: new HybridTokenStorage() });
 
-        // Create an object to manage explicit calls to the web reverse proxy when required
+        // Create an object to manage calls vui the web reverse proxy endpoint
         this._webReverseProxyClient = new WebReverseProxyClient(
             this._options.configuration.clientId,
             this._options.webBaseUrl,
@@ -44,10 +44,7 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
      */
     protected _createUserManager(settings: UserManagerSettings): UserManager {
 
-        this._extendedUserManager = new ExtendedUserManager(
-            settings,
-            this._webReverseProxyClient,
-            this._onSignInResponse);
+        this._extendedUserManager = new ExtendedUserManager(settings, this._onSignInResponse);
         return this._extendedUserManager;
     }
 
@@ -56,7 +53,7 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
      */
     protected async _onInitialise(): Promise<void> {
 
-        // Update the metadata's token endpoint field to point to a proxy location
+        // Update the metadata's token endpoint field to point to that of the web reverse proxy
         // Note that metadata is stored against the settings object and the MetadataService is not properly overridable
         const settings = this._extendedUserManager!.settings;
         await this._extendedUserManager!.metadataService.getMetadata();

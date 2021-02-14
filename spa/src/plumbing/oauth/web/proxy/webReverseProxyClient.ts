@@ -75,7 +75,6 @@ export class WebReverseProxyClient {
      * Call the server and ask it to rewrite the refresh token in the auth cookie, to make it act expired
      */
     public async expireRefreshToken(): Promise<void> {
-
         await this._sendWebReverseProxyRequest('POST', 'expire');
     }
 
