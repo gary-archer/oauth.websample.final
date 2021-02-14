@@ -1,35 +1,32 @@
 import {SigninResponse, StateStore, User, UserManager, UserManagerSettings} from 'oidc-client';
-import {UrlHelper} from '../../../utilities/urlHelper';
+import {WebReverseProxyClient} from './webReverseProxyClient';
 
 /*
- * Extend the OIDC User Manager class to deal with proxying aspects
+ * Extend the OIDC User Manager class to deal with proxying refresh token related requests
+ * This keeps long lived credentials out of the browser and also resolves usability problems
  */
 export class ExtendedUserManager extends UserManager {
 
-    private readonly _webReverseProxyBaseUrl: string
+    private readonly _webReverseProxyClient: WebReverseProxyClient;
     private readonly _onSignInResponse: (response: any) => void;
 
     public constructor(
         settings: UserManagerSettings,
-        webReverseProxyBaseUrl: string,
+        webReverseProxyClient: WebReverseProxyClient,
         onSignInResponse: (response: any) => void) {
 
         super(settings);
-        this._webReverseProxyBaseUrl = webReverseProxyBaseUrl;
+        this._webReverseProxyClient = webReverseProxyClient;
         this._onSignInResponse = onSignInResponse;
     }
 
     /*
-     * Ensure that Token Endpoint requests are routed via our web reverse proxy
-     */
-    public async initialise(): Promise<void> {
-        await this._updateMetadataTokenEndpoint();
-    }
-
-    /*
-     * Capture a CSRF token from the Authorization Code Grant response
+     * Override the base method to capture a CSRF token from the authorization code grant response
      */
     public async processSigninResponse(url?: string, stateStore?: StateStore): Promise<SigninResponse> {
+
+        const metadata = await this.metadataService.getMetadata();
+        metadata.token_endpoint = this._webReverseProxyClient.getTokenEndpoint();
 
         const response = await super.processSigninResponse(url, stateStore) as any;
         this._onSignInResponse(response);
@@ -37,14 +34,10 @@ export class ExtendedUserManager extends UserManager {
     }
 
     /*
-     * Handle Refresh Token Grant messages, which will send the above CSRF token
+     * Override the base method to send refresh token grant messages and include the above CSRF token
      */
     public async signinSilent(args?: any): Promise<User> {
 
-        // Ensure that we route silent renewal requests via the web reverse proxy
-        await this._updateMetadataTokenEndpoint();
-
-        // We need a stored user at this stage, which is why we use HybridTokenStorage
         // The stored user needs a refresh token, which is why we set this dummy value
         await this._setStoredRefreshToken('-');
 
@@ -54,17 +47,8 @@ export class ExtendedUserManager extends UserManager {
         // Undo the temporary value set above
         await this._setStoredRefreshToken('');
 
-        // Return the updated user, with new tokens in memory
+        // Return the updated user, with new tokens stored in memory
         return user;
-    }
-
-    /*
-     * Ensure that the token endpoint of the web reverse proxy is used
-     */
-    public async _updateMetadataTokenEndpoint(): Promise<void> {
-
-        const metadata = await this.metadataService.getMetadata();
-        metadata.token_endpoint = UrlHelper.append(this._webReverseProxyBaseUrl, 'token');
     }
 
     /*

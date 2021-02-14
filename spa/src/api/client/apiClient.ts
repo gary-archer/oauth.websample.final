@@ -89,6 +89,7 @@ export class ApiClient {
                 return await this._callApiWithToken(url, method, dataToSend, token, options);
 
             } catch (error2) {
+
                 // Report Ajax errors for the retry
                 throw ErrorHandler.getFromHttpError(error2, url, 'Web API');
             }

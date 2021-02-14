@@ -5,16 +5,15 @@ import {HtmlStorageHelper} from '../../../utilities/htmlStorageHelper';
 /*
  * A helper class to deal with calculating and storing the log level
  */
-export class OidcLogLevel {
-
-    private readonly _logLevelKey = 'finalspa.oidcloglevel';
+export class OidcLogger {
 
     /*
-     * Set the initial log level
+     * Set the initial log details
      */
     public constructor() {
 
-        // Use the URL if specified, or the stored value otherwise
+        Log.logger = console;
+
         let level = this._getUrlLogLevel();
         if (!level) {
             level = this._getStoredLogLevel();
@@ -26,11 +25,12 @@ export class OidcLogLevel {
     /*
      * If the URL has been updated such as to #log=debug, then update the OIDC Client logging level
      */
-    public updateLevelIfRequired(): void {
+    public updateLogLevelIfRequired(): void {
 
         const newLevel = this._getUrlLogLevel();
-        if (newLevel !== this._getStoredLogLevel()) {
+        if (newLevel && newLevel !== this._getStoredLogLevel()) {
             this._setLogLevel(newLevel);
+            HtmlStorageHelper.oidcLogLevel = newLevel;
         }
     }
 
@@ -62,7 +62,7 @@ export class OidcLogLevel {
     }
 
     /*
-     * Set the log level in the session so that it is inherited on page reloads and by the renewal iframe
+     * Update the log level
      */
     private _setLogLevel(level: string): void {
 
@@ -77,7 +77,6 @@ export class OidcLogLevel {
         const levelToSet = level || 'none';
         const numericLevel = data[levelToSet];
         if (numericLevel !== undefined) {
-            HtmlStorageHelper.oidcLogLevel = levelToSet;
             Log.level = numericLevel;
         }
     }

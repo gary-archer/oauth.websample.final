@@ -88,7 +88,7 @@ export class HtmlStorageHelper {
     public static get oidcLogLevel(): string {
 
         const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._oidcLogLevelKeyName}`;
-        return sessionStorage.getItem(key) || '';
+        return localStorage.getItem(key) || '';
     }
 
     /*
@@ -97,6 +97,6 @@ export class HtmlStorageHelper {
     public static set oidcLogLevel(value: string) {
 
         const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._oidcLogLevelKeyName}`;
-        sessionStorage.setItem(key, value);
+        localStorage.setItem(key, value);
     }
 }

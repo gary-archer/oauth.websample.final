@@ -14,9 +14,9 @@ export class WebReverseProxyClient {
     private readonly _responseBodyFieldName = 'csrf_field';
     private readonly _requestHeaderFieldName = 'x-mycompany-finalspa-refresh-csrf';
 
-    public constructor(clientId: string, reverseProxyBaseUrl: string) {
+    public constructor(clientId: string, webBaseUrl: string, reverseProxyPath: string) {
         this._clientId = clientId;
-        this._reverseProxyBaseUrl = reverseProxyBaseUrl;
+        this._reverseProxyBaseUrl = UrlHelper.append(webBaseUrl, reverseProxyPath);
     }
 
     /*
@@ -40,6 +40,13 @@ export class WebReverseProxyClient {
 
         // Freeze the prototype so that malicious code is unable to intercept the bearer header
         Object.freeze(XMLHttpRequest.prototype);
+    }
+
+    /*
+     * Return the location of the token endpoint
+     */
+    public getTokenEndpoint(): string {
+        return UrlHelper.append(this._reverseProxyBaseUrl, 'token');
     }
 
     /*
