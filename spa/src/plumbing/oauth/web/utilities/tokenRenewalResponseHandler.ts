@@ -1,6 +1,6 @@
 import {UserManager} from 'oidc-client';
 import urlparse from 'url-parse';
-import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
+import {OAuthConfiguration} from '../../../../configuration/oauthConfiguration';
 
 /*
  * Receive iframe token renewal responses

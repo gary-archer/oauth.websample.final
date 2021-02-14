@@ -1,8 +1,8 @@
 import {UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
-import {HybridTokenStorage} from '../storage/hybridTokenStorage';
 import {WebAuthenticator} from '../webAuthenticator';
 import {WebAuthenticatorOptions} from '../webAuthenticatorOptions';
 import {ExtendedUserManager} from './extendedUserManager';
+import {HybridTokenStorage} from './hybridTokenStorage';
 import {WebReverseProxyClient} from './webReverseProxyClient';
 
 /*

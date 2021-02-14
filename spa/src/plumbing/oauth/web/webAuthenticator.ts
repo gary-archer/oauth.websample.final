@@ -5,7 +5,7 @@ import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 import {Authenticator} from '../authenticator';
-import {CustomLogoutManager} from './logout/customLogoutManager';
+import {CustomLogoutManager} from './utilities/customLogoutManager';
 import {WebAuthenticatorOptions} from './webAuthenticatorOptions';
 
 /*

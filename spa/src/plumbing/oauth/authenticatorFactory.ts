@@ -3,7 +3,7 @@ import {UrlHelper} from '../utilities/urlHelper';
 import {UserAgentHelper} from '../utilities/userAgentHelper';
 import {Authenticator} from './authenticator';
 import {MobileAuthenticator} from './mobile/mobileAuthenticator';
-import {ExtendedWebAuthenticator} from './web/proxy/extendedWebAuthenticator';
+import {ExtendedWebAuthenticator} from './web/extended/extendedWebAuthenticator';
 import {WebAuthenticator} from './web/webAuthenticator';
 import {WebAuthenticatorOptions} from './web/webAuthenticatorOptions';
 
