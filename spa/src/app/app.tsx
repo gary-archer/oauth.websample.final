@@ -10,8 +10,8 @@ import {ErrorHandler} from '../plumbing/errors/errorHandler';
 import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
+import {OidcLogger} from '../plumbing/oauth/web/utils/oidcLogger';
 import {AuthenticatorFactory} from '../plumbing/oauth/authenticatorFactory';
-import {TraceListener} from '../plumbing/oauth/web/trace/traceListener';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
@@ -19,7 +19,6 @@ import {HeaderButtonsView} from '../views/headings/headerButtonsView';
 import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
 import {LoginRequiredView} from '../views/loginRequired/loginRequiredView';
-import {TraceView} from '../views/trace/traceView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
 import {ApiViewEvents} from '../views/utilities/apiViewEvents';
 import {ApiViewNames} from '../views/utilities/apiViewNames';
@@ -35,7 +34,7 @@ export class App extends React.Component<any, AppState> {
     private _configuration?: Configuration;
     private _authenticator?: Authenticator;
     private _apiClient?: ApiClient;
-    private _traceListener?: TraceListener;
+    private _oidcLogger: OidcLogger;
 
     /*
      * Create safe objects here and do async startup processing later
@@ -51,6 +50,7 @@ export class App extends React.Component<any, AppState> {
             isMobileSize: this._isMobileSize(),
             error: null,
         };
+        this._oidcLogger = new OidcLogger();
 
         // Make callbacks available
         this._setupCallbacks();
@@ -105,14 +105,11 @@ export class App extends React.Component<any, AppState> {
 
             // Create the authenticator and receive any login responses on the main window
             this._authenticator = this._createAuthenticator();
-            await this._authenticator.initialise();
+            this._authenticator.initialise();
             await this._authenticator.handleLoginResponse();
 
             // Create the API client
             this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
-
-            // Initialise OIDC library logging
-            this._traceListener = new TraceListener();
 
             // Subscribe to window events
             window.onhashchange = this._onHashChange;
@@ -217,7 +214,6 @@ export class App extends React.Component<any, AppState> {
                 <HeaderButtonsView {...headerButtonProps} />
                 <ErrorSummaryView {...errorProps} />
                 <SessionView {...sessionProps} />
-                <TraceView />
                 <HashRouter hashType='noslash'>
                     <Switch>
                         <Route exact={true} path='/'            render={renderCompaniesView} />
@@ -303,7 +299,7 @@ export class App extends React.Component<any, AppState> {
      * Handle updates to log levels when the URL log setting is changed
      */
     private _onHashChange(): void {
-        this._traceListener!.updateLogLevelIfRequired();
+        this._oidcLogger.updateLogLevelIfRequired();
     }
 
     /*
