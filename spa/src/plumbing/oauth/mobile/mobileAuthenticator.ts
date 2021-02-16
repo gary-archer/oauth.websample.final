@@ -73,4 +73,10 @@ export class MobileAuthenticator implements Authenticator {
     public async expireRefreshToken(): Promise<void> {
         await this._methodCaller.callAsync('expireRefreshToken');
     }
+
+    /*
+     * There is no built in logging for the mobile case
+     */
+    public updateLogLevelIfRequired(): void {
+    }
 }

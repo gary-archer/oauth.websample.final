@@ -1,4 +1,4 @@
-import {InMemoryWebStorage, UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
+import {UserManager, UserManagerSettings} from 'oidc-client';
 import urlparse from 'url-parse';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
@@ -6,6 +6,7 @@ import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 import {Authenticator} from '../authenticator';
 import {CustomLogoutManager} from './utilities/customLogoutManager';
+import {OidcLogger} from './utilities/oidcLogger';
 import {WebAuthenticatorOptions} from './webAuthenticatorOptions';
 
 /*
@@ -13,15 +14,15 @@ import {WebAuthenticatorOptions} from './webAuthenticatorOptions';
  */
 export class WebAuthenticator implements Authenticator {
 
-    protected _options: WebAuthenticatorOptions;
+    private readonly _oidcLogger: OidcLogger;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
+    protected _options: WebAuthenticatorOptions;
     private _userManager?: UserManager;
 
     public constructor(options: WebAuthenticatorOptions) {
 
         this._options = options;
-        (this._options.settings as any).userStore = new WebStorageStateStore({ store: new InMemoryWebStorage() });
-
+        this._oidcLogger = new OidcLogger();
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();
     }
@@ -229,6 +230,13 @@ export class WebAuthenticator implements Authenticator {
             user.refresh_token = 'x' + user.refresh_token + 'x';
             this._userManager!.storeUser(user);
         }
+    }
+
+    /*
+     * Manage updates based on the user typing in a hash fragment URL such as #log=debug
+     */
+    public updateLogLevelIfRequired(): void {
+        this._oidcLogger.updateLogLevelIfRequired();
     }
 
     /*

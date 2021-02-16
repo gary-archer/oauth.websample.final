@@ -9,6 +9,7 @@ import {IFrameApp} from './app/iframeApp';
 if (window.top === window.self) {
 
     // Run the main ReactJS app
+    console.log('*** ENTRY POINT');
     render (
         <App />,
         document.getElementById('root'),
@@ -16,6 +17,7 @@ if (window.top === window.self) {
 } else {
 
     // If our SPA is running on an iframe, handle token renewal responses
+    console.log('*** IFRAME ENTRY POINT');
     const app = new IFrameApp();
     app.execute();
 }

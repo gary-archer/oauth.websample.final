@@ -26,4 +26,7 @@ export interface Authenticator {
 
     // For testing, make the refresh token act like it is expired
     expireRefreshToken(): Promise<void>;
+
+    // For the web case this updates the OIDC log level based on the hash fragment
+    updateLogLevelIfRequired(): void;
 }

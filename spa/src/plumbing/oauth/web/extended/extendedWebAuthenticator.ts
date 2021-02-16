@@ -17,7 +17,7 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
 
         super(options);
 
-        // We store OIDC state, but not tokens, in local storage
+        // Use a custom option to store OIDC state, but not tokens, in local storage
         // This is needed to make the library send token refresh grant messages for new browser tabs
         (this._options.settings as any).userStore = new WebStorageStateStore({ store: new HybridTokenStorage() });
 

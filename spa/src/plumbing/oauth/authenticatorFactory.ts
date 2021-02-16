@@ -1,3 +1,4 @@
+import {InMemoryWebStorage, WebStorageStateStore} from 'oidc-client';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {UrlHelper} from '../utilities/urlHelper';
 import {UserAgentHelper} from '../utilities/userAgentHelper';
@@ -71,6 +72,9 @@ export class AuthenticatorFactory {
 
                 // Use the Authorization Code Flow (PKCE)
                 response_type: 'code',
+
+                // By default, store tokens only in memory
+                userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() }),
 
                 // Renew on the app's main URL and do so explicitly rather than via a background timer
                 silent_redirect_uri: UrlHelper.append(webBaseUrl, configuration.redirectUri),

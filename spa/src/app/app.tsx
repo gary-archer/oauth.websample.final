@@ -11,7 +11,6 @@ import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorFactory} from '../plumbing/oauth/authenticatorFactory';
-import {OidcLogger} from '../plumbing/oauth/web/utilities/oidcLogger';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
@@ -34,7 +33,6 @@ export class App extends React.Component<any, AppState> {
     private _configuration?: Configuration;
     private _authenticator?: Authenticator;
     private _apiClient?: ApiClient;
-    private _oidcLogger: OidcLogger;
 
     /*
      * Create safe objects here and do async startup processing later
@@ -50,7 +48,6 @@ export class App extends React.Component<any, AppState> {
             isMobileSize: this._isMobileSize(),
             error: null,
         };
-        this._oidcLogger = new OidcLogger();
 
         // Make callbacks available
         this._setupCallbacks();
@@ -299,7 +296,7 @@ export class App extends React.Component<any, AppState> {
      * Handle updates to log levels when the URL log setting is changed
      */
     private _onHashChange(): void {
-        this._oidcLogger.updateLogLevelIfRequired();
+        this._authenticator!.updateLogLevelIfRequired();
     }
 
     /*
