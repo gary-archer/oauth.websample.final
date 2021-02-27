@@ -27,9 +27,6 @@ class Packager {
         // CSS
         await fs.copy('../../spa/css/bootstrap.min.css', '.package/spa/css/bootstrap.min.css');
         await fs.copy('../../spa/css/app.css', '.package/spa/css/app.css');
-
-        // Images
-        await fs.copy('../../spa/images', '.package/spa/images');
     }
 }
 

@@ -4,7 +4,6 @@ exclude_paths: [
     'spa/*',
     'spa/css/**',
     'spa/dist/**',
-    'spa/images/**',
     'spa/webpack/**',
     'devhost/*',
     'devhost/certs/**',

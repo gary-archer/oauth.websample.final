@@ -5,7 +5,7 @@ module.exports = {
   // Set the working folder
   context: path.resolve(__dirname, '../src'),
 
-  // We support the big four modern browsers, which all support ES2017
+  // The sample runs in the big four modern desktop / mobile browsers, which all support ES2017
   target: ['web', 'es2017'],
 
   entry: {
