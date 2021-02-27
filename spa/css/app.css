@@ -2,9 +2,13 @@
 {
     margin-top: 5px;
 }
-.imageRow
+.listRow
 {
     height: 80px;
+}
+.mobileHeaderRow
+{
+    height: 60px;
 }
 .mobileRow
 {

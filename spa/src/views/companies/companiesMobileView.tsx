@@ -37,15 +37,14 @@ export class CompaniesMobileView extends React.Component<CompaniesViewProps> {
 
         return (
             <div key={company.id}>
-                <div className='row imageRow'>
-                    <div className='col-2 my-auto'>
-                        <img src={`images/${company.id}.svg`}/>
-                    </div>
-                    <div className='col-4' />
-                    <div className='col-6 my-auto h4'>
+                <div className='row mobileHeaderRow'>
+                    <div className='col-6 h4'>
                         <a href={`#company=${company.id}`}>
                             {company.name}
                         </a>
+                    </div>
+                    <div className='col-6 h4 font-weight-bold'>
+                        {company.region}
                     </div>
                 </div>
                 <div className='row mobileRow'>

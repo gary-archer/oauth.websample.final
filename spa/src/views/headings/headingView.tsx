@@ -8,7 +8,7 @@ export class HeadingView extends React.Component {
     public render(): React.ReactNode {
 
         return (
-            <h2>OAuth 2.x Demo App</h2>
+            <h2>OAuth Demo App</h2>
         );
     }
 }
