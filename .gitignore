@@ -1,5 +1,5 @@
 node_modules
-dist/*
+dist/*bundle*
 !dist/loggedOut.js
 !dist/unsupported.js
 .DS_Store

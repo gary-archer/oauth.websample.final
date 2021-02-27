@@ -8,9 +8,9 @@ module.exports = merge(baseConfig, {
   // Let webpack know this is a production build
   mode: 'production',
 
-  // Turn off performance warnings until we have a plan for dealing with them
+  // Turn off performance warnings for our sample
   performance: {
-    hints: true
+    hints: false
   },
 
   plugins:[
