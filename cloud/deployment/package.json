@@ -6,7 +6,7 @@
   "scripts": {
     "package": "ts-node src/customPackager.ts",
     "deploy": "aws s3 cp .package s3://web.authsamples.com --recursive",
-    "clearcache": "aws cloudfront create-invalidation --distribution-id=E1P4XPOL1PNE6Z --paths \"/*\""
+    "clearcache": "aws cloudfront create-invalidation --distribution-id=E1P4XPOL1PNE6Z --paths /"
   },
   "keywords": [],
   "author": "Gary Archer",
