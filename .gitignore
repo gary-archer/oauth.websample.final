@@ -1,6 +1,6 @@
 node_modules
-dist/*bundle*
-!dist/loggedOut.js
-!dist/unsupported.js
+/spa/dist/*
+!/spa/dist/loggedOut.js
+!/spa/dist/unsupported.js
 .DS_Store
 .package

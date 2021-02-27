@@ -1,1 +1,4322 @@
-const a0_0x3c99=['invalidGrant','ON_RELOAD_USERINFO','error_description','noInvestors','href','_userManager','col-6\x20h4','query','_apiBaseUrl','centred','hasOwnProperty','col-lg-4\x20col-md-6\x20col-xs-12','602337zFvseW','signinSilentCallback','_sendWebReverseProxyRequest','addView','_renderInitialScreen','transactions','componentStack','handleLoginResponse','removeIdentityProvider','_count','WebStorageStateStore','UserInfo','A\x20technical\x20problem\x20occurred\x20during\x20logout\x20processing','_createUserManager','startsWith','Reload\x20Data','_handleReloadRelease','_onMainViewLoading','clientId','/transactions','_events','11wkJpBT','_isMobileSize','UserManager','4MfnpAh','getFromLogoutUnsupported','exports','identity-provider','_statusCode','token_endpoint','isInitialised','_instanceId','claims','col-2\x20font-weight-bold\x20text-center','apiBaseUrl','row\x20card-header','_methodCaller','_onMainLoadStateChanged','_area','__esModule','nmd','Token','none','row\x20mobileRow','getTokenEndpoint','sessionButtonsEnabled','_callApi','filter','A\x20network\x20problem\x20occurred\x20when\x20the\x20UI\x20called\x20the\x20','_loginRequired','webBaseUrl','_setLogLevel','client_id','#\x20Investors','_onSignInResponse','setRequestHeader','small','amountUsd','companies','lightgray','Companies\x20View\x20Error','\x20:\x20','tokenRenewalError','Data','errorcolor','loggedout','map','_sessionId','A\x20technical\x20problem\x20occurred\x20during\x20token\x20processing','stateStore','userAction','reverse_proxy_request','Problem\x20Encountered','col-12','NONE','Amount\x20USD','getFromException','createAuthenticator','companies/','isInLoggedOutView','redirectCancelled','text-right\x20mx-auto','Account','create','Info','button','ui_error','card-header\x20row','valuecolor','Problem\x20Encountered\x20in\x20Transactions\x20View','get','col-6\x20highlightcolor\x20font-weight-bold','loginRequestFailed','handleReloadDataClick','getFromLoginRequired','app','_options','_getOAuthExceptionMessage','push','FinalSPA','Target\x20USD','investorId','Logout','_onExpireAccessToken','An\x20error\x20response\x20was\x20returned\x20from\x20the\x20','_onHome','Startup\x20Error','callAsync','Fragment','handleHomeClick','Rendering\x20Error','onresize','renderError','Main','col\x20col-one-fifth\x20my-2\x20d-flex\x20p-1','metadata','region','Please\x20retry\x20the\x20operation','_callApiWithToken','HTTP\x20response\x20data\x20was\x20not\x20valid\x20JSON\x20and\x20could\x20not\x20be\x20parsed','valueStyle','_onHashChange','parse','_renderError','_createAuthenticator','profile','loginResponseFailed','settings','_renderErrorStack','_handleDetailsDialogClose','row\x20mobileHeaderRow','subscribe','_accessToken','col-4','_responseBodyFieldName','object','userStore','row\x20listRow','col-8\x20my-auto','defineProperty','stringify','webkit','_setupDerivedCallbacks','assign','appAuthCode','/loggedout','json_data_error','_concurrencyHandler','clearRefreshToken','reload_userinfo','userMessage','_getCallbackName','open','_errorCode','_isSessionExpired','title','showDetails','signoutRedirect','WARN','_getStoredLogLevel','removeTokenEndpointCookieCsrfField','length','_getHeaders','_initialiseApp','55294rzHEIP','errorCode','handleLogoutClick','finalspa.','_renderItem','_longPressStartTime','expireRefreshToken','logout_unsupported','apiClient','_loadData','Logout\x20is\x20not\x20supported\x20by\x20this\x20provider,\x20due\x20to\x20a\x20missing\x20end\x20session\x20endpoint','_longPressMilliseconds','_onLoggedOutViewLoading','application/x-www-form-urlencoded','_getExceptionMessage','getErrorLines','GET','_createErrorLine','csrf_field','code','JSON','getErrorStack','Component','_onLoggedInAction','getFromLogoutOperation','createElement','_onLogout','INFO','data','getDerivedStateFromProps','A\x20technical\x20problem\x20was\x20encountered\x20rendering\x20the\x20UI','onViewLoading','familyName','setPrototypeOf','col-6\x20text-right\x20valuecolor\x20font-weight-bold','A\x20technical\x20problem\x20occurred\x20during\x20login\x20processing','generalUIError','_handleSummaryClick','_callbacks','getCompanyTransactions','sessionid\x20text-right\x20mx-auto','_triggerLoginIfRequired','InMemoryWebStorage','_configuration','userAgent','auth_time\x20in\x20id_token\x20does\x20not\x20match\x20original\x20auth_time','innerWidth','replace','state','bind','Cannot\x20find\x20module\x20\x27','toISOString','col-2\x20my-auto\x20highlightcolor\x20font-weight-bold\x20text-right','message','oidc-log-level','?client_id=','dispatch','main','_apiViewEvents','postMessage','return\x20this','_isLoggedInField','download','setItem','webpackChunk','replaceState','name','Problem\x20Encountered\x20Rendering\x20Views','api-sessionid','params','_onSessionExpiring','_renderErrorLine','div','_onInitialise','DELETE','col-6\x20text-center\x20mx-auto','messageHandlers','checkJson','card\x20border-0','ERROR','key','_createWebAuthenticatorOptions','loginRequired','storeUser','jsonDataError','getItem','updateLogLevelIfRequired','userclaims/current','AppAuth\x20Code','signinSilent','targetUsd','reload_main','indexOf','_reverseProxyBaseUrl','_renderHyperlink','clearState','access_token','3011PbmlRf','onLoading','storeCsrfFieldFromProxy','refreshAccessToken','login','_performTokenRefresh','col-6\x20text-right\x20highlightcolor\x20font-weight-bold','_prefix','clearStaleState','isVisible','area','initialise','resolve','tokenEndpointCookieCsrfField','Status\x20Code','toLocaleString','onViewLoaded','children','col-2','_updateLoadState','invalid_company_id','/company=:id','idp','8822CsoTmf','login_request_failed','isMobileSize','toLowerCase','1kPhtZd','_getRuntimeIdentityProvider','family_name','Log','btn\x20btn-primary\x20btn-block\x20p-1','configuration','(iPhone|iPod|iPad|Macintosh)(?!.*Safari)(?!.*Firefox)','_onMobileWebViewLogin','_isLongPress','Today\x27s\x20Transactions\x20for\x20','userInfo','apiSessionId','_onResize','events','idpParameterName','_oidcLogger','hash','addUserSignedOut','UTC\x20Time','logoutUnsupported','col-8\x20','getCompanyList','_handleReloadPress','undefined','Unable\x20to\x20logout\x20because\x20no\x20id\x20token\x20exists\x20for\x20this\x20browser\x20tab','_setSensitiveDataWhenLoading','customLogoutEndpoint','131JamcYl','_apiSessionKeyName','User\x20Info\x20Error','setAppElement','login_response_failed','card','OAuth\x20Demo\x20App','toStringTag','invalidCompanyId','getFromTokenError','format','_onMoveToLoggedOutView','paths','loggedin','getIdToken','Web\x20API','android','preferred_username','_renderMain','onViewLoadFailed','_onLoginRequiredAction','getFromMissingIdToken','_apiClient','props','keys','_webReverseProxyClient','substring','processSigninResponse','dialogTitle','value','Web\x20Server','company','errorcolor\x20largetext\x20text-center','ON_RELOAD_MAIN','getDerivedStateFromError','_renderModalDialog','logoutRequestFailed','removeUser','shift','_getUrlLogLevel','_refreshToken','endsWith','_callMethod','_userAction','_clientId','getFromHttpError','#root','Details','causeError','getFromRenderError','log','unsubscribe','_extendedUserManager','logout','isMainViewLoaded','login_required','#company=','_views','_appAuthCode','_isApi401Error','Expire\x20Access\x20Token','col-2\x20my-auto\x20font-weight-bold\x20text-right','_updateFromApiErrorResponse','oidcLogLevel','_onExpireRefreshToken','error','_onLoginRequired','componentWillUnmount','card-body','You\x20are\x20logged\x20out\x20-\x20click\x20HOME\x20to\x20sign\x20in\x20...','col-12\x20text-center\x20mx-auto\x20font-weight-bold','handleSilentTokenRenewalResponse','MODULE_NOT_FOUND','Home','Login','Application\x20Error','&logout_uri=','utcTime','token','_setupCallbacks','signinRedirectCallback','_identityProvider','col-6\x20h4\x20font-weight-bold','splice','col-2\x20font-weight-bold\x20text-right','Startup\x20Problem\x20Encountered','call','componentDidUpdate','callbacks','company=','_requestHeaderFieldName','details','self','output','render','root','identityProvider','Bearer\x20','col-2\x20my-auto\x20text-center','334350vjjQYy','getCustomLogoutUrl','companyId','align-items-center\x20mx-auto','_authenticator','isInHomeView','_url','handleExpireAccessTokenClick','append','_sendCsrfFieldToProxy','col-10\x20errorcolor\x20largetext\x20text-center','investmentUsd','prototype','oauth','Web\x20UI','companyNotFound','col-2\x20text-right','id_token','toString','_onReloadData','getTime','url','label','_oidcLogLevelKeyName','row','find','Network','\x27A\x20technical\x20problem\x20occurred\x20parsing\x20data\x20from\x20the\x20','getUserInfo','isAndroidWebView','613973RUfvGk','company_not_found','preventDefault','DD\x20MMM\x20YYYY\x20HH:mm:ss','getAccessToken','col-12\x20text-center\x20mx-auto','postLogoutRedirectUri','_details','_idToken','token_renewal_error','refresh_token','authority','URL','callback_','_cookieCsrfField','expireAccessToken','network_error','_removeSensitiveDataWhenStoring','isIosWebView','forEach','status','responseError','_onMainViewLoadStateChanged','setState','API\x20Session\x20Id:\x20','row\x20card-body','getUser','reverseProxyPath','shouldLoad','instanceId','handleExpireRefreshTokenClick','17981AEmDcG','_isAndroid','\x20font-weight-bold','3tqrgSw','_setStoredRefreshToken','setApiErrorDetails','request','match','redirectUri','missingIdToken','stack','getFromJsonParseError','Company\x20List','noslash','Investor\x20Id','Error\x20Code','getFromLoginOperation','execute','_parseMobileError','col-6','_webBaseUrl','mobileBridge','statusCode','response','Module','removeItem','componentDidMount','_utcTime','default','#loggedout','getElementById'];const a0_0x1951=function(_0x136ba5,_0x362a26){_0x136ba5=_0x136ba5-0x148;let _0x3c9946=a0_0x3c99[_0x136ba5];return _0x3c9946;};(function(_0x3a1ca9,_0x5b7f49){const _0x18c245=a0_0x1951;while(!![]){try{const _0x2b1d01=parseInt(_0x18c245(0x1f9))*-parseInt(_0x18c245(0x1c3))+parseInt(_0x18c245(0x2d9))*parseInt(_0x18c245(0x299))+-parseInt(_0x18c245(0x162))*-parseInt(_0x18c245(0x2dc))+parseInt(_0x18c245(0x25c))+-parseInt(_0x18c245(0x29c))*parseInt(_0x18c245(0x1da))+-parseInt(_0x18c245(0x1de))*parseInt(_0x18c245(0x27a))+parseInt(_0x18c245(0x2c4));if(_0x2b1d01===_0x5b7f49)break;else _0x3a1ca9['push'](_0x3a1ca9['shift']());}catch(_0x190909){_0x3a1ca9['push'](_0x3a1ca9['shift']());}}}(a0_0x3c99,0x4e506),(()=>{const _0xc34df5=a0_0x1951;var _0x418bf7={0x1406:(_0x83e10e,_0x493848,_0x1d90e9)=>{const _0x30a02c=a0_0x1951;var _0x1d4805={'./af':0x3f1,'./af.js':0x3f1,'./ar':0x2241,'./ar-dz':0xe9b,'./ar-dz.js':0xe9b,'./ar-kw':0xea1,'./ar-kw.js':0xea1,'./ar-ly':0x2568,'./ar-ly.js':0x2568,'./ar-ma':0x1cf0,'./ar-ma.js':0x1cf0,'./ar-sa':0x224d,'./ar-sa.js':0x224d,'./ar-tn':0x1eb0,'./ar-tn.js':0x1eb0,'./ar.js':0x2241,'./az':0x7ee,'./az.js':0x7ee,'./be':0x194c,'./be.js':0x194c,'./bg':0x14b8,'./bg.js':0x14b8,'./bm':0x1fbd,'./bm.js':0x1fbd,'./bn':0x22,'./bn-bd':0x266b,'./bn-bd.js':0x266b,'./bn.js':0x22,'./bo':0xff2,'./bo.js':0xff2,'./br':0x207d,'./br.js':0x207d,'./bs':0xc23,'./bs.js':0xc23,'./ca':0x2050,'./ca.js':0x2050,'./cs':0x2177,'./cs.js':0x2177,'./cv':0x62f,'./cv.js':0x62f,'./cy':0x4c,'./cy.js':0x4c,'./da':0x6e0,'./da.js':0x6e0,'./de':0x230d,'./de-at':0xc8e,'./de-at.js':0xc8e,'./de-ch':0x1278,'./de-ch.js':0x1278,'./de.js':0x230d,'./dv':0xfd5,'./dv.js':0xfd5,'./el':0x1d4b,'./el.js':0x1d4b,'./en-au':0x1ec4,'./en-au.js':0x1ec4,'./en-ca':0x1b62,'./en-ca.js':0x1b62,'./en-gb':0x108f,'./en-gb.js':0x108f,'./en-ie':0x2666,'./en-ie.js':0x2666,'./en-il':0x20f6,'./en-il.js':0x20f6,'./en-in':0x14ca,'./en-in.js':0x14ca,'./en-nz':0xcc0,'./en-nz.js':0xcc0,'./en-sg':0x1549,'./en-sg.js':0x1549,'./eo':0x250e,'./eo.js':0x250e,'./es':0x97e,'./es-do':0x18a6,'./es-do.js':0x18a6,'./es-mx':0x1b7e,'./es-mx.js':0x1b7e,'./es-us':0xc1b,'./es-us.js':0xc1b,'./es.js':0x97e,'./et':0x136f,'./et.js':0x136f,'./eu':0x1b97,'./eu.js':0x1b97,'./fa':0x1f89,'./fa.js':0x1f89,'./fi':0x3bd,'./fi.js':0x3bd,'./fil':0x223c,'./fil.js':0x223c,'./fo':0x6ef,'./fo.js':0x6ef,'./fr':0x1053,'./fr-ca':0x10d2,'./fr-ca.js':0x10d2,'./fr-ch':0xecf,'./fr-ch.js':0xecf,'./fr.js':0x1053,'./fy':0x1b66,'./fy.js':0x1b66,'./ga':0x1aff,'./ga.js':0x1aff,'./gd':0xb8e,'./gd.js':0xb8e,'./gl':0x1cb0,'./gl.js':0x1cb0,'./gom-deva':0xc59,'./gom-deva.js':0xc59,'./gom-latn':0x16a6,'./gom-latn.js':0x16a6,'./gu':0x2125,'./gu.js':0x2125,'./he':0x1eed,'./he.js':0x1eed,'./hi':0x86f,'./hi.js':0x86f,'./hr':0x16d2,'./hr.js':0x16d2,'./hu':0x5,'./hu.js':0x5,'./hy-am':0x520,'./hy-am.js':0x520,'./id':0x30d,'./id.js':0x30d,'./is':0x1005,'./is.js':0x1005,'./it':0xd8b,'./it-ch':0x1297,'./it-ch.js':0x1297,'./it.js':0xd8b,'./ja':0x1044,'./ja.js':0x1044,'./jv':0x4f,'./jv.js':0x4f,'./ka':0x1b7c,'./ka.js':0x1b7c,'./kk':0x7e6,'./kk.js':0x7e6,'./km':0xd5a,'./km.js':0xd5a,'./kn':0xe47,'./kn.js':0xe47,'./ko':0x3da,'./ko.js':0x3da,'./ku':0x76e,'./ku.js':0x76e,'./ky':0x11fc,'./ky.js':0x11fc,'./lb':0x2342,'./lb.js':0x2342,'./lo':0x219,'./lo.js':0x219,'./lt':0x14ae,'./lt.js':0x14ae,'./lv':0x5d7,'./lv.js':0x5d7,'./me':0x2b2,'./me.js':0x2b2,'./mi':0xa0b,'./mi.js':0xa0b,'./mk':0xf77,'./mk.js':0xf77,'./ml':0x1c39,'./ml.js':0x1c39,'./mn':0x58,'./mn.js':0x58,'./mr':0x19de,'./mr.js':0x19de,'./ms':0x42e,'./ms-my':0x22c3,'./ms-my.js':0x22c3,'./ms.js':0x42e,'./mt':0xf5b,'./mt.js':0xf5b,'./my':0x1511,'./my.js':0x1511,'./nb':0x10b2,'./nb.js':0x10b2,'./ne':0x22d2,'./ne.js':0x22d2,'./nl':0xc2a,'./nl-be':0x211f,'./nl-be.js':0x211f,'./nl.js':0xc2a,'./nn':0x11a1,'./nn.js':0x11a1,'./oc-lnc':0x1995,'./oc-lnc.js':0x1995,'./pa-in':0x2048,'./pa-in.js':0x2048,'./pl':0xb20,'./pl.js':0xb20,'./pt':0x383,'./pt-br':0x13d5,'./pt-br.js':0x13d5,'./pt.js':0x383,'./ro':0x9d0,'./ro.js':0x9d0,'./ru':0x6d9,'./ru.js':0x6d9,'./sd':0x1ab8,'./sd.js':0x1ab8,'./se':0x20aa,'./se.js':0x20aa,'./si':0x1d0,'./si.js':0x1d0,'./sk':0x18b4,'./sk.js':0x18b4,'./sl':0x7ab,'./sl.js':0x7ab,'./sq':0xbdf,'./sq.js':0xbdf,'./sr':0xd7e,'./sr-cyrl':0x1d2,'./sr-cyrl.js':0x1d2,'./sr.js':0xd7e,'./ss':0x1426,'./ss.js':0x1426,'./sv':0x229b,'./sv.js':0x229b,'./sw':0x1daa,'./sw.js':0x1daa,'./ta':0x1b03,'./ta.js':0x1b03,'./te':0x162d,'./te.js':0x162d,'./tet':0x86a,'./tet.js':0x86a,'./tg':0x1002,'./tg.js':0x1002,'./th':0x236f,'./th.js':0x236f,'./tk':0x24a5,'./tk.js':0x24a5,'./tl-ph':0x74d,'./tl-ph.js':0x74d,'./tlh':0x92a,'./tlh.js':0x92a,'./tr':0x5cb,'./tr.js':0x5cb,'./tzl':0x10a,'./tzl.js':0x10a,'./tzm':0xc42,'./tzm-latn':0xb90,'./tzm-latn.js':0xb90,'./tzm.js':0xc42,'./ug-cn':0x24f0,'./ug-cn.js':0x24f0,'./uk':0x325,'./uk.js':0x325,'./ur':0x467,'./ur.js':0x467,'./uz':0x259c,'./uz-latn':0x348,'./uz-latn.js':0x348,'./uz.js':0x259c,'./vi':0x1b32,'./vi.js':0x1b32,'./x-pseudo':0x2429,'./x-pseudo.js':0x2429,'./yo':0x977,'./yo.js':0x977,'./zh-cn':0x3ea,'./zh-cn.js':0x3ea,'./zh-hk':0x179e,'./zh-hk.js':0x179e,'./zh-mo':0x1af7,'./zh-mo.js':0x1af7,'./zh-tw':0x1266,'./zh-tw.js':0x1266};function _0x29ae2a(_0x11eec7){var _0x530fb1=_0x5be3f3(_0x11eec7);return _0x1d90e9(_0x530fb1);}function _0x5be3f3(_0x54f60c){const _0x12abc9=a0_0x1951;if(!_0x1d90e9['o'](_0x1d4805,_0x54f60c)){var _0x9fff23=new Error(_0x12abc9(0x194)+_0x54f60c+'\x27');throw _0x9fff23[_0x12abc9(0x175)]=_0x12abc9(0x241),_0x9fff23;}return _0x1d4805[_0x54f60c];}_0x29ae2a['keys']=function(){const _0x2d137e=a0_0x1951;return Object[_0x2d137e(0x211)](_0x1d4805);},_0x29ae2a[_0x30a02c(0x1cf)]=_0x5be3f3,_0x83e10e[_0x30a02c(0x2de)]=_0x29ae2a,_0x29ae2a['id']=0x1406;},0x3f0:(_0x5dccce,_0x73c452,_0x4a89b0)=>{'use strict';const _0x2ef663=a0_0x1951;var _0x4b6739=_0x4a89b0(0x1cd2),_0x37372b=_0x4a89b0(0x606),_0x4a7443=_0x4a89b0(0x57b),_0x8b52fd=_0x4a89b0['n'](_0x4a7443),_0x52926c=_0x4a89b0(0x10c1),_0x52a1da=_0x4a89b0(0x25a3),_0x25e271=_0x4a89b0(0x106e),_0x530bf1=_0x4a89b0['n'](_0x25e271),_0x5d9437=_0x4a89b0(0x3a7);class _0x1ed325{}_0x1ed325[_0x2ef663(0x1b4)]=_0x2ef663(0x230),_0x1ed325[_0x2ef663(0x320)]=_0x2ef663(0x1db),_0x1ed325['loginResponseFailed']=_0x2ef663(0x1fd),_0x1ed325[_0x2ef663(0x302)]=_0x2ef663(0x283),_0x1ed325[_0x2ef663(0x2b8)]='invalid_grant',_0x1ed325[_0x2ef663(0x21d)]='logout_request_failed',_0x1ed325[_0x2ef663(0x1f1)]=_0x2ef663(0x169),_0x1ed325[_0x2ef663(0x2a2)]='missing_id_token',_0x1ed325[_0x2ef663(0x314)]='redirect_cancelled',_0x1ed325[_0x2ef663(0x186)]=_0x2ef663(0x31a),_0x1ed325['networkError']=_0x2ef663(0x28a),_0x1ed325[_0x2ef663(0x1b6)]=_0x2ef663(0x150),_0x1ed325[_0x2ef663(0x28f)]='http_response_error',_0x1ed325[_0x2ef663(0x334)]='react_render_error',_0x1ed325[_0x2ef663(0x26b)]=_0x2ef663(0x27b),_0x1ed325[_0x2ef663(0x201)]=_0x2ef663(0x1d7);class _0x2f1016 extends Error{constructor(_0x525e34,_0x5bae39,_0x12671e,_0x536dd8){const _0x55a4d8=_0x2ef663;super(_0x12671e),this[_0x55a4d8(0x2ea)]=_0x525e34,this['_errorCode']=_0x5bae39,this[_0x55a4d8(0x224)]=_0x55a4d8(0x339),this[_0x55a4d8(0x2b4)]=new Date()[_0x55a4d8(0x195)](),this[_0x55a4d8(0x2e0)]=0x0,this['_instanceId']=0x0,this[_0x55a4d8(0x233)]='',this[_0x55a4d8(0x281)]='',this[_0x55a4d8(0x262)]='',Object[_0x55a4d8(0x183)](this,new.target[_0x55a4d8(0x268)]),_0x536dd8&&(this[_0x55a4d8(0x2a3)]=_0x536dd8);}get['area'](){return this['_area'];}get['errorCode'](){const _0x1351fa=_0x2ef663;return this[_0x1351fa(0x157)];}set[_0x2ef663(0x163)](_0x3861aa){const _0x7a1340=_0x2ef663;this[_0x7a1340(0x157)]=_0x3861aa;}get[_0x2ef663(0x30a)](){const _0x45d2c2=_0x2ef663;return this[_0x45d2c2(0x224)];}set[_0x2ef663(0x30a)](_0x7d599b){const _0x572af8=_0x2ef663;this[_0x572af8(0x224)]=_0x7d599b;}get['utcTime'](){return this['_utcTime'];}get[_0x2ef663(0x2af)](){const _0x35a608=_0x2ef663;return this[_0x35a608(0x2e0)];}set[_0x2ef663(0x2af)](_0x2ba579){const _0x2b179a=_0x2ef663;this[_0x2b179a(0x2e0)]=_0x2ba579;}get[_0x2ef663(0x297)](){const _0x35ceed=_0x2ef663;return this[_0x35ceed(0x2e3)];}get[_0x2ef663(0x14e)](){const _0x5607b8=_0x2ef663;return this[_0x5607b8(0x233)];}set[_0x2ef663(0x14e)](_0x5753f2){const _0x2dd118=_0x2ef663;this[_0x2dd118(0x233)]=_0x5753f2;}get[_0x2ef663(0x254)](){const _0x1f57ce=_0x2ef663;return this[_0x1f57ce(0x281)];}set['details'](_0x2ebb1c){this['_details']=_0x2ebb1c;}get[_0x2ef663(0x271)](){const _0x20c7dc=_0x2ef663;return this[_0x20c7dc(0x262)];}set[_0x2ef663(0x271)](_0x27b948){const _0x2c15ec=_0x2ef663;this[_0x2c15ec(0x262)]=_0x27b948;}[_0x2ef663(0x29e)](_0x1d0073,_0x3b33de,_0x22a5ab){this['_area']=_0x1d0073,this['_instanceId']=_0x3b33de,this['_utcTime']=_0x22a5ab;}}class _0x298bf7{static[_0x2ef663(0x310)](_0x44395c){const _0x1c342f=_0x2ef663;if(_0x44395c instanceof _0x2f1016)return _0x44395c;const _0x6582d2=new _0x2f1016(_0x1c342f(0x26a),_0x1ed325[_0x1c342f(0x186)],'A\x20technical\x20problem\x20was\x20encountered\x20in\x20the\x20UI',_0x44395c['stack']);return _0x6582d2[_0x1c342f(0x254)]=_0x298bf7[_0x1c342f(0x170)](_0x44395c),_0x6582d2;}static[_0x2ef663(0x322)](){const _0x2f8dc1=_0x2ef663;return new _0x2f1016(_0x2f8dc1(0x243),_0x1ed325[_0x2f8dc1(0x1b4)],'No\x20access\x20token\x20is\x20available\x20and\x20a\x20login\x20is\x20required');}static[_0x2ef663(0x2a9)](_0x4a31d0,_0x16cebd){const _0x1edbad=_0x2ef663;if(_0x4a31d0 instanceof _0x2f1016)return _0x4a31d0;const _0x21a2fa=new _0x2f1016('Login',_0x16cebd,_0x1edbad(0x185),_0x4a31d0[_0x1edbad(0x2a3)]);return _0x21a2fa[_0x1edbad(0x254)]=_0x298bf7[_0x1edbad(0x325)](_0x4a31d0),_0x21a2fa;}static[_0x2ef663(0x202)](_0x222e12,_0x5b2585){const _0x3d1461=_0x2ef663;if(_0x222e12 instanceof _0x2f1016)return _0x222e12;const _0x3b9d83=new _0x2f1016(_0x3d1461(0x2ed),_0x5b2585,_0x3d1461(0x308),_0x222e12[_0x3d1461(0x2a3)]);return _0x3b9d83[_0x3d1461(0x254)]=_0x298bf7[_0x3d1461(0x325)](_0x222e12),_0x3b9d83;}static[_0x2ef663(0x17a)](_0x3c8fea,_0xf12e95){const _0x468f78=_0x2ef663;if(_0x3c8fea instanceof _0x2f1016)return _0x3c8fea;const _0xf3ff54=new _0x2f1016(_0x468f78(0x32a),_0xf12e95,_0x468f78(0x2d0),_0x3c8fea['stack']);return _0xf3ff54[_0x468f78(0x254)]=_0x298bf7['_getOAuthExceptionMessage'](_0x3c8fea),_0xf3ff54;}static[_0x2ef663(0x2dd)](){const _0x1f7d9e=_0x2ef663;return new _0x2f1016('Logout',_0x1ed325[_0x1f7d9e(0x1f1)],_0x1f7d9e(0x16c));}static[_0x2ef663(0x20e)](){const _0x16f258=_0x2ef663;return new _0x2f1016(_0x16f258(0x32a),_0x1ed325[_0x16f258(0x2a2)],_0x16f258(0x1f6));}static[_0x2ef663(0x2a4)](){const _0x125c7a=_0x2ef663;return new _0x2f1016(_0x125c7a(0x303),_0x1ed325[_0x125c7a(0x1b6)],_0x125c7a(0x33b));}static['getFromHttpError'](_0x53eed2,_0xf98f29,_0x542194){const _0x4da490=_0x2ef663;if(_0x53eed2 instanceof _0x2f1016)return _0x53eed2;let _0xb81a01=0x0;_0x53eed2[_0x4da490(0x2b0)]&&_0x53eed2[_0x4da490(0x2b0)]['status']&&(_0xb81a01=_0x53eed2[_0x4da490(0x2b0)]['status']);let _0xffd2cb=null;return 0x0===_0xb81a01?(_0xffd2cb=new _0x2f1016(_0x4da490(0x276),_0x1ed325['networkError'],_0x4da490(0x2f4)+_0x542194,_0x53eed2['stack']),_0xffd2cb[_0x4da490(0x254)]=this['_getExceptionMessage'](_0x53eed2)):_0xb81a01>=0xc8&&_0xb81a01<=0x12b?(_0xffd2cb=new _0x2f1016(_0x4da490(0x176),_0x1ed325['jsonDataError'],_0x4da490(0x277)+_0x542194,_0x53eed2[_0x4da490(0x2a3)]),_0xffd2cb[_0x4da490(0x254)]=this[_0x4da490(0x170)](_0x53eed2)):(_0xffd2cb=new _0x2f1016(_0x542194,_0x1ed325[_0x4da490(0x28f)],_0x4da490(0x32c)+_0x542194,_0x53eed2[_0x4da490(0x2a3)]),_0xffd2cb['details']=this[_0x4da490(0x170)](_0x53eed2),_0x53eed2['response']&&_0x53eed2[_0x4da490(0x2b0)][_0x4da490(0x17e)]&&_0x4da490(0x34b)==typeof _0x53eed2[_0x4da490(0x2b0)]['data']&&_0x298bf7[_0x4da490(0x237)](_0xffd2cb,_0x53eed2[_0x4da490(0x2b0)][_0x4da490(0x17e)])),_0xffd2cb['statusCode']=_0xb81a01,_0xffd2cb[_0x4da490(0x271)]=_0xf98f29,_0xffd2cb;}static['getFromRenderError'](_0x47f117,_0x3a3fd0){const _0x32f667=_0x2ef663;if(_0x47f117 instanceof _0x2f1016)return _0x47f117;const _0x520052=new _0x2f1016(_0x32f667(0x26a),_0x1ed325[_0x32f667(0x334)],_0x32f667(0x180),_0x47f117[_0x32f667(0x2a3)]);return _0x520052[_0x32f667(0x254)]=_0x298bf7['_getExceptionMessage'](_0x47f117),_0x3a3fd0&&(_0x520052[_0x32f667(0x254)]+='\x20:\x20'+_0x3a3fd0),_0x520052;}static[_0x2ef663(0x237)](_0x54d091,_0x463c1c){const _0x180221=_0x2ef663;_0x463c1c&&(_0x463c1c[_0x180221(0x175)]&&_0x463c1c[_0x180221(0x197)]&&(_0x54d091[_0x180221(0x163)]=_0x463c1c[_0x180221(0x175)],_0x54d091['details']=_0x463c1c[_0x180221(0x197)]),_0x463c1c[_0x180221(0x1cd)]&&_0x463c1c['id']&&_0x463c1c[_0x180221(0x246)]&&_0x54d091[_0x180221(0x29e)](_0x463c1c[_0x180221(0x1cd)],_0x463c1c['id'],_0x463c1c[_0x180221(0x246)]));}static['_getOAuthExceptionMessage'](_0xa6736f){const _0x4721ba=_0x2ef663;let _0x2c4c36='';return _0xa6736f[_0x4721ba(0x23a)]&&(_0x2c4c36=_0xa6736f[_0x4721ba(0x23a)],_0xa6736f[_0x4721ba(0x2ba)]&&(_0x2c4c36+=_0x4721ba(0x301)+_0xa6736f[_0x4721ba(0x2ba)]['replace'](/\+/g,'\x20'))),_0x2c4c36||_0x298bf7[_0x4721ba(0x170)](_0xa6736f);}static[_0x2ef663(0x170)](_0x3f8b51){const _0xf956a9=_0x2ef663;if(_0x3f8b51[_0xf956a9(0x197)])return _0x3f8b51['message'];const _0x973039=_0x3f8b51[_0xf956a9(0x26e)]();return _0x973039!=={}[_0xf956a9(0x26e)]()?_0x973039:'';}}class _0x5a67d2{static[_0x2ef663(0x1af)](_0x204b0d){const _0x1c449b=_0x2ef663;if('object'!=typeof _0x204b0d){const _0x25a222=_0x298bf7[_0x1c449b(0x2a4)]();throw _0x25a222[_0x1c449b(0x2b0)]={'status':0xc8},_0x25a222;}}}class _0x3dffd9{static get[_0x2ef663(0x1d0)](){const _0x41172e=_0x2ef663,_0x1a530b=''+_0x3dffd9[_0x41172e(0x1ca)]+_0x3dffd9['_cookieCsrfField'];return localStorage[_0x41172e(0x1b7)](_0x1a530b)||'';}static set[_0x2ef663(0x1d0)](_0x981906){const _0x24dea7=_0x2ef663,_0x1c0586=''+_0x3dffd9[_0x24dea7(0x1ca)]+_0x3dffd9['_cookieCsrfField'];localStorage[_0x24dea7(0x1a1)](_0x1c0586,_0x981906);}static[_0x2ef663(0x15e)](){const _0x29c4e2=_0x2ef663,_0x1f456d=''+_0x3dffd9[_0x29c4e2(0x1ca)]+_0x3dffd9[_0x29c4e2(0x288)];localStorage[_0x29c4e2(0x2b2)](_0x1f456d);}static get[_0x2ef663(0x259)](){const _0x37525f=_0x2ef663,_0x27880b=''+_0x3dffd9[_0x37525f(0x1ca)]+_0x3dffd9['_identityProvider'];return localStorage[_0x37525f(0x1b7)](_0x27880b)||'';}static set[_0x2ef663(0x259)](_0xafe4f5){const _0x3d127d=_0x2ef663,_0x32a9b6=''+_0x3dffd9[_0x3d127d(0x1ca)]+_0x3dffd9[_0x3d127d(0x24a)];localStorage[_0x3d127d(0x1a1)](_0x32a9b6,_0xafe4f5);}static[_0x2ef663(0x2cc)](){const _0x3ad442=_0x2ef663,_0x3f109f=''+_0x3dffd9[_0x3ad442(0x1ca)]+_0x3dffd9[_0x3ad442(0x24a)];localStorage[_0x3ad442(0x2b2)](_0x3f109f);}static get[_0x2ef663(0x1e9)](){const _0x357fe1=_0x2ef663,_0x23b70b=''+_0x3dffd9[_0x357fe1(0x1ca)]+_0x3dffd9[_0x357fe1(0x1fa)];return sessionStorage[_0x357fe1(0x1b7)](_0x23b70b)||'';}static set[_0x2ef663(0x1e9)](_0x2a67a5){const _0x104c53=_0x2ef663,_0xe58ec7=''+_0x3dffd9['_prefix']+_0x3dffd9['_apiSessionKeyName'];sessionStorage[_0x104c53(0x1a1)](_0xe58ec7,_0x2a67a5);}static get[_0x2ef663(0x238)](){const _0x531178=_0x2ef663,_0x4c10d2=''+_0x3dffd9['_prefix']+_0x3dffd9[_0x531178(0x273)];return localStorage[_0x531178(0x1b7)](_0x4c10d2)||'';}static set['oidcLogLevel'](_0x28e026){const _0xb5e7b6=_0x2ef663,_0x3ebdfa=''+_0x3dffd9[_0xb5e7b6(0x1ca)]+_0x3dffd9[_0xb5e7b6(0x273)];localStorage['setItem'](_0x3ebdfa,_0x28e026);}}_0x3dffd9[_0x2ef663(0x1ca)]=_0x2ef663(0x165),_0x3dffd9[_0x2ef663(0x19f)]=_0x2ef663(0x206),_0x3dffd9[_0x2ef663(0x288)]='cookie-csrf-field',_0x3dffd9['_identityProvider']=_0x2ef663(0x2df),_0x3dffd9[_0x2ef663(0x1fa)]=_0x2ef663(0x1a6),_0x3dffd9[_0x2ef663(0x273)]=_0x2ef663(0x198);class _0x13eabd{static[_0x2ef663(0x31e)](){const _0x463a2e=_0x2ef663;let _0x1453f8=_0x3dffd9[_0x463a2e(0x1e9)];return _0x1453f8||(_0x1453f8=_0x5d9437['i'][_0x463a2e(0x317)]()[_0x463a2e(0x26e)](),_0x3dffd9['apiSessionId']=_0x1453f8),_0x1453f8;}}class _0x53c800{constructor(_0x5d2912,_0x35a275){const _0x29667a=_0x2ef663;this['_apiBaseUrl']=_0x5d2912,this[_0x29667a(0x2c0)][_0x29667a(0x222)]('/')||(this[_0x29667a(0x2c0)]+='/'),this['_authenticator']=_0x35a275,this['_sessionId']=_0x13eabd[_0x29667a(0x31e)]();}async[_0x2ef663(0x278)](_0x54e3e5){const _0x590430=_0x2ef663;return await this[_0x590430(0x2f2)](_0x590430(0x1b9),_0x590430(0x172),null,_0x54e3e5);}async[_0x2ef663(0x1f3)](_0x191882){const _0x4e579a=_0x2ef663;return await this[_0x4e579a(0x2f2)](_0x4e579a(0x2fe),_0x4e579a(0x172),null,_0x191882);}async[_0x2ef663(0x189)](_0x9c2e28,_0x4590f7){const _0x2e2be5=_0x2ef663;return await this[_0x2e2be5(0x2f2)](_0x2e2be5(0x312)+_0x9c2e28+_0x2e2be5(0x2d7),_0x2e2be5(0x172),null,_0x4590f7);}async[_0x2ef663(0x2f2)](_0x47b9d3,_0x408194,_0x21c76a,_0x3eaffb){const _0x52e96c=_0x2ef663,_0x2e65ee=''+this['_apiBaseUrl']+_0x47b9d3;let _0x586b75=await this[_0x52e96c(0x260)][_0x52e96c(0x27e)]();try{return await this['_callApiWithToken'](_0x2e65ee,_0x408194,_0x21c76a,_0x586b75,_0x3eaffb);}catch(_0x5cb240){if(!this[_0x52e96c(0x234)](_0x5cb240))throw _0x298bf7['getFromHttpError'](_0x5cb240,_0x2e65ee,_0x52e96c(0x208));_0x586b75=await this[_0x52e96c(0x260)]['refreshAccessToken']();try{return await this[_0x52e96c(0x33a)](_0x2e65ee,_0x408194,_0x21c76a,_0x586b75,_0x3eaffb);}catch(_0x4bbcec){throw _0x298bf7[_0x52e96c(0x226)](_0x4bbcec,_0x2e65ee,_0x52e96c(0x208));}}}async['_callApiWithToken'](_0x522239,_0x143eaa,_0x5534aa,_0x2f5ca6,_0x48b345){const _0x23fccb=_0x2ef663;let _0x3e7f91=_0x522239;-0x1!==navigator[_0x23fccb(0x18e)][_0x23fccb(0x1dd)]()[_0x23fccb(0x1be)]('trident')&&(_0x3e7f91+='?time='+new Date()[_0x23fccb(0x270)]());const _0x21cb0c=await _0x530bf1()[_0x23fccb(0x29f)]({'url':_0x3e7f91,'method':_0x143eaa,'data':_0x5534aa,'headers':this[_0x23fccb(0x160)](_0x2f5ca6,_0x48b345)});return _0x5a67d2[_0x23fccb(0x1af)](_0x21cb0c[_0x23fccb(0x17e)]),_0x21cb0c['data'];}[_0x2ef663(0x160)](_0x3572c3,_0x2c5162){const _0x3fa217=_0x2ef663,_0x309a5a={'Authorization':_0x3fa217(0x25a)+_0x3572c3,'x-mycompany-api-client':_0x3fa217(0x327),'x-mycompany-session-id':this[_0x3fa217(0x307)],'x-mycompany-correlation-id':_0x5d9437['i'][_0x3fa217(0x317)]()[_0x3fa217(0x26e)]()};return _0x2c5162&&_0x2c5162[_0x3fa217(0x229)]&&(_0x309a5a['x-mycompany-test-exception']='SampleApi'),_0x309a5a;}[_0x2ef663(0x234)](_0x422a5a){const _0x7b96c0=_0x2ef663;return!(!_0x422a5a[_0x7b96c0(0x2b0)]||0x191!==_0x422a5a[_0x7b96c0(0x2b0)][_0x7b96c0(0x28e)]);}}class _0x2cf96f{async['download'](){const _0x5eac0a=_0x2ef663,_0x21056e='spa.config.json';try{const _0x2b176a=await _0x530bf1()[_0x5eac0a(0x31e)](_0x21056e);return _0x5a67d2[_0x5eac0a(0x1af)](_0x2b176a[_0x5eac0a(0x17e)]),_0x2b176a['data'];}catch(_0x30a9d9){throw _0x298bf7[_0x5eac0a(0x226)](_0x30a9d9,_0x21056e,_0x5eac0a(0x217));}}}var _0x2615c5=_0x4a89b0(0x528),_0x33db91=_0x4a89b0['n'](_0x2615c5);class _0x50b0c8{constructor(){this['_count']=0x0;}[_0x2ef663(0x171)](_0x1f4709){const _0x48bb17=_0x2ef663,_0x5c1b18=[];if(_0x5c1b18['push'](this[_0x48bb17(0x173)]('User\x20Action',_0x1f4709[_0x48bb17(0x30a)],'highlightcolor')),_0x1f4709[_0x48bb17(0x197)]['length']>0x0&&_0x5c1b18[_0x48bb17(0x326)](this[_0x48bb17(0x173)](_0x48bb17(0x318),_0x1f4709[_0x48bb17(0x197)])),_0x1f4709[_0x48bb17(0x246)][_0x48bb17(0x15f)]>0x0){const _0xafc632=_0x33db91()(_0x1f4709['utcTime'])[_0x48bb17(0x203)](_0x48bb17(0x27d));_0x5c1b18[_0x48bb17(0x326)](this['_createErrorLine'](_0x48bb17(0x1f0),_0xafc632));}return _0x1f4709['area'][_0x48bb17(0x15f)]>0x0&&_0x5c1b18['push'](this[_0x48bb17(0x173)]('Area',_0x1f4709[_0x48bb17(0x1cd)])),_0x1f4709['errorCode'][_0x48bb17(0x15f)]>0x0&&_0x5c1b18[_0x48bb17(0x326)](this[_0x48bb17(0x173)](_0x48bb17(0x2a8),_0x1f4709[_0x48bb17(0x163)])),_0x1f4709['appAuthCode'][_0x48bb17(0x15f)]>0x0&&_0x5c1b18[_0x48bb17(0x326)](this[_0x48bb17(0x173)](_0x48bb17(0x1ba),_0x1f4709['appAuthCode']['toString']())),_0x1f4709['instanceId']>0x0&&_0x5c1b18['push'](this['_createErrorLine']('Instance\x20Id',_0x1f4709['instanceId'][_0x48bb17(0x26e)](),_0x48bb17(0x304))),_0x1f4709[_0x48bb17(0x2af)]>0x0&&_0x5c1b18[_0x48bb17(0x326)](this[_0x48bb17(0x173)](_0x48bb17(0x1d1),_0x1f4709[_0x48bb17(0x2af)][_0x48bb17(0x26e)]())),_0x1f4709[_0x48bb17(0x254)]['length']>0x0&&_0x5c1b18[_0x48bb17(0x326)](this[_0x48bb17(0x173)](_0x48bb17(0x228),_0x1f4709[_0x48bb17(0x254)])),_0x1f4709[_0x48bb17(0x271)][_0x48bb17(0x15f)]>0x0&&_0x5c1b18[_0x48bb17(0x326)](this[_0x48bb17(0x173)](_0x48bb17(0x286),_0x1f4709['url'])),_0x5c1b18;}[_0x2ef663(0x177)](_0xbe5a2){return null;}[_0x2ef663(0x173)](_0x4ef281,_0x22ef43,_0x4635a8=_0x2ef663(0x31c)){const _0xcb36f9=_0x2ef663;return{'id':++this[_0xcb36f9(0x2cd)],'label':_0x4ef281,'value':_0x22ef43,'valueStyle':_0x4635a8};}}class _0x2d5341{static[_0x2ef663(0x256)](_0x2480c6){const _0x47f885=_0x2ef663;new _0x50b0c8()['getErrorLines'](_0x2480c6)[_0x47f885(0x28d)](_0xb6fdbb=>{const _0x1ab85f=_0x47f885;console[_0x1ab85f(0x22b)](_0xb6fdbb[_0x1ab85f(0x272)]+':\x20'+_0xb6fdbb[_0x1ab85f(0x216)]);});}}class _0x3b1bc7{static[_0x2ef663(0x347)](_0x1b9a3d,_0x566b3d){const _0x1dbe5e=_0x2ef663;let _0x200955=_0x3b1bc7[_0x1dbe5e(0x2d8)][_0x1dbe5e(0x275)](_0x2e6b2f=>_0x2e6b2f[_0x1dbe5e(0x1a4)]===_0x1b9a3d);_0x200955||(_0x200955={'name':_0x1b9a3d,'callbacks':[]},_0x3b1bc7[_0x1dbe5e(0x2d8)]['push'](_0x200955)),_0x200955[_0x1dbe5e(0x251)][_0x1dbe5e(0x326)](_0x566b3d);}static[_0x2ef663(0x22c)](_0x156721,_0x5f303d){const _0x53893b=_0x2ef663,_0x4dbcb7=_0x3b1bc7[_0x53893b(0x2d8)][_0x53893b(0x275)](_0x33e7e4=>_0x33e7e4[_0x53893b(0x1a4)]===_0x156721);_0x4dbcb7&&(_0x4dbcb7[_0x53893b(0x251)]=_0x4dbcb7[_0x53893b(0x251)][_0x53893b(0x2f3)](_0x2adcba=>_0x2adcba!==_0x5f303d),0x0===_0x4dbcb7['callbacks'][_0x53893b(0x15f)]&&(_0x3b1bc7['_events']=_0x3b1bc7['_events'][_0x53893b(0x2f3)](_0x175e4e=>_0x175e4e['name']!==_0x156721)));}static[_0x2ef663(0x19a)](_0x490ef4,_0x5bcfdb){const _0x2ff8d8=_0x2ef663,_0x4864eb=_0x3b1bc7[_0x2ff8d8(0x2d8)]['find'](_0x265fb1=>_0x265fb1['name']===_0x490ef4);_0x4864eb&&_0x4864eb['callbacks'][_0x2ff8d8(0x28d)](_0x5a879f=>_0x5a879f(_0x5bcfdb));}}_0x3b1bc7[_0x2ef663(0x2d8)]=[];class _0x3f5aec{}_0x3f5aec[_0x2ef663(0x21a)]=_0x2ef663(0x1bd),_0x3f5aec[_0x2ef663(0x2b9)]=_0x2ef663(0x153);var _0x27f381=_0x4a89b0(0x1c1);class _0xece8e5{static['append'](_0x152754,_0x5da706){const _0x504162=_0x2ef663;return _0x152754[_0x504162(0x222)]('/')||_0x5da706[_0x504162(0x2d2)]('/')?''+_0x152754+_0x5da706:_0x152754+'/'+_0x5da706;}}class _0x549deb{static[_0x2ef663(0x279)](){const _0x2a8a88=_0x2ef663,_0x2ad6cc=new RegExp('Android.*(wv|.0.0.0)');return!!navigator[_0x2a8a88(0x18e)][_0x2a8a88(0x2a0)](_0x2ad6cc);}static[_0x2ef663(0x28c)](){const _0x468c91=_0x2ef663,_0x43e44f=new RegExp(_0x468c91(0x1e4));return!!navigator[_0x468c91(0x18e)][_0x468c91(0x2a0)](_0x43e44f);}}class _0x211e5c{constructor(){const _0xdb027f=_0x2ef663;this[_0xdb027f(0x29a)]=-0x1!==navigator['userAgent'][_0xdb027f(0x1dd)]()['indexOf'](_0xdb027f(0x209));}async[_0x2ef663(0x32f)](_0x48a9ce,_0x5f53bf){return new Promise((_0x51904d,_0x4f1ee1)=>{const _0x9fb88c=a0_0x1951,_0x5dfc8f=this['_getCallbackName'](_0x48a9ce,_0x5f53bf),_0x2c6695=window;_0x2c6695[_0x5dfc8f]=(_0x176794,_0xed7c48)=>{const _0x28292e=a0_0x1951;delete _0x2c6695[_0x5dfc8f],_0xed7c48?_0x4f1ee1(this[_0x28292e(0x2ab)](_0xed7c48)):_0x51904d(_0x176794);},this[_0x9fb88c(0x223)](_0x2c6695,_0x48a9ce,_0x5dfc8f);});}[_0x2ef663(0x155)](_0x2ee292,_0x5e7ab2){const _0x76d589=_0x2ef663;return _0x5e7ab2?_0x76d589(0x287)+_0x2ee292+'_'+_0x5e7ab2:_0x76d589(0x287)+_0x2ee292;}[_0x2ef663(0x223)](_0x2281eb,_0x32bdbc,_0x2c8133){const _0x33d453=_0x2ef663;if(this['_isAndroid'])_0x2281eb['mobileBridge'][_0x32bdbc](_0x2c8133);else{const _0x2eb837={'methodName':_0x32bdbc,'callbackName':_0x2c8133};_0x2281eb[_0x33d453(0x14b)][_0x33d453(0x1ae)][_0x33d453(0x2ae)][_0x33d453(0x19d)](JSON[_0x33d453(0x14a)](_0x2eb837));}}[_0x2ef663(0x2ab)](_0x2ee616){const _0x1fadde=_0x2ef663,_0x33c8ed=JSON[_0x1fadde(0x33e)](_0x2ee616),_0x384eee=new _0x2f1016(_0x33c8ed[_0x1fadde(0x1cd)],_0x33c8ed[_0x1fadde(0x163)],_0x33c8ed[_0x1fadde(0x154)]);return _0x33c8ed['appAuthCode']&&(_0x384eee[_0x1fadde(0x14e)]=_0x33c8ed[_0x1fadde(0x14e)]),_0x33c8ed[_0x1fadde(0x254)]&&(_0x384eee[_0x1fadde(0x254)]=atob(_0x33c8ed['details'])),_0x33c8ed[_0x1fadde(0x2a3)]&&(_0x384eee[_0x1fadde(0x2a3)]=atob(_0x33c8ed[_0x1fadde(0x2a3)])),_0x384eee;}}class _0x2546a5{constructor(_0x497354){const _0x30efb6=_0x2ef663;this[_0x30efb6(0x2e8)]=new _0x211e5c(),this[_0x30efb6(0x179)]=_0x497354;}async['initialise'](){}async[_0x2ef663(0x27e)](){const _0x304d1c=_0x2ef663;return this[_0x304d1c(0x2e8)][_0x304d1c(0x32f)](_0x304d1c(0x27e),_0x5d9437['i'][_0x304d1c(0x317)]()[_0x304d1c(0x26e)]());}async['refreshAccessToken'](){const _0x228b65=_0x2ef663;return this[_0x228b65(0x2e8)][_0x228b65(0x32f)]('refreshAccessToken',_0x5d9437['i']['create']()['toString']());}async[_0x2ef663(0x1c7)](){const _0x3389ff=_0x2ef663;await this[_0x3389ff(0x2e8)][_0x3389ff(0x32f)](_0x3389ff(0x1c7)),this['_onLoggedInAction']();}async[_0x2ef663(0x2cb)](){}async[_0x2ef663(0x22e)](){const _0x3e41d7=_0x2ef663;await this[_0x3e41d7(0x2e8)][_0x3e41d7(0x32f)](_0x3e41d7(0x22e));}async[_0x2ef663(0x289)](){const _0x4ac33d=_0x2ef663;await this[_0x4ac33d(0x2e8)][_0x4ac33d(0x32f)](_0x4ac33d(0x289));}async['expireRefreshToken'](){const _0x5237d6=_0x2ef663;await this[_0x5237d6(0x2e8)][_0x5237d6(0x32f)](_0x5237d6(0x168));}[_0x2ef663(0x1b8)](){}}var _0xbc576f=_0x4a89b0(0x1938),_0x1d4351=_0x4a89b0['n'](_0xbc576f);class _0x1df15e{constructor(){const _0x407d5b=_0x2ef663;this[_0x407d5b(0x188)]=[];}async[_0x2ef663(0x2aa)](_0x19233b){const _0x263d0a=_0x2ef663,_0x5da0b4=new Promise((_0x202c76,_0x1e2134)=>{const _0x5ae2a2=a0_0x1951;this[_0x5ae2a2(0x188)][_0x5ae2a2(0x326)]([()=>{_0x202c76(null);},_0x29ac58=>{_0x1e2134(_0x29ac58);}]);});if(0x1===this[_0x263d0a(0x188)][_0x263d0a(0x15f)]){try{await _0x19233b(),this[_0x263d0a(0x188)][_0x263d0a(0x28d)](_0x4abe8e=>{_0x4abe8e[0x0]();});}catch(_0x19ebcf){this['_callbacks'][_0x263d0a(0x28d)](_0x19a13f=>{_0x19a13f[0x1](_0x19ebcf);});}this[_0x263d0a(0x188)]=[];}return _0x5da0b4;}}class _0x5956a6{constructor(_0xb6059,_0x507d1c){this['_webBaseUrl']=_0xb6059,this['_configuration']=_0x507d1c;}[_0x2ef663(0x25d)](){const _0x4cc6dd=_0x2ef663;if(-0x1===this[_0x4cc6dd(0x18d)][_0x4cc6dd(0x285)]['indexOf']('cognito'))throw _0x298bf7[_0x4cc6dd(0x2dd)]();const _0x5482b0=encodeURIComponent(this['_configuration'][_0x4cc6dd(0x2d6)]),_0x3a6197=_0xece8e5[_0x4cc6dd(0x264)](this[_0x4cc6dd(0x2ad)],this[_0x4cc6dd(0x18d)][_0x4cc6dd(0x280)]),_0x41e331=encodeURIComponent(_0x3a6197);return this[_0x4cc6dd(0x18d)][_0x4cc6dd(0x1f8)]+_0x4cc6dd(0x199)+_0x5482b0+_0x4cc6dd(0x245)+_0x41e331;}}class _0x149bbe{constructor(){const _0x24dc7e=_0x2ef663;_0x27f381[_0x24dc7e(0x1e1)]['logger']=console;let _0x30d80b=this[_0x24dc7e(0x220)]();_0x30d80b||(_0x30d80b=this['_getStoredLogLevel']()),this['_setLogLevel'](_0x30d80b);}[_0x2ef663(0x1b8)](){const _0x4f9a00=_0x2ef663,_0x5da914=this[_0x4f9a00(0x220)]();_0x5da914&&_0x5da914!==this[_0x4f9a00(0x15d)]()&&(this[_0x4f9a00(0x2f7)](_0x5da914),_0x3dffd9[_0x4f9a00(0x238)]=_0x5da914);}[_0x2ef663(0x220)](){const _0xfa45b3=_0x2ef663;if(location[_0xfa45b3(0x1ee)][_0xfa45b3(0x2d2)]('#')){const _0x1c7663=location[_0xfa45b3(0x1ee)][_0xfa45b3(0x213)](0x1)[_0xfa45b3(0x191)](/^\//,'');if(_0x1c7663){const _0x43bebe=_0x1d4351()('?'+_0x1c7663,!0x0)[_0xfa45b3(0x2bf)][_0xfa45b3(0x22b)];if(_0x43bebe)return _0x43bebe['toLowerCase']();}}return'';}[_0x2ef663(0x15d)](){const _0x373b18=_0x2ef663;return _0x3dffd9[_0x373b18(0x238)];}[_0x2ef663(0x2f7)](_0x48be37){const _0x345243=_0x2ef663,_0x5b945c={'none':_0x27f381['Log'][_0x345243(0x30e)],'error':_0x27f381['Log'][_0x345243(0x1b1)],'warn':_0x27f381['Log'][_0x345243(0x15c)],'info':_0x27f381[_0x345243(0x1e1)][_0x345243(0x17d)],'debug':_0x27f381['Log']['DEBUG']}[_0x48be37||_0x345243(0x2ee)];void 0x0!==_0x5b945c&&(_0x27f381[_0x345243(0x1e1)]['level']=_0x5b945c);}}class _0x2a60ec{constructor(_0x3d4a39){const _0x55b579=_0x2ef663;this['_options']=_0x3d4a39,this[_0x55b579(0x1ed)]=new _0x149bbe(),this[_0x55b579(0x151)]=new _0x1df15e(),this[_0x55b579(0x248)]();}async[_0x2ef663(0x1ce)](){const _0x3a5b0a=_0x2ef663;this[_0x3a5b0a(0x2bd)]=this[_0x3a5b0a(0x2d1)](this[_0x3a5b0a(0x324)][_0x3a5b0a(0x343)]),this[_0x3a5b0a(0x2bd)]['events'][_0x3a5b0a(0x1ef)](async()=>{const _0x28b73b=_0x3a5b0a;this[_0x28b73b(0x2bd)][_0x28b73b(0x21e)](),this['_options']['onLoggedOut']();}),await this['_onInitialise']();}async['getAccessToken'](){const _0x3fb650=_0x2ef663,_0x280942=await this[_0x3fb650(0x2bd)][_0x3fb650(0x294)]();return _0x280942&&_0x280942['access_token']?_0x280942[_0x3fb650(0x1c2)]:await this[_0x3fb650(0x1c6)]();}async[_0x2ef663(0x1c6)](){const _0x181c3c=_0x2ef663;let _0x287264=await this[_0x181c3c(0x2bd)]['getUser']();if(_0x287264&&(await this[_0x181c3c(0x151)][_0x181c3c(0x2aa)](this[_0x181c3c(0x1c8)]),_0x287264=await this['_userManager'][_0x181c3c(0x294)](),_0x287264&&_0x287264[_0x181c3c(0x1c2)]))return _0x287264[_0x181c3c(0x1c2)];throw _0x298bf7[_0x181c3c(0x322)]();}async['login'](){const _0x268839=_0x2ef663;try{const _0x170c88=this[_0x268839(0x1df)](),_0x17f4da={};_0x170c88&&(_0x17f4da[this[_0x268839(0x324)][_0x268839(0x1e3)][_0x268839(0x1ec)]]=_0x170c88);const _0x57f1cf={'hash':location['hash'],'idp':_0x170c88};await this[_0x268839(0x2bd)]['signinRedirect']({'state':_0x57f1cf,'extraQueryParams':_0x17f4da});}catch(_0x35ef9d){throw _0x298bf7[_0x268839(0x2a9)](_0x35ef9d,_0x1ed325[_0x268839(0x320)]);}}async[_0x2ef663(0x2cb)](){const _0x5d90dd=_0x2ef663;var _0xdedeb2;const _0x34e43a=_0x1d4351()(location[_0x5d90dd(0x2bc)],!0x0);if(_0x34e43a['query']&&_0x34e43a['query']['state']){let _0x2f77a1='#';try{if(await(null===(_0xdedeb2=this[_0x5d90dd(0x2bd)][_0x5d90dd(0x343)][_0x5d90dd(0x309)])||void 0x0===_0xdedeb2?void 0x0:_0xdedeb2[_0x5d90dd(0x31e)](_0x34e43a[_0x5d90dd(0x2bf)]['state']))){const _0x909b2f=await this[_0x5d90dd(0x2bd)][_0x5d90dd(0x249)]();_0x909b2f[_0x5d90dd(0x192)]['idp']&&(_0x3dffd9[_0x5d90dd(0x259)]=_0x909b2f[_0x5d90dd(0x192)][_0x5d90dd(0x1d9)]),_0x2f77a1=_0x909b2f[_0x5d90dd(0x192)][_0x5d90dd(0x1ee)],await this[_0x5d90dd(0x2bd)][_0x5d90dd(0x1cb)]();}}catch(_0x35b073){throw _0x298bf7[_0x5d90dd(0x2a9)](_0x35b073,_0x1ed325[_0x5d90dd(0x342)]);}finally{history[_0x5d90dd(0x1a3)]({},document[_0x5d90dd(0x159)],_0x2f77a1);}}}async[_0x2ef663(0x22e)](){const _0x4e9735=_0x2ef663;var _0x38aa84,_0x47f4ac;try{if(await this[_0x4e9735(0x1a8)](),await this[_0x4e9735(0x2bd)]['metadataService']['getEndSessionEndpoint']()){const _0x28c8fc=await(null===(_0x38aa84=this[_0x4e9735(0x2bd)])||void 0x0===_0x38aa84?void 0x0:_0x38aa84['getUser']());if(!_0x28c8fc||!_0x28c8fc[_0x4e9735(0x26d)])throw await this['_userManager'][_0x4e9735(0x21e)](),_0x298bf7[_0x4e9735(0x20e)]();await this[_0x4e9735(0x2bd)][_0x4e9735(0x15b)]();}else{await(null===(_0x47f4ac=this['_userManager'])||void 0x0===_0x47f4ac?void 0x0:_0x47f4ac[_0x4e9735(0x21e)]());const _0x12a7ee=new _0x5956a6(this[_0x4e9735(0x324)][_0x4e9735(0x2f6)],this[_0x4e9735(0x324)][_0x4e9735(0x1e3)])[_0x4e9735(0x25d)]();location['replace'](_0x12a7ee);}}catch(_0x53b037){throw _0x298bf7[_0x4e9735(0x17a)](_0x53b037,_0x1ed325[_0x4e9735(0x21d)]);}}async[_0x2ef663(0x289)](){const _0x35efeb=_0x2ef663,_0x4bf3ec=await this[_0x35efeb(0x2bd)][_0x35efeb(0x294)]();_0x4bf3ec&&(_0x4bf3ec[_0x35efeb(0x1c2)]='x'+_0x4bf3ec[_0x35efeb(0x1c2)]+'x',this[_0x35efeb(0x2bd)][_0x35efeb(0x1b5)](_0x4bf3ec));}async['expireRefreshToken'](){const _0x21c353=_0x2ef663;await this[_0x21c353(0x289)]();const _0x13824e=await this[_0x21c353(0x2bd)][_0x21c353(0x294)]();_0x13824e&&_0x13824e[_0x21c353(0x284)]&&(_0x13824e[_0x21c353(0x284)]='x'+_0x13824e['refresh_token']+'x',this[_0x21c353(0x2bd)][_0x21c353(0x1b5)](_0x13824e));}[_0x2ef663(0x1b8)](){const _0x5b39bb=_0x2ef663;this[_0x5b39bb(0x1ed)]['updateLogLevelIfRequired']();}[_0x2ef663(0x2d1)](_0x6c8d35){const _0x3d002e=_0x2ef663;return new _0x27f381[(_0x3d002e(0x2db))](_0x6c8d35);}async[_0x2ef663(0x1ab)](){}async['_onSessionExpiring'](){}async[_0x2ef663(0x1c8)](){const _0x4695e7=_0x2ef663;try{await this[_0x4695e7(0x2bd)][_0x4695e7(0x1bb)]();}catch(_0x29c701){if(!this[_0x4695e7(0x158)](_0x29c701))throw _0x298bf7[_0x4695e7(0x202)](_0x29c701,_0x1ed325[_0x4695e7(0x302)]);await this[_0x4695e7(0x2bd)][_0x4695e7(0x21e)](),await this['_onSessionExpiring']();}}[_0x2ef663(0x1df)](){const _0x4c9808=_0x2ef663,_0x3b07d9=_0x1d4351()(location[_0x4c9808(0x2bc)],!0x0);return _0x3b07d9['query']&&''===_0x3b07d9[_0x4c9808(0x2bf)][_0x4c9808(0x1d9)]?(_0x3dffd9[_0x4c9808(0x2cc)](),''):_0x3b07d9['query']&&_0x3b07d9[_0x4c9808(0x2bf)][_0x4c9808(0x1d9)]?_0x3b07d9[_0x4c9808(0x2bf)][_0x4c9808(0x1d9)]:_0x3dffd9['identityProvider'];}['_isSessionExpired'](_0x54e124){const _0x8762a3=_0x2ef663;return _0x54e124[_0x8762a3(0x197)]===_0x1ed325['invalidGrant']||_0x54e124[_0x8762a3(0x23a)]===_0x1ed325[_0x8762a3(0x1b4)]||_0x8762a3(0x18f)===_0x54e124[_0x8762a3(0x197)];}[_0x2ef663(0x248)](){const _0x167bbc=_0x2ef663;this[_0x167bbc(0x1c8)]=this['_performTokenRefresh'][_0x167bbc(0x193)](this);}}class _0x7840b5 extends _0x27f381[_0x2ef663(0x2db)]{constructor(_0x636f73,_0x1f5a01){const _0x1cb0cf=_0x2ef663;super(_0x636f73),this[_0x1cb0cf(0x2fa)]=_0x1f5a01;}async[_0x2ef663(0x214)](_0x13f4b4,_0x4e82f7){const _0x41e22b=_0x2ef663,_0x23cf38=await super['processSigninResponse'](_0x13f4b4,_0x4e82f7);return this[_0x41e22b(0x2fa)](_0x23cf38),_0x23cf38;}async[_0x2ef663(0x1bb)](_0x8b8911){const _0x157652=_0x2ef663;await this['_setStoredRefreshToken']('-');const _0x588d41=await super[_0x157652(0x1bb)](_0x8b8911);return await this[_0x157652(0x29d)](''),_0x588d41;}async[_0x2ef663(0x29d)](_0x245fc6){const _0x3cfae1=_0x2ef663,_0x50f08b=await this[_0x3cfae1(0x294)]();_0x50f08b&&(_0x50f08b['refresh_token']=_0x245fc6,await this['storeUser'](_0x50f08b));}}class _0x558665{constructor(){const _0x568939=_0x2ef663;this[_0x568939(0x348)]='',this[_0x568939(0x221)]='',this[_0x568939(0x282)]='';}[_0x2ef663(0x1a1)](_0x111c9c,_0x3332ee){const _0x4e8701=_0x2ef663,_0x20e082=JSON[_0x4e8701(0x33e)](_0x3332ee);this[_0x4e8701(0x28b)](_0x20e082),localStorage[_0x4e8701(0x1a1)](_0x111c9c,JSON[_0x4e8701(0x14a)](_0x20e082));}[_0x2ef663(0x1b7)](_0x4f3e01){const _0x17b4ea=_0x2ef663,_0x123c67=localStorage[_0x17b4ea(0x1b7)](_0x4f3e01);if(_0x123c67){const _0x4fea64=JSON[_0x17b4ea(0x33e)](_0x123c67);return this[_0x17b4ea(0x1f7)](_0x4fea64),JSON['stringify'](_0x4fea64);}return null;}[_0x2ef663(0x2b2)](_0x236c95){const _0x20df5e=_0x2ef663;localStorage[_0x20df5e(0x2b2)](_0x236c95),this[_0x20df5e(0x348)]='',this['_refreshToken']='',this[_0x20df5e(0x282)]='';}get[_0x2ef663(0x15f)](){const _0x374a3a=_0x2ef663;return localStorage[_0x374a3a(0x15f)];}[_0x2ef663(0x1b2)](_0xcfc969){return localStorage[_0xcfc969];}[_0x2ef663(0x207)](){const _0x1b6f31=_0x2ef663;return this[_0x1b6f31(0x282)];}[_0x2ef663(0x28b)](_0x573cec){const _0x2a4c64=_0x2ef663;this[_0x2a4c64(0x348)]=_0x573cec['access_token'],_0x573cec[_0x2a4c64(0x284)]&&(this[_0x2a4c64(0x221)]=_0x573cec[_0x2a4c64(0x284)]),_0x573cec[_0x2a4c64(0x26d)]&&(this[_0x2a4c64(0x282)]=_0x573cec[_0x2a4c64(0x26d)]),delete _0x573cec[_0x2a4c64(0x1c2)],delete _0x573cec[_0x2a4c64(0x26d)],delete _0x573cec[_0x2a4c64(0x284)],_0x573cec[_0x2a4c64(0x341)]&&(delete _0x573cec['profile']['given_name'],delete _0x573cec['profile'][_0x2a4c64(0x1e0)],delete _0x573cec[_0x2a4c64(0x341)]['email'],_0x573cec['profile'][_0x2a4c64(0x20a)]&&delete _0x573cec[_0x2a4c64(0x341)][_0x2a4c64(0x20a)]);}[_0x2ef663(0x1f7)](_0x58e0db){const _0x56d1b4=_0x2ef663;_0x58e0db[_0x56d1b4(0x1c2)]=this[_0x56d1b4(0x348)],_0x58e0db[_0x56d1b4(0x26d)]=this[_0x56d1b4(0x282)],_0x58e0db[_0x56d1b4(0x284)]=this[_0x56d1b4(0x221)];}}class _0x1b0925{constructor(_0xe611f4,_0x1264c7,_0x141ff4){const _0x53fbe1=_0x2ef663;this[_0x53fbe1(0x34a)]=_0x53fbe1(0x174),this[_0x53fbe1(0x253)]='x-mycompany-finalspa-refresh-csrf',this[_0x53fbe1(0x225)]=_0xe611f4,this[_0x53fbe1(0x1bf)]=_0xece8e5[_0x53fbe1(0x264)](_0x1264c7,_0x141ff4);}[_0x2ef663(0x1ce)](){const _0x36f605=_0x2ef663;if(Object['isFrozen'](XMLHttpRequest['prototype']))return;const _0x2174f5=this,_0x4fb80c=XMLHttpRequest[_0x36f605(0x268)]['open'];XMLHttpRequest[_0x36f605(0x268)][_0x36f605(0x156)]=function(_0x1b635b,_0x414c0b){const _0x797c95=_0x36f605;_0x4fb80c[_0x797c95(0x24f)](this,_0x1b635b,_0x414c0b),_0x2174f5[_0x797c95(0x265)](this,_0x414c0b);},Object['freeze'](XMLHttpRequest[_0x36f605(0x268)]);}[_0x2ef663(0x2f0)](){const _0x149222=_0x2ef663;return _0xece8e5[_0x149222(0x264)](this[_0x149222(0x1bf)],_0x149222(0x247));}['storeCsrfFieldFromProxy'](_0x1fdca8){const _0x15f291=_0x2ef663;_0x1fdca8[this[_0x15f291(0x34a)]]&&(_0x3dffd9[_0x15f291(0x1d0)]=_0x1fdca8[this[_0x15f291(0x34a)]]);}async['clearRefreshToken'](){const _0xf02ebc=_0x2ef663;await this[_0xf02ebc(0x2c6)](_0xf02ebc(0x1ac),_0xf02ebc(0x247)),_0x3dffd9[_0xf02ebc(0x15e)]();}async[_0x2ef663(0x168)](){await this['_sendWebReverseProxyRequest']('POST','expire');}async[_0x2ef663(0x2c6)](_0x3213d2,_0x2ee066){const _0x117211=_0x2ef663,_0x1fb979=_0xece8e5[_0x117211(0x264)](this[_0x117211(0x1bf)],_0x2ee066);try{const _0x5a90cc=new URLSearchParams();_0x5a90cc[_0x117211(0x264)](_0x117211(0x2f8),this[_0x117211(0x225)]);const _0x1737ee={'url':_0x1fb979,'method':_0x3213d2,'data':_0x5a90cc,'headers':{'content-type':_0x117211(0x16f)}};await _0x530bf1()[_0x117211(0x29f)](_0x1737ee);}catch(_0x26bf85){const _0x2511cb=_0x298bf7[_0x117211(0x226)](_0x26bf85,_0x1fb979,_0x117211(0x30b));_0x2d5341['output'](_0x2511cb);}}[_0x2ef663(0x265)](_0x59a3eb,_0x3ac271){const _0x3e32e0=_0x2ef663;if(_0x3ac271['toLowerCase']()['startsWith'](this['_reverseProxyBaseUrl'])){const _0x161eca=_0x3dffd9[_0x3e32e0(0x1d0)];_0x161eca&&_0x59a3eb[_0x3e32e0(0x2fb)](this[_0x3e32e0(0x253)],_0x161eca);}}}class _0xe3508e extends _0x2a60ec{constructor(_0x172c58){const _0x1d8d5a=_0x2ef663;super(_0x172c58),this[_0x1d8d5a(0x324)][_0x1d8d5a(0x343)][_0x1d8d5a(0x34c)]=new _0x27f381[(_0x1d8d5a(0x2ce))]({'store':new _0x558665()}),this['_webReverseProxyClient']=new _0x1b0925(this[_0x1d8d5a(0x324)][_0x1d8d5a(0x1e3)][_0x1d8d5a(0x2d6)],this[_0x1d8d5a(0x324)][_0x1d8d5a(0x2f6)],this[_0x1d8d5a(0x324)][_0x1d8d5a(0x1e3)][_0x1d8d5a(0x295)]),this[_0x1d8d5a(0x14c)]();}async[_0x2ef663(0x168)](){const _0x24b12a=_0x2ef663;await super[_0x24b12a(0x289)](),await this['_webReverseProxyClient'][_0x24b12a(0x168)]();}[_0x2ef663(0x2d1)](_0xe1f74f){const _0x482261=_0x2ef663;return this[_0x482261(0x22d)]=new _0x7840b5(_0xe1f74f,this[_0x482261(0x2fa)]),this[_0x482261(0x22d)];}async[_0x2ef663(0x1ab)](){const _0x3a0949=_0x2ef663,_0x353c3b=this[_0x3a0949(0x22d)][_0x3a0949(0x343)];await this[_0x3a0949(0x22d)]['metadataService']['getMetadata'](),_0x353c3b[_0x3a0949(0x337)][_0x3a0949(0x2e1)]=this['_webReverseProxyClient'][_0x3a0949(0x2f0)](),this['_webReverseProxyClient'][_0x3a0949(0x1ce)]();}[_0x2ef663(0x2fa)](_0x44838d){const _0x3ccd2e=_0x2ef663;this[_0x3ccd2e(0x212)][_0x3ccd2e(0x1c5)](_0x44838d);}async['_onSessionExpiring'](){const _0x152c03=_0x2ef663;await this['_webReverseProxyClient'][_0x152c03(0x152)]();}[_0x2ef663(0x14c)](){const _0x33ef33=_0x2ef663;this[_0x33ef33(0x2fa)]=this[_0x33ef33(0x2fa)][_0x33ef33(0x193)](this);}}class _0x18895b{static[_0x2ef663(0x311)](_0x2b4ac4,_0x56bdf8,_0x201620,_0x5d05ba){const _0x480404=_0x2ef663;if(_0x549deb['isAndroidWebView']()||_0x549deb['isIosWebView']())return new _0x2546a5(_0x201620);{const _0x591b6c=_0x18895b[_0x480404(0x1b3)](_0x2b4ac4,_0x56bdf8,_0x5d05ba);return _0x2b4ac4['reverseProxyPath']?new _0xe3508e(_0x591b6c):new _0x2a60ec(_0x591b6c);}}static['_createWebAuthenticatorOptions'](_0x4b538a,_0xce2191,_0x37b9ee){const _0x2fb910=_0x2ef663;return{'configuration':_0x4b538a,'webBaseUrl':_0xce2191,'onLoggedOut':_0x37b9ee,'settings':{'authority':_0x4b538a[_0x2fb910(0x285)],'client_id':_0x4b538a[_0x2fb910(0x2d6)],'redirect_uri':_0xece8e5[_0x2fb910(0x264)](_0xce2191,_0x4b538a[_0x2fb910(0x2a1)]),'scope':_0x4b538a['scope'],'response_type':'code','userStore':new _0x27f381[(_0x2fb910(0x2ce))]({'store':new _0x27f381[(_0x2fb910(0x18c))]()}),'silent_redirect_uri':_0xece8e5[_0x2fb910(0x264)](_0xce2191,_0x4b538a[_0x2fb910(0x2a1)]),'automaticSilentRenew':!0x1,'loadUserInfo':!0x1,'post_logout_redirect_uri':_0xece8e5[_0x2fb910(0x264)](_0xce2191,_0x4b538a[_0x2fb910(0x280)]),'monitorSession':!0x0}};}}class _0x4fe210 extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x396172){super(_0x396172);}['render'](){const _0x2026d3=_0x2ef663,_0x5a968c=new _0x50b0c8(),_0x4d6f6d=_0x5a968c[_0x2026d3(0x171)](this[_0x2026d3(0x210)]['error']),_0xa8107e=_0x5a968c[_0x2026d3(0x177)](this['props'][_0x2026d3(0x23a)]);return _0x4b6739['createElement']('div',{'className':'card\x20border-0'},_0x4b6739[_0x2026d3(0x17b)](_0x2026d3(0x1aa),{'className':_0x2026d3(0x274)},_0x4b6739[_0x2026d3(0x17b)](_0x2026d3(0x1aa),{'className':_0x2026d3(0x266)},this[_0x2026d3(0x210)][_0x2026d3(0x159)]),_0x4b6739['createElement'](_0x2026d3(0x1aa),{'className':_0x2026d3(0x26c)},_0x4b6739[_0x2026d3(0x17b)]('button',{'onClick':this['props']['handleClose'],'type':'button'},'x'))),_0x4b6739['createElement'](_0x2026d3(0x1aa),{'className':_0x2026d3(0x293)},_0x4b6739[_0x2026d3(0x17b)](_0x2026d3(0x1aa),{'className':_0x2026d3(0x30d)},_0x4b6739[_0x2026d3(0x17b)](_0x2026d3(0x1aa),{'className':_0x2026d3(0x25f)},_0x4d6f6d[_0x2026d3(0x306)](_0xd8eff8=>this[_0x2026d3(0x1a9)](_0xd8eff8)),this['_renderErrorStack'](_0xa8107e)))));}[_0x2ef663(0x1a9)](_0x522757){const _0x45c849=_0x2ef663;return _0x4b6739[_0x45c849(0x17b)](_0x45c849(0x1aa),{'className':_0x45c849(0x274),'key':_0x522757['id']},_0x4b6739[_0x45c849(0x17b)]('div',{'className':_0x45c849(0x349)},_0x522757[_0x45c849(0x272)]),_0x4b6739[_0x45c849(0x17b)]('div',{'className':_0x45c849(0x1f2)+_0x522757[_0x45c849(0x33c)]+_0x45c849(0x29b)},_0x522757['value']));}[_0x2ef663(0x344)](_0x37610){const _0x3abfc3=_0x2ef663;return _0x37610?_0x4b6739[_0x3abfc3(0x17b)](_0x4b6739[_0x3abfc3(0x330)],null,_0x4b6739[_0x3abfc3(0x17b)](_0x3abfc3(0x1aa),{'className':_0x3abfc3(0x274),'key':_0x37610['id']},_0x4b6739[_0x3abfc3(0x17b)](_0x3abfc3(0x1aa),{'className':_0x3abfc3(0x349)},'\u00a0'),_0x4b6739[_0x3abfc3(0x17b)](_0x3abfc3(0x1aa),{'className':'col-8'},'\u00a0')),_0x4b6739[_0x3abfc3(0x17b)](_0x3abfc3(0x1aa),{'className':_0x3abfc3(0x274),'key':_0x37610['id']+0x1},_0x4b6739[_0x3abfc3(0x17b)](_0x3abfc3(0x1aa),{'className':_0x3abfc3(0x349)},_0x37610[_0x3abfc3(0x272)]),_0x4b6739['createElement'](_0x3abfc3(0x1aa),{'className':'col-8\x20small'},_0x37610[_0x3abfc3(0x216)]))):_0x4b6739[_0x3abfc3(0x17b)](_0x4b6739[_0x3abfc3(0x330)],null);}}class _0x41b86f extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x1ed7f8){const _0x83f724=_0x2ef663;super(_0x1ed7f8),this[_0x83f724(0x192)]={'showDetails':!0x1,'error':_0x1ed7f8[_0x83f724(0x23a)]?_0x298bf7[_0x83f724(0x310)](_0x1ed7f8[_0x83f724(0x23a)]):null},this['_setupCallbacks']();}static[_0x2ef663(0x17f)](_0x1dcbe4,_0x11292b){const _0x173061=_0x2ef663;return _0x1dcbe4[_0x173061(0x23a)]!==_0x11292b['error']?{'error':_0x1dcbe4[_0x173061(0x23a)],'showDetails':!0x1}:null;}[_0x2ef663(0x257)](){const _0x1c804d=_0x2ef663;return this['state'][_0x1c804d(0x23a)]&&this[_0x1c804d(0x192)][_0x1c804d(0x23a)]['errorCode']!==_0x1ed325['loginRequired']?this[_0x1c804d(0x210)][_0x1c804d(0x2c1)]?_0x4b6739[_0x1c804d(0x17b)](_0x4b6739[_0x1c804d(0x330)],null,_0x4b6739[_0x1c804d(0x17b)](_0x1c804d(0x1aa),{'className':_0x1c804d(0x274)},_0x4b6739[_0x1c804d(0x17b)](_0x1c804d(0x1aa),{'className':_0x1c804d(0x1ad)},this[_0x1c804d(0x1c0)]())),this[_0x1c804d(0x21c)]()):_0x4b6739[_0x1c804d(0x17b)](_0x4b6739[_0x1c804d(0x330)],null,this[_0x1c804d(0x1c0)](),this[_0x1c804d(0x21c)]()):_0x4b6739[_0x1c804d(0x17b)](_0x4b6739[_0x1c804d(0x330)],null);}[_0x2ef663(0x1c0)](){const _0xf5cb50=_0x2ef663;return _0x4b6739[_0xf5cb50(0x17b)]('a',{'href':'#','className':_0xf5cb50(0x219),'onClick':this[_0xf5cb50(0x187)]},this['props']['hyperlinkMessage']);}[_0x2ef663(0x21c)](){const _0x58a0f2=_0x2ef663,_0x272dd6={'title':this[_0x58a0f2(0x210)][_0x58a0f2(0x215)],'error':this[_0x58a0f2(0x192)]['error'],'handleClose':this[_0x58a0f2(0x345)]};return _0x4b6739[_0x58a0f2(0x17b)](_0x8b52fd(),{'isOpen':this[_0x58a0f2(0x192)][_0x58a0f2(0x15a)],'onRequestClose':this['_handleDetailsDialogClose'],'contentLabel':this[_0x58a0f2(0x210)][_0x58a0f2(0x215)],'style':{'overlay':{'backgroundColor':_0x58a0f2(0x2ff)}}},_0x4b6739['createElement'](_0x4fe210,Object[_0x58a0f2(0x14d)]({},_0x272dd6)));}[_0x2ef663(0x187)](_0x3b9d6a){const _0x556867=_0x2ef663;_0x3b9d6a[_0x556867(0x27c)](),this['setState']({'showDetails':!0x0});}[_0x2ef663(0x345)](){const _0x3a2477=_0x2ef663;this[_0x3a2477(0x291)]({'showDetails':!0x1});}['_setupCallbacks'](){const _0x22e875=_0x2ef663;this[_0x22e875(0x187)]=this['_handleSummaryClick']['bind'](this),this['_handleDetailsDialogClose']=this[_0x22e875(0x345)][_0x22e875(0x193)](this);}}class _0x4ed132{}_0x4ed132['Main']=_0x2ef663(0x19b),_0x4ed132[_0x2ef663(0x2cf)]=_0x2ef663(0x1e8);class _0x215080 extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x2560e1){super(_0x2560e1);}[_0x2ef663(0x257)](){const _0xf1eb1a=_0x2ef663;return _0x4b6739['createElement'](_0xf1eb1a(0x1aa),{'className':_0xf1eb1a(0x1b0)},_0x4b6739[_0xf1eb1a(0x17b)](_0xf1eb1a(0x1aa),{'className':_0xf1eb1a(0x2e7)},_0x4b6739[_0xf1eb1a(0x17b)](_0xf1eb1a(0x1aa),{'className':'col-2\x20font-weight-bold\x20text-center'},_0xf1eb1a(0x316)),_0x4b6739[_0xf1eb1a(0x17b)](_0xf1eb1a(0x1aa),{'className':_0xf1eb1a(0x2e5)},'Region'),_0x4b6739[_0xf1eb1a(0x17b)](_0xf1eb1a(0x1aa),{'className':_0xf1eb1a(0x1d5)}),_0x4b6739['createElement']('div',{'className':'col-2\x20font-weight-bold\x20text-right'},_0xf1eb1a(0x328)),_0x4b6739[_0xf1eb1a(0x17b)]('div',{'className':_0xf1eb1a(0x24d)},'Investment\x20USD'),_0x4b6739[_0xf1eb1a(0x17b)]('div',{'className':_0xf1eb1a(0x24d)},_0xf1eb1a(0x2f9))),_0x4b6739[_0xf1eb1a(0x17b)](_0xf1eb1a(0x1aa),{'className':_0xf1eb1a(0x23d)},this[_0xf1eb1a(0x210)][_0xf1eb1a(0x2fe)][_0xf1eb1a(0x306)](_0x1ea8cb=>this[_0xf1eb1a(0x166)](_0x1ea8cb))));}[_0x2ef663(0x166)](_0x3fcdc6){const _0x1669f1=_0x2ef663;return _0x4b6739[_0x1669f1(0x17b)](_0x1669f1(0x1aa),{'className':_0x1669f1(0x34d),'key':_0x3fcdc6['id']},_0x4b6739[_0x1669f1(0x17b)](_0x1669f1(0x1aa),{'className':_0x1669f1(0x25b)},_0x3fcdc6[_0x1669f1(0x1a4)]),_0x4b6739[_0x1669f1(0x17b)](_0x1669f1(0x1aa),{'className':_0x1669f1(0x25b)},_0x3fcdc6[_0x1669f1(0x338)]),_0x4b6739['createElement'](_0x1669f1(0x1aa),{'className':_0x1669f1(0x25b)},_0x4b6739[_0x1669f1(0x17b)]('a',{'href':_0x1669f1(0x231)+_0x3fcdc6['id']},'View\x20Transactions')),_0x4b6739[_0x1669f1(0x17b)](_0x1669f1(0x1aa),{'className':_0x1669f1(0x196)},Number(_0x3fcdc6[_0x1669f1(0x1bc)])[_0x1669f1(0x1d2)]()),_0x4b6739[_0x1669f1(0x17b)](_0x1669f1(0x1aa),{'className':_0x1669f1(0x196)},Number(_0x3fcdc6[_0x1669f1(0x267)])['toLocaleString']()),_0x4b6739['createElement'](_0x1669f1(0x1aa),{'className':_0x1669f1(0x236)},_0x3fcdc6[_0x1669f1(0x2bb)]));}}class _0x156016 extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x198d1a){super(_0x198d1a);}[_0x2ef663(0x257)](){const _0x47757e=_0x2ef663;return _0x4b6739[_0x47757e(0x17b)]('div',{'className':_0x47757e(0x1b0)},_0x4b6739[_0x47757e(0x17b)](_0x47757e(0x1aa),{'className':_0x47757e(0x31b)},_0x4b6739['createElement'](_0x47757e(0x1aa),{'className':_0x47757e(0x23f)},_0x47757e(0x2a5))),_0x4b6739['createElement'](_0x47757e(0x1aa),{'className':'card-body'},this[_0x47757e(0x210)]['companies'][_0x47757e(0x306)](_0x429862=>this['_renderItem'](_0x429862))));}['_renderItem'](_0x2d8ed1){const _0x20e8c3=_0x2ef663;return _0x4b6739['createElement'](_0x20e8c3(0x1aa),{'key':_0x2d8ed1['id']},_0x4b6739[_0x20e8c3(0x17b)](_0x20e8c3(0x1aa),{'className':_0x20e8c3(0x346)},_0x4b6739[_0x20e8c3(0x17b)]('div',{'className':_0x20e8c3(0x2be)},_0x4b6739['createElement']('a',{'href':_0x20e8c3(0x231)+_0x2d8ed1['id']},_0x2d8ed1[_0x20e8c3(0x1a4)])),_0x4b6739[_0x20e8c3(0x17b)](_0x20e8c3(0x1aa),{'className':_0x20e8c3(0x24b)},_0x2d8ed1[_0x20e8c3(0x338)])),_0x4b6739[_0x20e8c3(0x17b)]('div',{'className':_0x20e8c3(0x2ef)},_0x4b6739[_0x20e8c3(0x17b)](_0x20e8c3(0x1aa),{'className':_0x20e8c3(0x2ac)},'Target\x20USD'),_0x4b6739[_0x20e8c3(0x17b)](_0x20e8c3(0x1aa),{'className':_0x20e8c3(0x31f)},Number(_0x2d8ed1[_0x20e8c3(0x1bc)])['toLocaleString']())),_0x4b6739[_0x20e8c3(0x17b)]('div',{'className':'row\x20mobileRow'},_0x4b6739[_0x20e8c3(0x17b)]('div',{'className':_0x20e8c3(0x2ac)},'Investment\x20USD'),_0x4b6739[_0x20e8c3(0x17b)]('div',{'className':_0x20e8c3(0x31f)},Number(_0x2d8ed1[_0x20e8c3(0x267)])[_0x20e8c3(0x1d2)]())),_0x4b6739[_0x20e8c3(0x17b)](_0x20e8c3(0x1aa),{'className':_0x20e8c3(0x2ef)},_0x4b6739[_0x20e8c3(0x17b)]('div',{'className':'col-6'},'#\x20Investors'),_0x4b6739[_0x20e8c3(0x17b)]('div',{'className':'col-6\x20font-weight-bold'},_0x2d8ed1[_0x20e8c3(0x2bb)])),_0x4b6739['createElement']('hr',null));}}class _0x109651 extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x165a52){const _0x3cbbab=_0x2ef663;super(_0x165a52),_0x165a52[_0x3cbbab(0x1c4)](),this[_0x3cbbab(0x192)]={'companies':[],'error':null},this[_0x3cbbab(0x248)]();}['render'](){const _0x22ace0=_0x2ef663;if(this['state'][_0x22ace0(0x23a)])return this['_renderError']();if(0x0===this['state'][_0x22ace0(0x2fe)][_0x22ace0(0x15f)])return _0x4b6739[_0x22ace0(0x17b)](_0x4b6739[_0x22ace0(0x330)],null);const _0x3daeec={'companies':this['state'][_0x22ace0(0x2fe)]};return this['props'][_0x22ace0(0x1dc)]?_0x4b6739['createElement'](_0x156016,Object[_0x22ace0(0x14d)]({},_0x3daeec)):_0x4b6739[_0x22ace0(0x17b)](_0x215080,Object[_0x22ace0(0x14d)]({},_0x3daeec));}async['componentDidMount'](){const _0x3ad2cf=_0x2ef663;_0x3b1bc7[_0x3ad2cf(0x347)](_0x3f5aec[_0x3ad2cf(0x21a)],this['_loadData']),await this[_0x3ad2cf(0x16b)](!0x1);}async[_0x2ef663(0x23c)](){const _0x5b6d39=_0x2ef663;_0x3b1bc7[_0x5b6d39(0x22c)](_0x3f5aec['ON_RELOAD_MAIN'],this[_0x5b6d39(0x16b)]);}async[_0x2ef663(0x16b)](_0x3e6986){const _0x6f6f8d=_0x2ef663;try{this[_0x6f6f8d(0x291)]({'error':null}),this['props'][_0x6f6f8d(0x1eb)][_0x6f6f8d(0x181)](_0x4ed132[_0x6f6f8d(0x335)]);const _0x1dd9ef=await this[_0x6f6f8d(0x210)][_0x6f6f8d(0x16a)][_0x6f6f8d(0x1f3)]({'causeError':_0x3e6986});this[_0x6f6f8d(0x210)][_0x6f6f8d(0x1eb)][_0x6f6f8d(0x1d3)](_0x4ed132['Main']),this['setState']({'companies':_0x1dd9ef});}catch(_0xc11dc9){const _0x40e1b1=_0x298bf7[_0x6f6f8d(0x310)](_0xc11dc9);this[_0x6f6f8d(0x291)]({'companies':[],'error':_0x40e1b1}),this[_0x6f6f8d(0x210)][_0x6f6f8d(0x1eb)][_0x6f6f8d(0x20c)](_0x4ed132[_0x6f6f8d(0x335)],_0x40e1b1);}}[_0x2ef663(0x33f)](){const _0x43b9df=_0x2ef663;if(this['state'][_0x43b9df(0x23a)][_0x43b9df(0x163)]===_0x1ed325[_0x43b9df(0x1b4)])return _0x4b6739[_0x43b9df(0x17b)](_0x4b6739[_0x43b9df(0x330)],null);const _0x1c89bf={'hyperlinkMessage':'Problem\x20Encountered\x20in\x20Companies\x20View','dialogTitle':_0x43b9df(0x300),'error':this[_0x43b9df(0x192)][_0x43b9df(0x23a)],'centred':!0x0};return _0x4b6739[_0x43b9df(0x17b)](_0x41b86f,Object[_0x43b9df(0x14d)]({},_0x1c89bf));}['_setupCallbacks'](){const _0x230de2=_0x2ef663;this[_0x230de2(0x16b)]=this[_0x230de2(0x16b)]['bind'](this);}}class _0x44709c extends _0x4b6739[_0x2ef663(0x178)]{static[_0x2ef663(0x21b)](_0x3bb632){const _0x1f6e11=_0x2ef663;return{'error':_0x298bf7[_0x1f6e11(0x22a)](_0x3bb632)};}constructor(_0x1dc585){super(_0x1dc585),this['state']={'error':null};}[_0x2ef663(0x257)](){const _0x1429ad=_0x2ef663;if(!this[_0x1429ad(0x192)][_0x1429ad(0x23a)])return this[_0x1429ad(0x210)][_0x1429ad(0x1d4)];const _0x32a952={'hyperlinkMessage':_0x1429ad(0x1a5),'dialogTitle':_0x1429ad(0x332),'error':this[_0x1429ad(0x192)]['error'],'centred':!0x0};return _0x4b6739[_0x1429ad(0x17b)](_0x41b86f,Object[_0x1429ad(0x14d)]({},_0x32a952));}['componentDidCatch'](_0x5ef48f,_0x462d3d){const _0x1138a6=_0x2ef663,_0xa1f8cd=_0x298bf7['getFromRenderError'](_0x5ef48f,_0x462d3d[_0x1138a6(0x2ca)]);this[_0x1138a6(0x291)]({'error':_0xa1f8cd});}}class _0x37b313 extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x296c74){const _0x31e91c=_0x2ef663;super(_0x296c74),this[_0x31e91c(0x167)]=null,this[_0x31e91c(0x16d)]=0x7d0,this[_0x31e91c(0x248)]();}[_0x2ef663(0x257)](){const _0x10a752=_0x2ef663,_0x28da3d=!this[_0x10a752(0x210)][_0x10a752(0x2f1)];return _0x4b6739[_0x10a752(0x17b)](_0x10a752(0x1aa),{'className':'row'},_0x4b6739[_0x10a752(0x17b)]('div',{'className':_0x10a752(0x336)},_0x4b6739[_0x10a752(0x17b)](_0x10a752(0x319),{'onClick':this[_0x10a752(0x210)][_0x10a752(0x331)],'className':'btn\x20btn-primary\x20btn-block\x20p-1'},_0x4b6739[_0x10a752(0x17b)](_0x10a752(0x2fc),null,_0x10a752(0x242)))),_0x4b6739[_0x10a752(0x17b)](_0x10a752(0x1aa),{'className':_0x10a752(0x336),'onTouchStart':this['_handleReloadPress'],'onTouchEnd':this[_0x10a752(0x2d4)],'onMouseDown':this[_0x10a752(0x1f4)],'onMouseUp':this['_handleReloadRelease']},_0x4b6739[_0x10a752(0x17b)]('button',{'className':_0x10a752(0x1e2),'disabled':_0x28da3d},_0x4b6739['createElement'](_0x10a752(0x2fc),null,_0x10a752(0x2d3)))),_0x4b6739[_0x10a752(0x17b)](_0x10a752(0x1aa),{'className':_0x10a752(0x336)},_0x4b6739[_0x10a752(0x17b)](_0x10a752(0x319),{'onClick':this[_0x10a752(0x210)][_0x10a752(0x263)],'className':'btn\x20btn-primary\x20btn-block\x20p-1','disabled':_0x28da3d},_0x4b6739[_0x10a752(0x17b)]('small',null,_0x10a752(0x235)))),_0x4b6739[_0x10a752(0x17b)](_0x10a752(0x1aa),{'className':'col\x20col-one-fifth\x20my-2\x20d-flex\x20p-1'},_0x4b6739[_0x10a752(0x17b)](_0x10a752(0x319),{'onClick':this['props'][_0x10a752(0x298)],'className':'btn\x20btn-primary\x20btn-block\x20p-1','disabled':_0x28da3d},_0x4b6739[_0x10a752(0x17b)](_0x10a752(0x2fc),null,'Expire\x20Refresh\x20Token'))),_0x4b6739['createElement']('div',{'className':_0x10a752(0x336)},_0x4b6739[_0x10a752(0x17b)](_0x10a752(0x319),{'onClick':this[_0x10a752(0x210)][_0x10a752(0x164)],'className':_0x10a752(0x1e2),'disabled':_0x28da3d},_0x4b6739['createElement'](_0x10a752(0x2fc),null,_0x10a752(0x32a)))));}[_0x2ef663(0x1f4)](){const _0x58e525=_0x2ef663;this[_0x58e525(0x210)][_0x58e525(0x2f1)]&&(this['_longPressStartTime']=Date['now']());}[_0x2ef663(0x2d4)](){const _0x37bdfe=_0x2ef663;this['props'][_0x37bdfe(0x2f1)]&&(this[_0x37bdfe(0x1e6)]()?this[_0x37bdfe(0x210)][_0x37bdfe(0x321)](!0x0):this[_0x37bdfe(0x210)]['handleReloadDataClick'](!0x1));}['_isLongPress'](){const _0x377d23=_0x2ef663;if(!this[_0x377d23(0x167)])return!0x1;const _0x1112ab=Date['now']()-this[_0x377d23(0x167)];return this[_0x377d23(0x167)]=null,_0x1112ab>this['_longPressMilliseconds'];}[_0x2ef663(0x248)](){const _0x5c3c7f=_0x2ef663;this[_0x5c3c7f(0x1f4)]=this[_0x5c3c7f(0x1f4)][_0x5c3c7f(0x193)](this),this[_0x5c3c7f(0x2d4)]=this[_0x5c3c7f(0x2d4)][_0x5c3c7f(0x193)](this);}}class _0x447328 extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x32c54c){const _0x47b648=_0x2ef663;super(_0x32c54c),this[_0x47b648(0x307)]=_0x13eabd[_0x47b648(0x31e)]();}['render'](){const _0x2ab1c0=_0x2ef663;return this['props'][_0x2ab1c0(0x1cc)]?_0x4b6739['createElement'](_0x2ab1c0(0x1aa),{'className':_0x2ab1c0(0x18a)},_0x4b6739[_0x2ab1c0(0x17b)](_0x2ab1c0(0x2fc),null,_0x2ab1c0(0x292)+this[_0x2ab1c0(0x307)])):_0x4b6739[_0x2ab1c0(0x17b)](_0x4b6739[_0x2ab1c0(0x330)],null);}}class _0xa6d50a extends _0x4b6739[_0x2ef663(0x178)]{static[_0x2ef663(0x17f)](_0x5e5372,_0x5d8f12){const _0x4709d4=_0x2ef663;return _0x5e5372[_0x4709d4(0x296)]!==_0x5d8f12[_0x4709d4(0x296)]?Object[_0x4709d4(0x14d)](Object[_0x4709d4(0x14d)]({},_0x5d8f12),{'shouldLoad':_0x5e5372[_0x4709d4(0x296)]}):null;}constructor(_0x11f2bf){const _0x5c4a03=_0x2ef663;super(_0x11f2bf),this[_0x5c4a03(0x192)]={'shouldLoad':_0x11f2bf[_0x5c4a03(0x296)],'claims':null,'error':null},this[_0x5c4a03(0x248)]();}[_0x2ef663(0x257)](){const _0x46fcb3=_0x2ef663;if(this[_0x46fcb3(0x192)][_0x46fcb3(0x23a)]&&this[_0x46fcb3(0x192)]['error'][_0x46fcb3(0x163)]!==_0x1ed325['loginRequired']){const _0x3a33e1={'hyperlinkMessage':_0x46fcb3(0x30c),'dialogTitle':_0x46fcb3(0x1fb),'error':this[_0x46fcb3(0x192)]['error'],'centred':!0x1};return _0x4b6739[_0x46fcb3(0x17b)](_0x46fcb3(0x1aa),{'className':_0x46fcb3(0x315)},_0x4b6739['createElement'](_0x41b86f,Object[_0x46fcb3(0x14d)]({},_0x3a33e1)));}if(!this['state'][_0x46fcb3(0x296)]||!this[_0x46fcb3(0x192)]['claims'])return _0x4b6739['createElement'](_0x4b6739[_0x46fcb3(0x330)],null);const _0x1b7c0a=this[_0x46fcb3(0x192)][_0x46fcb3(0x2e4)]['givenName']+'\x20'+this[_0x46fcb3(0x192)]['claims'][_0x46fcb3(0x182)];return this[_0x46fcb3(0x192)][_0x46fcb3(0x2e4)]&&_0x4b6739[_0x46fcb3(0x17b)](_0x46fcb3(0x1aa),{'className':_0x46fcb3(0x315)},_0x4b6739[_0x46fcb3(0x17b)]('p',{'className':'font-weight-bold'},_0x1b7c0a));}async[_0x2ef663(0x2b3)](){const _0x360329=_0x2ef663;_0x3b1bc7[_0x360329(0x347)](_0x3f5aec[_0x360329(0x2b9)],this[_0x360329(0x16b)]),await this[_0x360329(0x16b)](!0x1);}async[_0x2ef663(0x23c)](){const _0x35fb10=_0x2ef663;_0x3b1bc7[_0x35fb10(0x22c)](_0x3f5aec[_0x35fb10(0x2b9)],this[_0x35fb10(0x16b)]);}async[_0x2ef663(0x250)](_0x458956,_0x227053){const _0x39b727=_0x2ef663;!_0x227053['shouldLoad']&&this[_0x39b727(0x192)][_0x39b727(0x296)]&&await this[_0x39b727(0x16b)](!0x1);}async[_0x2ef663(0x16b)](_0x4e19a1){const _0x4cb0bb=_0x2ef663;try{if(!this['state'][_0x4cb0bb(0x296)])return void this[_0x4cb0bb(0x210)]['events']['onViewLoaded'](_0x4ed132['UserInfo']);this[_0x4cb0bb(0x291)]({'error':null}),this[_0x4cb0bb(0x210)][_0x4cb0bb(0x1eb)]['onViewLoading'](_0x4ed132[_0x4cb0bb(0x2cf)]);const _0x5126d1=await this['props'][_0x4cb0bb(0x16a)][_0x4cb0bb(0x278)]({'causeError':_0x4e19a1});this[_0x4cb0bb(0x210)][_0x4cb0bb(0x1eb)][_0x4cb0bb(0x1d3)](_0x4ed132[_0x4cb0bb(0x2cf)]),this[_0x4cb0bb(0x291)]({'claims':_0x5126d1});}catch(_0x3c43a7){const _0x2bc5da=_0x298bf7[_0x4cb0bb(0x310)](_0x3c43a7);this[_0x4cb0bb(0x291)]({'claims':null,'error':_0x2bc5da}),this[_0x4cb0bb(0x210)][_0x4cb0bb(0x1eb)][_0x4cb0bb(0x20c)](_0x4ed132[_0x4cb0bb(0x2cf)],_0x2bc5da);}}[_0x2ef663(0x248)](){const _0x1533f7=_0x2ef663;this['_loadData']=this[_0x1533f7(0x16b)][_0x1533f7(0x193)](this);}}class _0x428f6e extends _0x4b6739[_0x2ef663(0x178)]{[_0x2ef663(0x257)](){const _0x3f000b=_0x2ef663;return _0x4b6739[_0x3f000b(0x17b)]('h2',null,_0x3f000b(0x1ff));}}class _0x5421d0 extends _0x4b6739['Component']{constructor(_0x4bc6d0){super(_0x4bc6d0);}[_0x2ef663(0x257)](){const _0x43eeee=_0x2ef663;return this[_0x43eeee(0x210)][_0x43eeee(0x1e8)]?_0x4b6739[_0x43eeee(0x17b)]('div',{'className':'row'},_0x4b6739[_0x43eeee(0x17b)]('div',{'className':'col-8\x20my-auto'},_0x4b6739['createElement'](_0x428f6e,null)),_0x4b6739[_0x43eeee(0x17b)](_0x43eeee(0x1aa),{'className':'col-4\x20my-auto'},_0x4b6739[_0x43eeee(0x17b)](_0xa6d50a,Object[_0x43eeee(0x14d)]({},this[_0x43eeee(0x210)][_0x43eeee(0x1e8)])))):_0x4b6739[_0x43eeee(0x17b)](_0x43eeee(0x1aa),{'className':_0x43eeee(0x274)},_0x4b6739[_0x43eeee(0x17b)](_0x43eeee(0x1aa),{'className':_0x43eeee(0x148)},_0x4b6739[_0x43eeee(0x17b)](_0x428f6e,null)));}}class _0x38b3a4 extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x48dc3c){const _0x138cbe=_0x2ef663;super(_0x48dc3c),_0x48dc3c[_0x138cbe(0x1c4)]();}[_0x2ef663(0x257)](){const _0x521b25=_0x2ef663;return _0x4b6739[_0x521b25(0x17b)]('div',{'className':_0x521b25(0x274)},_0x4b6739[_0x521b25(0x17b)](_0x521b25(0x1aa),{'className':_0x521b25(0x27f)},_0x4b6739['createElement']('h6',null,_0x521b25(0x23e))));}}class _0x2fed6b extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x41770b){super(_0x41770b);}['render'](){const _0xb3c8e4=_0x2ef663;return this[_0xb3c8e4(0x210)][_0xb3c8e4(0x17e)]&&_0x4b6739['createElement'](_0xb3c8e4(0x1aa),{'className':_0xb3c8e4(0x1b0)},_0x4b6739['createElement'](_0xb3c8e4(0x1aa),{'className':'card-header\x20row\x20font-weight-bold'},_0x4b6739[_0xb3c8e4(0x17b)]('div',{'className':_0xb3c8e4(0x23f)},_0xb3c8e4(0x1e7),this['props']['data'][_0xb3c8e4(0x218)][_0xb3c8e4(0x1a4)])),_0x4b6739[_0xb3c8e4(0x17b)](_0xb3c8e4(0x1aa),{'className':_0xb3c8e4(0x274)},this['props'][_0xb3c8e4(0x17e)][_0xb3c8e4(0x2c9)][_0xb3c8e4(0x306)](_0x25663a=>this['_renderTransaction'](_0x25663a))));}['_renderTransaction'](_0x22c234){const _0x83ece2=_0x2ef663;return _0x4b6739[_0x83ece2(0x17b)](_0x83ece2(0x1aa),{'className':_0x83ece2(0x2c3),'key':_0x22c234['id']},_0x4b6739[_0x83ece2(0x17b)](_0x83ece2(0x1aa),{'className':_0x83ece2(0x1fe)},_0x4b6739[_0x83ece2(0x17b)](_0x83ece2(0x1aa),{'className':_0x83ece2(0x23d)},_0x4b6739[_0x83ece2(0x17b)](_0x83ece2(0x1aa),{'className':_0x83ece2(0x274)},_0x4b6739[_0x83ece2(0x17b)](_0x83ece2(0x1aa),{'className':'col-6'},'Transaction\x20Id'),_0x4b6739['createElement'](_0x83ece2(0x1aa),{'className':_0x83ece2(0x184)},_0x22c234['id'])),_0x4b6739[_0x83ece2(0x17b)](_0x83ece2(0x1aa),{'className':_0x83ece2(0x274)},_0x4b6739[_0x83ece2(0x17b)]('div',{'className':_0x83ece2(0x2ac)},_0x83ece2(0x2a7)),_0x4b6739[_0x83ece2(0x17b)](_0x83ece2(0x1aa),{'className':'col-6\x20text-right\x20valuecolor\x20font-weight-bold'},_0x22c234[_0x83ece2(0x329)])),_0x4b6739[_0x83ece2(0x17b)](_0x83ece2(0x1aa),{'className':_0x83ece2(0x274)},_0x4b6739['createElement'](_0x83ece2(0x1aa),{'className':_0x83ece2(0x2ac)},_0x83ece2(0x30f)),_0x4b6739[_0x83ece2(0x17b)](_0x83ece2(0x1aa),{'className':_0x83ece2(0x1c9)},Number(_0x22c234[_0x83ece2(0x2fd)])[_0x83ece2(0x1d2)]())))));}}class _0xf457f5 extends _0x4b6739[_0x2ef663(0x178)]{static[_0x2ef663(0x17f)](_0x5bb054,_0x3041e1){const _0x375a87=_0x2ef663;return _0x5bb054['match'][_0x375a87(0x1a7)]['id']!==_0x3041e1[_0x375a87(0x25e)]?Object['assign'](Object[_0x375a87(0x14d)]({},_0x3041e1),{'companyId':_0x5bb054[_0x375a87(0x2a0)]['params']['id']}):null;}constructor(_0x2a6b50){const _0x29f2a5=_0x2ef663;super(_0x2a6b50),_0x2a6b50[_0x29f2a5(0x1c4)](),this['state']={'companyId':this['props'][_0x29f2a5(0x2a0)][_0x29f2a5(0x1a7)]['id'],'error':null,'data':null},this[_0x29f2a5(0x248)]();}[_0x2ef663(0x257)](){const _0x5a8964=_0x2ef663;if(this[_0x5a8964(0x192)][_0x5a8964(0x23a)])return this[_0x5a8964(0x33f)]();if(!this[_0x5a8964(0x192)]['data'])return _0x4b6739[_0x5a8964(0x17b)](_0x4b6739[_0x5a8964(0x330)],null);const _0x567d03={'data':this[_0x5a8964(0x192)]['data']};return _0x4b6739[_0x5a8964(0x17b)](_0x2fed6b,Object[_0x5a8964(0x14d)]({},_0x567d03));}async[_0x2ef663(0x2b3)](){const _0x3e0dea=_0x2ef663;_0x3b1bc7[_0x3e0dea(0x347)](_0x3f5aec[_0x3e0dea(0x21a)],this[_0x3e0dea(0x16b)]),await this[_0x3e0dea(0x16b)](!0x1);}async[_0x2ef663(0x250)](_0x3efdf3,_0xcabda8){const _0x38315a=_0x2ef663;this['state'][_0x38315a(0x25e)]!==_0xcabda8[_0x38315a(0x25e)]&&await this[_0x38315a(0x16b)](!0x1);}async[_0x2ef663(0x23c)](){const _0x43323c=_0x2ef663;_0x3b1bc7[_0x43323c(0x22c)](_0x3f5aec[_0x43323c(0x21a)],this[_0x43323c(0x16b)]);}async['_loadData'](_0xd59867){const _0x4412b3=_0x2ef663;try{this[_0x4412b3(0x291)]({'error':null}),this[_0x4412b3(0x210)]['events'][_0x4412b3(0x181)](_0x4ed132[_0x4412b3(0x335)]);const _0x494302=await this[_0x4412b3(0x210)][_0x4412b3(0x16a)][_0x4412b3(0x189)](this[_0x4412b3(0x192)]['companyId'],{'causeError':_0xd59867});this[_0x4412b3(0x210)][_0x4412b3(0x1eb)][_0x4412b3(0x1d3)](_0x4ed132[_0x4412b3(0x335)]),this[_0x4412b3(0x291)]({'data':_0x494302});}catch(_0x365cb0){const _0x17e416=_0x298bf7['getFromException'](_0x365cb0);this['_isExpectedApiError'](_0x17e416)?(this[_0x4412b3(0x210)][_0x4412b3(0x1eb)][_0x4412b3(0x1d3)](_0x4ed132['Main']),location[_0x4412b3(0x1ee)]='#'):(this[_0x4412b3(0x291)]({'data':null,'error':_0x17e416}),this['props']['events'][_0x4412b3(0x20c)](_0x4ed132[_0x4412b3(0x335)],_0x17e416));}}['_renderError'](){const _0x279752=_0x2ef663;if(this['state'][_0x279752(0x23a)][_0x279752(0x163)]===_0x1ed325['loginRequired'])return _0x4b6739[_0x279752(0x17b)](_0x4b6739['Fragment'],null);const _0x55dc65={'hyperlinkMessage':_0x279752(0x31d),'dialogTitle':'Transactions\x20View\x20Error','error':this['state']['error'],'centred':!0x0};return _0x4b6739[_0x279752(0x17b)](_0x41b86f,Object['assign']({},_0x55dc65));}['_isExpectedApiError'](_0x5f4455){const _0x5aaf63=_0x2ef663;return 0x194===_0x5f4455[_0x5aaf63(0x2af)]&&_0x5f4455[_0x5aaf63(0x163)]===_0x1ed325[_0x5aaf63(0x26b)]||0x190===_0x5f4455[_0x5aaf63(0x2af)]&&_0x5f4455[_0x5aaf63(0x163)]===_0x1ed325[_0x5aaf63(0x201)];}['_setupCallbacks'](){const _0x1f22d1=_0x2ef663;this[_0x1f22d1(0x16b)]=this['_loadData'][_0x1f22d1(0x193)](this);}}class _0x2c3cce{constructor(_0x4c9c5c,_0x342596){const _0x5be96d=_0x2ef663;this['_views']=[],this['_loginRequired']=!0x1,this[_0x5be96d(0x20d)]=_0x4c9c5c,this[_0x5be96d(0x2e9)]=_0x342596,this['_setupCallbacks']();}[_0x2ef663(0x2c7)](_0xbdb504){const _0x320927=_0x2ef663;this[_0x320927(0x232)][_0x320927(0x326)]([_0xbdb504,!0x1]);}[_0x2ef663(0x181)](_0x92a786){const _0x48374d=_0x2ef663;this[_0x48374d(0x1d6)](_0x92a786,!0x1),_0x92a786===_0x4ed132[_0x48374d(0x335)]&&this['_onMainLoadStateChanged'](!0x1);}['onViewLoaded'](_0x1d66b7){const _0x16a776=_0x2ef663;this[_0x16a776(0x1d6)](_0x1d66b7,!0x0),_0x1d66b7===_0x4ed132['Main']&&this[_0x16a776(0x2e9)](!0x0),this[_0x16a776(0x18b)]();}[_0x2ef663(0x20c)](_0x3f7dbe,_0x35d49e){const _0x57bca3=_0x2ef663;this['_updateLoadState'](_0x3f7dbe,!0x0),_0x35d49e[_0x57bca3(0x163)]===_0x1ed325[_0x57bca3(0x1b4)]&&(this[_0x57bca3(0x2f5)]=!0x0),this['_triggerLoginIfRequired']();}[_0x2ef663(0x1c1)](){const _0x2cdf2e=_0x2ef663;this[_0x2cdf2e(0x232)][_0x2cdf2e(0x28d)](_0x5ef0a5=>_0x5ef0a5[0x1]=!0x1),this['_loginRequired']=!0x1;}[_0x2ef663(0x1d6)](_0x5d449b,_0x360cd5){const _0xfc3332=_0x2ef663,_0x24581a=this[_0xfc3332(0x232)]['find'](_0xca18f3=>_0xca18f3[0x0]===_0x5d449b);_0x24581a&&(_0x24581a[0x1]=_0x360cd5);}[_0x2ef663(0x18b)](){const _0x9c990d=_0x2ef663;this[_0x9c990d(0x232)]['filter'](_0xa832ae=>!0x0===_0xa832ae[0x1])[_0x9c990d(0x15f)]===this[_0x9c990d(0x232)][_0x9c990d(0x15f)]&&this[_0x9c990d(0x2f5)]&&this[_0x9c990d(0x20d)]();}[_0x2ef663(0x248)](){const _0x3337c7=_0x2ef663;this[_0x3337c7(0x181)]=this[_0x3337c7(0x181)][_0x3337c7(0x193)](this),this[_0x3337c7(0x1d3)]=this[_0x3337c7(0x1d3)]['bind'](this),this[_0x3337c7(0x20c)]=this['onViewLoadFailed'][_0x3337c7(0x193)](this);}}class _0x296040 extends _0x4b6739[_0x2ef663(0x178)]{constructor(_0x284251){const _0x63fe1f=_0x2ef663;super(_0x284251),this['state']={'isInitialised':!0x1,'isInLoggedOutView':!0x1,'isMainViewLoaded':!0x1,'isMobileSize':this[_0x63fe1f(0x2da)](),'error':null},this[_0x63fe1f(0x248)](),this[_0x63fe1f(0x19c)]=new _0x2c3cce(this['_onLoginRequired'],this[_0x63fe1f(0x290)]),this[_0x63fe1f(0x19c)]['addView'](_0x4ed132['Main']),this['_apiViewEvents'][_0x63fe1f(0x2c7)](_0x4ed132[_0x63fe1f(0x2cf)]),_0x8b52fd()[_0x63fe1f(0x1fc)](_0x63fe1f(0x227));}[_0x2ef663(0x257)](){const _0x44bc02=_0x2ef663;return this['state'][_0x44bc02(0x2e2)]?this['_renderMain']():this[_0x44bc02(0x2c8)]();}async[_0x2ef663(0x2b3)](){const _0x48fc34=_0x2ef663;await this[_0x48fc34(0x161)]();}async['_initialiseApp'](){const _0x32d093=_0x2ef663;this[_0x32d093(0x291)]({'isInitialised':!0x1,'isInLoggedOutView':!0x1,'isMainViewLoaded':!0x1,'isMobileSize':this[_0x32d093(0x2da)](),'error':null});try{const _0xdd0c80=new _0x2cf96f();this[_0x32d093(0x18d)]=await _0xdd0c80[_0x32d093(0x1a0)](),this['_authenticator']=this[_0x32d093(0x340)](),await this[_0x32d093(0x260)][_0x32d093(0x1ce)](),await this[_0x32d093(0x260)][_0x32d093(0x2cb)](),this[_0x32d093(0x20f)]=new _0x53c800(this[_0x32d093(0x18d)]['app'][_0x32d093(0x2e6)],this['_authenticator']),window['onhashchange']=this[_0x32d093(0x33d)],window[_0x32d093(0x333)]=this['_onResize'],this['setState']({'isInitialised':!0x0});}catch(_0x2fbaea){this[_0x32d093(0x291)]({'error':_0x298bf7[_0x32d093(0x310)](_0x2fbaea)});}}[_0x2ef663(0x2c8)](){const _0xfe49d1=_0x2ef663,_0x2a0cfd={'sessionButtonsEnabled':this['state'][_0xfe49d1(0x22f)]&&!this[_0xfe49d1(0x192)][_0xfe49d1(0x313)],'handleHomeClick':this[_0xfe49d1(0x32d)],'handleReloadDataClick':this[_0xfe49d1(0x26f)],'handleExpireAccessTokenClick':this[_0xfe49d1(0x32b)],'handleExpireRefreshTokenClick':this[_0xfe49d1(0x239)],'handleLogoutClick':this[_0xfe49d1(0x17c)]},_0x2cb445={'hyperlinkMessage':_0xfe49d1(0x24e),'dialogTitle':_0xfe49d1(0x32e),'error':this['state'][_0xfe49d1(0x23a)],'centred':!0x0};return _0x4b6739[_0xfe49d1(0x17b)](_0x44709c,null,_0x4b6739[_0xfe49d1(0x17b)](_0x5421d0,Object[_0xfe49d1(0x14d)]({},{'userInfo':null})),_0x4b6739['createElement'](_0x37b313,Object['assign']({},_0x2a0cfd)),_0x4b6739[_0xfe49d1(0x17b)](_0x41b86f,Object[_0xfe49d1(0x14d)]({},_0x2cb445)));}[_0x2ef663(0x20b)](){const _0x53ba09=_0x2ef663,_0x1f1dc2={'userInfo':{'apiClient':this[_0x53ba09(0x20f)],'events':this[_0x53ba09(0x19c)],'shouldLoad':!this[_0x53ba09(0x192)][_0x53ba09(0x313)]}},_0x52d3e7={'sessionButtonsEnabled':this[_0x53ba09(0x192)]['isMainViewLoaded']&&!this['state']['isInLoggedOutView'],'handleHomeClick':this[_0x53ba09(0x32d)],'handleExpireAccessTokenClick':this[_0x53ba09(0x32b)],'handleExpireRefreshTokenClick':this[_0x53ba09(0x239)],'handleReloadDataClick':this['_onReloadData'],'handleLogoutClick':this[_0x53ba09(0x17c)]},_0x5de90d={'hyperlinkMessage':_0x53ba09(0x30c),'dialogTitle':_0x53ba09(0x244),'error':this['state'][_0x53ba09(0x23a)],'centred':!0x0},_0x5cc5f9={'apiClient':this[_0x53ba09(0x20f)],'isVisible':!this[_0x53ba09(0x192)]['isInLoggedOutView']},_0x2be403={'onLoading':this[_0x53ba09(0x2d5)],'apiClient':this[_0x53ba09(0x20f)],'events':this[_0x53ba09(0x19c)],'isMobileSize':this[_0x53ba09(0x192)][_0x53ba09(0x1dc)]},_0x49256b={'onLoading':this[_0x53ba09(0x16e)]},_0x2af0ef=()=>_0x4b6739[_0x53ba09(0x17b)](_0x109651,Object[_0x53ba09(0x14d)]({},_0x2be403));return _0x4b6739[_0x53ba09(0x17b)](_0x44709c,null,_0x4b6739[_0x53ba09(0x17b)](_0x5421d0,Object['assign']({},_0x1f1dc2)),_0x4b6739[_0x53ba09(0x17b)](_0x37b313,Object[_0x53ba09(0x14d)]({},_0x52d3e7)),_0x4b6739[_0x53ba09(0x17b)](_0x41b86f,Object[_0x53ba09(0x14d)]({},_0x5de90d)),_0x4b6739[_0x53ba09(0x17b)](_0x447328,Object['assign']({},_0x5cc5f9)),_0x4b6739[_0x53ba09(0x17b)](_0x52926c['UT'],{'hashType':_0x53ba09(0x2a6)},_0x4b6739[_0x53ba09(0x17b)](_0x52a1da['rs'],null,_0x4b6739[_0x53ba09(0x17b)](_0x52a1da['AW'],{'exact':!0x0,'path':'/','render':_0x2af0ef}),_0x4b6739['createElement'](_0x52a1da['AW'],{'exact':!0x0,'path':_0x53ba09(0x1d8),'render':_0x3490e3=>_0x4b6739[_0x53ba09(0x17b)](_0xf457f5,Object[_0x53ba09(0x14d)]({},_0x3490e3,_0x2be403))}),_0x4b6739[_0x53ba09(0x17b)](_0x52a1da['AW'],{'exact':!0x0,'path':_0x53ba09(0x14f),'render':()=>_0x4b6739[_0x53ba09(0x17b)](_0x38b3a4,Object['assign']({},_0x49256b))}),_0x4b6739['createElement'](_0x52a1da['AW'],{'path':'*','render':_0x2af0ef}))));}['_createAuthenticator'](){const _0x1249eb=_0x2ef663;return _0x18895b[_0x1249eb(0x311)](this[_0x1249eb(0x18d)][_0x1249eb(0x269)],this['_configuration'][_0x1249eb(0x323)][_0x1249eb(0x2f6)],this[_0x1249eb(0x1e5)],this[_0x1249eb(0x204)]);}async[_0x2ef663(0x23b)](){const _0x12c532=_0x2ef663;try{this[_0x12c532(0x291)]({'error':null}),await this['_authenticator']['login'](),this[_0x12c532(0x192)][_0x12c532(0x313)]&&(location[_0x12c532(0x1ee)]='#');}catch(_0x19765a){if(_0x298bf7['getFromException'](_0x19765a)[_0x12c532(0x163)]===_0x1ed325[_0x12c532(0x314)])return void(location[_0x12c532(0x1ee)]=_0x12c532(0x2b6));this['setState']({'error':_0x298bf7[_0x12c532(0x310)](_0x19765a)});}}[_0x2ef663(0x1e5)](){const _0x30366e=_0x2ef663;this[_0x30366e(0x26f)](!0x1);}['_onMainViewLoading'](){const _0xd521a0=_0x2ef663;this[_0xd521a0(0x291)]({'isInLoggedOutView':!0x1});}['_onLoggedOutViewLoading'](){const _0x5ab415=_0x2ef663;this[_0x5ab415(0x291)]({'isInLoggedOutView':!0x0});}[_0x2ef663(0x290)](_0xf8378d){this['setState']({'isMainViewLoaded':_0xf8378d});}['_onHashChange'](){const _0x12bb86=_0x2ef663;this[_0x12bb86(0x260)][_0x12bb86(0x1b8)]();}['_onReloadData'](_0x515d38){const _0x3fb693=_0x2ef663;this[_0x3fb693(0x19c)][_0x3fb693(0x1c1)](),_0x3b1bc7[_0x3fb693(0x19a)](_0x3f5aec[_0x3fb693(0x21a)],_0x515d38),_0x3b1bc7['dispatch'](_0x3f5aec[_0x3fb693(0x2b9)],_0x515d38);}async['_onHome'](){const _0x1d1f69=_0x2ef663;this['state'][_0x1d1f69(0x2e2)]||await this[_0x1d1f69(0x161)](),this['state'][_0x1d1f69(0x2e2)]&&(class{static[_0x1d1f69(0x261)](){const _0x2948d7=_0x1d1f69;return-0x1===location[_0x2948d7(0x1ee)][_0x2948d7(0x1be)](_0x2948d7(0x305))&&-0x1===location['hash']['indexOf'](_0x2948d7(0x252));}}[_0x1d1f69(0x261)]()?_0x3b1bc7[_0x1d1f69(0x19a)](_0x3f5aec['ON_RELOAD_MAIN'],!0x1):location['hash']='#');}async[_0x2ef663(0x17c)](){const _0x4bf649=_0x2ef663;try{this['setState']({'isMainViewLoaded':!0x1}),await this[_0x4bf649(0x260)][_0x4bf649(0x22e)]();}catch(_0x4fbfc9){const _0x244dbf=_0x298bf7[_0x4bf649(0x310)](_0x4fbfc9);_0x244dbf[_0x4bf649(0x163)]!==_0x1ed325[_0x4bf649(0x314)]&&_0x2d5341[_0x4bf649(0x256)](_0x244dbf);}finally{this[_0x4bf649(0x204)]();}}[_0x2ef663(0x204)](){const _0xe0225a=_0x2ef663;location['hash']=_0xe0225a(0x2b6);}async[_0x2ef663(0x32b)](){const _0x59b581=_0x2ef663;await this[_0x59b581(0x260)][_0x59b581(0x289)]();}async[_0x2ef663(0x239)](){const _0x2b6b4c=_0x2ef663;try{this['setState']({'error':null}),await this[_0x2b6b4c(0x260)][_0x2b6b4c(0x168)]();}catch(_0x4c611e){this['setState']({'error':_0x298bf7[_0x2b6b4c(0x310)](_0x4c611e)});}}[_0x2ef663(0x1ea)](){const _0xe9c039=_0x2ef663;!this['state'][_0xe9c039(0x1dc)]&&this[_0xe9c039(0x2da)]()?this[_0xe9c039(0x291)]({'isMobileSize':!0x0}):this[_0xe9c039(0x192)][_0xe9c039(0x1dc)]&&!this[_0xe9c039(0x2da)]()&&this[_0xe9c039(0x291)]({'isMobileSize':!0x1});}['_isMobileSize'](){const _0x313a0c=_0x2ef663;return window[_0x313a0c(0x190)]<0x300;}['_setupCallbacks'](){const _0x5e2d56=_0x2ef663;this[_0x5e2d56(0x2d5)]=this['_onMainViewLoading'][_0x5e2d56(0x193)](this),this[_0x5e2d56(0x16e)]=this[_0x5e2d56(0x16e)][_0x5e2d56(0x193)](this),this['_onMainViewLoadStateChanged']=this[_0x5e2d56(0x290)]['bind'](this),this[_0x5e2d56(0x33d)]=this[_0x5e2d56(0x33d)]['bind'](this),this[_0x5e2d56(0x32d)]=this[_0x5e2d56(0x32d)][_0x5e2d56(0x193)](this),this[_0x5e2d56(0x23b)]=this[_0x5e2d56(0x23b)][_0x5e2d56(0x193)](this),this['_onReloadData']=this[_0x5e2d56(0x26f)]['bind'](this),this[_0x5e2d56(0x1e5)]=this[_0x5e2d56(0x1e5)]['bind'](this),this['_onLogout']=this[_0x5e2d56(0x17c)]['bind'](this),this['_onMoveToLoggedOutView']=this['_onMoveToLoggedOutView'][_0x5e2d56(0x193)](this),this[_0x5e2d56(0x32b)]=this[_0x5e2d56(0x32b)][_0x5e2d56(0x193)](this),this[_0x5e2d56(0x239)]=this[_0x5e2d56(0x239)][_0x5e2d56(0x193)](this),this[_0x5e2d56(0x1ea)]=this['_onResize']['bind'](this);}}class _0x58116f{constructor(_0x175282){const _0xd477a8=_0x2ef663,_0x1fb499={'authority':_0x175282[_0xd477a8(0x285)],'client_id':_0x175282[_0xd477a8(0x2d6)]};this[_0xd477a8(0x2bd)]=new _0x27f381[(_0xd477a8(0x2db))](_0x1fb499);}async[_0x2ef663(0x240)](){const _0x1f2a09=_0x2ef663,_0x3d9ddf=_0x1d4351()(location[_0x1f2a09(0x2bc)],!0x0);_0x3d9ddf['query']&&_0x3d9ddf[_0x1f2a09(0x2bf)][_0x1f2a09(0x192)]&&await this[_0x1f2a09(0x2bd)][_0x1f2a09(0x2c5)]();}}class _0x596fda{async[_0x2ef663(0x2aa)](){const _0x3258da=_0x2ef663;try{const _0x5cb28b=await new _0x2cf96f()[_0x3258da(0x1a0)](),_0x20653d=new _0x58116f(_0x5cb28b[_0x3258da(0x269)]);await _0x20653d[_0x3258da(0x240)]();}catch(_0x46df32){const _0x5d5bd3=_0x298bf7[_0x3258da(0x202)](_0x46df32,_0x1ed325[_0x3258da(0x302)]);_0x2d5341[_0x3258da(0x256)](_0x5d5bd3);}}}window['top']===window[_0x2ef663(0x255)]?(0x0,_0x37372b[_0x2ef663(0x257)])(_0x4b6739[_0x2ef663(0x17b)](_0x296040,null),document[_0x2ef663(0x2b7)](_0x2ef663(0x258))):new _0x596fda()[_0x2ef663(0x2aa)]();}},_0x27a834={};function _0x1f4350(_0x5c1426){const _0x46440a=a0_0x1951;if(_0x27a834[_0x5c1426])return _0x27a834[_0x5c1426][_0x46440a(0x2de)];var _0x16d768=_0x27a834[_0x5c1426]={'id':_0x5c1426,'loaded':!0x1,'exports':{}};return _0x418bf7[_0x5c1426]['call'](_0x16d768[_0x46440a(0x2de)],_0x16d768,_0x16d768[_0x46440a(0x2de)],_0x1f4350),_0x16d768['loaded']=!0x0,_0x16d768['exports'];}_0x1f4350['m']=_0x418bf7,_0x1f4350['x']=_0x8ddfa2=>{},_0x1f4350['n']=_0x480630=>{const _0x2bf049=a0_0x1951;var _0x46341f=_0x480630&&_0x480630[_0x2bf049(0x2eb)]?()=>_0x480630[_0x2bf049(0x2b5)]:()=>_0x480630;return _0x1f4350['d'](_0x46341f,{'a':_0x46341f}),_0x46341f;},_0x1f4350['d']=(_0x569c86,_0x4ae1a1)=>{for(var _0x2ae2e2 in _0x4ae1a1)_0x1f4350['o'](_0x4ae1a1,_0x2ae2e2)&&!_0x1f4350['o'](_0x569c86,_0x2ae2e2)&&Object['defineProperty'](_0x569c86,_0x2ae2e2,{'enumerable':!0x0,'get':_0x4ae1a1[_0x2ae2e2]});},_0x1f4350['g']=function(){const _0x4befb3=a0_0x1951;if(_0x4befb3(0x34b)==typeof globalThis)return globalThis;try{return this||new Function(_0x4befb3(0x19e))();}catch(_0x1d6cf7){if('object'==typeof window)return window;}}(),_0x1f4350['o']=(_0x7d3765,_0x20f25c)=>Object[_0xc34df5(0x268)][_0xc34df5(0x2c2)][_0xc34df5(0x24f)](_0x7d3765,_0x20f25c),_0x1f4350['r']=_0x4834dc=>{const _0x1442aa=_0xc34df5;_0x1442aa(0x1f5)!=typeof Symbol&&Symbol['toStringTag']&&Object[_0x1442aa(0x149)](_0x4834dc,Symbol[_0x1442aa(0x200)],{'value':_0x1442aa(0x2b1)}),Object['defineProperty'](_0x4834dc,_0x1442aa(0x2eb),{'value':!0x0});},_0x1f4350[_0xc34df5(0x2ec)]=_0x2354a9=>(_0x2354a9[_0xc34df5(0x205)]=[],_0x2354a9['children']||(_0x2354a9[_0xc34df5(0x1d4)]=[]),_0x2354a9),(()=>{const _0x425ea2=_0xc34df5;var _0x5e3ef4={0x8f:0x0},_0x820d6f=[[0x3f0,0x2e0]],_0x18c499=_0x578c54=>{},_0xb11d23=(_0x92628a,_0x964548)=>{const _0x2355e7=a0_0x1951;for(var _0x1bbaa7,_0x5ec530,[_0xe03c7d,_0x494823,_0x183db1,_0x5c5f7d]=_0x964548,_0x5a5e27=0x0,_0x3d4f48=[];_0x5a5e27<_0xe03c7d[_0x2355e7(0x15f)];_0x5a5e27++)_0x5ec530=_0xe03c7d[_0x5a5e27],_0x1f4350['o'](_0x5e3ef4,_0x5ec530)&&_0x5e3ef4[_0x5ec530]&&_0x3d4f48[_0x2355e7(0x326)](_0x5e3ef4[_0x5ec530][0x0]),_0x5e3ef4[_0x5ec530]=0x0;for(_0x1bbaa7 in _0x494823)_0x1f4350['o'](_0x494823,_0x1bbaa7)&&(_0x1f4350['m'][_0x1bbaa7]=_0x494823[_0x1bbaa7]);for(_0x183db1&&_0x183db1(_0x1f4350),_0x92628a&&_0x92628a(_0x964548);_0x3d4f48['length'];)_0x3d4f48[_0x2355e7(0x21f)]()();return _0x5c5f7d&&_0x820d6f['push']['apply'](_0x820d6f,_0x5c5f7d),_0x18c499();},_0x28e11b=self[_0x425ea2(0x1a2)]=self[_0x425ea2(0x1a2)]||[];function _0x2a9b85(){const _0x1cfddd=_0x425ea2;for(var _0x44fab7,_0x126669=0x0;_0x126669<_0x820d6f['length'];_0x126669++){for(var _0x393b72=_0x820d6f[_0x126669],_0x3ff8b7=!0x0,_0x13fef6=0x1;_0x13fef6<_0x393b72[_0x1cfddd(0x15f)];_0x13fef6++){var _0x227d8b=_0x393b72[_0x13fef6];0x0!==_0x5e3ef4[_0x227d8b]&&(_0x3ff8b7=!0x1);}_0x3ff8b7&&(_0x820d6f[_0x1cfddd(0x24c)](_0x126669--,0x1),_0x44fab7=_0x1f4350(_0x1f4350['s']=_0x393b72[0x0]));}return 0x0===_0x820d6f[_0x1cfddd(0x15f)]&&(_0x1f4350['x'](),_0x1f4350['x']=_0x99f710=>{}),_0x44fab7;}_0x28e11b['forEach'](_0xb11d23['bind'](null,0x0)),_0x28e11b['push']=_0xb11d23['bind'](null,_0x28e11b[_0x425ea2(0x326)][_0x425ea2(0x193)](_0x28e11b));var _0x2000d7=_0x1f4350['x'];_0x1f4350['x']=()=>(_0x1f4350['x']=_0x2000d7||(_0x1bee0d=>{}),(_0x18c499=_0x2a9b85)());})(),_0x1f4350['x']();})());
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "../node_modules/moment/locale sync recursive ^\\.\\/.*$":
+/*!****************************************************!*\
+  !*** ../node_modules/moment/locale/ sync ^\.\/.*$ ***!
+  \****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var map = {
+	"./af": "../node_modules/moment/locale/af.js",
+	"./af.js": "../node_modules/moment/locale/af.js",
+	"./ar": "../node_modules/moment/locale/ar.js",
+	"./ar-dz": "../node_modules/moment/locale/ar-dz.js",
+	"./ar-dz.js": "../node_modules/moment/locale/ar-dz.js",
+	"./ar-kw": "../node_modules/moment/locale/ar-kw.js",
+	"./ar-kw.js": "../node_modules/moment/locale/ar-kw.js",
+	"./ar-ly": "../node_modules/moment/locale/ar-ly.js",
+	"./ar-ly.js": "../node_modules/moment/locale/ar-ly.js",
+	"./ar-ma": "../node_modules/moment/locale/ar-ma.js",
+	"./ar-ma.js": "../node_modules/moment/locale/ar-ma.js",
+	"./ar-sa": "../node_modules/moment/locale/ar-sa.js",
+	"./ar-sa.js": "../node_modules/moment/locale/ar-sa.js",
+	"./ar-tn": "../node_modules/moment/locale/ar-tn.js",
+	"./ar-tn.js": "../node_modules/moment/locale/ar-tn.js",
+	"./ar.js": "../node_modules/moment/locale/ar.js",
+	"./az": "../node_modules/moment/locale/az.js",
+	"./az.js": "../node_modules/moment/locale/az.js",
+	"./be": "../node_modules/moment/locale/be.js",
+	"./be.js": "../node_modules/moment/locale/be.js",
+	"./bg": "../node_modules/moment/locale/bg.js",
+	"./bg.js": "../node_modules/moment/locale/bg.js",
+	"./bm": "../node_modules/moment/locale/bm.js",
+	"./bm.js": "../node_modules/moment/locale/bm.js",
+	"./bn": "../node_modules/moment/locale/bn.js",
+	"./bn-bd": "../node_modules/moment/locale/bn-bd.js",
+	"./bn-bd.js": "../node_modules/moment/locale/bn-bd.js",
+	"./bn.js": "../node_modules/moment/locale/bn.js",
+	"./bo": "../node_modules/moment/locale/bo.js",
+	"./bo.js": "../node_modules/moment/locale/bo.js",
+	"./br": "../node_modules/moment/locale/br.js",
+	"./br.js": "../node_modules/moment/locale/br.js",
+	"./bs": "../node_modules/moment/locale/bs.js",
+	"./bs.js": "../node_modules/moment/locale/bs.js",
+	"./ca": "../node_modules/moment/locale/ca.js",
+	"./ca.js": "../node_modules/moment/locale/ca.js",
+	"./cs": "../node_modules/moment/locale/cs.js",
+	"./cs.js": "../node_modules/moment/locale/cs.js",
+	"./cv": "../node_modules/moment/locale/cv.js",
+	"./cv.js": "../node_modules/moment/locale/cv.js",
+	"./cy": "../node_modules/moment/locale/cy.js",
+	"./cy.js": "../node_modules/moment/locale/cy.js",
+	"./da": "../node_modules/moment/locale/da.js",
+	"./da.js": "../node_modules/moment/locale/da.js",
+	"./de": "../node_modules/moment/locale/de.js",
+	"./de-at": "../node_modules/moment/locale/de-at.js",
+	"./de-at.js": "../node_modules/moment/locale/de-at.js",
+	"./de-ch": "../node_modules/moment/locale/de-ch.js",
+	"./de-ch.js": "../node_modules/moment/locale/de-ch.js",
+	"./de.js": "../node_modules/moment/locale/de.js",
+	"./dv": "../node_modules/moment/locale/dv.js",
+	"./dv.js": "../node_modules/moment/locale/dv.js",
+	"./el": "../node_modules/moment/locale/el.js",
+	"./el.js": "../node_modules/moment/locale/el.js",
+	"./en-au": "../node_modules/moment/locale/en-au.js",
+	"./en-au.js": "../node_modules/moment/locale/en-au.js",
+	"./en-ca": "../node_modules/moment/locale/en-ca.js",
+	"./en-ca.js": "../node_modules/moment/locale/en-ca.js",
+	"./en-gb": "../node_modules/moment/locale/en-gb.js",
+	"./en-gb.js": "../node_modules/moment/locale/en-gb.js",
+	"./en-ie": "../node_modules/moment/locale/en-ie.js",
+	"./en-ie.js": "../node_modules/moment/locale/en-ie.js",
+	"./en-il": "../node_modules/moment/locale/en-il.js",
+	"./en-il.js": "../node_modules/moment/locale/en-il.js",
+	"./en-in": "../node_modules/moment/locale/en-in.js",
+	"./en-in.js": "../node_modules/moment/locale/en-in.js",
+	"./en-nz": "../node_modules/moment/locale/en-nz.js",
+	"./en-nz.js": "../node_modules/moment/locale/en-nz.js",
+	"./en-sg": "../node_modules/moment/locale/en-sg.js",
+	"./en-sg.js": "../node_modules/moment/locale/en-sg.js",
+	"./eo": "../node_modules/moment/locale/eo.js",
+	"./eo.js": "../node_modules/moment/locale/eo.js",
+	"./es": "../node_modules/moment/locale/es.js",
+	"./es-do": "../node_modules/moment/locale/es-do.js",
+	"./es-do.js": "../node_modules/moment/locale/es-do.js",
+	"./es-mx": "../node_modules/moment/locale/es-mx.js",
+	"./es-mx.js": "../node_modules/moment/locale/es-mx.js",
+	"./es-us": "../node_modules/moment/locale/es-us.js",
+	"./es-us.js": "../node_modules/moment/locale/es-us.js",
+	"./es.js": "../node_modules/moment/locale/es.js",
+	"./et": "../node_modules/moment/locale/et.js",
+	"./et.js": "../node_modules/moment/locale/et.js",
+	"./eu": "../node_modules/moment/locale/eu.js",
+	"./eu.js": "../node_modules/moment/locale/eu.js",
+	"./fa": "../node_modules/moment/locale/fa.js",
+	"./fa.js": "../node_modules/moment/locale/fa.js",
+	"./fi": "../node_modules/moment/locale/fi.js",
+	"./fi.js": "../node_modules/moment/locale/fi.js",
+	"./fil": "../node_modules/moment/locale/fil.js",
+	"./fil.js": "../node_modules/moment/locale/fil.js",
+	"./fo": "../node_modules/moment/locale/fo.js",
+	"./fo.js": "../node_modules/moment/locale/fo.js",
+	"./fr": "../node_modules/moment/locale/fr.js",
+	"./fr-ca": "../node_modules/moment/locale/fr-ca.js",
+	"./fr-ca.js": "../node_modules/moment/locale/fr-ca.js",
+	"./fr-ch": "../node_modules/moment/locale/fr-ch.js",
+	"./fr-ch.js": "../node_modules/moment/locale/fr-ch.js",
+	"./fr.js": "../node_modules/moment/locale/fr.js",
+	"./fy": "../node_modules/moment/locale/fy.js",
+	"./fy.js": "../node_modules/moment/locale/fy.js",
+	"./ga": "../node_modules/moment/locale/ga.js",
+	"./ga.js": "../node_modules/moment/locale/ga.js",
+	"./gd": "../node_modules/moment/locale/gd.js",
+	"./gd.js": "../node_modules/moment/locale/gd.js",
+	"./gl": "../node_modules/moment/locale/gl.js",
+	"./gl.js": "../node_modules/moment/locale/gl.js",
+	"./gom-deva": "../node_modules/moment/locale/gom-deva.js",
+	"./gom-deva.js": "../node_modules/moment/locale/gom-deva.js",
+	"./gom-latn": "../node_modules/moment/locale/gom-latn.js",
+	"./gom-latn.js": "../node_modules/moment/locale/gom-latn.js",
+	"./gu": "../node_modules/moment/locale/gu.js",
+	"./gu.js": "../node_modules/moment/locale/gu.js",
+	"./he": "../node_modules/moment/locale/he.js",
+	"./he.js": "../node_modules/moment/locale/he.js",
+	"./hi": "../node_modules/moment/locale/hi.js",
+	"./hi.js": "../node_modules/moment/locale/hi.js",
+	"./hr": "../node_modules/moment/locale/hr.js",
+	"./hr.js": "../node_modules/moment/locale/hr.js",
+	"./hu": "../node_modules/moment/locale/hu.js",
+	"./hu.js": "../node_modules/moment/locale/hu.js",
+	"./hy-am": "../node_modules/moment/locale/hy-am.js",
+	"./hy-am.js": "../node_modules/moment/locale/hy-am.js",
+	"./id": "../node_modules/moment/locale/id.js",
+	"./id.js": "../node_modules/moment/locale/id.js",
+	"./is": "../node_modules/moment/locale/is.js",
+	"./is.js": "../node_modules/moment/locale/is.js",
+	"./it": "../node_modules/moment/locale/it.js",
+	"./it-ch": "../node_modules/moment/locale/it-ch.js",
+	"./it-ch.js": "../node_modules/moment/locale/it-ch.js",
+	"./it.js": "../node_modules/moment/locale/it.js",
+	"./ja": "../node_modules/moment/locale/ja.js",
+	"./ja.js": "../node_modules/moment/locale/ja.js",
+	"./jv": "../node_modules/moment/locale/jv.js",
+	"./jv.js": "../node_modules/moment/locale/jv.js",
+	"./ka": "../node_modules/moment/locale/ka.js",
+	"./ka.js": "../node_modules/moment/locale/ka.js",
+	"./kk": "../node_modules/moment/locale/kk.js",
+	"./kk.js": "../node_modules/moment/locale/kk.js",
+	"./km": "../node_modules/moment/locale/km.js",
+	"./km.js": "../node_modules/moment/locale/km.js",
+	"./kn": "../node_modules/moment/locale/kn.js",
+	"./kn.js": "../node_modules/moment/locale/kn.js",
+	"./ko": "../node_modules/moment/locale/ko.js",
+	"./ko.js": "../node_modules/moment/locale/ko.js",
+	"./ku": "../node_modules/moment/locale/ku.js",
+	"./ku.js": "../node_modules/moment/locale/ku.js",
+	"./ky": "../node_modules/moment/locale/ky.js",
+	"./ky.js": "../node_modules/moment/locale/ky.js",
+	"./lb": "../node_modules/moment/locale/lb.js",
+	"./lb.js": "../node_modules/moment/locale/lb.js",
+	"./lo": "../node_modules/moment/locale/lo.js",
+	"./lo.js": "../node_modules/moment/locale/lo.js",
+	"./lt": "../node_modules/moment/locale/lt.js",
+	"./lt.js": "../node_modules/moment/locale/lt.js",
+	"./lv": "../node_modules/moment/locale/lv.js",
+	"./lv.js": "../node_modules/moment/locale/lv.js",
+	"./me": "../node_modules/moment/locale/me.js",
+	"./me.js": "../node_modules/moment/locale/me.js",
+	"./mi": "../node_modules/moment/locale/mi.js",
+	"./mi.js": "../node_modules/moment/locale/mi.js",
+	"./mk": "../node_modules/moment/locale/mk.js",
+	"./mk.js": "../node_modules/moment/locale/mk.js",
+	"./ml": "../node_modules/moment/locale/ml.js",
+	"./ml.js": "../node_modules/moment/locale/ml.js",
+	"./mn": "../node_modules/moment/locale/mn.js",
+	"./mn.js": "../node_modules/moment/locale/mn.js",
+	"./mr": "../node_modules/moment/locale/mr.js",
+	"./mr.js": "../node_modules/moment/locale/mr.js",
+	"./ms": "../node_modules/moment/locale/ms.js",
+	"./ms-my": "../node_modules/moment/locale/ms-my.js",
+	"./ms-my.js": "../node_modules/moment/locale/ms-my.js",
+	"./ms.js": "../node_modules/moment/locale/ms.js",
+	"./mt": "../node_modules/moment/locale/mt.js",
+	"./mt.js": "../node_modules/moment/locale/mt.js",
+	"./my": "../node_modules/moment/locale/my.js",
+	"./my.js": "../node_modules/moment/locale/my.js",
+	"./nb": "../node_modules/moment/locale/nb.js",
+	"./nb.js": "../node_modules/moment/locale/nb.js",
+	"./ne": "../node_modules/moment/locale/ne.js",
+	"./ne.js": "../node_modules/moment/locale/ne.js",
+	"./nl": "../node_modules/moment/locale/nl.js",
+	"./nl-be": "../node_modules/moment/locale/nl-be.js",
+	"./nl-be.js": "../node_modules/moment/locale/nl-be.js",
+	"./nl.js": "../node_modules/moment/locale/nl.js",
+	"./nn": "../node_modules/moment/locale/nn.js",
+	"./nn.js": "../node_modules/moment/locale/nn.js",
+	"./oc-lnc": "../node_modules/moment/locale/oc-lnc.js",
+	"./oc-lnc.js": "../node_modules/moment/locale/oc-lnc.js",
+	"./pa-in": "../node_modules/moment/locale/pa-in.js",
+	"./pa-in.js": "../node_modules/moment/locale/pa-in.js",
+	"./pl": "../node_modules/moment/locale/pl.js",
+	"./pl.js": "../node_modules/moment/locale/pl.js",
+	"./pt": "../node_modules/moment/locale/pt.js",
+	"./pt-br": "../node_modules/moment/locale/pt-br.js",
+	"./pt-br.js": "../node_modules/moment/locale/pt-br.js",
+	"./pt.js": "../node_modules/moment/locale/pt.js",
+	"./ro": "../node_modules/moment/locale/ro.js",
+	"./ro.js": "../node_modules/moment/locale/ro.js",
+	"./ru": "../node_modules/moment/locale/ru.js",
+	"./ru.js": "../node_modules/moment/locale/ru.js",
+	"./sd": "../node_modules/moment/locale/sd.js",
+	"./sd.js": "../node_modules/moment/locale/sd.js",
+	"./se": "../node_modules/moment/locale/se.js",
+	"./se.js": "../node_modules/moment/locale/se.js",
+	"./si": "../node_modules/moment/locale/si.js",
+	"./si.js": "../node_modules/moment/locale/si.js",
+	"./sk": "../node_modules/moment/locale/sk.js",
+	"./sk.js": "../node_modules/moment/locale/sk.js",
+	"./sl": "../node_modules/moment/locale/sl.js",
+	"./sl.js": "../node_modules/moment/locale/sl.js",
+	"./sq": "../node_modules/moment/locale/sq.js",
+	"./sq.js": "../node_modules/moment/locale/sq.js",
+	"./sr": "../node_modules/moment/locale/sr.js",
+	"./sr-cyrl": "../node_modules/moment/locale/sr-cyrl.js",
+	"./sr-cyrl.js": "../node_modules/moment/locale/sr-cyrl.js",
+	"./sr.js": "../node_modules/moment/locale/sr.js",
+	"./ss": "../node_modules/moment/locale/ss.js",
+	"./ss.js": "../node_modules/moment/locale/ss.js",
+	"./sv": "../node_modules/moment/locale/sv.js",
+	"./sv.js": "../node_modules/moment/locale/sv.js",
+	"./sw": "../node_modules/moment/locale/sw.js",
+	"./sw.js": "../node_modules/moment/locale/sw.js",
+	"./ta": "../node_modules/moment/locale/ta.js",
+	"./ta.js": "../node_modules/moment/locale/ta.js",
+	"./te": "../node_modules/moment/locale/te.js",
+	"./te.js": "../node_modules/moment/locale/te.js",
+	"./tet": "../node_modules/moment/locale/tet.js",
+	"./tet.js": "../node_modules/moment/locale/tet.js",
+	"./tg": "../node_modules/moment/locale/tg.js",
+	"./tg.js": "../node_modules/moment/locale/tg.js",
+	"./th": "../node_modules/moment/locale/th.js",
+	"./th.js": "../node_modules/moment/locale/th.js",
+	"./tk": "../node_modules/moment/locale/tk.js",
+	"./tk.js": "../node_modules/moment/locale/tk.js",
+	"./tl-ph": "../node_modules/moment/locale/tl-ph.js",
+	"./tl-ph.js": "../node_modules/moment/locale/tl-ph.js",
+	"./tlh": "../node_modules/moment/locale/tlh.js",
+	"./tlh.js": "../node_modules/moment/locale/tlh.js",
+	"./tr": "../node_modules/moment/locale/tr.js",
+	"./tr.js": "../node_modules/moment/locale/tr.js",
+	"./tzl": "../node_modules/moment/locale/tzl.js",
+	"./tzl.js": "../node_modules/moment/locale/tzl.js",
+	"./tzm": "../node_modules/moment/locale/tzm.js",
+	"./tzm-latn": "../node_modules/moment/locale/tzm-latn.js",
+	"./tzm-latn.js": "../node_modules/moment/locale/tzm-latn.js",
+	"./tzm.js": "../node_modules/moment/locale/tzm.js",
+	"./ug-cn": "../node_modules/moment/locale/ug-cn.js",
+	"./ug-cn.js": "../node_modules/moment/locale/ug-cn.js",
+	"./uk": "../node_modules/moment/locale/uk.js",
+	"./uk.js": "../node_modules/moment/locale/uk.js",
+	"./ur": "../node_modules/moment/locale/ur.js",
+	"./ur.js": "../node_modules/moment/locale/ur.js",
+	"./uz": "../node_modules/moment/locale/uz.js",
+	"./uz-latn": "../node_modules/moment/locale/uz-latn.js",
+	"./uz-latn.js": "../node_modules/moment/locale/uz-latn.js",
+	"./uz.js": "../node_modules/moment/locale/uz.js",
+	"./vi": "../node_modules/moment/locale/vi.js",
+	"./vi.js": "../node_modules/moment/locale/vi.js",
+	"./x-pseudo": "../node_modules/moment/locale/x-pseudo.js",
+	"./x-pseudo.js": "../node_modules/moment/locale/x-pseudo.js",
+	"./yo": "../node_modules/moment/locale/yo.js",
+	"./yo.js": "../node_modules/moment/locale/yo.js",
+	"./zh-cn": "../node_modules/moment/locale/zh-cn.js",
+	"./zh-cn.js": "../node_modules/moment/locale/zh-cn.js",
+	"./zh-hk": "../node_modules/moment/locale/zh-hk.js",
+	"./zh-hk.js": "../node_modules/moment/locale/zh-hk.js",
+	"./zh-mo": "../node_modules/moment/locale/zh-mo.js",
+	"./zh-mo.js": "../node_modules/moment/locale/zh-mo.js",
+	"./zh-tw": "../node_modules/moment/locale/zh-tw.js",
+	"./zh-tw.js": "../node_modules/moment/locale/zh-tw.js"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "../node_modules/moment/locale sync recursive ^\\.\\/.*$";
+
+/***/ }),
+
+/***/ "./api/client/apiClient.ts":
+/*!*********************************!*\
+  !*** ./api/client/apiClient.ts ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ApiClient": () => (/* binding */ ApiClient)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var guid_typescript__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! guid-typescript */ "../node_modules/guid-typescript/dist/guid.js");
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _plumbing_utilities_axiosUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../plumbing/utilities/axiosUtils */ "./plumbing/utilities/axiosUtils.ts");
+/* harmony import */ var _plumbing_utilities_sessionManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../plumbing/utilities/sessionManager */ "./plumbing/utilities/sessionManager.ts");
+
+
+
+
+
+/*
+ * Logic related to making API calls
+ */
+class ApiClient {
+    constructor(apiBaseUrl, authenticator) {
+        this._apiBaseUrl = apiBaseUrl;
+        if (!this._apiBaseUrl.endsWith('/')) {
+            this._apiBaseUrl += '/';
+        }
+        this._authenticator = authenticator;
+        this._sessionId = _plumbing_utilities_sessionManager__WEBPACK_IMPORTED_MODULE_4__.SessionManager.get();
+    }
+    /*
+     * We download user info from the API rather than using the id token
+     */
+    async getUserInfo(options) {
+        return await this._callApi('userclaims/current', 'GET', null, options);
+    }
+    /*
+     * Get a list of companies
+     */
+    async getCompanyList(options) {
+        return await this._callApi('companies', 'GET', null, options);
+    }
+    /*
+     * Get a list of transactions for a single company
+     */
+    async getCompanyTransactions(id, options) {
+        return await this._callApi(`companies/${id}/transactions`, 'GET', null, options);
+    }
+    /*
+     * A central method to get data from an API and handle 401 retries
+     */
+    async _callApi(path, method, dataToSend, options) {
+        // Get the full path
+        const url = `${this._apiBaseUrl}${path}`;
+        // Get the access token, and if it does not exist a login redirect will be triggered
+        let token = await this._authenticator.getAccessToken();
+        try {
+            // Call the API
+            return await this._callApiWithToken(url, method, dataToSend, token, options);
+        }
+        catch (error1) {
+            // Report Ajax errors if this is not a 401
+            if (!this._isApi401Error(error1)) {
+                throw _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_2__.ErrorHandler.getFromHttpError(error1, url, 'Web API');
+            }
+            // If we received a 401 then try to get a new token
+            token = await this._authenticator.refreshAccessToken();
+            // The general pattern for calling an OAuth secured API is to retry 401s once with a new token
+            try {
+                // Call the API again
+                return await this._callApiWithToken(url, method, dataToSend, token, options);
+            }
+            catch (error2) {
+                // Report Ajax errors for the retry
+                throw _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_2__.ErrorHandler.getFromHttpError(error2, url, 'Web API');
+            }
+        }
+    }
+    /*
+     * Do the work of calling the API
+     */
+    async _callApiWithToken(url, method, dataToSend, accessToken, options) {
+        // Force IE11 to bypass the browser cache by changing the request URL every time
+        let requestUrl = url;
+        if (navigator.userAgent.toLowerCase().indexOf('trident') !== -1) {
+            requestUrl += `?time=${new Date().getTime()}`;
+        }
+        const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().request({
+            url: requestUrl,
+            method,
+            data: dataToSend,
+            headers: this._getHeaders(accessToken, options),
+        });
+        _plumbing_utilities_axiosUtils__WEBPACK_IMPORTED_MODULE_3__.AxiosUtils.checkJson(response.data);
+        return response.data;
+    }
+    /*
+     * Add headers for logging and advanced testing purposes
+     */
+    _getHeaders(accessToken, options) {
+        const headers = {
+            // The required authorization header
+            'Authorization': `Bearer ${accessToken}`,
+            // Context headers included in API logs
+            'x-mycompany-api-client': 'FinalSPA',
+            'x-mycompany-session-id': this._sessionId,
+            'x-mycompany-correlation-id': guid_typescript__WEBPACK_IMPORTED_MODULE_1__.Guid.create().toString(),
+        };
+        // A special header can be sent to ask the API to throw a simulated exception
+        if (options && options.causeError) {
+            headers['x-mycompany-test-exception'] = 'SampleApi';
+        }
+        return headers;
+    }
+    /*
+     * API 401s are handled via a retry with a new token
+     */
+    _isApi401Error(error) {
+        if (error.response && error.response.status === 401) {
+            return true;
+        }
+        return false;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./app/app.tsx":
+/*!*********************!*\
+  !*** ./app/app.tsx ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "App": () => (/* binding */ App)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-modal */ "../node_modules/react-modal/lib/index.js");
+/* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! react-router-dom */ "../node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! react-router-dom */ "../node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _api_client_apiClient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/client/apiClient */ "./api/client/apiClient.ts");
+/* harmony import */ var _configuration_configurationLoader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../configuration/configurationLoader */ "./configuration/configurationLoader.ts");
+/* harmony import */ var _plumbing_errors_errorConsoleReporter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../plumbing/errors/errorConsoleReporter */ "./plumbing/errors/errorConsoleReporter.ts");
+/* harmony import */ var _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../plumbing/errors/errorCodes */ "./plumbing/errors/errorCodes.ts");
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../plumbing/events/eventEmitter */ "./plumbing/events/eventEmitter.ts");
+/* harmony import */ var _plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../plumbing/events/eventNames */ "./plumbing/events/eventNames.ts");
+/* harmony import */ var _plumbing_oauth_authenticatorFactory__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../plumbing/oauth/authenticatorFactory */ "./plumbing/oauth/authenticatorFactory.ts");
+/* harmony import */ var _views_companies_companiesContainer__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../views/companies/companiesContainer */ "./views/companies/companiesContainer.tsx");
+/* harmony import */ var _views_errors_errorBoundary__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../views/errors/errorBoundary */ "./views/errors/errorBoundary.tsx");
+/* harmony import */ var _views_errors_errorSummaryView__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../views/errors/errorSummaryView */ "./views/errors/errorSummaryView.tsx");
+/* harmony import */ var _views_headings_headerButtonsView__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../views/headings/headerButtonsView */ "./views/headings/headerButtonsView.tsx");
+/* harmony import */ var _views_headings_sessionView__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../views/headings/sessionView */ "./views/headings/sessionView.tsx");
+/* harmony import */ var _views_headings_titleView__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../views/headings/titleView */ "./views/headings/titleView.tsx");
+/* harmony import */ var _views_loginRequired_loginRequiredView__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../views/loginRequired/loginRequiredView */ "./views/loginRequired/loginRequiredView.tsx");
+/* harmony import */ var _views_transactions_transactionsContainer__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../views/transactions/transactionsContainer */ "./views/transactions/transactionsContainer.tsx");
+/* harmony import */ var _views_utilities_apiViewEvents__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../views/utilities/apiViewEvents */ "./views/utilities/apiViewEvents.ts");
+/* harmony import */ var _views_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../views/utilities/apiViewNames */ "./views/utilities/apiViewNames.ts");
+/* harmony import */ var _views_utilities_routeHelper__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../views/utilities/routeHelper */ "./views/utilities/routeHelper.ts");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * The application root component
+ */
+class App extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    /*
+     * Create safe objects here and do async startup processing later
+     */
+    constructor(props) {
+        super(props);
+        // Set initial state, which will be used on the first render
+        this.state = {
+            isInitialised: false,
+            isInLoggedOutView: false,
+            isMainViewLoaded: false,
+            isMobileSize: this._isMobileSize(),
+            error: null,
+        };
+        // Make callbacks available
+        this._setupCallbacks();
+        // Create a helper class to notify us about views that make API calls
+        // This will enable us to only trigger a login redirect once, after all views have tried to load
+        this._apiViewEvents = new _views_utilities_apiViewEvents__WEBPACK_IMPORTED_MODULE_18__.ApiViewEvents(this._onLoginRequired, this._onMainViewLoadStateChanged);
+        this._apiViewEvents.addView(_views_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_19__.ApiViewNames.Main);
+        this._apiViewEvents.addView(_views_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_19__.ApiViewNames.UserInfo);
+        // Initialise the modal dialog system used for error popups
+        react_modal__WEBPACK_IMPORTED_MODULE_1___default().setAppElement('#root');
+    }
+    /*
+     * The rendering entry point
+     */
+    render() {
+        if (!this.state.isInitialised) {
+            return this._renderInitialScreen();
+        }
+        else {
+            return this._renderMain();
+        }
+    }
+    /*
+     * Page startup logic
+     */
+    async componentDidMount() {
+        await this._initialiseApp();
+    }
+    /*
+     * Application startup code
+     */
+    async _initialiseApp() {
+        // Reset state
+        this.setState({
+            isInitialised: false,
+            isInLoggedOutView: false,
+            isMainViewLoaded: false,
+            isMobileSize: this._isMobileSize(),
+            error: null,
+        });
+        try {
+            // First download configuration from the browser's web domain
+            const loader = new _configuration_configurationLoader__WEBPACK_IMPORTED_MODULE_3__.ConfigurationLoader();
+            this._configuration = await loader.download();
+            // Create the authenticator and receive any login responses on the main window
+            this._authenticator = this._createAuthenticator();
+            await this._authenticator.initialise();
+            await this._authenticator.handleLoginResponse();
+            // Create the API client
+            this._apiClient = new _api_client_apiClient__WEBPACK_IMPORTED_MODULE_2__.ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
+            // Subscribe to window events
+            window.onhashchange = this._onHashChange;
+            window.onresize = this._onResize;
+            // Update state
+            this.setState({ isInitialised: true });
+        }
+        catch (e) {
+            this.setState({ error: _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_6__.ErrorHandler.getFromException(e) });
+        }
+    }
+    /*
+     * Render basic details before the app has processed its configuration
+     */
+    _renderInitialScreen() {
+        const titleProps = {
+            userInfo: null,
+        };
+        const headerButtonProps = {
+            sessionButtonsEnabled: this.state.isMainViewLoaded && !this.state.isInLoggedOutView,
+            handleHomeClick: this._onHome,
+            handleReloadDataClick: this._onReloadData,
+            handleExpireAccessTokenClick: this._onExpireAccessToken,
+            handleExpireRefreshTokenClick: this._onExpireRefreshToken,
+            handleLogoutClick: this._onLogout,
+        };
+        const errorProps = {
+            hyperlinkMessage: 'Startup Problem Encountered',
+            dialogTitle: 'Startup Error',
+            error: this.state.error,
+            centred: true,
+        };
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_errors_errorBoundary__WEBPACK_IMPORTED_MODULE_11__.ErrorBoundary, null,
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_headings_titleView__WEBPACK_IMPORTED_MODULE_15__.TitleView, Object.assign({}, titleProps)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_headings_headerButtonsView__WEBPACK_IMPORTED_MODULE_13__.HeaderButtonsView, Object.assign({}, headerButtonProps)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_errors_errorSummaryView__WEBPACK_IMPORTED_MODULE_12__.ErrorSummaryView, Object.assign({}, errorProps))));
+    }
+    /*
+     * Attempt to render the entire layout, which will trigger calls to Web APIs
+     */
+    _renderMain() {
+        const titleProps = {
+            userInfo: {
+                apiClient: this._apiClient,
+                events: this._apiViewEvents,
+                shouldLoad: !this.state.isInLoggedOutView,
+            },
+        };
+        const headerButtonProps = {
+            sessionButtonsEnabled: this.state.isMainViewLoaded && !this.state.isInLoggedOutView,
+            handleHomeClick: this._onHome,
+            handleExpireAccessTokenClick: this._onExpireAccessToken,
+            handleExpireRefreshTokenClick: this._onExpireRefreshToken,
+            handleReloadDataClick: this._onReloadData,
+            handleLogoutClick: this._onLogout,
+        };
+        const errorProps = {
+            hyperlinkMessage: 'Problem Encountered',
+            dialogTitle: 'Application Error',
+            error: this.state.error,
+            centred: true,
+        };
+        const sessionProps = {
+            apiClient: this._apiClient,
+            isVisible: !this.state.isInLoggedOutView,
+        };
+        const mainViewProps = {
+            onLoading: this._onMainViewLoading,
+            apiClient: this._apiClient,
+            events: this._apiViewEvents,
+            isMobileSize: this.state.isMobileSize,
+        };
+        const loginRequiredProps = {
+            onLoading: this._onLoggedOutViewLoading,
+        };
+        // Callbacks to prevent multi line JSX warnings
+        const renderCompaniesView = () => react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_companies_companiesContainer__WEBPACK_IMPORTED_MODULE_10__.CompaniesContainer, Object.assign({}, mainViewProps));
+        const renderTransactionsView = (props) => react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_transactions_transactionsContainer__WEBPACK_IMPORTED_MODULE_17__.TransactionsContainer, Object.assign({}, props, mainViewProps));
+        const renderLoginRequiredView = () => react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_loginRequired_loginRequiredView__WEBPACK_IMPORTED_MODULE_16__.LoginRequiredView, Object.assign({}, loginRequiredProps));
+        // Render the tree view
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_errors_errorBoundary__WEBPACK_IMPORTED_MODULE_11__.ErrorBoundary, null,
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_headings_titleView__WEBPACK_IMPORTED_MODULE_15__.TitleView, Object.assign({}, titleProps)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_headings_headerButtonsView__WEBPACK_IMPORTED_MODULE_13__.HeaderButtonsView, Object.assign({}, headerButtonProps)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_errors_errorSummaryView__WEBPACK_IMPORTED_MODULE_12__.ErrorSummaryView, Object.assign({}, errorProps)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_views_headings_sessionView__WEBPACK_IMPORTED_MODULE_14__.SessionView, Object.assign({}, sessionProps)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_21__.HashRouter, { hashType: 'noslash' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_22__.Switch, null,
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_22__.Route, { exact: true, path: '/', render: renderCompaniesView }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_22__.Route, { exact: true, path: '/company=:id', render: renderTransactionsView }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_22__.Route, { exact: true, path: '/loggedout', render: renderLoginRequiredView }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_22__.Route, { path: '*', render: renderCompaniesView })))));
+    }
+    /*
+     * Create the authenticator object from our configuration, and supply callbacks
+     */
+    _createAuthenticator() {
+        return _plumbing_oauth_authenticatorFactory__WEBPACK_IMPORTED_MODULE_9__.AuthenticatorFactory.createAuthenticator(this._configuration.oauth, this._configuration.app.webBaseUrl, this._onMobileWebViewLogin, this._onMoveToLoggedOutView);
+    }
+    /*
+     * Trigger a login redirect when all views have finished calling the API and there has been a login_required error
+     */
+    async _onLoginRequired() {
+        try {
+            // Do the login redirect via the authenticator class
+            this.setState({ error: null });
+            await this._authenticator.login();
+            // When running in a mobile web view we may still be in the login required view, in which case move home
+            if (this.state.isInLoggedOutView) {
+                location.hash = '#';
+            }
+        }
+        catch (e) {
+            // Treat cancelled logins as a non error, when running in a mobile web view
+            const error = _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_6__.ErrorHandler.getFromException(e);
+            if (error.errorCode === _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_5__.ErrorCodes.redirectCancelled) {
+                location.hash = '#loggedout';
+                return;
+            }
+            this.setState({ error: _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_6__.ErrorHandler.getFromException(e) });
+        }
+    }
+    /*
+     * Called after login completes successfully when running in a mobile web view
+     */
+    _onMobileWebViewLogin() {
+        this._onReloadData(false);
+    }
+    /*
+     * Update state when the companies or transactions view loads
+     */
+    _onMainViewLoading() {
+        this.setState({ isInLoggedOutView: false });
+    }
+    /*
+     * Update state when the logged out view loads
+     */
+    _onLoggedOutViewLoading() {
+        this.setState({ isInLoggedOutView: true });
+    }
+    /*
+     * Update session buttons when the main view starts and ends loading
+     */
+    _onMainViewLoadStateChanged(loaded) {
+        this.setState({ isMainViewLoaded: loaded });
+    }
+    /*
+     * Handle updates to log levels when the URL log setting is changed
+     */
+    _onHashChange() {
+        this._authenticator.updateLogLevelIfRequired();
+    }
+    /*
+     * Ask all views to get updated data from the API
+     */
+    _onReloadData(causeError) {
+        this._apiViewEvents.clearState();
+        _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_7__.EventEmitter.dispatch(_plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_8__.EventNames.ON_RELOAD_MAIN, causeError);
+        _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_7__.EventEmitter.dispatch(_plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_8__.EventNames.ON_RELOAD_USERINFO, causeError);
+    }
+    /*
+     * Return home and force a reload of data
+     */
+    async _onHome() {
+        // If there is a startup error then reinitialise the app
+        if (!this.state.isInitialised) {
+            await this._initialiseApp();
+        }
+        if (this.state.isInitialised) {
+            if (_views_utilities_routeHelper__WEBPACK_IMPORTED_MODULE_20__.RouteHelper.isInHomeView()) {
+                // Force a reload of the main view if we are already in the home view
+                _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_7__.EventEmitter.dispatch(_plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_8__.EventNames.ON_RELOAD_MAIN, false);
+            }
+            else {
+                // Otherwise navigate to the home view
+                location.hash = '#';
+            }
+        }
+    }
+    /*
+     * Trigger a logout redirect
+     */
+    async _onLogout() {
+        try {
+            // Update state
+            this.setState({ isMainViewLoaded: false });
+            // Start the logout redirect, which will return to the app in the login required page
+            await this._authenticator.logout();
+        }
+        catch (e) {
+            // Treat cancelled logouts as a non error, when running in a mobile web view
+            const error = _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_6__.ErrorHandler.getFromException(e);
+            if (error.errorCode !== _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_5__.ErrorCodes.redirectCancelled) {
+                // Otherwise output logout error details only to the console
+                _plumbing_errors_errorConsoleReporter__WEBPACK_IMPORTED_MODULE_4__.ErrorConsoleReporter.output(error);
+            }
+        }
+        finally {
+            // Ensure that we are in the logged out view in all cases
+            this._onMoveToLoggedOutView();
+        }
+    }
+    /*
+     * Called when we move to the logged out view manually, such as when there is a logout error
+     * This also occurs when there is a logout on another tab and we receive a check session iframe notification
+     */
+    _onMoveToLoggedOutView() {
+        location.hash = '#loggedout';
+    }
+    /*
+     * For test purposes this makes the access token act expired
+     */
+    async _onExpireAccessToken() {
+        await this._authenticator.expireAccessToken();
+    }
+    /*
+     * For test purposes this makes the refresh token act expired
+     */
+    async _onExpireRefreshToken() {
+        try {
+            // Where applicable, make the refresh token act expired
+            this.setState({ error: null });
+            await this._authenticator.expireRefreshToken();
+        }
+        catch (e) {
+            // Report errors
+            this.setState({ error: _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_6__.ErrorHandler.getFromException(e) });
+        }
+    }
+    /*
+     * Handle switching between mobile and main view sizes
+     */
+    _onResize() {
+        if (!this.state.isMobileSize && this._isMobileSize()) {
+            // Handle changing from a large size to mobile size
+            this.setState({ isMobileSize: true });
+        }
+        else if (this.state.isMobileSize && !this._isMobileSize()) {
+            // Handle changing from a mobile size to large size
+            this.setState({ isMobileSize: false });
+        }
+    }
+    /*
+     * Indicate whether the current size is that of a mobile device
+     */
+    _isMobileSize() {
+        return window.innerWidth < 768;
+    }
+    /*
+     * Plumbing to ensure that the this parameter is available in callback functions
+     */
+    _setupCallbacks() {
+        this._onMainViewLoading = this._onMainViewLoading.bind(this);
+        this._onLoggedOutViewLoading = this._onLoggedOutViewLoading.bind(this);
+        this._onMainViewLoadStateChanged = this._onMainViewLoadStateChanged.bind(this);
+        this._onHashChange = this._onHashChange.bind(this);
+        this._onHome = this._onHome.bind(this);
+        this._onLoginRequired = this._onLoginRequired.bind(this);
+        this._onReloadData = this._onReloadData.bind(this);
+        this._onMobileWebViewLogin = this._onMobileWebViewLogin.bind(this);
+        this._onLogout = this._onLogout.bind(this);
+        this._onMoveToLoggedOutView = this._onMoveToLoggedOutView.bind(this);
+        this._onExpireAccessToken = this._onExpireAccessToken.bind(this);
+        this._onExpireRefreshToken = this._onExpireRefreshToken.bind(this);
+        this._onResize = this._onResize.bind(this);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./app/iframeApp.ts":
+/*!**************************!*\
+  !*** ./app/iframeApp.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "IFrameApp": () => (/* binding */ IFrameApp)
+/* harmony export */ });
+/* harmony import */ var _configuration_configurationLoader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../configuration/configurationLoader */ "./configuration/configurationLoader.ts");
+/* harmony import */ var _plumbing_errors_errorConsoleReporter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../plumbing/errors/errorConsoleReporter */ "./plumbing/errors/errorConsoleReporter.ts");
+/* harmony import */ var _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../plumbing/errors/errorCodes */ "./plumbing/errors/errorCodes.ts");
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _plumbing_oauth_web_utilities_tokenRenewalResponseHandler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../plumbing/oauth/web/utilities/tokenRenewalResponseHandler */ "./plumbing/oauth/web/utilities/tokenRenewalResponseHandler.ts");
+
+
+
+
+
+/*
+ * A mini application for the hidden iframe that does silent token renewal
+ */
+class IFrameApp {
+    async execute() {
+        try {
+            // Download configuration
+            const configuration = await new _configuration_configurationLoader__WEBPACK_IMPORTED_MODULE_0__.ConfigurationLoader().download();
+            // Handle token renewal responses on an iframe
+            const handler = new _plumbing_oauth_web_utilities_tokenRenewalResponseHandler__WEBPACK_IMPORTED_MODULE_4__.TokenRenewalResponseHandler(configuration.oauth);
+            await handler.handleSilentTokenRenewalResponse();
+        }
+        catch (e) {
+            // In the event of errors, avoid impacting end users and output the error to the console
+            const uiError = _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__.ErrorHandler.getFromTokenError(e, _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__.ErrorCodes.tokenRenewalError);
+            _plumbing_errors_errorConsoleReporter__WEBPACK_IMPORTED_MODULE_1__.ErrorConsoleReporter.output(uiError);
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "./configuration/configurationLoader.ts":
+/*!**********************************************!*\
+  !*** ./configuration/configurationLoader.ts ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ConfigurationLoader": () => (/* binding */ ConfigurationLoader)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _plumbing_utilities_axiosUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../plumbing/utilities/axiosUtils */ "./plumbing/utilities/axiosUtils.ts");
+
+
+
+/*
+ * A class to download configuration from the server
+ */
+class ConfigurationLoader {
+    /*
+     * Download JSON data from the app config file
+     */
+    async download() {
+        const fileName = 'spa.config.json';
+        try {
+            // Make the remote call
+            const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(fileName);
+            _plumbing_utilities_axiosUtils__WEBPACK_IMPORTED_MODULE_2__.AxiosUtils.checkJson(response.data);
+            return response.data;
+        }
+        catch (xhr) {
+            // Capture error details
+            throw _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_1__.ErrorHandler.getFromHttpError(xhr, fileName, 'Web Server');
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "./index.tsx":
+/*!*******************!*\
+  !*** ./index.tsx ***!
+  \*******************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "../node_modules/react-dom/index.js");
+/* harmony import */ var _app_app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/app */ "./app/app.tsx");
+/* harmony import */ var _app_iframeApp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app/iframeApp */ "./app/iframeApp.ts");
+
+
+
+
+/*
+ * The application entry point
+ */
+if (window.top === window.self) {
+    // Run the main ReactJS app
+    (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.render)(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_app_app__WEBPACK_IMPORTED_MODULE_2__.App, null), document.getElementById('root'));
+}
+else {
+    // If our SPA is running on an iframe, handle token renewal responses
+    const app = new _app_iframeApp__WEBPACK_IMPORTED_MODULE_3__.IFrameApp();
+    app.execute();
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/errors/errorCodes.ts":
+/*!***************************************!*\
+  !*** ./plumbing/errors/errorCodes.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ErrorCodes": () => (/* binding */ ErrorCodes)
+/* harmony export */ });
+/*
+ * Error codes that the UI can program against
+ */
+class ErrorCodes {
+}
+// Used to indicate that the API cannot be called until the user logs in
+// Also returned by OAuth error responses when token renewal via prompt=none fails
+ErrorCodes.loginRequired = 'login_required';
+// A technical error starting a login request, such as contacting the metadata endpoint
+ErrorCodes.loginRequestFailed = 'login_request_failed';
+// A technical error processing the login response containing the authorization code
+ErrorCodes.loginResponseFailed = 'login_response_failed';
+// A technical problem during background token renewal
+ErrorCodes.tokenRenewalError = 'token_renewal_error';
+// The OAuth error when a refresh token expires
+ErrorCodes.invalidGrant = 'invalid_grant';
+// An error starting a logout request, such as contacting the metadata endpoint
+ErrorCodes.logoutRequestFailed = 'logout_request_failed';
+// An error due to no logout standards support
+ErrorCodes.logoutUnsupported = 'logout_unsupported';
+// An error logging out due to a missing id token on the current tab
+ErrorCodes.missingIdToken = 'missing_id_token';
+// Used when running in a mobile web view and the AppAuth redirect is cancelled
+ErrorCodes.redirectCancelled = 'redirect_cancelled';
+// A general exception in the UI
+ErrorCodes.generalUIError = 'ui_error';
+// An error making an Ajax call
+ErrorCodes.networkError = 'network_error';
+// An error receiving data as JSON
+ErrorCodes.jsonDataError = 'json_data_error';
+// An error response fropm the API
+ErrorCodes.responseError = 'http_response_error';
+// An error rendering a ReactJs view
+ErrorCodes.renderError = 'react_render_error';
+// Returned by the API when the user edits the browser URL and ties to access an unauthorised company
+ErrorCodes.companyNotFound = 'company_not_found';
+// Returned by the API when the user edits the browser URL and supplies a non numeric company id
+ErrorCodes.invalidCompanyId = 'invalid_company_id';
+
+
+/***/ }),
+
+/***/ "./plumbing/errors/errorConsoleReporter.ts":
+/*!*************************************************!*\
+  !*** ./plumbing/errors/errorConsoleReporter.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ErrorConsoleReporter": () => (/* binding */ ErrorConsoleReporter)
+/* harmony export */ });
+/* harmony import */ var _errorFormatter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./errorFormatter */ "./plumbing/errors/errorFormatter.ts");
+
+/*
+ * A utility class for errors we don't want to bother the user about
+ */
+class ErrorConsoleReporter {
+    /*
+     * Output error fields as name / value pairs
+     */
+    static output(error) {
+        const lines = new _errorFormatter__WEBPACK_IMPORTED_MODULE_0__.ErrorFormatter().getErrorLines(error);
+        lines.forEach((l) => {
+            console.log(`${l.label}: ${l.value}`);
+        });
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/errors/errorFormatter.ts":
+/*!*******************************************!*\
+  !*** ./plumbing/errors/errorFormatter.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ErrorFormatter": () => (/* binding */ ErrorFormatter)
+/* harmony export */ });
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "../node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+
+/*
+ * A class to manage error formatting
+ */
+class ErrorFormatter {
+    constructor() {
+        this._count = 0;
+    }
+    /*
+     * Get errors ready for display
+     */
+    getErrorLines(error) {
+        const lines = [];
+        /* FIELDS FOR THE END USER */
+        // Keep the user informed and suggest an action
+        lines.push(this._createErrorLine('User Action', error.userAction, 'highlightcolor'));
+        // Give the user summary level info, such as 'Network error'
+        if (error.message.length > 0) {
+            lines.push(this._createErrorLine('Info', error.message));
+        }
+        /* FIELDS FOR TECHNICAL SUPPORT STAFF */
+        // Show the time of the error
+        if (error.utcTime.length > 0) {
+            const displayTime = moment__WEBPACK_IMPORTED_MODULE_0___default()(error.utcTime).format('DD MMM YYYY HH:mm:ss');
+            lines.push(this._createErrorLine('UTC Time', displayTime));
+        }
+        // Indicate the area of the system, such as which component failed
+        if (error.area.length > 0) {
+            lines.push(this._createErrorLine('Area', error.area));
+        }
+        // Indicate the type of error
+        if (error.errorCode.length > 0) {
+            lines.push(this._createErrorLine('Error Code', error.errorCode));
+        }
+        // Show the AppAuth error code if applicable, in mobile web scenarios
+        if (error.appAuthCode.length > 0) {
+            lines.push(this._createErrorLine('AppAuth Code', error.appAuthCode.toString()));
+        }
+        // Link to API logs if applicable
+        if (error.instanceId > 0) {
+            lines.push(this._createErrorLine('Instance Id', error.instanceId.toString(), 'errorcolor'));
+        }
+        // Show the HTTP status if applicable
+        if (error.statusCode > 0) {
+            lines.push(this._createErrorLine('Status Code', error.statusCode.toString()));
+        }
+        /* FIELDS FOR DEVELOPERS */
+        // Show details for some types of error
+        if (error.details.length > 0) {
+            lines.push(this._createErrorLine('Details', error.details));
+        }
+        // Show the URL that failed if applicable
+        if (error.url.length > 0) {
+            lines.push(this._createErrorLine('URL', error.url));
+        }
+        return lines;
+    }
+    /*
+     * Return the stack separately, since it is rendered in smaller text
+     */
+    getErrorStack(error) {
+        // In debug builds render the stack trace as a long string
+        // We can then look up results at https://sourcemaps.info
+        if (true) {
+            if (error.stack) {
+                return this._createErrorLine('Stack', error.stack);
+            }
+        }
+        return null;
+    }
+    /*
+     * Return an error line as an object
+     */
+    _createErrorLine(label, value, valueStyle = 'valuecolor') {
+        return {
+            id: ++this._count,
+            label,
+            value,
+            valueStyle,
+        };
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/errors/errorHandler.ts":
+/*!*****************************************!*\
+  !*** ./plumbing/errors/errorHandler.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ErrorHandler": () => (/* binding */ ErrorHandler)
+/* harmony export */ });
+/* harmony import */ var _errorCodes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./errorCodes */ "./plumbing/errors/errorCodes.ts");
+/* harmony import */ var _uiError__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./uiError */ "./plumbing/errors/uiError.ts");
+
+
+/*
+ * A class to handle error processing
+ */
+class ErrorHandler {
+    /*
+     * Return an error based on the exception type or properties
+     */
+    static getFromException(exception) {
+        // Already handled errors
+        if (exception instanceof _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError) {
+            return exception;
+        }
+        // Create the error
+        const error = new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Web UI', _errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.generalUIError, 'A technical problem was encountered in the UI', exception.stack);
+        // Set technical details from the received exception
+        error.details = ErrorHandler._getExceptionMessage(exception);
+        return error;
+    }
+    /*
+     * A login required error is thrown to short circuit execution when the UI cannot get an access token
+     */
+    static getFromLoginRequired() {
+        return new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Login', _errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.loginRequired, 'No access token is available and a login is required');
+    }
+    /*
+     * Handle errors signing in
+     */
+    static getFromLoginOperation(exception, errorCode) {
+        // Already handled errors
+        if (exception instanceof _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError) {
+            return exception;
+        }
+        // Create the error
+        const error = new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Login', errorCode, 'A technical problem occurred during login processing', exception.stack);
+        // Set technical details from the received exception
+        error.details = ErrorHandler._getOAuthExceptionMessage(exception);
+        return error;
+    }
+    /*
+     * Handle errors interacting with the token endpoint
+     */
+    static getFromTokenError(exception, errorCode) {
+        // Already handled errors
+        if (exception instanceof _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError) {
+            return exception;
+        }
+        // Create the error
+        const error = new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Token', errorCode, 'A technical problem occurred during token processing', exception.stack);
+        // Set technical details from the received exception
+        error.details = ErrorHandler._getOAuthExceptionMessage(exception);
+        return error;
+    }
+    /*
+     * Handle sign out request errors
+     */
+    static getFromLogoutOperation(exception, errorCode) {
+        // Already handled errors
+        if (exception instanceof _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError) {
+            return exception;
+        }
+        // Create the error
+        const error = new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Logout', errorCode, 'A technical problem occurred during logout processing', exception.stack);
+        // Set technical details from the received exception
+        error.details = ErrorHandler._getOAuthExceptionMessage(exception);
+        return error;
+    }
+    /*
+     * Indicate if we don't know how to logout
+     */
+    static getFromLogoutUnsupported() {
+        return new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Logout', _errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.logoutUnsupported, 'Logout is not supported by this provider, due to a missing end session endpoint');
+    }
+    /*
+     * Indicate if the id token is missing during a logout attempt
+     */
+    static getFromMissingIdToken() {
+        return new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Logout', _errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.missingIdToken, 'Unable to logout because no id token exists for this browser tab');
+    }
+    /*
+     * Return an object for Ajax errors
+     */
+    static getFromJsonParseError() {
+        return new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Data', _errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.jsonDataError, 'HTTP response data was not valid JSON and could not be parsed');
+    }
+    /*
+     * Return an object for Ajax errors
+     */
+    static getFromHttpError(exception, url, source) {
+        // Already handled errors
+        if (exception instanceof _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError) {
+            return exception;
+        }
+        // Calculate the status code
+        let statusCode = 0;
+        if (exception.response && exception.response.status) {
+            statusCode = exception.response.status;
+        }
+        let error = null;
+        if (statusCode === 0) {
+            // This status is generally a CORS or availability problem
+            error = new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Network', _errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.networkError, `A network problem occurred when the UI called the ${source}`, exception.stack);
+            error.details = this._getExceptionMessage(exception);
+        }
+        else if (statusCode >= 200 && statusCode <= 299) {
+            // This status is generally a JSON parsing error
+            error = new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('JSON', _errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.jsonDataError, `'A technical problem occurred parsing data from the ${source}`, exception.stack);
+            error.details = this._getExceptionMessage(exception);
+        }
+        else {
+            // Create an error indicating a data problem
+            error = new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError(source, _errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.responseError, `An error response was returned from the ${source}`, exception.stack);
+            error.details = this._getExceptionMessage(exception);
+            // Override the default with a server response when received and CORS allows us to read it
+            if (exception.response && exception.response.data && typeof exception.response.data === 'object') {
+                ErrorHandler._updateFromApiErrorResponse(error, exception.response.data);
+            }
+        }
+        error.statusCode = statusCode;
+        error.url = url;
+        return error;
+    }
+    /*
+     * Return an error due to rendering the view
+     */
+    static getFromRenderError(exception, componentStack) {
+        // Already handled errors
+        if (exception instanceof _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError) {
+            return exception;
+        }
+        // Create the error
+        const error = new _uiError__WEBPACK_IMPORTED_MODULE_1__.UIError('Web UI', _errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.renderError, 'A technical problem was encountered rendering the UI', exception.stack);
+        // Set technical details from the received exception
+        error.details = ErrorHandler._getExceptionMessage(exception);
+        if (componentStack) {
+            error.details += ` : ${componentStack}`;
+        }
+        return error;
+    }
+    /*
+     * Try to update the default API error with response details
+     */
+    static _updateFromApiErrorResponse(error, apiError) {
+        // Attempt to read the API error response
+        if (apiError) {
+            // Set the code and message, returned for both 4xx and 5xx errors
+            if (apiError.code && apiError.message) {
+                error.errorCode = apiError.code;
+                error.details = apiError.message;
+            }
+            // Set extra details returned for 5xx errors
+            if (apiError.area && apiError.id && apiError.utcTime) {
+                error.setApiErrorDetails(apiError.area, apiError.id, apiError.utcTime);
+            }
+        }
+    }
+    /*
+     * Get the message from an OAuth exception
+     */
+    static _getOAuthExceptionMessage(exception) {
+        let oauthError = '';
+        if (exception.error) {
+            oauthError = exception.error;
+            if (exception.error_description) {
+                oauthError += ` : ${(exception.error_description.replace(/\+/g, ' '))}`;
+            }
+        }
+        if (oauthError) {
+            return oauthError;
+        }
+        else {
+            return ErrorHandler._getExceptionMessage(exception);
+        }
+    }
+    /*
+     * Get the message from an exception and avoid returning [object Object]
+     */
+    static _getExceptionMessage(exception) {
+        if (exception.message) {
+            return exception.message;
+        }
+        const details = exception.toString();
+        if (details !== {}.toString()) {
+            return details;
+        }
+        return '';
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/errors/uiError.ts":
+/*!************************************!*\
+  !*** ./plumbing/errors/uiError.ts ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "UIError": () => (/* binding */ UIError)
+/* harmony export */ });
+/*
+ * An error entity containing translated error data for any kind of error
+ */
+class UIError extends Error {
+    /*
+     * All types of error supply at least these fields
+     */
+    constructor(area, errorCode, userMessage, stack) {
+        super(userMessage);
+        this._area = area;
+        this._errorCode = errorCode;
+        this._userAction = 'Please retry the operation';
+        this._utcTime = new Date().toISOString();
+        this._statusCode = 0;
+        this._instanceId = 0;
+        this._appAuthCode = '';
+        this._details = '';
+        this._url = '';
+        // Ensure that instanceof works
+        Object.setPrototypeOf(this, new.target.prototype);
+        // Store the stack of the original exception if provided
+        if (stack) {
+            this.stack = stack;
+        }
+    }
+    get area() {
+        return this._area;
+    }
+    get errorCode() {
+        return this._errorCode;
+    }
+    set errorCode(value) {
+        this._errorCode = value;
+    }
+    get userAction() {
+        return this._userAction;
+    }
+    set userAction(value) {
+        this._userAction = value;
+    }
+    get utcTime() {
+        return this._utcTime;
+    }
+    get statusCode() {
+        return this._statusCode;
+    }
+    set statusCode(value) {
+        this._statusCode = value;
+    }
+    get instanceId() {
+        return this._instanceId;
+    }
+    get appAuthCode() {
+        return this._appAuthCode;
+    }
+    set appAuthCode(value) {
+        this._appAuthCode = value;
+    }
+    get details() {
+        return this._details;
+    }
+    set details(value) {
+        this._details = value;
+    }
+    get url() {
+        return this._url;
+    }
+    set url(value) {
+        this._url = value;
+    }
+    /*
+     * Override details when an API 500 error is handled
+     */
+    setApiErrorDetails(area, id, utcTime) {
+        this._area = area;
+        this._instanceId = id;
+        this._utcTime = utcTime;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/events/eventEmitter.ts":
+/*!*****************************************!*\
+  !*** ./plumbing/events/eventEmitter.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "EventEmitter": () => (/* binding */ EventEmitter)
+/* harmony export */ });
+/*
+ * A simple event emitter class
+ */
+class EventEmitter {
+    /*
+     * Subscribe to a named event
+     */
+    static subscribe(name, callback) {
+        let item = EventEmitter._events.find((e) => e.name === name);
+        if (!item) {
+            item = {
+                name,
+                callbacks: [],
+            };
+            EventEmitter._events.push(item);
+        }
+        item.callbacks.push(callback);
+    }
+    /*
+     * Unsubscribe and remove storage
+     */
+    static unsubscribe(name, callback) {
+        const item = EventEmitter._events.find((e) => e.name === name);
+        if (item) {
+            item.callbacks = item.callbacks.filter((c) => c !== callback);
+            if (item.callbacks.length === 0) {
+                EventEmitter._events = EventEmitter._events.filter((e) => e.name !== name);
+            }
+        }
+    }
+    /*
+     * Dispatch named event messages
+     */
+    static dispatch(name, data) {
+        const item = EventEmitter._events.find((e) => e.name === name);
+        if (item) {
+            item.callbacks.forEach((callback) => callback(data));
+        }
+    }
+}
+EventEmitter._events = [];
+
+
+/***/ }),
+
+/***/ "./plumbing/events/eventNames.ts":
+/*!***************************************!*\
+  !*** ./plumbing/events/eventNames.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "EventNames": () => (/* binding */ EventNames)
+/* harmony export */ });
+/*
+ * Constants for event names
+ */
+class EventNames {
+}
+// An event to reload the main view
+EventNames.ON_RELOAD_MAIN = 'reload_main';
+// An event to reload the user info view
+EventNames.ON_RELOAD_USERINFO = 'reload_userinfo';
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/authenticatorFactory.ts":
+/*!************************************************!*\
+  !*** ./plumbing/oauth/authenticatorFactory.ts ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AuthenticatorFactory": () => (/* binding */ AuthenticatorFactory)
+/* harmony export */ });
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! oidc-client */ "../node_modules/oidc-client/lib/oidc-client.min.js");
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(oidc_client__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utilities/urlHelper */ "./plumbing/utilities/urlHelper.ts");
+/* harmony import */ var _utilities_userAgentHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utilities/userAgentHelper */ "./plumbing/utilities/userAgentHelper.ts");
+/* harmony import */ var _mobile_mobileAuthenticator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mobile/mobileAuthenticator */ "./plumbing/oauth/mobile/mobileAuthenticator.ts");
+/* harmony import */ var _web_extended_extendedWebAuthenticator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./web/extended/extendedWebAuthenticator */ "./plumbing/oauth/web/extended/extendedWebAuthenticator.ts");
+/* harmony import */ var _web_webAuthenticator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./web/webAuthenticator */ "./plumbing/oauth/web/webAuthenticator.ts");
+
+
+
+
+
+
+/*
+ * Create the authenticator based on configuration
+ */
+class AuthenticatorFactory {
+    /*
+     * Return different authenticator strategies depending on the configuration and runtime conditions
+     */
+    static createAuthenticator(configuration, webBaseUrl, onLoggedIn, onLoggedOut) {
+        if (_utilities_userAgentHelper__WEBPACK_IMPORTED_MODULE_2__.UserAgentHelper.isAndroidWebView() || _utilities_userAgentHelper__WEBPACK_IMPORTED_MODULE_2__.UserAgentHelper.isIosWebView()) {
+            // When running in a web view we create an authenticator that calls back the mobile app
+            return new _mobile_mobileAuthenticator__WEBPACK_IMPORTED_MODULE_3__.MobileAuthenticator(onLoggedIn);
+        }
+        else {
+            const options = AuthenticatorFactory._createWebAuthenticatorOptions(configuration, webBaseUrl, onLoggedOut);
+            if (!configuration.reverseProxyPath) {
+                // Use standard SPA security by default
+                return new _web_webAuthenticator__WEBPACK_IMPORTED_MODULE_5__.WebAuthenticator(options);
+            }
+            else {
+                // Use an extended authenticator when proxying requests containing refresh tokens
+                return new _web_extended_extendedWebAuthenticator__WEBPACK_IMPORTED_MODULE_4__.ExtendedWebAuthenticator(options);
+            }
+        }
+    }
+    /*
+     * Create the base settings for a web authenticator
+     */
+    static _createWebAuthenticatorOptions(configuration, webBaseUrl, onLoggedOut) {
+        return {
+            configuration,
+            webBaseUrl,
+            onLoggedOut,
+            settings: {
+                // The Open Id Connect base URL
+                authority: configuration.authority,
+                // Core OAuth settings for our app
+                client_id: configuration.clientId,
+                redirect_uri: _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_1__.UrlHelper.append(webBaseUrl, configuration.redirectUri),
+                scope: configuration.scope,
+                // Use the Authorization Code Flow (PKCE)
+                response_type: 'code',
+                // By default, store tokens only in memory
+                userStore: new oidc_client__WEBPACK_IMPORTED_MODULE_0__.WebStorageStateStore({ store: new oidc_client__WEBPACK_IMPORTED_MODULE_0__.InMemoryWebStorage() }),
+                // Renew on the app's main URL and do so explicitly rather than via a background timer
+                silent_redirect_uri: _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_1__.UrlHelper.append(webBaseUrl, configuration.redirectUri),
+                automaticSilentRenew: false,
+                // Our Web UI gets user info from its API
+                loadUserInfo: false,
+                // Indicate the logout return path and listen for logout events from other browser tabs
+                post_logout_redirect_uri: _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_1__.UrlHelper.append(webBaseUrl, configuration.postLogoutRedirectUri),
+                monitorSession: true,
+            },
+        };
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/mobile/mobileAuthenticator.ts":
+/*!******************************************************!*\
+  !*** ./plumbing/oauth/mobile/mobileAuthenticator.ts ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MobileAuthenticator": () => (/* binding */ MobileAuthenticator)
+/* harmony export */ });
+/* harmony import */ var guid_typescript__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! guid-typescript */ "../node_modules/guid-typescript/dist/guid.js");
+/* harmony import */ var _mobileMethodCaller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mobileMethodCaller */ "./plumbing/oauth/mobile/mobileMethodCaller.ts");
+
+
+/*
+ * An implementation that calls back the hosting mobile app
+ */
+class MobileAuthenticator {
+    constructor(_onLoggedInAction) {
+        this._methodCaller = new _mobileMethodCaller__WEBPACK_IMPORTED_MODULE_1__.MobileMethodCaller();
+        this._onLoggedInAction = _onLoggedInAction;
+    }
+    /*
+     * This is a no op in the mobile case
+     */
+    async initialise() {
+    }
+    /*
+     * Ask the mobile app for the current access token
+     */
+    async getAccessToken() {
+        return this._methodCaller.callAsync('getAccessToken', guid_typescript__WEBPACK_IMPORTED_MODULE_0__.Guid.create().toString());
+    }
+    /*
+     * Ask the mobile app to use its refresh token to get a new access token
+     */
+    async refreshAccessToken() {
+        return this._methodCaller.callAsync('refreshAccessToken', guid_typescript__WEBPACK_IMPORTED_MODULE_0__.Guid.create().toString());
+    }
+    /*
+     * Do the login operation, which does not involve redirecting the whole page
+     */
+    async login() {
+        // Do the login work in the mobile app
+        await this._methodCaller.callAsync('login');
+        // Run other post login actions
+        this._onLoggedInAction();
+    }
+    /*
+     * The method to handle a login response on page load is is a no op when running in a web view
+     */
+    async handleLoginResponse() {
+    }
+    /*
+     * Initiate a logout redirect, which does not involve redirecting the whole page
+     */
+    async logout() {
+        await this._methodCaller.callAsync('logout');
+    }
+    /*
+     * For testing, make the access token act like it is expired
+     */
+    async expireAccessToken() {
+        await this._methodCaller.callAsync('expireAccessToken');
+    }
+    /*
+     * For testing, make the refresh token act like it is expired
+     */
+    async expireRefreshToken() {
+        await this._methodCaller.callAsync('expireRefreshToken');
+    }
+    /*
+     * There is no built in logging for the mobile case
+     */
+    updateLogLevelIfRequired() {
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/mobile/mobileMethodCaller.ts":
+/*!*****************************************************!*\
+  !*** ./plumbing/oauth/mobile/mobileMethodCaller.ts ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MobileMethodCaller": () => (/* binding */ MobileMethodCaller)
+/* harmony export */ });
+/* harmony import */ var _errors_uiError__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../errors/uiError */ "./plumbing/errors/uiError.ts");
+
+/*
+ * A utility class to deal with calling mobile methods, async completion and error responses
+ */
+class MobileMethodCaller {
+    constructor() {
+        this._isAndroid = navigator.userAgent.toLowerCase().indexOf('android') !== -1;
+    }
+    /*
+     * An interface to call the mobile app and wait for a deferred result
+     */
+    async callAsync(methodName, guid) {
+        return new Promise((resolve, reject) => {
+            // Get a callback name for this mobile method call
+            const callbackName = this._getCallbackName(methodName, guid);
+            const customWindow = window;
+            // First define callback behaviour
+            const callback = (data, errorJson) => {
+                // First remove the callback
+                delete customWindow[callbackName];
+                if (errorJson) {
+                    // Handle errors if required
+                    reject(this._parseMobileError(errorJson));
+                }
+                else {
+                    // Otherwise return a success result
+                    resolve(data);
+                }
+            };
+            // Call the mobile method to do the work
+            customWindow[callbackName] = callback;
+            this._callMethod(customWindow, methodName, callbackName);
+        });
+    }
+    /*
+     * The callback name includes a GUID for concurrent operations
+     */
+    _getCallbackName(methodName, guid) {
+        if (guid) {
+            return `callback_${methodName}_${guid}`;
+        }
+        else {
+            return `callback_${methodName}`;
+        }
+    }
+    /*
+     * Handle differences between Android and iOS interop
+     */
+    _callMethod(customWindow, methodName, callbackName) {
+        if (this._isAndroid) {
+            // For Android we call a method on a mobile object
+            customWindow.mobileBridge[methodName](callbackName);
+        }
+        else {
+            // For iOS we post a message to a message handler custom object
+            const request = {
+                methodName,
+                callbackName,
+            };
+            customWindow.webkit.messageHandlers.mobileBridge.postMessage(JSON.stringify(request));
+        }
+    }
+    /*
+     * Parse JSON from the mobile app to our own UI error object
+     */
+    _parseMobileError(errorJson) {
+        const obj = JSON.parse(errorJson);
+        const error = new _errors_uiError__WEBPACK_IMPORTED_MODULE_0__.UIError(obj.area, obj.errorCode, obj.userMessage);
+        if (obj.appAuthCode) {
+            error.appAuthCode = obj.appAuthCode;
+        }
+        // These strings are received as base 64 text to deal with characters that need escaping
+        if (obj.details) {
+            error.details = atob(obj.details);
+        }
+        if (obj.stack) {
+            error.stack = atob(obj.stack);
+        }
+        return error;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/web/extended/extendedUserManager.ts":
+/*!************************************************************!*\
+  !*** ./plumbing/oauth/web/extended/extendedUserManager.ts ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ExtendedUserManager": () => (/* binding */ ExtendedUserManager)
+/* harmony export */ });
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! oidc-client */ "../node_modules/oidc-client/lib/oidc-client.min.js");
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(oidc_client__WEBPACK_IMPORTED_MODULE_0__);
+
+/*
+ * Extend the OIDC User Manager class to deal with proxying refresh token related requests
+ * This keeps long lived credentials out of the browser and also resolves usability problems
+ */
+class ExtendedUserManager extends oidc_client__WEBPACK_IMPORTED_MODULE_0__.UserManager {
+    constructor(settings, onSignInResponse) {
+        super(settings);
+        this._onSignInResponse = onSignInResponse;
+    }
+    /*
+     * Override the base method to capture a CSRF token from the authorization code grant response
+     */
+    async processSigninResponse(url, stateStore) {
+        const response = await super.processSigninResponse(url, stateStore);
+        this._onSignInResponse(response);
+        return response;
+    }
+    /*
+     * Override the base method to force a send of refresh token grant messages
+     */
+    async signinSilent(args) {
+        // The stored user needs a refresh token, which is why we set this dummy value
+        await this._setStoredRefreshToken('-');
+        // The silent renewal is now guaranteed to never be an iframe renewal request
+        const user = await super.signinSilent(args);
+        // Undo the temporary value set above
+        await this._setStoredRefreshToken('');
+        // Return the updated user, with new tokens stored in memory
+        return user;
+    }
+    /*
+     * Temporarily change the stored refresh token value to get the behaviour we want
+     */
+    async _setStoredRefreshToken(value) {
+        const user = await this.getUser();
+        if (user) {
+            user.refresh_token = value;
+            await this.storeUser(user);
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/web/extended/extendedWebAuthenticator.ts":
+/*!*****************************************************************!*\
+  !*** ./plumbing/oauth/web/extended/extendedWebAuthenticator.ts ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ExtendedWebAuthenticator": () => (/* binding */ ExtendedWebAuthenticator)
+/* harmony export */ });
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! oidc-client */ "../node_modules/oidc-client/lib/oidc-client.min.js");
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(oidc_client__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _webAuthenticator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../webAuthenticator */ "./plumbing/oauth/web/webAuthenticator.ts");
+/* harmony import */ var _extendedUserManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./extendedUserManager */ "./plumbing/oauth/web/extended/extendedUserManager.ts");
+/* harmony import */ var _hybridTokenStorage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hybridTokenStorage */ "./plumbing/oauth/web/extended/hybridTokenStorage.ts");
+/* harmony import */ var _webReverseProxyClient__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./webReverseProxyClient */ "./plumbing/oauth/web/extended/webReverseProxyClient.ts");
+
+
+
+
+
+/*
+ * Extends the standard authenticator to handle refresh tokens stored in encrypted HTTP only cookies
+ */
+class ExtendedWebAuthenticator extends _webAuthenticator__WEBPACK_IMPORTED_MODULE_1__.WebAuthenticator {
+    constructor(options) {
+        super(options);
+        // Use a custom option to store OIDC state, but not tokens, in local storage
+        // This is needed to make the library send token refresh grant messages for new browser tabs
+        this._options.settings.userStore = new oidc_client__WEBPACK_IMPORTED_MODULE_0__.WebStorageStateStore({ store: new _hybridTokenStorage__WEBPACK_IMPORTED_MODULE_3__.HybridTokenStorage() });
+        // Create an object to manage calls vui the web reverse proxy endpoint
+        this._webReverseProxyClient = new _webReverseProxyClient__WEBPACK_IMPORTED_MODULE_4__.WebReverseProxyClient(this._options.configuration.clientId, this._options.webBaseUrl, this._options.configuration.reverseProxyPath);
+        this._setupDerivedCallbacks();
+    }
+    /*
+     * Override the base class to make the refresh token in the HTTP only cookie act expired
+     */
+    async expireRefreshToken() {
+        await super.expireAccessToken();
+        await this._webReverseProxyClient.expireRefreshToken();
+    }
+    /*
+     * Create a custom user manager used to subclass certain OAuth events
+     */
+    _createUserManager(settings) {
+        this._extendedUserManager = new _extendedUserManager__WEBPACK_IMPORTED_MODULE_2__.ExtendedUserManager(settings, this._onSignInResponse);
+        return this._extendedUserManager;
+    }
+    /*
+     * Updates needed to proxy refresh tokens in an HTTP only cookie, along with a CSRF field
+     */
+    async _onInitialise() {
+        // Update the metadata's token endpoint field to point to that of the web reverse proxy
+        // Note that metadata is stored against the settings object and the MetadataService is not properly overridable
+        const settings = this._extendedUserManager.settings;
+        await this._extendedUserManager.metadataService.getMetadata();
+        settings.metadata.token_endpoint = this._webReverseProxyClient.getTokenEndpoint();
+        // Initialise the web reverse proxy, so that it sends a CSRF field later
+        this._webReverseProxyClient.initialise();
+    }
+    /*
+     * Handle the response of the authorization code grant message
+     */
+    _onSignInResponse(response) {
+        this._webReverseProxyClient.storeCsrfFieldFromProxy(response);
+    }
+    /*
+     * When a user session ends, ensure that the refresh token cookie is removed
+     */
+    async _onSessionExpiring() {
+        await this._webReverseProxyClient.clearRefreshToken();
+    }
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    _setupDerivedCallbacks() {
+        this._onSignInResponse = this._onSignInResponse.bind(this);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/web/extended/hybridTokenStorage.ts":
+/*!***********************************************************!*\
+  !*** ./plumbing/oauth/web/extended/hybridTokenStorage.ts ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HybridTokenStorage": () => (/* binding */ HybridTokenStorage)
+/* harmony export */ });
+/*
+ * A hybrid token storage class that saves tokens only in memory in private class members
+ * This makes user state available in new browser tabs so that ExtendedUserManager token refresh works
+ */
+class HybridTokenStorage {
+    constructor() {
+        this._accessToken = '';
+        this._refreshToken = '';
+        this._idToken = '';
+    }
+    /*
+     * Customise token storage after login, so that sensitive data is only in memory
+     */
+    setItem(key, value) {
+        // Store the real tokens in memory
+        const deserialized = JSON.parse(value);
+        this._removeSensitiveDataWhenStoring(deserialized);
+        // Save protocol claims to local storage, needed to support page refreshes and multi tab browsing
+        localStorage.setItem(key, JSON.stringify(deserialized));
+    }
+    /*
+     * When UserManager.getUser is called, this supplies tokens from memory
+     */
+    getItem(key) {
+        // Load protocol claims from local storage
+        const rawData = localStorage.getItem(key);
+        if (rawData) {
+            // Update with in memory token values
+            const deserialized = JSON.parse(rawData);
+            this._setSensitiveDataWhenLoading(deserialized);
+            return JSON.stringify(deserialized);
+        }
+        return null;
+    }
+    /*
+     * Override the removeItem method to also clear tokens
+     */
+    removeItem(key) {
+        localStorage.removeItem(key);
+        this._accessToken = '';
+        this._refreshToken = '';
+        this._idToken = '';
+    }
+    /*
+     * Return the length property
+     */
+    get length() {
+        return localStorage.length;
+    }
+    /*
+     * Forward to the indexer property
+     */
+    key(index) {
+        return localStorage[index];
+    }
+    /*
+     * Return the id token for use during logout
+     */
+    getIdToken() {
+        return this._idToken;
+    }
+    /*
+     * Avoid storing tokens in local storage
+     */
+    _removeSensitiveDataWhenStoring(tokenData) {
+        // Save the updated access token
+        this._accessToken = tokenData.access_token;
+        // If there is a new refresh token then save it, otherwise maintain the existing one
+        if (tokenData.refresh_token) {
+            this._refreshToken = tokenData.refresh_token;
+        }
+        // If there is a new id token then save it, otherwise maintain the existing one
+        if (tokenData.id_token) {
+            this._idToken = tokenData.id_token;
+        }
+        // Remove tokens from HTML storage
+        delete tokenData.access_token;
+        delete tokenData.id_token;
+        delete tokenData.refresh_token;
+        if (tokenData.profile) {
+            // Also remove profile claims from the id token, since our SPA gets this data from our API
+            delete tokenData.profile.given_name;
+            delete tokenData.profile.family_name;
+            delete tokenData.profile.email;
+            // Some providers also supply this value
+            if (tokenData.profile.preferred_username) {
+                delete tokenData.profile.preferred_username;
+            }
+        }
+    }
+    /*
+     * Return our in memory tokens to the OIDC Client library
+     */
+    _setSensitiveDataWhenLoading(tokenData) {
+        tokenData.access_token = this._accessToken;
+        tokenData.id_token = this._idToken;
+        tokenData.refresh_token = this._refreshToken;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/web/extended/webReverseProxyClient.ts":
+/*!**************************************************************!*\
+  !*** ./plumbing/oauth/web/extended/webReverseProxyClient.ts ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "WebReverseProxyClient": () => (/* binding */ WebReverseProxyClient)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _errors_errorHandler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _errors_errorConsoleReporter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../errors/errorConsoleReporter */ "./plumbing/errors/errorConsoleReporter.ts");
+/* harmony import */ var _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../utilities/htmlStorageHelper */ "./plumbing/utilities/htmlStorageHelper.ts");
+/* harmony import */ var _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../utilities/urlHelper */ "./plumbing/utilities/urlHelper.ts");
+
+
+
+
+
+/*
+ * A helper class to deal with the web reverse proxy, its auth cookie, and its CSRF field
+ */
+class WebReverseProxyClient {
+    constructor(clientId, webBaseUrl, reverseProxyPath) {
+        this._responseBodyFieldName = 'csrf_field';
+        this._requestHeaderFieldName = 'x-mycompany-finalspa-refresh-csrf';
+        this._clientId = clientId;
+        this._reverseProxyBaseUrl = _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_4__.UrlHelper.append(webBaseUrl, reverseProxyPath);
+    }
+    /*
+     * Override the prototype to send a CSRF request header
+     * This accompanies the auth cookie issued by the web reverse proxy
+     */
+    initialise() {
+        // Only do this once
+        if (Object.isFrozen(XMLHttpRequest.prototype)) {
+            return;
+        }
+        /* eslint-disable @typescript-eslint/no-this-alias */
+        const that = this;
+        const orig = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function (method, url) {
+            orig.call(this, method, url);
+            that._sendCsrfFieldToProxy(this, url);
+        };
+        // Freeze the prototype so that malicious code is unable to intercept the bearer header
+        Object.freeze(XMLHttpRequest.prototype);
+    }
+    /*
+     * Return the location of the token endpoint
+     */
+    getTokenEndpoint() {
+        return _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_4__.UrlHelper.append(this._reverseProxyBaseUrl, 'token');
+    }
+    /*
+     * Store the CSRF field when the web reverse proxy returns it in the Authorization Code Grant response
+     */
+    storeCsrfFieldFromProxy(response) {
+        if (response[this._responseBodyFieldName]) {
+            _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_3__.HtmlStorageHelper.tokenEndpointCookieCsrfField = response[this._responseBodyFieldName];
+        }
+    }
+    /*
+     * Clean up web reverse proxy resources when the user session ends
+     */
+    async clearRefreshToken() {
+        // Send a delete request to the reverse proxy's token endpoint to clear HTTP only cookies
+        await this._sendWebReverseProxyRequest('DELETE', 'token');
+        // Also remove the CSRF field from local storage
+        _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_3__.HtmlStorageHelper.removeTokenEndpointCookieCsrfField();
+    }
+    /*
+     * Call the server and ask it to rewrite the refresh token in the auth cookie, to make it act expired
+     */
+    async expireRefreshToken() {
+        await this._sendWebReverseProxyRequest('POST', 'expire');
+    }
+    /*
+     * Do the common work when sending a request to the web reverse proxy
+     */
+    async _sendWebReverseProxyRequest(method, operationPath) {
+        const url = _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_4__.UrlHelper.append(this._reverseProxyBaseUrl, operationPath);
+        try {
+            // Use form URL encoded data
+            const formData = new URLSearchParams();
+            formData.append('client_id', this._clientId);
+            // Define request options
+            const options = {
+                url,
+                method,
+                data: formData,
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded',
+                },
+            };
+            // Call the web reverse proxy
+            await axios__WEBPACK_IMPORTED_MODULE_0___default().request(options);
+        }
+        catch (e) {
+            // Only output errors for this operation to the console
+            const error = _errors_errorHandler__WEBPACK_IMPORTED_MODULE_1__.ErrorHandler.getFromHttpError(e, url, 'reverse_proxy_request');
+            _errors_errorConsoleReporter__WEBPACK_IMPORTED_MODULE_2__.ErrorConsoleReporter.output(error);
+        }
+    }
+    /*
+     * Add a CSRF field to make it harder for attackers to send the web reverse proxy's auth cookie
+     */
+    _sendCsrfFieldToProxy(request, url) {
+        if (url.toLowerCase().startsWith(this._reverseProxyBaseUrl)) {
+            const value = _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_3__.HtmlStorageHelper.tokenEndpointCookieCsrfField;
+            if (value) {
+                request.setRequestHeader(this._requestHeaderFieldName, value);
+            }
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/web/utilities/customLogoutManager.ts":
+/*!*************************************************************!*\
+  !*** ./plumbing/oauth/web/utilities/customLogoutManager.ts ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CustomLogoutManager": () => (/* binding */ CustomLogoutManager)
+/* harmony export */ });
+/* harmony import */ var _errors_errorHandler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../utilities/urlHelper */ "./plumbing/utilities/urlHelper.ts");
+
+
+/*
+ * A class to manage logout via a vendor specific URL
+ */
+class CustomLogoutManager {
+    constructor(webBaseUrl, configuration) {
+        this._webBaseUrl = webBaseUrl;
+        this._configuration = configuration;
+    }
+    /*
+     * Format the Cognito specific logout URL
+     */
+    getCustomLogoutUrl() {
+        // We currently only support this provider
+        if (this._configuration.authority.indexOf('cognito') === -1) {
+            throw _errors_errorHandler__WEBPACK_IMPORTED_MODULE_0__.ErrorHandler.getFromLogoutUnsupported();
+        }
+        // Form the full logout redirect URI
+        const clientId = encodeURIComponent(this._configuration.clientId);
+        const logoutPath = _utilities_urlHelper__WEBPACK_IMPORTED_MODULE_1__.UrlHelper.append(this._webBaseUrl, this._configuration.postLogoutRedirectUri);
+        const postLogoutReturnUri = encodeURIComponent(logoutPath);
+        // Upon return, loggedout.html redirects to https://web.authsamples.com/spa#loggedout
+        return `${this._configuration.customLogoutEndpoint}?client_id=${clientId}&logout_uri=${postLogoutReturnUri}`;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/web/utilities/oidcLogger.ts":
+/*!****************************************************!*\
+  !*** ./plumbing/oauth/web/utilities/oidcLogger.ts ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "OidcLogger": () => (/* binding */ OidcLogger)
+/* harmony export */ });
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! oidc-client */ "../node_modules/oidc-client/lib/oidc-client.min.js");
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(oidc_client__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var url_parse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! url-parse */ "../node_modules/url-parse/index.js");
+/* harmony import */ var url_parse__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(url_parse__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../utilities/htmlStorageHelper */ "./plumbing/utilities/htmlStorageHelper.ts");
+
+
+
+/*
+ * A helper class to deal with calculating and storing the log level
+ */
+class OidcLogger {
+    /*
+     * Set the initial log details
+     */
+    constructor() {
+        oidc_client__WEBPACK_IMPORTED_MODULE_0__.Log.logger = console;
+        let level = this._getUrlLogLevel();
+        if (!level) {
+            level = this._getStoredLogLevel();
+        }
+        this._setLogLevel(level);
+    }
+    /*
+     * If the URL has been updated such as to #log=debug, then update the OIDC Client logging level
+     */
+    updateLogLevelIfRequired() {
+        const newLevel = this._getUrlLogLevel();
+        if (newLevel && newLevel !== this._getStoredLogLevel()) {
+            this._setLogLevel(newLevel);
+            _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_2__.HtmlStorageHelper.oidcLogLevel = newLevel;
+        }
+    }
+    /*
+     * Get the log level from a query parameter in the hash URL, such as #companies=2&log=info
+     */
+    _getUrlLogLevel() {
+        if (location.hash.startsWith('#')) {
+            const hashFragment = location.hash.substring(1).replace(/^\//, '');
+            if (hashFragment) {
+                const data = url_parse__WEBPACK_IMPORTED_MODULE_1___default()('?' + hashFragment, true);
+                const logLevel = data.query.log;
+                if (logLevel) {
+                    return logLevel.toLowerCase();
+                }
+            }
+        }
+        return '';
+    }
+    /*
+     * Get the value from session storage if it exists
+     */
+    _getStoredLogLevel() {
+        return _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_2__.HtmlStorageHelper.oidcLogLevel;
+    }
+    /*
+     * Update the log level
+     */
+    _setLogLevel(level) {
+        const data = {
+            none: oidc_client__WEBPACK_IMPORTED_MODULE_0__.Log.NONE,
+            error: oidc_client__WEBPACK_IMPORTED_MODULE_0__.Log.ERROR,
+            warn: oidc_client__WEBPACK_IMPORTED_MODULE_0__.Log.WARN,
+            info: oidc_client__WEBPACK_IMPORTED_MODULE_0__.Log.INFO,
+            debug: oidc_client__WEBPACK_IMPORTED_MODULE_0__.Log.DEBUG,
+        };
+        const levelToSet = level || 'none';
+        const numericLevel = data[levelToSet];
+        if (numericLevel !== undefined) {
+            oidc_client__WEBPACK_IMPORTED_MODULE_0__.Log.level = numericLevel;
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/web/utilities/tokenRenewalResponseHandler.ts":
+/*!*********************************************************************!*\
+  !*** ./plumbing/oauth/web/utilities/tokenRenewalResponseHandler.ts ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TokenRenewalResponseHandler": () => (/* binding */ TokenRenewalResponseHandler)
+/* harmony export */ });
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! oidc-client */ "../node_modules/oidc-client/lib/oidc-client.min.js");
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(oidc_client__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var url_parse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! url-parse */ "../node_modules/url-parse/index.js");
+/* harmony import */ var url_parse__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(url_parse__WEBPACK_IMPORTED_MODULE_1__);
+
+
+/*
+ * Receive iframe token renewal responses
+ */
+class TokenRenewalResponseHandler {
+    constructor(configuration) {
+        const settings = {
+            authority: configuration.authority,
+            client_id: configuration.clientId,
+        };
+        this._userManager = new oidc_client__WEBPACK_IMPORTED_MODULE_0__.UserManager(settings);
+    }
+    /*
+     * Handle token renewal responses from the authorization server
+     */
+    async handleSilentTokenRenewalResponse() {
+        // If the page loads with a state query parameter we classify it as an OAuth response
+        const urlData = url_parse__WEBPACK_IMPORTED_MODULE_1___default()(location.href, true);
+        if (urlData.query && urlData.query.state) {
+            // Start processing of the authorization response on the iframe
+            // Any errors are reported via the authenticator class of the main window
+            await this._userManager.signinSilentCallback();
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/oauth/web/webAuthenticator.ts":
+/*!************************************************!*\
+  !*** ./plumbing/oauth/web/webAuthenticator.ts ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "WebAuthenticator": () => (/* binding */ WebAuthenticator)
+/* harmony export */ });
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! oidc-client */ "../node_modules/oidc-client/lib/oidc-client.min.js");
+/* harmony import */ var oidc_client__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(oidc_client__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var url_parse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! url-parse */ "../node_modules/url-parse/index.js");
+/* harmony import */ var url_parse__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(url_parse__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../errors/errorCodes */ "./plumbing/errors/errorCodes.ts");
+/* harmony import */ var _errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _utilities_concurrentActionHandler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utilities/concurrentActionHandler */ "./plumbing/utilities/concurrentActionHandler.ts");
+/* harmony import */ var _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utilities/htmlStorageHelper */ "./plumbing/utilities/htmlStorageHelper.ts");
+/* harmony import */ var _utilities_customLogoutManager__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utilities/customLogoutManager */ "./plumbing/oauth/web/utilities/customLogoutManager.ts");
+/* harmony import */ var _utilities_oidcLogger__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utilities/oidcLogger */ "./plumbing/oauth/web/utilities/oidcLogger.ts");
+
+
+
+
+
+
+
+
+/*
+ * A web authenticator with standard behaviour that can be extended via a subclass
+ */
+class WebAuthenticator {
+    constructor(options) {
+        this._options = options;
+        this._oidcLogger = new _utilities_oidcLogger__WEBPACK_IMPORTED_MODULE_7__.OidcLogger();
+        this._concurrencyHandler = new _utilities_concurrentActionHandler__WEBPACK_IMPORTED_MODULE_4__.ConcurrentActionHandler();
+        this._setupCallbacks();
+    }
+    /*
+     * Create the user manager during initialisation
+     */
+    async initialise() {
+        // First create the user manager from settings
+        this._userManager = this._createUserManager(this._options.settings);
+        // When the user signs out from another browser tab, also remove tokens from this browser tab
+        // This will only work if the Authorization Server has a check_session_iframe endpoint
+        this._userManager.events.addUserSignedOut(async () => {
+            this._userManager.removeUser();
+            this._options.onLoggedOut();
+        });
+        // Allow any derived classes to do extra work
+        await this._onInitialise();
+    }
+    /*
+     * Get an access token if possible, which will retrieve it from storage
+     */
+    async getAccessToken() {
+        // Get tokens from OIDC client
+        const user = await this._userManager.getUser();
+        if (user && user.access_token) {
+            return user.access_token;
+        }
+        // Try to refresh the access token otherwise
+        return await this.refreshAccessToken();
+    }
+    /*
+     * Try to refresh an access token in a synchronised manner across multiple views
+     */
+    async refreshAccessToken() {
+        // See if the user is stored on any browser tab
+        let user = await this._userManager.getUser();
+        if (user) {
+            // The concurrency handler will only do the refresh work for the first UI view that requests it
+            await this._concurrencyHandler.execute(this._performTokenRefresh);
+            // Return the renewed access token if possible
+            user = await this._userManager.getUser();
+            if (user && user.access_token) {
+                return user.access_token;
+            }
+        }
+        // Trigger a login redirect if there are no unexpected errors but we cannot refresh
+        throw _errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__.ErrorHandler.getFromLoginRequired();
+    }
+    /*
+     * Trigger the login redirect
+     */
+    async login() {
+        try {
+            // Get the identity provider to use or default to unknown
+            const idp = this._getRuntimeIdentityProvider();
+            const extraQueryParams = {};
+            if (idp) {
+                extraQueryParams[this._options.configuration.idpParameterName] = idp;
+            }
+            // Store data during the redirect
+            const data = {
+                hash: location.hash,
+                idp,
+            };
+            // Start the login redirect
+            await this._userManager.signinRedirect({
+                state: data,
+                extraQueryParams,
+            });
+        }
+        catch (e) {
+            // Handle OAuth specific errors, such as those calling the metadata endpoint
+            throw _errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__.ErrorHandler.getFromLoginOperation(e, _errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__.ErrorCodes.loginRequestFailed);
+        }
+    }
+    /*
+     * Handle login responses on the main window
+     */
+    async handleLoginResponse() {
+        var _a;
+        // If the page loads with a state query parameter we classify it as an OAuth response
+        const urlData = url_parse__WEBPACK_IMPORTED_MODULE_1___default()(location.href, true);
+        if (urlData.query && urlData.query.state) {
+            let redirectLocation = '#';
+            try {
+                // Only try to process a login response if the state exists
+                const storedState = await ((_a = this._userManager.settings.stateStore) === null || _a === void 0 ? void 0 : _a.get(urlData.query.state));
+                if (storedState) {
+                    // Process the login response and send the authorization code grant message
+                    const user = await this._userManager.signinRedirectCallback();
+                    // If an identity provider query parameter was set, save it after a successful login
+                    if (user.state.idp) {
+                        _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_5__.HtmlStorageHelper.identityProvider = user.state.idp;
+                    }
+                    // We will redirect to the hash URL before the login redirect
+                    redirectLocation = user.state.hash;
+                    // Delete any local storage redirect state older than 5 minutes for incomplete login redirects
+                    await this._userManager.clearStaleState();
+                }
+            }
+            catch (e) {
+                // Handle and rethrow OAuth response errors
+                throw _errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__.ErrorHandler.getFromLoginOperation(e, _errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__.ErrorCodes.loginResponseFailed);
+            }
+            finally {
+                // Always replace the browser location, to remove OAuth details from back navigation
+                history.replaceState({}, document.title, redirectLocation);
+            }
+        }
+    }
+    /*
+     * Do the logout redirect
+     */
+    async logout() {
+        var _a, _b;
+        try {
+            // Allow derived classes to perform clean up
+            await this._onSessionExpiring();
+            // See if the provider supports standards based logout
+            const endSessionEndpoint = await this._userManager.metadataService.getEndSessionEndpoint();
+            if (endSessionEndpoint) {
+                // With some providers, during multi tab browsing we may not have an id token on the current tab
+                const user = await ((_a = this._userManager) === null || _a === void 0 ? void 0 : _a.getUser());
+                if (!user || !user.id_token) {
+                    await this._userManager.removeUser();
+                    throw _errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__.ErrorHandler.getFromMissingIdToken();
+                }
+                // Clean up state then invoke the standard behaviour
+                await this._userManager.signoutRedirect();
+            }
+            else {
+                // Remove tokens from memory
+                await ((_b = this._userManager) === null || _b === void 0 ? void 0 : _b.removeUser());
+                // Then format the vendor specific URL and do the redirect
+                const logoutManager = new _utilities_customLogoutManager__WEBPACK_IMPORTED_MODULE_6__.CustomLogoutManager(this._options.webBaseUrl, this._options.configuration);
+                const fullLogoutUrl = logoutManager.getCustomLogoutUrl();
+                location.replace(fullLogoutUrl);
+            }
+        }
+        catch (e) {
+            // Handle any technical errors
+            throw _errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__.ErrorHandler.getFromLogoutOperation(e, _errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__.ErrorCodes.logoutRequestFailed);
+        }
+    }
+    /*
+     * This method is for testing only, to make the access token in storage act like it has expired
+     */
+    async expireAccessToken() {
+        const user = await this._userManager.getUser();
+        if (user) {
+            user.access_token = 'x' + user.access_token + 'x';
+            this._userManager.storeUser(user);
+        }
+    }
+    /*
+     * For testing, make the refresh token act like it is expired, when applicable
+     */
+    async expireRefreshToken() {
+        // First expire the access token so that the next API call returns a 401
+        await this.expireAccessToken();
+        // Expire the refresh token if we have one
+        const user = await this._userManager.getUser();
+        if (user && user.refresh_token) {
+            user.refresh_token = 'x' + user.refresh_token + 'x';
+            this._userManager.storeUser(user);
+        }
+    }
+    /*
+     * Manage updates based on the user typing in a hash fragment URL such as #log=debug
+     */
+    updateLogLevelIfRequired() {
+        this._oidcLogger.updateLogLevelIfRequired();
+    }
+    /*
+     * The default implementation of creating the user manager can be overridden by derived classes
+     */
+    _createUserManager(settings) {
+        return new oidc_client__WEBPACK_IMPORTED_MODULE_0__.UserManager(settings);
+    }
+    /*
+     * Can be overridden by derived classes to do further initialisation
+     */
+    async _onInitialise() {
+    }
+    /*
+     * Can be overridden by derived classes to do further work when a session expires
+     */
+    async _onSessionExpiring() {
+    }
+    /*
+     * Ask OIDC client to silently renew the access token
+     */
+    async _performTokenRefresh() {
+        try {
+            // OIDC Client will either send a refresh token grant message or use a hidden iframe
+            await this._userManager.signinSilent();
+        }
+        catch (e) {
+            if (this._isSessionExpired(e)) {
+                // Remove token data, which will result in triggering a login redirect later
+                await this._userManager.removeUser();
+                // Inform derived classes where applicable
+                await this._onSessionExpiring();
+            }
+            else {
+                // Rethrow other errors
+                throw _errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__.ErrorHandler.getFromTokenError(e, _errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__.ErrorCodes.tokenRenewalError);
+            }
+        }
+    }
+    /*
+     * Handle the idp query parameter when redirecting
+     */
+    _getRuntimeIdentityProvider() {
+        // Use idp= to remove the identity provider from storage
+        const urlData = url_parse__WEBPACK_IMPORTED_MODULE_1___default()(location.href, true);
+        if (urlData.query && urlData.query.idp === '') {
+            _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_5__.HtmlStorageHelper.removeIdentityProvider();
+            return '';
+        }
+        // Use a value such as idp=Okta to select an identity provider
+        if (urlData.query && urlData.query.idp) {
+            return urlData.query.idp;
+        }
+        // Use a local storage value if it exists
+        return _utilities_htmlStorageHelper__WEBPACK_IMPORTED_MODULE_5__.HtmlStorageHelper.identityProvider;
+    }
+    /*
+     * Treat certain errors as session expired
+     */
+    _isSessionExpired(e) {
+        // An invalid_grant error code from the Authorization Server means an expired refresh token
+        if (e.message === _errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__.ErrorCodes.invalidGrant) {
+            return true;
+        }
+        // A login_required error code means iframe silent renewal has failed
+        if (e.error === _errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__.ErrorCodes.loginRequired) {
+            return true;
+        }
+        // This can happen when providers are not standards based, in which case we treat it as an invalid_grant
+        // https://github.com/IdentityModel/oidc-client-js/issues/1058
+        if (e.message === 'auth_time in id_token does not match original auth_time') {
+            return true;
+        }
+        return false;
+    }
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    _setupCallbacks() {
+        this._performTokenRefresh = this._performTokenRefresh.bind(this);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/utilities/axiosUtils.ts":
+/*!******************************************!*\
+  !*** ./plumbing/utilities/axiosUtils.ts ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AxiosUtils": () => (/* binding */ AxiosUtils)
+/* harmony export */ });
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+
+/*
+ * Utilities related to the Axios library
+ */
+class AxiosUtils {
+    /*
+     * Axios has a known issue where it swallows parse errors, so we throw an error in the way Axios should
+     * https://github.com/axios/axios/issues/61
+     */
+    static checkJson(data) {
+        if (typeof data !== 'object') {
+            const error = _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_0__.ErrorHandler.getFromJsonParseError();
+            error.response = {
+                status: 200,
+            };
+            throw error;
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/utilities/concurrentActionHandler.ts":
+/*!*******************************************************!*\
+  !*** ./plumbing/utilities/concurrentActionHandler.ts ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ConcurrentActionHandler": () => (/* binding */ ConcurrentActionHandler)
+/* harmony export */ });
+/*
+ * Used when multiple React UI fragments attempt an action that needs to be performed only once
+ * Javascript is single threaded so we do not need to lock as in other languages
+ */
+class ConcurrentActionHandler {
+    constructor() {
+        this._callbacks = [];
+    }
+    /*
+     * Run the supplied action once and return a promise while in progress
+     */
+    async execute(action) {
+        // Create a promise through which to return the result
+        const promise = new Promise((resolve, reject) => {
+            const onSuccess = () => {
+                resolve(null);
+            };
+            const onError = (error) => {
+                reject(error);
+            };
+            this._callbacks.push([onSuccess, onError]);
+        });
+        // Only do the work for the first UI view that calls us
+        const performAction = this._callbacks.length === 1;
+        if (performAction) {
+            try {
+                // Do the work
+                await action();
+                // On success resolve all promises
+                this._callbacks.forEach((c) => {
+                    c[0]();
+                });
+            }
+            catch (e) {
+                // On failure resolve all promises with the same error
+                this._callbacks.forEach((c) => {
+                    c[1](e);
+                });
+            }
+            // Reset once complete
+            this._callbacks = [];
+        }
+        // Return the promise
+        return promise;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/utilities/htmlStorageHelper.ts":
+/*!*************************************************!*\
+  !*** ./plumbing/utilities/htmlStorageHelper.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HtmlStorageHelper": () => (/* binding */ HtmlStorageHelper)
+/* harmony export */ });
+/*
+ * A utility class to keep our HTML storage organised
+ */
+class HtmlStorageHelper {
+    /*
+     * Return a CSRF field used for refresh token grant requests to the reverse proxy token endpoint
+     */
+    static get tokenEndpointCookieCsrfField() {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._cookieCsrfField}`;
+        return localStorage.getItem(key) || '';
+    }
+    /*
+     * Set the CSRF field used with the refresh token cookie
+     */
+    static set tokenEndpointCookieCsrfField(value) {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._cookieCsrfField}`;
+        localStorage.setItem(key, value);
+    }
+    /*
+     * Remove the CSRF field
+     */
+    static removeTokenEndpointCookieCsrfField() {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._cookieCsrfField}`;
+        localStorage.removeItem(key);
+    }
+    /*
+     * Return the preferred identity provider for the user
+     */
+    static get identityProvider() {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._identityProvider}`;
+        return localStorage.getItem(key) || '';
+    }
+    /*
+     * Record a federated login value supplied in a query parameter such as idp
+     */
+    static set identityProvider(value) {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._identityProvider}`;
+        localStorage.setItem(key, value);
+    }
+    /*
+     * Remove a federated login value
+     */
+    static removeIdentityProvider() {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._identityProvider}`;
+        localStorage.removeItem(key);
+    }
+    /*
+     * Get the session id for API requests from this browser tab
+     */
+    static get apiSessionId() {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
+        return sessionStorage.getItem(key) || '';
+    }
+    /*
+     * Record a session id to be sent to the API for requests from this browser tab
+     */
+    static set apiSessionId(value) {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
+        sessionStorage.setItem(key, value);
+    }
+    /*
+     * Get the log level for viewing OIDC client library details
+     */
+    static get oidcLogLevel() {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._oidcLogLevelKeyName}`;
+        return localStorage.getItem(key) || '';
+    }
+    /*
+     * Record the log level for viewing OIDC client library details
+     */
+    static set oidcLogLevel(value) {
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._oidcLogLevelKeyName}`;
+        localStorage.setItem(key, value);
+    }
+}
+HtmlStorageHelper._prefix = 'finalspa.';
+HtmlStorageHelper._isLoggedInField = 'loggedin';
+HtmlStorageHelper._cookieCsrfField = 'cookie-csrf-field';
+HtmlStorageHelper._identityProvider = 'identity-provider';
+HtmlStorageHelper._apiSessionKeyName = 'api-sessionid';
+HtmlStorageHelper._oidcLogLevelKeyName = 'oidc-log-level';
+
+
+/***/ }),
+
+/***/ "./plumbing/utilities/sessionManager.ts":
+/*!**********************************************!*\
+  !*** ./plumbing/utilities/sessionManager.ts ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SessionManager": () => (/* binding */ SessionManager)
+/* harmony export */ });
+/* harmony import */ var guid_typescript__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! guid-typescript */ "../node_modules/guid-typescript/dist/guid.js");
+/* harmony import */ var _htmlStorageHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./htmlStorageHelper */ "./plumbing/utilities/htmlStorageHelper.ts");
+
+
+/*
+ * A custom session id header is added on each API call that is included in API logs
+ */
+class SessionManager {
+    /*
+     * Create the session when the browser tab is first created
+     */
+    static get() {
+        let sessionId = _htmlStorageHelper__WEBPACK_IMPORTED_MODULE_1__.HtmlStorageHelper.apiSessionId;
+        if (!sessionId) {
+            sessionId = guid_typescript__WEBPACK_IMPORTED_MODULE_0__.Guid.create().toString();
+            _htmlStorageHelper__WEBPACK_IMPORTED_MODULE_1__.HtmlStorageHelper.apiSessionId = sessionId;
+        }
+        return sessionId;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/utilities/urlHelper.ts":
+/*!*****************************************!*\
+  !*** ./plumbing/utilities/urlHelper.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "UrlHelper": () => (/* binding */ UrlHelper)
+/* harmony export */ });
+/*
+ * A utility class to append URLs
+ */
+class UrlHelper {
+    /*
+     * In AWS we use a trailing / in the redirect URI, to prevent an unwanted redirect from /spa?code=xxx to /spa/
+     */
+    static append(baseUrl, path) {
+        if (!baseUrl.endsWith('/') && !path.startsWith('/')) {
+            return `${baseUrl}/${path}`;
+        }
+        return `${baseUrl}${path}`;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./plumbing/utilities/userAgentHelper.ts":
+/*!***********************************************!*\
+  !*** ./plumbing/utilities/userAgentHelper.ts ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "UserAgentHelper": () => (/* binding */ UserAgentHelper)
+/* harmony export */ });
+/*
+ * A helper class to work with the user agent
+ */
+class UserAgentHelper {
+    /*
+     * Look for Android and wv
+     */
+    static isAndroidWebView() {
+        const pattern = 'Android.*(wv|.0.0.0)';
+        const regex = new RegExp(pattern);
+        return !!navigator.userAgent.match(regex);
+    }
+    /*
+     * Look for an iOS related string without Safari or Firefox
+     * Note that up to date iPad web views use 'Macintosh' rather than 'iPad'
+     */
+    static isIosWebView() {
+        const pattern = '(iPhone|iPod|iPad|Macintosh)(?!.*Safari)(?!.*Firefox)';
+        const regex = new RegExp(pattern);
+        return !!navigator.userAgent.match(regex);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/companies/companiesContainer.tsx":
+/*!************************************************!*\
+  !*** ./views/companies/companiesContainer.tsx ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CompaniesContainer": () => (/* binding */ CompaniesContainer)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../plumbing/errors/errorCodes */ "./plumbing/errors/errorCodes.ts");
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../plumbing/events/eventEmitter */ "./plumbing/events/eventEmitter.ts");
+/* harmony import */ var _plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../plumbing/events/eventNames */ "./plumbing/events/eventNames.ts");
+/* harmony import */ var _errors_errorSummaryView__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../errors/errorSummaryView */ "./views/errors/errorSummaryView.tsx");
+/* harmony import */ var _utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utilities/apiViewNames */ "./views/utilities/apiViewNames.ts");
+/* harmony import */ var _companiesDesktopView__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./companiesDesktopView */ "./views/companies/companiesDesktopView.tsx");
+/* harmony import */ var _companiesMobileView__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./companiesMobileView */ "./views/companies/companiesMobileView.tsx");
+
+
+
+
+
+
+
+
+
+/*
+ * Render the companies view to replace the existing view
+ */
+class CompaniesContainer extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+        props.onLoading();
+        this.state = {
+            companies: [],
+            error: null,
+        };
+        this._setupCallbacks();
+    }
+    /*
+     * Render according to the current state and the type of device
+     */
+    render() {
+        // Render an error on failure
+        if (this.state.error) {
+            return this._renderError();
+        }
+        // Display nothing until there is data
+        if (this.state.companies.length === 0) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null));
+        }
+        // Display the desktop or mobile view otherwise
+        const props = {
+            companies: this.state.companies,
+        };
+        if (this.props.isMobileSize) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_companiesMobileView__WEBPACK_IMPORTED_MODULE_8__.CompaniesMobileView, Object.assign({}, props)));
+        }
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_companiesDesktopView__WEBPACK_IMPORTED_MODULE_7__.CompaniesDesktopView, Object.assign({}, props)));
+    }
+    /*
+     * Load data then listen for the reload event
+     */
+    async componentDidMount() {
+        _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_3__.EventEmitter.subscribe(_plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_4__.EventNames.ON_RELOAD_MAIN, this._loadData);
+        await this._loadData(false);
+    }
+    /*
+     * Unsubscribe when we unload
+     */
+    async componentWillUnmount() {
+        _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_3__.EventEmitter.unsubscribe(_plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_4__.EventNames.ON_RELOAD_MAIN, this._loadData);
+    }
+    /*
+     * Get data from the API and update state
+     */
+    async _loadData(causeError) {
+        try {
+            this.setState({ error: null });
+            // Do the load
+            this.props.events.onViewLoading(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.Main);
+            const companies = await this.props.apiClient.getCompanyList({ causeError });
+            this.props.events.onViewLoaded(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.Main);
+            this.setState({ companies });
+        }
+        catch (e) {
+            // Update state
+            const error = _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_2__.ErrorHandler.getFromException(e);
+            this.setState({ companies: [], error });
+            this.props.events.onViewLoadFailed(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.Main, error);
+        }
+    }
+    /*
+     * Output error details if required
+     */
+    _renderError() {
+        if (this.state.error.errorCode === _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_1__.ErrorCodes.loginRequired) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null));
+        }
+        const errorProps = {
+            hyperlinkMessage: 'Problem Encountered in Companies View',
+            dialogTitle: 'Companies View Error',
+            error: this.state.error,
+            centred: true,
+        };
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_errors_errorSummaryView__WEBPACK_IMPORTED_MODULE_5__.ErrorSummaryView, Object.assign({}, errorProps)));
+    }
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    _setupCallbacks() {
+        this._loadData = this._loadData.bind(this);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/companies/companiesDesktopView.tsx":
+/*!**************************************************!*\
+  !*** ./views/companies/companiesDesktopView.tsx ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CompaniesDesktopView": () => (/* binding */ CompaniesDesktopView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+
+/*
+ * Render the companies view for the browser case
+ */
+class CompaniesDesktopView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+    }
+    /*
+     * Render according to the current state
+     */
+    render() {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card border-0' },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row card-header' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 font-weight-bold text-center' }, "Account"),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 font-weight-bold text-center' }, "Region"),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2' }),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 font-weight-bold text-right' }, "Target USD"),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 font-weight-bold text-right' }, "Investment USD"),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 font-weight-bold text-right' }, "# Investors")),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card-body' }, this.props.companies.map((company) => this._renderItem(company)))));
+    }
+    /*
+     * Render a single company on a large screen
+     */
+    _renderItem(company) {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row listRow', key: company.id },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 my-auto text-center' }, company.name),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 my-auto text-center' }, company.region),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 my-auto text-center' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", { href: `#company=${company.id}` }, "View Transactions")),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 my-auto highlightcolor font-weight-bold text-right' }, Number(company.targetUsd).toLocaleString()),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 my-auto highlightcolor font-weight-bold text-right' }, Number(company.investmentUsd).toLocaleString()),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 my-auto font-weight-bold text-right' }, company.noInvestors)));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/companies/companiesMobileView.tsx":
+/*!*************************************************!*\
+  !*** ./views/companies/companiesMobileView.tsx ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CompaniesMobileView": () => (/* binding */ CompaniesMobileView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+
+/*
+ * Render the companies view for the mobile case
+ */
+class CompaniesMobileView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+    }
+    /*
+     * Render according to the current state
+     */
+    render() {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card border-0' },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card-header row' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-12 text-center mx-auto font-weight-bold' }, "Company List")),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card-body' }, this.props.companies.map((company) => this._renderItem(company)))));
+    }
+    /*
+     * Render a single company on a mobile device
+     */
+    _renderItem(company) {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { key: company.id },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row mobileHeaderRow' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6 h4' },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", { href: `#company=${company.id}` }, company.name)),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6 h4 font-weight-bold' }, company.region)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row mobileRow' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6' }, "Target USD"),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6 highlightcolor font-weight-bold' }, Number(company.targetUsd).toLocaleString())),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row mobileRow' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6' }, "Investment USD"),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6 highlightcolor font-weight-bold' }, Number(company.investmentUsd).toLocaleString())),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row mobileRow' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6' }, "# Investors"),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6 font-weight-bold' }, company.noInvestors)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("hr", null)));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/errors/errorBoundary.tsx":
+/*!****************************************!*\
+  !*** ./views/errors/errorBoundary.tsx ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ErrorBoundary": () => (/* binding */ ErrorBoundary)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _errorSummaryView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./errorSummaryView */ "./views/errors/errorSummaryView.tsx");
+
+
+
+/*
+ * Manages catching of rendering errors anywhere in the tree view during development
+ */
+class ErrorBoundary extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    /*
+     * Update state so the next render will show the fallback UI
+     */
+    static getDerivedStateFromError(error) {
+        return { error: _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_1__.ErrorHandler.getFromRenderError(error) };
+    }
+    /*
+     * Initialise to the default state where there is no error and children are rendered
+     */
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: null,
+        };
+    }
+    /*
+     * Render children, or an error if a component has failed to render
+     */
+    render() {
+        if (!this.state.error) {
+            return this.props.children;
+        }
+        const errorProps = {
+            hyperlinkMessage: 'Problem Encountered Rendering Views',
+            dialogTitle: 'Rendering Error',
+            error: this.state.error,
+            centred: true,
+        };
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_errorSummaryView__WEBPACK_IMPORTED_MODULE_2__.ErrorSummaryView, Object.assign({}, errorProps)));
+    }
+    /*
+     * Catch errors and translate for display
+     */
+    componentDidCatch(error, errorInfo) {
+        const details = _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_1__.ErrorHandler.getFromRenderError(error, errorInfo.componentStack);
+        this.setState({ error: details });
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/errors/errorDetailsView.tsx":
+/*!*******************************************!*\
+  !*** ./views/errors/errorDetailsView.tsx ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ErrorDetailsView": () => (/* binding */ ErrorDetailsView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var _plumbing_errors_errorFormatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../plumbing/errors/errorFormatter */ "./plumbing/errors/errorFormatter.ts");
+
+
+/*
+ * Manages rendering the error detailed view
+ */
+class ErrorDetailsView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+    }
+    /*
+     * Output the error if it exists
+     */
+    render() {
+        const formatter = new _plumbing_errors_errorFormatter__WEBPACK_IMPORTED_MODULE_1__.ErrorFormatter();
+        const lines = formatter.getErrorLines(this.props.error);
+        const stack = formatter.getErrorStack(this.props.error);
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card border-0' },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-10 errorcolor largetext text-center' }, this.props.title),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-2 text-right' },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { onClick: this.props.handleClose, type: 'button' }, "x"))),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row card-body' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-12' },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'align-items-center mx-auto' },
+                        lines.map((line) => this._renderErrorLine(line)),
+                        this._renderErrorStack(stack))))));
+    }
+    /*
+     * Render a single error line
+     */
+    _renderErrorLine(line) {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row', key: line.id },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-4' }, line.label),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: `col-8 ${line.valueStyle} font-weight-bold` }, line.value)));
+    }
+    /*
+     * Render stack trace details in debug builds
+     */
+    _renderErrorStack(line) {
+        if (!line) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null));
+        }
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null,
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row', key: line.id },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-4' }, "\u00A0"),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-8' }, "\u00A0")),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row', key: line.id + 1 },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-4' }, line.label),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-8 small' }, line.value))));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/errors/errorSummaryView.tsx":
+/*!*******************************************!*\
+  !*** ./views/errors/errorSummaryView.tsx ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ErrorSummaryView": () => (/* binding */ ErrorSummaryView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-modal */ "../node_modules/react-modal/lib/index.js");
+/* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../plumbing/errors/errorCodes */ "./plumbing/errors/errorCodes.ts");
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _errorDetailsView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./errorDetailsView */ "./views/errors/errorDetailsView.tsx");
+
+
+
+
+
+/*
+ * Manages rendering of error summary information
+ */
+class ErrorSummaryView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+        // Initialise state and ensure that the error is the expected type for display
+        this.state = {
+            showDetails: false,
+            error: props.error ? _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_3__.ErrorHandler.getFromException(props.error) : null,
+        };
+        this._setupCallbacks();
+    }
+    /*
+     * If the error state changes we update state used for rendering
+     */
+    static getDerivedStateFromProps(nextProps, prevState) {
+        // Return updated state
+        if (nextProps.error !== prevState.error) {
+            return {
+                error: nextProps.error,
+                showDetails: false,
+            };
+        }
+        // Indicate no changes to state
+        return null;
+    }
+    /*
+     * Render the error hyperlink, and show the modal dialog when the user selects it
+     */
+    render() {
+        // If there is no real error, do not render anything
+        if (!this.state.error || this.state.error.errorCode === _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_2__.ErrorCodes.loginRequired) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null));
+        }
+        if (this.props.centred) {
+            return (
+            // Render the hyperlink as a centred row in the main UI
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null,
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6 text-center mx-auto' }, this._renderHyperlink())),
+                this._renderModalDialog()));
+        }
+        else {
+            return (
+            // Render the hyperlink in a more compact form, used for user info errors
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null,
+                this._renderHyperlink(),
+                this._renderModalDialog()));
+        }
+    }
+    /*
+     * Return the markup for the hyperlink
+     */
+    _renderHyperlink() {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", { href: '#', className: 'errorcolor largetext text-center', onClick: this._handleSummaryClick }, this.props.hyperlinkMessage));
+    }
+    /*
+     * Return the markup for the modal dialog
+     */
+    _renderModalDialog() {
+        const errorDetailsProps = {
+            title: this.props.dialogTitle,
+            error: this.state.error,
+            handleClose: this._handleDetailsDialogClose,
+        };
+        const customStyles = {
+            overlay: {
+                backgroundColor: 'lightgray',
+            },
+        };
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement((react_modal__WEBPACK_IMPORTED_MODULE_1___default()), { isOpen: this.state.showDetails, onRequestClose: this._handleDetailsDialogClose, contentLabel: this.props.dialogTitle, style: customStyles },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_errorDetailsView__WEBPACK_IMPORTED_MODULE_4__.ErrorDetailsView, Object.assign({}, errorDetailsProps))));
+    }
+    /*
+     * Invoke error details when the link is clicked
+     */
+    _handleSummaryClick(event) {
+        event.preventDefault();
+        this.setState({ showDetails: true });
+    }
+    /*
+     * Reset state when the dialog's close button is clicked
+     */
+    _handleDetailsDialogClose() {
+        this.setState({ showDetails: false });
+    }
+    /*
+     * Ensure that the this parameter is available in callbacks
+     */
+    _setupCallbacks() {
+        this._handleSummaryClick = this._handleSummaryClick.bind(this);
+        this._handleDetailsDialogClose = this._handleDetailsDialogClose.bind(this);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/headings/headerButtonsView.tsx":
+/*!**********************************************!*\
+  !*** ./views/headings/headerButtonsView.tsx ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HeaderButtonsView": () => (/* binding */ HeaderButtonsView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+
+/*
+ * Render the header buttons
+ */
+class HeaderButtonsView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+        this._longPressStartTime = null;
+        this._longPressMilliseconds = 2000;
+        this._setupCallbacks();
+    }
+    /*
+     * Render buttons and callback the parent when clicked
+     */
+    render() {
+        const disabled = !this.props.sessionButtonsEnabled;
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col col-one-fifth my-2 d-flex p-1' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { onClick: this.props.handleHomeClick, className: 'btn btn-primary btn-block p-1' },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, "Home"))),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col col-one-fifth my-2 d-flex p-1', onTouchStart: this._handleReloadPress, onTouchEnd: this._handleReloadRelease, onMouseDown: this._handleReloadPress, onMouseUp: this._handleReloadRelease },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { className: 'btn btn-primary btn-block p-1', disabled: disabled },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, "Reload Data"))),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col col-one-fifth my-2 d-flex p-1' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { onClick: this.props.handleExpireAccessTokenClick, className: 'btn btn-primary btn-block p-1', disabled: disabled },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, "Expire Access Token"))),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col col-one-fifth my-2 d-flex p-1' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { onClick: this.props.handleExpireRefreshTokenClick, className: 'btn btn-primary btn-block p-1', disabled: disabled },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, "Expire Refresh Token"))),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col col-one-fifth my-2 d-flex p-1' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { onClick: this.props.handleLogoutClick, className: 'btn btn-primary btn-block p-1', disabled: disabled },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, "Logout")))));
+    }
+    /*
+     * When refresh is clicked, measure the start time
+     */
+    _handleReloadPress() {
+        if (!this.props.sessionButtonsEnabled) {
+            return;
+        }
+        this._longPressStartTime = Date.now();
+    }
+    /*
+     * The sample uses a long press to simulate an API 500 error, for demonstration purposes
+     * Our solutions then demonstrate how it is reported in the UI and looked up via Elastic Search
+     */
+    _handleReloadRelease() {
+        if (!this.props.sessionButtonsEnabled) {
+            return;
+        }
+        if (this._isLongPress()) {
+            // The button has been long pressed which we use as a trigger to simulate an exception
+            // causeError = true means the UI to sends a header to the API to instruct it to simulate a 500 error
+            this.props.handleReloadDataClick(true);
+        }
+        else {
+            // In all other cases we reload data normally
+            this.props.handleReloadDataClick(false);
+        }
+    }
+    /*
+     * A utility to calculate whether a long press has occurred
+     */
+    _isLongPress() {
+        if (!this._longPressStartTime) {
+            return false;
+        }
+        const timeTaken = Date.now() - this._longPressStartTime;
+        this._longPressStartTime = null;
+        return (timeTaken > this._longPressMilliseconds);
+    }
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    _setupCallbacks() {
+        this._handleReloadPress = this._handleReloadPress.bind(this);
+        this._handleReloadRelease = this._handleReloadRelease.bind(this);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/headings/headingView.tsx":
+/*!****************************************!*\
+  !*** ./views/headings/headingView.tsx ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HeadingView": () => (/* binding */ HeadingView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+
+/*
+ * Render the main heading
+ */
+class HeadingView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    render() {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "OAuth Demo App"));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/headings/sessionView.tsx":
+/*!****************************************!*\
+  !*** ./views/headings/sessionView.tsx ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SessionView": () => (/* binding */ SessionView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var _plumbing_utilities_sessionManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../plumbing/utilities/sessionManager */ "./plumbing/utilities/sessionManager.ts");
+
+
+/*
+ * Render the session id used by API logs
+ */
+class SessionView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+        this._sessionId = _plumbing_utilities_sessionManager__WEBPACK_IMPORTED_MODULE_1__.SessionManager.get();
+    }
+    /*
+     * Render the session id hen data is loaded and API calls are in effect
+     */
+    render() {
+        if (!this.props.isVisible) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null));
+        }
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'sessionid text-right mx-auto' },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", null, `API Session Id: ${this._sessionId}`)));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/headings/titleView.tsx":
+/*!**************************************!*\
+  !*** ./views/headings/titleView.tsx ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TitleView": () => (/* binding */ TitleView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var _userInfo_userInfoView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../userInfo/userInfoView */ "./views/userInfo/userInfoView.tsx");
+/* harmony import */ var _headingView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./headingView */ "./views/headings/headingView.tsx");
+
+
+
+/*
+ * Render the title area, which contains a heading and user info
+ */
+class TitleView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+    }
+    /*
+     * Output child views
+     */
+    render() {
+        // If there are no user info props yet, just display the title
+        if (!this.props.userInfo) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-8 my-auto' },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(_headingView__WEBPACK_IMPORTED_MODULE_2__.HeadingView, null))));
+        }
+        // Otherwise render user info also
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-8 my-auto' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement(_headingView__WEBPACK_IMPORTED_MODULE_2__.HeadingView, null)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-4 my-auto' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement(_userInfo_userInfoView__WEBPACK_IMPORTED_MODULE_1__.UserInfoView, Object.assign({}, this.props.userInfo)))));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/loginRequired/loginRequiredView.tsx":
+/*!***************************************************!*\
+  !*** ./views/loginRequired/loginRequiredView.tsx ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "LoginRequiredView": () => (/* binding */ LoginRequiredView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+
+/*
+ * Render the simple login required view
+ */
+class LoginRequiredView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+        props.onLoading();
+    }
+    /*
+     * Render the simple logout view
+     */
+    render() {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-12 text-center mx-auto' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("h6", null, "You are logged out - click HOME to sign in ..."))));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/transactions/transactionsContainer.tsx":
+/*!******************************************************!*\
+  !*** ./views/transactions/transactionsContainer.tsx ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TransactionsContainer": () => (/* binding */ TransactionsContainer)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../plumbing/errors/errorCodes */ "./plumbing/errors/errorCodes.ts");
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../plumbing/events/eventEmitter */ "./plumbing/events/eventEmitter.ts");
+/* harmony import */ var _plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../plumbing/events/eventNames */ "./plumbing/events/eventNames.ts");
+/* harmony import */ var _errors_errorSummaryView__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../errors/errorSummaryView */ "./views/errors/errorSummaryView.tsx");
+/* harmony import */ var _utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utilities/apiViewNames */ "./views/utilities/apiViewNames.ts");
+/* harmony import */ var _transactionsMainView__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./transactionsMainView */ "./views/transactions/transactionsMainView.tsx");
+
+
+
+
+
+
+
+
+/*
+ * Render the transactions view to replace the existing view
+ */
+class TransactionsContainer extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    /*
+     * If the user changes the transaction to a new company the browser bar, the change is received here
+     */
+    static getDerivedStateFromProps(nextProps, prevState) {
+        // Return updated state
+        if (nextProps.match.params.id !== prevState.companyId) {
+            return Object.assign(Object.assign({}, prevState), { companyId: nextProps.match.params.id });
+        }
+        // Indicate no changes to state
+        return null;
+    }
+    /*
+     * Initial state is received via the React Router
+     */
+    constructor(props) {
+        super(props);
+        props.onLoading();
+        // Initialise state, and the initial company id is supplied via a path segment
+        this.state = {
+            companyId: this.props.match.params.id,
+            error: null,
+            data: null,
+        };
+        this._setupCallbacks();
+    }
+    /*
+     * Render according to the current state and the type of device
+     */
+    render() {
+        // Render an error on failure
+        if (this.state.error) {
+            return this._renderError();
+        }
+        // Display nothing until there is data
+        if (!this.state.data) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null));
+        }
+        // Display the desktop or mobile view otherwise
+        const props = {
+            data: this.state.data,
+        };
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_transactionsMainView__WEBPACK_IMPORTED_MODULE_7__.TransactionsMainView, Object.assign({}, props)));
+    }
+    /*
+     * Load data then listen for the reload event
+     */
+    async componentDidMount() {
+        _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_3__.EventEmitter.subscribe(_plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_4__.EventNames.ON_RELOAD_MAIN, this._loadData);
+        await this._loadData(false);
+    }
+    /*
+     * Reload data when the user types a different company id in the browser
+     */
+    async componentDidUpdate(prevProps, prevState) {
+        if (this.state.companyId !== prevState.companyId) {
+            await this._loadData(false);
+        }
+    }
+    /*
+     * Unsubscribe when we unload
+     */
+    async componentWillUnmount() {
+        _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_3__.EventEmitter.unsubscribe(_plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_4__.EventNames.ON_RELOAD_MAIN, this._loadData);
+    }
+    /*
+     * Get data from the API and update state
+     */
+    async _loadData(causeError) {
+        try {
+            this.setState({ error: null });
+            // Get data from the API
+            this.props.events.onViewLoading(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.Main);
+            const data = await this.props.apiClient.getCompanyTransactions(this.state.companyId, { causeError });
+            this.props.events.onViewLoaded(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.Main);
+            this.setState({ data });
+        }
+        catch (e) {
+            // Handle the error
+            const error = _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_2__.ErrorHandler.getFromException(e);
+            const isExpected = this._isExpectedApiError(error);
+            if (isExpected) {
+                // For 'expected' errors, return to the home view
+                this.props.events.onViewLoaded(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.Main);
+                location.hash = '#';
+            }
+            else {
+                // Indicate failure
+                this.setState({ data: null, error });
+                this.props.events.onViewLoadFailed(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.Main, error);
+            }
+        }
+    }
+    /*
+     * Output error details if required
+     */
+    _renderError() {
+        if (this.state.error.errorCode === _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_1__.ErrorCodes.loginRequired) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null));
+        }
+        const errorProps = {
+            hyperlinkMessage: 'Problem Encountered in Transactions View',
+            dialogTitle: 'Transactions View Error',
+            error: this.state.error,
+            centred: true,
+        };
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_errors_errorSummaryView__WEBPACK_IMPORTED_MODULE_5__.ErrorSummaryView, Object.assign({}, errorProps)));
+    }
+    /*
+     * Handle 'business errors' received from the API
+     */
+    _isExpectedApiError(error) {
+        if (error.statusCode === 404 && error.errorCode === _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_1__.ErrorCodes.companyNotFound) {
+            // User typed an id value outside of allowed company ids
+            return true;
+        }
+        if (error.statusCode === 400 && error.errorCode === _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_1__.ErrorCodes.invalidCompanyId) {
+            // User typed an invalid id such as 'abc'
+            return true;
+        }
+        return false;
+    }
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    _setupCallbacks() {
+        this._loadData = this._loadData.bind(this);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/transactions/transactionsMainView.tsx":
+/*!*****************************************************!*\
+  !*** ./views/transactions/transactionsMainView.tsx ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TransactionsMainView": () => (/* binding */ TransactionsMainView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+
+/*
+ * Render the transactions main view
+ */
+class TransactionsMainView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    constructor(props) {
+        super(props);
+    }
+    /*
+     * Render the data on a wide screen
+     */
+    render() {
+        return this.props.data &&
+            (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card border-0' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card-header row font-weight-bold' },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-12 text-center mx-auto font-weight-bold' },
+                        "Today's Transactions for ",
+                        this.props.data.company.name)),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' }, this.props.data.transactions.map((transaction) => this._renderTransaction(transaction)))));
+    }
+    /*
+     * Render a single transaction item
+     */
+    _renderTransaction(transaction) {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-lg-4 col-md-6 col-xs-12', key: transaction.id },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'card-body' },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' },
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6' }, "Transaction Id"),
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6 text-right valuecolor font-weight-bold' }, transaction.id)),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' },
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6' }, "Investor Id"),
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6 text-right valuecolor font-weight-bold' }, transaction.investorId)),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'row' },
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6' }, "Amount USD"),
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'col-6 text-right highlightcolor font-weight-bold' }, Number(transaction.amountUsd).toLocaleString()))))));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/userInfo/userInfoView.tsx":
+/*!*****************************************!*\
+  !*** ./views/userInfo/userInfoView.tsx ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "UserInfoView": () => (/* binding */ UserInfoView)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../plumbing/errors/errorCodes */ "./plumbing/errors/errorCodes.ts");
+/* harmony import */ var _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../plumbing/errors/errorHandler */ "./plumbing/errors/errorHandler.ts");
+/* harmony import */ var _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../plumbing/events/eventEmitter */ "./plumbing/events/eventEmitter.ts");
+/* harmony import */ var _plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../plumbing/events/eventNames */ "./plumbing/events/eventNames.ts");
+/* harmony import */ var _errors_errorSummaryView__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../errors/errorSummaryView */ "./views/errors/errorSummaryView.tsx");
+/* harmony import */ var _utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utilities/apiViewNames */ "./views/utilities/apiViewNames.ts");
+
+
+
+
+
+
+
+/*
+ * A simple component to render the logged in user
+ */
+class UserInfoView extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
+    /*
+     * If the logged out state changes we update state used for rendering
+     */
+    static getDerivedStateFromProps(nextProps, prevState) {
+        // Return updated state
+        if (nextProps.shouldLoad !== prevState.shouldLoad) {
+            return Object.assign(Object.assign({}, prevState), { shouldLoad: nextProps.shouldLoad });
+        }
+        // Indicate no changes to state
+        return null;
+    }
+    constructor(props) {
+        super(props);
+        this.state = {
+            shouldLoad: props.shouldLoad,
+            claims: null,
+            error: null,
+        };
+        this._setupCallbacks();
+    }
+    /*
+     * Render user info both before and after received
+     */
+    render() {
+        // Render errors if there are technical problems getting user info
+        if (this.state.error && this.state.error.errorCode !== _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_1__.ErrorCodes.loginRequired) {
+            const errorProps = {
+                hyperlinkMessage: 'Problem Encountered',
+                dialogTitle: 'User Info Error',
+                error: this.state.error,
+                centred: false,
+            };
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'text-right mx-auto' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement(_errors_errorSummaryView__WEBPACK_IMPORTED_MODULE_5__.ErrorSummaryView, Object.assign({}, errorProps))));
+        }
+        // Render nothing when logged out
+        if (!this.state.shouldLoad || !this.state.claims) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null));
+        }
+        // Render the logged in user name otherwise
+        const name = `${this.state.claims.givenName} ${this.state.claims.familyName}`;
+        return this.state.claims &&
+            (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: 'text-right mx-auto' },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", { className: 'font-weight-bold' }, name)));
+    }
+    /*
+     * Load data then listen for the reload event
+     */
+    async componentDidMount() {
+        _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_3__.EventEmitter.subscribe(_plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_4__.EventNames.ON_RELOAD_USERINFO, this._loadData);
+        await this._loadData(false);
+    }
+    /*
+     * Unsubscribe when we unload
+     */
+    async componentWillUnmount() {
+        _plumbing_events_eventEmitter__WEBPACK_IMPORTED_MODULE_3__.EventEmitter.unsubscribe(_plumbing_events_eventNames__WEBPACK_IMPORTED_MODULE_4__.EventNames.ON_RELOAD_USERINFO, this._loadData);
+    }
+    /*
+     * Reload data when the user chooses to resume from the logged out page
+     */
+    async componentDidUpdate(prevProps, prevState) {
+        if (!prevState.shouldLoad && this.state.shouldLoad) {
+            await this._loadData(false);
+        }
+    }
+    /*
+     * Load data when requested
+     */
+    async _loadData(causeError) {
+        try {
+            // We do not load when the logged out view is active
+            if (!this.state.shouldLoad) {
+                this.props.events.onViewLoaded(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.UserInfo);
+                return;
+            }
+            this.setState({ error: null });
+            // Get user info
+            this.props.events.onViewLoading(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.UserInfo);
+            const claims = await this.props.apiClient.getUserInfo({ causeError });
+            this.props.events.onViewLoaded(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.UserInfo);
+            this.setState({ claims });
+        }
+        catch (e) {
+            const error = _plumbing_errors_errorHandler__WEBPACK_IMPORTED_MODULE_2__.ErrorHandler.getFromException(e);
+            this.setState({ claims: null, error });
+            this.props.events.onViewLoadFailed(_utilities_apiViewNames__WEBPACK_IMPORTED_MODULE_6__.ApiViewNames.UserInfo, error);
+        }
+    }
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    _setupCallbacks() {
+        this._loadData = this._loadData.bind(this);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/utilities/apiViewEvents.ts":
+/*!******************************************!*\
+  !*** ./views/utilities/apiViewEvents.ts ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ApiViewEvents": () => (/* binding */ ApiViewEvents)
+/* harmony export */ });
+/* harmony import */ var _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../plumbing/errors/errorCodes */ "./plumbing/errors/errorCodes.ts");
+/* harmony import */ var _apiViewNames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./apiViewNames */ "./views/utilities/apiViewNames.ts");
+
+
+/*
+ * A helper class to keep track of views that call APIs and whether a login_required error has been received
+ */
+class ApiViewEvents {
+    /*
+     * Set the initial state at construction
+     */
+    constructor(onLoginRequiredAction, onMainLoadStateChanged) {
+        this._views = [];
+        this._loginRequired = false;
+        this._onLoginRequiredAction = onLoginRequiredAction;
+        this._onMainLoadStateChanged = onMainLoadStateChanged;
+        this._setupCallbacks();
+    }
+    /*
+     * Each view is added along with an initial unloaded state
+     */
+    addView(name) {
+        this._views.push([name, false]);
+    }
+    /*
+     * Handle loading notifications, which will disable the header buttons
+     */
+    onViewLoading(name) {
+        this._updateLoadState(name, false);
+        if (name === _apiViewNames__WEBPACK_IMPORTED_MODULE_1__.ApiViewNames.Main) {
+            this._onMainLoadStateChanged(false);
+        }
+    }
+    /*
+     * Update state when loaded, which may trigger a login redirect once all views are loaded
+     */
+    onViewLoaded(name) {
+        this._updateLoadState(name, true);
+        if (name === _apiViewNames__WEBPACK_IMPORTED_MODULE_1__.ApiViewNames.Main) {
+            this._onMainLoadStateChanged(true);
+        }
+        this._triggerLoginIfRequired();
+    }
+    /*
+     * Update state when there is a load error, which may trigger a login redirect once all views are loaded
+     */
+    onViewLoadFailed(name, error) {
+        this._updateLoadState(name, true);
+        if (error.errorCode === _plumbing_errors_errorCodes__WEBPACK_IMPORTED_MODULE_0__.ErrorCodes.loginRequired) {
+            this._loginRequired = true;
+        }
+        this._triggerLoginIfRequired();
+    }
+    /*
+     * Reset state when the Reload Data button is clicked
+     */
+    clearState() {
+        this._views.forEach((i) => i[1] = false);
+        this._loginRequired = false;
+    }
+    /*
+     * Update whether a view has finished trying to load
+     */
+    _updateLoadState(name, value) {
+        const found = this._views.find(i => i[0] === name);
+        if (found) {
+            found[1] = value;
+        }
+    }
+    /*
+     * If all views are loaded and one or more has reported login required, then trigger a redirect
+     */
+    _triggerLoginIfRequired() {
+        const allViewsLoaded = this._views.filter(i => i[1] === true).length === this._views.length;
+        if (allViewsLoaded && this._loginRequired) {
+            this._onLoginRequiredAction();
+        }
+    }
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    _setupCallbacks() {
+        this.onViewLoading = this.onViewLoading.bind(this);
+        this.onViewLoaded = this.onViewLoaded.bind(this);
+        this.onViewLoadFailed = this.onViewLoadFailed.bind(this);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./views/utilities/apiViewNames.ts":
+/*!*****************************************!*\
+  !*** ./views/utilities/apiViewNames.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ApiViewNames": () => (/* binding */ ApiViewNames)
+/* harmony export */ });
+/*
+ * Constant values used with views that get API data
+ */
+class ApiViewNames {
+}
+// A view that occupies the main view area
+ApiViewNames.Main = 'main';
+// The user info view
+ApiViewNames.UserInfo = 'userInfo';
+
+
+/***/ }),
+
+/***/ "./views/utilities/routeHelper.ts":
+/*!****************************************!*\
+  !*** ./views/utilities/routeHelper.ts ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RouteHelper": () => (/* binding */ RouteHelper)
+/* harmony export */ });
+/*
+ * A utility class to determine the current route
+ */
+class RouteHelper {
+    /*
+     * Return true if we are not in the logged out view or the transactions view
+     */
+    static isInHomeView() {
+        return (location.hash.indexOf('loggedout') === -1) && (location.hash.indexOf('company=') === -1);
+    }
+}
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/******/ 	// the startup function
+/******/ 	// It's empty as some runtime module handles the default behavior
+/******/ 	__webpack_require__.x = x => {};
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// Promise = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"app": 0
+/******/ 		};
+/******/ 		
+/******/ 		var deferredModules = [
+/******/ 			["./index.tsx","vendor"]
+/******/ 		];
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		var checkDeferredModules = x => {};
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime, executeModules] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0, resolves = [];
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					resolves.push(installedChunks[chunkId][0]);
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			for(moduleId in moreModules) {
+/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 				}
+/******/ 			}
+/******/ 			if(runtime) runtime(__webpack_require__);
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			while(resolves.length) {
+/******/ 				resolves.shift()();
+/******/ 			}
+/******/ 		
+/******/ 			// add entry modules from loaded chunk to deferred list
+/******/ 			if(executeModules) deferredModules.push.apply(deferredModules, executeModules);
+/******/ 		
+/******/ 			// run deferred modules when all chunks ready
+/******/ 			return checkDeferredModules();
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 		
+/******/ 		function checkDeferredModulesImpl() {
+/******/ 			var result;
+/******/ 			for(var i = 0; i < deferredModules.length; i++) {
+/******/ 				var deferredModule = deferredModules[i];
+/******/ 				var fulfilled = true;
+/******/ 				for(var j = 1; j < deferredModule.length; j++) {
+/******/ 					var depId = deferredModule[j];
+/******/ 					if(installedChunks[depId] !== 0) fulfilled = false;
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferredModules.splice(i--, 1);
+/******/ 					result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
+/******/ 				}
+/******/ 			}
+/******/ 			if(deferredModules.length === 0) {
+/******/ 				__webpack_require__.x();
+/******/ 				__webpack_require__.x = x => {};
+/******/ 			}
+/******/ 			return result;
+/******/ 		}
+/******/ 		var startup = __webpack_require__.x;
+/******/ 		__webpack_require__.x = () => {
+/******/ 			// reset startup function so it can be called again when more startup code is added
+/******/ 			__webpack_require__.x = startup || (x => {});
+/******/ 			return (checkDeferredModules = checkDeferredModulesImpl)();
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// run startup
+/******/ 	var __webpack_exports__ = __webpack_require__.x();
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=app.bundle.js.map
