@@ -5,17 +5,18 @@ module.exports = {
   // Set the working folder
   context: path.resolve(__dirname, '../src'),
 
-  // Support Internet Explorer 11 by building to ES5
-  target: ['web', 'es5'],
+  // We support the big four modern browsers, which all support ES2017
+  target: ['web', 'es2017'],
 
   entry: {
-    // Pull in all dependencies starting from the root file, using corejs polyfills
-    app: ['./plumbing/polyfill.ts', './index.tsx']
+
+    // Specify the application entry point
+    app: ['./index.tsx']
   },
   module: {
     rules: [
       {
-        // Files with a .ts extension are loaded by the Typescript loader
+        // Files with a .ts or .tsx extension are loaded by the Typescript loader
         test: /\.(ts|tsx)$/,
         use: 'ts-loader',
         exclude: /node_modules/
@@ -29,7 +30,7 @@ module.exports = {
   },
   output: {
     
-    // Output bundles to a dist folder
+    // Output our Javascript bundles to a dist folder
     path: path.resolve(__dirname, '../dist'),
     filename: '[name].bundle.js'
   },

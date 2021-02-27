@@ -10,7 +10,7 @@ module.exports = merge(baseConfig, {
 
   // Turn off performance warnings until we have a plan for dealing with them
   performance: {
-    hints: false
+    hints: true
   },
 
   plugins:[
