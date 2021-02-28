@@ -1,0 +1,6 @@
+node_modules
+/spa/dist/*
+!/spa/dist/loggedOut.js
+!/spa/dist/unsupported.js
+.DS_Store
+.package
