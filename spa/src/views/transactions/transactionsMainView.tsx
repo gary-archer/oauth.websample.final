@@ -42,7 +42,7 @@ export class TransactionsMainView extends React.Component<TransactionsViewProps>
                     <div className='card-body'>
                         <div className='row'>
                             <div className='col-6'>
-                                Transaction Id
+                                Transaction ID
                             </div>
                             <div className='col-6 text-right valuecolor font-weight-bold'>
                                 {transaction.id}
@@ -50,7 +50,7 @@ export class TransactionsMainView extends React.Component<TransactionsViewProps>
                         </div>
                         <div className='row'>
                             <div className='col-6'>
-                                Investor Id
+                                Investor ID
                             </div>
                             <div className='col-6 text-right valuecolor font-weight-bold'>
                                 {transaction.investorId}
