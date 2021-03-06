@@ -1,4 +1,4 @@
-import {UserInfoClaims} from '../../api/entities/userInfoClaims';
+import {UserInfo} from '../../api/entities/userInfo';
 import {UIError} from '../../plumbing/errors/uiError';
 
 /*
@@ -7,7 +7,7 @@ import {UIError} from '../../plumbing/errors/uiError';
 export interface UserInfoViewState {
 
     // Populated when data is successfully loaded
-    claims: UserInfoClaims | null;
+    claims: UserInfo | null;
 
     // Populated when there is an error getting data
     error: UIError | null;
