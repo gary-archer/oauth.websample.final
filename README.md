@@ -1,8 +1,8 @@
 # oauth.websample.final
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f2c5ede8739440599096fc25010ab6f6)](https://www.codacy.com/gh/gary-archer/authguidance.websample.final/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gary-archer/authguidance.websample.final&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f2c5ede8739440599096fc25010ab6f6)](https://www.codacy.com/gh/gary-archer/oauth.websample.final/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gary-archer/oauth.websample.final&amp;utm_campaign=Badge_Grade)
  
-[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/authguidance.websample.final/badge.svg?targetFile=spa/package.json)](https://snyk.io/test/github/gary-archer/authguidance.websample.final?targetFile=spa/package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=spa/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=spa/package.json)
 
 ### Overview
 
@@ -28,4 +28,4 @@
 * AWS CloudFront is used as the SPA's Content Delivery Network
 * AWS API Gateway is used to host the SPA's OAuth Secured API
 * AWS Cognito is used as the Authorization Server for the SPA and API
-* An Edge Lambda can be used to write refresh tokens to cookies
+* An Edge Lambda is used to proxy refresh token requests and store them in HTTP only encrypted cookies

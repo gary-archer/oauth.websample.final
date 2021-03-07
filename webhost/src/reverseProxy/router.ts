@@ -1,17 +1,17 @@
 import {Request, Response} from 'express';
-import {WebReverseProxyConfiguration} from '../../configuration/webReverseProxyConfiguration';
-import {ErrorHandler} from '../errors/errorHandler';
-import {ResponseWriter} from '../utilities/responseWriter';
-import {AuthService} from '../services/authService';
+import {ReverseProxyConfiguration} from '../configuration/reverseProxyConfiguration';
+import {ErrorHandler} from './errors/errorHandler';
+import {ResponseWriter} from './utilities/responseWriter';
+import {AuthService} from './services/authService';
 
 /*
  * A class to route incoming requests to the auth service, and to handle error responses
  */
-export class ReverseProxyRouter {
+export class Router {
 
     private readonly _authService: AuthService;
 
-    public constructor(configuration: WebReverseProxyConfiguration) {
+    public constructor(configuration: ReverseProxyConfiguration) {
         this._authService = new AuthService(configuration);
         this._setupCallbacks();
     }

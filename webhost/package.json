@@ -1,7 +1,7 @@
 {
-  "name": "devhost",
+  "name": "webhost",
   "version": "1.0.0",
-  "description": "Developer PC hosting for a Content Delivery Network and a Web Reverse Proxy",
+  "description": "Static content web Hosting for a Developer PC or Kubernetes",
   "main": "src/app.ts",
   "scripts": {
     "lint": "npx eslint . --ext .ts",

@@ -5,8 +5,8 @@ exclude_paths: [
     'spa/css/**',
     'spa/dist/**',
     'spa/webpack/**',
-    'devhost/*',
-    'devhost/certs/**',
+    'webhost/*',
+    'webhost/certs/**',
     'cloud/lambda-edge/*',
     'cloud/lambda-edge/test/**',
     'cloud/deployment/**'

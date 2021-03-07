@@ -6,15 +6,15 @@
         "useHttpProxy": false,
         "httpProxyUrl": "http://127.0.0.1:8888"
     },
-    "contentDeliveryNetwork": {
+    "securityHeaders": {
         "contentSecurityPolicyHosts": [
-            "https://api.mycompany.com:444",
+            "https://api.authsamples.com",
             "https://login.authsamples.com",
             "https://cognito-idp.eu-west-2.amazonaws.com"
         ],
         "enabled": false
     },
-    "webReverseProxy": {
+    "reverseProxy": {
         "tokenEndpoint": "https://login.authsamples.com/oauth2/token",
         "cookieRootDomain": "mycompany.com",
         "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",

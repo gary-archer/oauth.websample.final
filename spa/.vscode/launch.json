@@ -20,7 +20,7 @@
             // Output source map paths to the debug console, resulting in the below type of message
             // It enables us to see any source map path overrides that are wrong
             // 
-            //   Mapped /Users/gary/projects/authguidance.websample2/spa/src/plumbing/api/httpClient.ts 
+            //   Mapped /Users/gary/projects/oauth.websample2/spa/src/plumbing/api/httpClient.ts 
             //   to https://web.mycompany.com/spa/dist/bundle.min.js
             //
             // "trace": "verbose"

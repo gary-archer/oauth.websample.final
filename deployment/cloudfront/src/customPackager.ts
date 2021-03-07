@@ -13,7 +13,7 @@ class Packager {
         await fs.ensureDir('.package/spa');
 
         // Use the deployed configuration
-        await fs.copy('../../spa/spa.config.deployed.json', '.package/spa/spa.config.json');
+        await fs.copy('./spa.config.json', '.package/spa/spa.config.json');
 
         // HTML
         await fs.copy('../../spa/index.html', '.package/spa/index.html');

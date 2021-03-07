@@ -1,6 +1,6 @@
 import {randomBytes} from 'crypto';
 import {Request, Response} from 'express';
-import {WebReverseProxyConfiguration} from '../../configuration/webReverseProxyConfiguration';
+import {ReverseProxyConfiguration} from '../../configuration/reverseProxyConfiguration';
 import {ApiLogger} from '../utilities/apiLogger';
 import {CookieService} from './cookieService';
 import {ProxyService} from './proxyService';
@@ -12,7 +12,7 @@ import {ErrorHandler} from '../errors/errorHandler';
 export class AuthService {
 
     // Worker classes
-    private readonly _configuration: WebReverseProxyConfiguration;
+    private readonly _configuration: ReverseProxyConfiguration;
     private readonly _proxyService: ProxyService;
     private readonly _cookieService: CookieService;
 
@@ -20,7 +20,7 @@ export class AuthService {
     private readonly _responseBodyFieldName = 'csrf_field';
     private readonly _requestHeaderFieldName = 'x-mycompany-finalspa-refresh-csrf';
 
-    public constructor(configuration: WebReverseProxyConfiguration) {
+    public constructor(configuration: ReverseProxyConfiguration) {
         this._configuration = configuration;
         this._proxyService = new ProxyService(configuration.tokenEndpoint);
         this._cookieService = new CookieService(configuration.cookieRootDomain, configuration.cookieEncryptionKey);

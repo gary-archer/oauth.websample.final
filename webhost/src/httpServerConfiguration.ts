@@ -3,30 +3,47 @@ import {Application, NextFunction, Request, Response, urlencoded} from 'express'
 import fs from 'fs-extra';
 import https from 'https';
 import {Configuration} from './configuration/configuration';
-import {WebRouter} from './content-delivery-network/webRouter';
-import {ReverseProxyRouter} from './web-reverse-proxy/routing/reverseProxyRouter';
+import {Router} from './reverseProxy/router';
+import {SecurityHeaders} from './securityHeaders';
+import {StaticContent} from './staticContent';
 
 /*
- * Configure HTTP behaviour at application startup
+ * Configure web host behaviour at application startup
  */
 export class HttpServerConfiguration {
 
     private readonly _expressApp: Application;
     private readonly _configuration: Configuration;
-    private readonly _reverseProxyRouter: ReverseProxyRouter;
-    private readonly _webRouter: WebRouter;
+    private readonly _reverseProxyRouter: Router;
+    private readonly _staticContent: StaticContent;
 
     public constructor(expressApp: Application, configuration: Configuration) {
+
         this._expressApp = expressApp;
         this._configuration = configuration;
-        this._reverseProxyRouter = new ReverseProxyRouter(this._configuration.webReverseProxy);
-        this._webRouter = new WebRouter(this._configuration.contentDeliveryNetwork);
+        this._reverseProxyRouter = new Router(this._configuration.reverseProxy);
+        const securityHeaders = new SecurityHeaders(this._configuration.securityHeaders);
+        this._staticContent = new StaticContent(securityHeaders);
+    }
+
+    /*
+     * Set up routes for web static content
+     */
+    public initializeWebStaticContentHosting(): void {
+
+        // Disable caching on a development PC
+        this._expressApp.set('etag', false);
+
+        // Define route values
+        this._expressApp.get('/spa/*', this._staticContent.getWebResource);
+        this._expressApp.get('/spa', this._staticContent.getDefaultDocument);
+        this._expressApp.get('/favicon.ico', this._staticContent.getFavicon);
     }
 
     /*
      * Set up routes for the reverse proxy API
      */
-    public async initializeReverseProxyApi(): Promise<void> {
+    public async initializeReverseProxy(): Promise<void> {
 
         // Receive form URL encoded OAuth messages and also cookies
         this._expressApp.use('/reverse-proxy/*', urlencoded({extended: true}));
@@ -42,20 +59,6 @@ export class HttpServerConfiguration {
         // Error routes
         this._expressApp.use('/reverse-proxy/*', this._reverseProxyRouter.notFoundHandler);
         this._expressApp.use('/reverse-proxy/*', this._reverseProxyRouter.unhandledExceptionHandler);
-    }
-
-    /*
-     * Set up routes for web content
-     */
-    public initializeWebStaticContentHosting(): void {
-
-        // Disable caching on a development PC
-        this._expressApp.set('etag', false);
-
-        // Define route values
-        this._expressApp.get('/spa/*', this._webRouter.getWebResource);
-        this._expressApp.get('/spa', this._webRouter.getWebRootResource);
-        this._expressApp.get('/favicon.ico', this._webRouter.getFavicon);
     }
 
     /*

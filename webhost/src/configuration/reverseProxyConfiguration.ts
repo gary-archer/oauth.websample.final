@@ -1,7 +1,7 @@
 /*
  * A holder for reverse proxy settings
  */
-export interface WebReverseProxyConfiguration {
+export interface ReverseProxyConfiguration {
 
     // The token endpoint from which we get refresh tokens
     tokenEndpoint: string;

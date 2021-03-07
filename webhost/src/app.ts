@@ -1,14 +1,13 @@
-/*
- * The development host application entry point
- */
-
 import express from 'express';
 import {ConfigurationLoader} from './configuration/configurationLoader';
 import {HttpServerConfiguration} from './httpServerConfiguration';
-import {ErrorHandler} from './web-reverse-proxy/errors/errorHandler';
-import {ApiLogger} from './web-reverse-proxy/utilities/apiLogger';
-import {HttpProxy} from './web-reverse-proxy/utilities/httpProxy';
+import {ErrorHandler} from './reverseProxy/errors/errorHandler';
+import {ApiLogger} from './reverseProxy/utilities/apiLogger';
+import {HttpProxy} from './reverseProxy/utilities/httpProxy';
 
+/*
+ * The web host entry point
+ */
 (async () => {
 
     // Initialize diagnostics
@@ -20,18 +19,18 @@ import {HttpProxy} from './web-reverse-proxy/utilities/httpProxy';
         const loader = new ConfigurationLoader();
         const configuration = await loader.load();
 
-        // Initialize HTTP proxy behaviour
+        // Initialize HTTP proxy behaviour so that we can view outbound OAuth requests
         HttpProxy.initialize(configuration.host.useHttpProxy, configuration.host.httpProxyUrl);
 
-        // Create the HTTP server
+        // Create the web host
         const expressApp = express();
         const httpServer = new HttpServerConfiguration(expressApp, configuration);
 
-        // The HTTP server delivers web static content on a developer PC
+        // Set up web static content delivery
         httpServer.initializeWebStaticContentHosting();
 
-        // The HTTP server runs a proxy API on a developer PC, to reduce components
-        await httpServer.initializeReverseProxyApi();
+        // Initialise the web reverse proxy, used to enable token renewal for the SPA
+        await httpServer.initializeReverseProxy();
 
         // Start listening for requests
         await httpServer.startListening();
