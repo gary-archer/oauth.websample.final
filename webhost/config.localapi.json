@@ -6,7 +6,7 @@
         "useHttpProxy": false,
         "httpProxyUrl": "http://127.0.0.1:8888"
     },
-    "contentDeliveryNetwork": {
+    "securityHeaders": {
         "contentSecurityPolicyHosts": [
             "https://api.mycompany.com:444",
             "https://login.authsamples.com",
