@@ -58,7 +58,6 @@ export class StaticContent {
 
         // Send JSON data to the browser
         response.status(200).send(JSON.stringify(data));
-
     }
 
     /*
