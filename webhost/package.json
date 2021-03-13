@@ -6,8 +6,7 @@
   "scripts": {
     "lint": "npx eslint . --ext .ts",
     "build": "ts-node --files src/app.ts",
-    "localweb": "cross-env DEV_CONFIG=localweb nodemon -e ts --exec \"npm run build\"",
-    "localapi": "cross-env DEV_CONFIG=localapi nodemon -e ts --exec \"npm run build\""
+    "start": "nodemon -e ts --exec \"npm run build\""
   },
   "keywords": [],
   "author": "Gary Archer",
@@ -27,7 +26,6 @@
     "@types/node": "^14.14.10",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
-    "cross-env": "^7.0.2",
     "eslint": "^7.21.0",
     "nodemon": "^2.0.3",
     "ts-node": "^9.0.0",

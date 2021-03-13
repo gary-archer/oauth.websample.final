@@ -1,27 +1,30 @@
 import fs from 'fs-extra';
+import {argv} from 'process';
 import {Configuration} from './configuration';
 
 /*
- * A class to load the configuration file
+ * A class to load the web host's configuration file
  */
 export class ConfigurationLoader {
 
     /*
-     * Download JSON data from the app config file
+     * Return JSON data from the configuration file, and adjust if required
      */
     public async load(): Promise<Configuration> {
 
-        const fileName = this._getConfigurationFileName();
-        const configurationBuffer = await fs.readFile(fileName);
-        return JSON.parse(configurationBuffer.toString()) as Configuration;
+        const configurationBuffer = await fs.readFile('host.config.json');
+        const data = JSON.parse(configurationBuffer.toString()) as Configuration;
+        this._applyRuntimeParameters(data);
+        return data;
     }
 
     /*
-     * Return the name of the configuration file to use, and default to running web content only
+     * During development, if we are started with 'npm start localapi', point to the local API
      */
-    private _getConfigurationFileName(): string {
+    private _applyRuntimeParameters(data: Configuration): void {
 
-        const shortFileName = (process.env.DEV_CONFIG === 'localapi') ? 'localapi' : 'localweb';
-        return `config.${shortFileName}.json`;
+        if (argv.length > 2 && argv[2].toLowerCase() === 'localapi') {
+            data.securityHeaders.contentSecurityPolicyHosts[0] = 'https://api.mycompany.com:444';
+        }
     }
 }

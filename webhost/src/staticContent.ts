@@ -1,5 +1,7 @@
 import {Request, Response} from 'express';
+import fs from 'fs-extra';
 import path from 'path';
+import {argv} from 'process';
 import {SecurityHeaders} from './securityHeaders';
 
 // The relative path to web files
@@ -27,14 +29,36 @@ export class StaticContent {
             resourcePath = 'index.html';
         }
 
-        if (resourcePath.indexOf('spa.config') !== -1) {
-            resourcePath = this._getWebConfigurationFile();
-            this._addNoCacheHeaders(response);
-        }
-
         const webFilePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/${resourcePath}`);
         this._securityHeaders.write(response);
         response.sendFile(webFilePath);
+    }
+
+    /*
+     * Serve up the configuration file and apply runtime parameters
+     */
+    public async getWebConfiguration(equest: Request, response: Response): Promise<void> {
+
+        // Load the data
+        const filePath = path.join(`${__dirname}/${WEB_FILES_ROOT}/spa.config.json`);
+        const configurationBuffer = await fs.readFile(filePath);
+        const data = JSON.parse(configurationBuffer.toString());
+
+        // During development, if we are started with 'npm start localapi', point to the local API
+        if (argv.length > 2 && argv[2].toLowerCase() === 'localapi') {
+            data.app.apiBaseUrl = 'https://api.mycompany.com:444/api';
+        }
+
+        // Write headers, and avoid caching this file during development
+        this._securityHeaders.write(response);
+        response.setHeader('Content-Type', 'application/json');
+        response.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+        response.setHeader('Pragma', 'no-cache');
+        response.setHeader('Expires', 0);
+
+        // Send JSON data to the browser
+        response.status(200).send(JSON.stringify(data));
+
     }
 
     /*
@@ -58,27 +82,11 @@ export class StaticContent {
     }
 
     /*
-     * Download the web configuration file based on the environment
-     */
-    private _getWebConfigurationFile() {
-
-        // This option on a developer PC is used to host web content and point to an API on the developer PC
-        if (process.env.DEV_CONFIG === 'localapi') {
-            return `spa.config.${process.env.DEV_CONFIG}.json`;
-        }
-
-        // By default we run web content on the developer PC and point to a Cloud API
-        return 'spa.config.localweb.json';
-    }
-
-    /*
      * Disable caching when required
      */
     private _addNoCacheHeaders(response: Response) {
 
-        response.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-        response.setHeader('Pragma', 'no-cache');
-        response.setHeader('Expires', 0);
+        
     }
 
     /*
@@ -86,6 +94,7 @@ export class StaticContent {
      */
     private _setupCallbacks(): void {
         this.getWebResource = this.getWebResource.bind(this);
+        this.getWebConfiguration = this.getWebConfiguration.bind(this);
         this.getDefaultDocument = this.getDefaultDocument.bind(this);
         this.getFavicon = this.getFavicon.bind(this);
     }
