@@ -82,14 +82,6 @@ export class StaticContent {
     }
 
     /*
-     * Disable caching when required
-     */
-    private _addNoCacheHeaders(response: Response) {
-
-        
-    }
-
-    /*
      * Set up async callbacks
      */
     private _setupCallbacks(): void {
