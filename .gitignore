@@ -2,5 +2,6 @@ node_modules
 /spa/dist/*
 !/spa/dist/loggedout.js
 !/spa/dist/unsupported.js
+/webhost/dist/*
 .DS_Store
 .package
