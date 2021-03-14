@@ -1,6 +1,7 @@
 #
-# Expose the Wen Host over port 443 if required
+# Expose the Web Host over port 443 if required
 # The below host name is then configured on the host PC in the /etc/hosts file
+# Note also that we issue quite large cookies containing tokens, so we have increased the default buffer size
 #
 
 apiVersion: networking.k8s.io/v1
@@ -10,6 +11,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/secure-backends: 'true'
     nginx.ingress.kubernetes.io/backend-protocol: 'HTTPS'
+    nginx.ingress.kubernetes.io/proxy-buffer-size: '16k'
 spec:
   tls:
     - hosts:
