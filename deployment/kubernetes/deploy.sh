@@ -69,7 +69,7 @@ then
 fi
 
 #
-# Expose the Web Host on the host developer PC
+# Expose the Web Host on the Developer PC
 #
 kubectl apply -f deployment/kubernetes/ingress.yaml
 if [ $? -ne 0 ]
