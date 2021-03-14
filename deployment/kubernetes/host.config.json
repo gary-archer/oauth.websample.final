@@ -4,7 +4,7 @@
         "sslCertificateFileName": "./certs/keystore.p12",
         "sslCertificatePassword": "Password1",
         "useHttpProxy": false,
-        "httpProxyUrl": "http://127.0.0.1:8888",
+        "httpProxyUrl": "",
         "mode": "production"
     },
     "securityHeaders": {
