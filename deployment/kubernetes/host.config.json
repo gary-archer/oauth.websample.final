@@ -5,7 +5,7 @@
         "sslCertificatePassword": "Password1",
         "useHttpProxy": false,
         "httpProxyUrl": "http://127.0.0.1:8888",
-        "mode": "development"
+        "mode": "production"
     },
     "securityHeaders": {
         "contentSecurityPolicyHosts": [

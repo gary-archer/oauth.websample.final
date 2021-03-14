@@ -24,7 +24,7 @@ export class StaticContent {
         } else {
 
             // In Kubernetes the files are packaged to a subfolder of the web host
-            this._webFilesRoot = 'spa';
+            this._webFilesRoot = '../spa';
         }
     }
 
