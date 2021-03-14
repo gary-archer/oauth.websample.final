@@ -29,3 +29,7 @@
 * AWS API Gateway is used to host the SPA's OAuth Secured API
 * AWS Cognito is used as the Authorization Server for the SPA and API
 * An Edge Lambda is used to proxy refresh token requests and store them in HTTP only encrypted cookies
+
+### SSL Certificates
+
+* Certificates in the certs folder originate from the [OAuth Development Certificates](https://github.com/gary-archer/oauth.developmentcertificates) repository

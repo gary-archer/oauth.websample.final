@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "npx eslint . --ext .ts,.tsx",
     "start": "npm run clean && webpack --config webpack/webpack.config.dev.js --watch",
-    "build": "npm run clean && webpack --config webpack/webpack.config.prod.js",
+    "buildRelease": "npm run clean && webpack --config webpack/webpack.config.prod.js",
     "clean": "rimraf dist/*bundle*"
   },
   "keywords": [],

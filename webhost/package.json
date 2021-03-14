@@ -1,14 +1,14 @@
 {
   "name": "webhost",
   "version": "1.0.0",
-  "description": "Static content web Hosting for a Developer PC or Kubernetes",
-  "main": "src/app.ts",
+  "description": "Static web content hosting for a Developer PC or Kubernetes",
   "scripts": {
     "lint": "npx eslint . --ext .ts",
     "build": "ts-node --files src/app.ts",
-    "start": "nodemon -e ts --exec \"npm run build\""
+    "start": "nodemon -e ts --exec \"npm run build\"",
+    "buildRelease": "rimraf dist && tsc",
+    "startRelease": "node dist/app.js"
   },
-  "keywords": [],
   "author": "Gary Archer",
   "license": "MIT",
   "dependencies": {

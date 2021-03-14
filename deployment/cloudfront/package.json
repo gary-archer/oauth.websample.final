@@ -1,5 +1,5 @@
 {
-  "name": "deployment",
+  "name": "aws-deployment",
   "version": "1.0.0",
   "description": "Deploys our Final SPA to AWS Cloudfront, a Content Delivery Network",
   "main": "customPackager.ts",

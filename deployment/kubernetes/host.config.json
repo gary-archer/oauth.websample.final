@@ -1,7 +1,7 @@
 {
     "host": {
-        "port": 443,
-        "sslCertificateFileName": "../certs/local/mycompany.com.ssl.p12",
+        "port": 8102,
+        "sslCertificateFileName": "./certs/keystore.p12",
         "sslCertificatePassword": "Password1",
         "useHttpProxy": false,
         "httpProxyUrl": "http://127.0.0.1:8888",
@@ -9,16 +9,16 @@
     },
     "securityHeaders": {
         "contentSecurityPolicyHosts": [
-            "https://api.authsamples.com",
+            "https://api.mycluster.com",
             "https://login.authsamples.com",
             "https://cognito-idp.eu-west-2.amazonaws.com"
         ],
-        "enabled": false
+        "enabled": true
     },
     "reverseProxy": {
         "tokenEndpoint": "https://login.authsamples.com/oauth2/token",
-        "cookieRootDomain": "mycompany.com",
+        "cookieRootDomain": "mycluster.com",
         "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
-        "trustedWebOrigin": "https://web.mycompany.com"
+        "trustedWebOrigin": "https://web.mycluster.com"
     }
 }

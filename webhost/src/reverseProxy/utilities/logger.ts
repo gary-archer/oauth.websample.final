@@ -3,7 +3,7 @@ import winston from 'winston';
 /*
  * A class to handle text output and visualization
  */
-export class ApiLogger {
+export class Logger {
 
     /*
      * Initialize the logger
@@ -23,7 +23,7 @@ export class ApiLogger {
             ),
         };
 
-        ApiLogger._logger = winston.createLogger({
+        Logger._logger = winston.createLogger({
             level: 'info',
             transports: [
                 new (winston.transports.Console)(consoleOptions),
@@ -35,21 +35,21 @@ export class ApiLogger {
      * Log info level
      */
     public static info(...args: any[]): void {
-        ApiLogger._logger.info(ApiLogger._getText(args));
+        Logger._logger.info(Logger._getText(args));
     }
 
     /*
      * Log warn level
      */
     public static warn(...args: any[]): void {
-        ApiLogger._logger.warn(ApiLogger._getText(args));
+        Logger._logger.warn(Logger._getText(args));
     }
 
     /*
      * Log error level
      */
     public static error(...args: any[]): void {
-        ApiLogger._logger.error(ApiLogger._getText(args));
+        Logger._logger.error(Logger._getText(args));
     }
 
     private static _logger: any = null;

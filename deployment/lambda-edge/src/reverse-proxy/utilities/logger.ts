@@ -1,7 +1,7 @@
 /*
  * A simple logger class to output to CloudWatch or a developer PC
  */
-export class ApiLogger {
+export class Logger {
 
     /*
      * Log info data

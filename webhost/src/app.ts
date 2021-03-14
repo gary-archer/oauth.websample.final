@@ -2,8 +2,8 @@ import express from 'express';
 import {ConfigurationLoader} from './configuration/configurationLoader';
 import {HttpServerConfiguration} from './httpServerConfiguration';
 import {ErrorHandler} from './reverseProxy/errors/errorHandler';
-import {ApiLogger} from './reverseProxy/utilities/apiLogger';
 import {HttpProxy} from './reverseProxy/utilities/httpProxy';
+import {Logger} from './reverseProxy/utilities/logger';
 
 /*
  * The web host entry point
@@ -11,7 +11,7 @@ import {HttpProxy} from './reverseProxy/utilities/httpProxy';
 (async () => {
 
     // Initialize diagnostics
-    ApiLogger.initialize();
+    Logger.initialize();
 
     try {
 
@@ -39,7 +39,7 @@ import {HttpProxy} from './reverseProxy/utilities/httpProxy';
 
         // Report startup errors
         const error = ErrorHandler.fromException(e);
-        ApiLogger.error(JSON.stringify(error.toLogFormat(), null, 2));
+        Logger.error(JSON.stringify(error.toLogFormat(), null, 2));
     }
 })();
 

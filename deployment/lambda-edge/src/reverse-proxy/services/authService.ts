@@ -1,7 +1,7 @@
 import {Configuration} from '../configuration/configuration';
 import {LambdaEdgeRequest} from '../edge/lambdaEdgeRequest';
 import {LambdaEdgeResponse} from '../edge/lambdaEdgeResponse';
-import {ApiLogger} from '../utilities/apiLogger';
+import {Logger} from '../utilities/logger';
 import {CookieService} from './cookieService';
 import {ProxyService} from './proxyService';
 import {ErrorHandler} from '../errors/errorHandler';
@@ -33,7 +33,7 @@ export class AuthService {
 
         // Proxy the request to the authorization server
         const clientId = this._validateAndGetClientId(request, false);
-        ApiLogger.info(`Proxying Authorization Code Grant for client ${clientId}`);
+        Logger.info(`Proxying Authorization Code Grant for client ${clientId}`);
         const authCodeGrantData = await this._proxyService.sendAuthorizationCodeGrant(request, response);
 
         // Get the refresh token
@@ -61,7 +61,7 @@ export class AuthService {
 
         // Get the refresh token from the auth cookie
         const clientId = this._validateAndGetClientId(request, true);
-        ApiLogger.info(`Proxying Refresh Token Grant for client ${clientId}`);
+        Logger.info(`Proxying Refresh Token Grant for client ${clientId}`);
         const refreshToken = this._cookieService.readAuthCookie(clientId, request);
 
         // Send it to the Authorization Server
@@ -87,7 +87,7 @@ export class AuthService {
     public async expireRefreshToken(request: LambdaEdgeRequest, response: LambdaEdgeResponse): Promise<void> {
 
         const clientId = this._validateAndGetClientId(request, true);
-        ApiLogger.info(`Expiring Refresh Token for client ${clientId}`);
+        Logger.info(`Expiring Refresh Token for client ${clientId}`);
 
         // Get the current refresh token
         const refreshToken = this._cookieService.readAuthCookie(clientId, request);
@@ -104,7 +104,7 @@ export class AuthService {
 
         // Validate and get client details
         const clientId = this._validateAndGetClientId(request, true);
-        ApiLogger.info(`Clearing Cookies for client ${clientId}`);
+        Logger.info(`Clearing Cookies for client ${clientId}`);
 
         // Clear all cookies for this client
         this._cookieService.clearAll(clientId, response);
