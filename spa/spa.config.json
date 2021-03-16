@@ -7,7 +7,7 @@
         "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
         "clientId":               "4co5uvgmse68utsekh7p2sc0lg",
         "redirectUri":            "/spa/",
-        "scope":                  "openid profile email https://api.authsamples.com/api/default",
+        "scope":                  "openid profile email https://api.authsamples.com/api/transactions_read",
         "reverseProxyPath":       "/reverse-proxy",
         "customLogoutEndpoint":   "https://login.authsamples.com/logout",
         "postLogoutRedirectUri":  "/spa/loggedout.html",
