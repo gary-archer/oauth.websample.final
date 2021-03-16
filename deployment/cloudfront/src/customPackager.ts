@@ -23,7 +23,7 @@ class Packager {
         await fs.copy('../../spa/dist/vendor.bundle.js', '.package/spa/dist/vendor.bundle.js');
         await fs.copy('../../spa/dist/app.bundle.js', '.package/spa/dist/app.bundle.js');
         await fs.copy('../../spa/dist/unsupported.js', '.package/spa/dist/unsupported.js');
-        await fs.copy('../../spa/dist/loggedOut.js', '.package/spa/dist/loggedOut.js');
+        await fs.copy('../../spa/dist/loggedout.js', '.package/spa/dist/loggedout.js');
 
         // CSS
         await fs.copy('../../spa/css/bootstrap.min.css', '.package/spa/css/bootstrap.min.css');
