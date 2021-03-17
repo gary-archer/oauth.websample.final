@@ -34,7 +34,7 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
 
         this.state = {
             shouldLoad: props.shouldLoad,
-            claims: null,
+            userInfo: null,
             error: null,
         };
 
@@ -63,7 +63,7 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
         }
 
         // Render nothing when logged out
-        if (!this.state.shouldLoad || !this.state.claims) {
+        if (!this.state.shouldLoad || !this.state.userInfo) {
             return (
                 <>
                 </>
@@ -71,8 +71,8 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
         }
 
         // Render the logged in user name otherwise
-        const name = `${this.state.claims.givenName} ${this.state.claims.familyName}`;
-        return  this.state.claims &&
+        const name = `${this.state.userInfo.givenName} ${this.state.userInfo.familyName}`;
+        return  this.state.userInfo &&
                 (
                     <div className='text-right mx-auto'>
                         <p className='font-weight-bold'>{name}</p>
@@ -125,15 +125,15 @@ export class UserInfoView extends React.Component<UserInfoViewProps, UserInfoVie
 
             // Get user info
             this.props.events.onViewLoading(ApiViewNames.UserInfo);
-            const claims = await this.props.apiClient.getUserInfo({causeError});
+            const userInfo = await this.props.apiClient.getUserInfo({causeError});
             this.props.events.onViewLoaded(ApiViewNames.UserInfo);
 
-            this.setState({claims});
+            this.setState({userInfo});
 
         } catch (e) {
 
             const error = ErrorHandler.getFromException(e);
-            this.setState({claims: null, error});
+            this.setState({userInfo: null, error});
             this.props.events.onViewLoadFailed(ApiViewNames.UserInfo, error);
         }
     }

@@ -7,7 +7,7 @@ import {UIError} from '../../plumbing/errors/uiError';
 export interface UserInfoViewState {
 
     // Populated when data is successfully loaded
-    claims: UserInfo | null;
+    userInfo: UserInfo | null;
 
     // Populated when there is an error getting data
     error: UIError | null;
