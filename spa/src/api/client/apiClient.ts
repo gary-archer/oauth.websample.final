@@ -6,7 +6,7 @@ import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {SessionManager} from '../../plumbing/utilities/sessionManager';
 import {Company} from '../entities/company';
 import {CompanyTransactions} from '../entities/companyTransactions';
-import {UserInfoClaims} from '../entities/userInfoClaims';
+import {UserInfo} from '../entities/userInfo';
 import {ApiRequestOptions} from './apiRequestOptions';
 
 /*
@@ -32,9 +32,9 @@ export class ApiClient {
     /*
      * We download user info from the API rather than using the id token
      */
-    public async getUserInfo(options?: ApiRequestOptions): Promise<UserInfoClaims> {
+    public async getUserInfo(options?: ApiRequestOptions): Promise<UserInfo> {
 
-        return await this._callApi('userinfo', 'GET', null, options) as UserInfoClaims;
+        return await this._callApi('userinfo', 'GET', null, options) as UserInfo;
     }
 
     /*
