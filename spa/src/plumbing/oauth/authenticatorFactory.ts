@@ -1,10 +1,11 @@
-import {InMemoryWebStorage, WebStorageStateStore} from 'oidc-client';
+import {WebStorageStateStore} from 'oidc-client';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {UrlHelper} from '../utilities/urlHelper';
 import {UserAgentHelper} from '../utilities/userAgentHelper';
 import {Authenticator} from './authenticator';
 import {MobileAuthenticator} from './mobile/mobileAuthenticator';
 import {ExtendedWebAuthenticator} from './web/extended/extendedWebAuthenticator';
+import {HybridTokenStorage} from './web/utilities/hybridTokenStorage';
 import {WebAuthenticator} from './web/webAuthenticator';
 import {WebAuthenticatorOptions} from './web/webAuthenticatorOptions';
 
@@ -73,8 +74,8 @@ export class AuthenticatorFactory {
                 // Use the Authorization Code Flow (PKCE)
                 response_type: 'code',
 
-                // By default, store tokens only in memory
-                userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() }),
+                // This store tokens only in memory, but multi tab state in local storage
+                userStore: new WebStorageStateStore({ store: new HybridTokenStorage() }),
 
                 // Renew on the app's main URL and do so explicitly rather than via a background timer
                 silent_redirect_uri: UrlHelper.append(webBaseUrl, configuration.redirectUri),

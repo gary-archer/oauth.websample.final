@@ -1,8 +1,7 @@
-import {UserManager, UserManagerSettings, WebStorageStateStore} from 'oidc-client';
+import {UserManager, UserManagerSettings} from 'oidc-client';
 import {WebAuthenticator} from '../webAuthenticator';
 import {WebAuthenticatorOptions} from '../webAuthenticatorOptions';
 import {ExtendedUserManager} from './extendedUserManager';
-import {HybridTokenStorage} from './hybridTokenStorage';
 import {WebReverseProxyClient} from './webReverseProxyClient';
 
 /*
@@ -16,10 +15,6 @@ export class ExtendedWebAuthenticator extends WebAuthenticator {
     public constructor(options: WebAuthenticatorOptions) {
 
         super(options);
-
-        // Use a custom option to store OIDC state, but not tokens, in local storage
-        // This is needed to make the library send token refresh grant messages for new browser tabs
-        (this._options.settings as any).userStore = new WebStorageStateStore({ store: new HybridTokenStorage() });
 
         // Create an object to manage calls vui the web reverse proxy endpoint
         this._webReverseProxyClient = new WebReverseProxyClient(

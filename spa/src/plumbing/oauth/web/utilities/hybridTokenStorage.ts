@@ -1,6 +1,6 @@
 /*
  * A hybrid token storage class that saves tokens only in memory in private class members
- * This makes user state available in new browser tabs so that ExtendedUserManager token refresh works
+ * This makes user state available in new browser tabs so that multi tab token refresh works
  */
 export class HybridTokenStorage {
 
@@ -100,14 +100,19 @@ export class HybridTokenStorage {
         delete tokenData.id_token;
         delete tokenData.refresh_token;
 
+        // Also remove profile claims received in the id token but which the UI does not use
+        // The UI instead gets its user info from the API
         if (tokenData.profile) {
 
-            // Also remove profile claims from the id token, since our SPA gets this data from our API
-            delete tokenData.profile.given_name;
-            delete tokenData.profile.family_name;
-            delete tokenData.profile.email;
-
-            // Some providers also supply this value
+            if (tokenData.profile.given_name) {
+                delete tokenData.profile.given_name;
+            }
+            if (tokenData.profile.family_name) {
+                delete tokenData.profile.family_name;
+            }
+            if (tokenData.profile.email) {
+                delete tokenData.profile.email;
+            }
             if (tokenData.profile.preferred_username) {
                 delete tokenData.profile.preferred_username;
             }
