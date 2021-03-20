@@ -3,6 +3,9 @@
  */
 export interface HeaderButtonsViewProps {
 
+    // Whether to show the refresh token button
+    usesRefreshTokens: boolean;
+
     // Whether to enable session related operations
     sessionButtonsEnabled: boolean;
 

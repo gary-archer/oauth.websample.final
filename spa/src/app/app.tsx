@@ -130,6 +130,7 @@ export class App extends React.Component<any, AppState> {
         };
 
         const headerButtonProps = {
+            usesRefreshTokens: this._showRefreshTokenOptions(),
             sessionButtonsEnabled: this.state.isMainViewLoaded && !this.state.isInLoggedOutView,
             handleHomeClick: this._onHome,
             handleReloadDataClick: this._onReloadData,
@@ -168,6 +169,7 @@ export class App extends React.Component<any, AppState> {
         };
 
         const headerButtonProps = {
+            usesRefreshTokens: this._showRefreshTokenOptions(),
             sessionButtonsEnabled: this.state.isMainViewLoaded && !this.state.isInLoggedOutView,
             handleHomeClick: this._onHome,
             handleExpireAccessTokenClick: this._onExpireAccessToken,
@@ -376,6 +378,19 @@ export class App extends React.Component<any, AppState> {
      */
     private async _onExpireAccessToken(): Promise<void> {
         await this._authenticator!.expireAccessToken();
+    }
+
+    /*
+     * Return false if configuration has not loaded or the system is not using a web reverse proxy
+     * Token refresh is then done via the standard SSO cookie and we hide the 'Expire Refresh Token button
+     */ 
+    private _showRefreshTokenOptions(): boolean {
+
+        if (!this._configuration || !this._configuration?.oauth.reverseProxyPath) {
+            return false;
+        }
+
+        return true;
     }
 
     /*

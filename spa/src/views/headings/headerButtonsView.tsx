@@ -22,6 +22,18 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
      */
     public render(): React.ReactNode {
 
+        if (this.props.usesRefreshTokens) {
+            return this._renderAllButtons();
+        } else {
+            return this._renderStandardButtons();
+        }
+    }
+
+    /*
+     * Render all buttons including that to expire the refresh token
+     */
+    private _renderAllButtons(): React.ReactNode {
+
         const disabled = !this.props.sessionButtonsEnabled;
         return  (
             <div className='row'>
@@ -66,6 +78,58 @@ export class HeaderButtonsView extends React.Component<HeaderButtonsViewProps> {
                     </button>
                 </div>
                 <div className='col col-one-fifth my-2 d-flex p-1'>
+                    <button
+                        onClick={this.props.handleLogoutClick}
+                        className='btn btn-primary btn-block p-1'
+                        disabled={disabled}
+                    >
+                        <small>Logout</small>
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    /*
+     * Render buttons when the SPA is using 'standard mode', with only an access token
+     */
+    private _renderStandardButtons(): React.ReactNode {
+
+        const disabled = !this.props.sessionButtonsEnabled;
+        return  (
+            <div className='row'>
+                <div className='col col-3 my-2 d-flex p-1'>
+                    <button
+                        onClick={this.props.handleHomeClick}
+                        className='btn btn-primary btn-block p-1'
+                    >
+                        <small>Home</small>
+                    </button>
+                </div>
+                <div
+                    className='col col-3 my-2 d-flex p-1'
+                    onTouchStart={this._handleReloadPress}
+                    onTouchEnd={this._handleReloadRelease}
+                    onMouseDown={this._handleReloadPress}
+                    onMouseUp={this._handleReloadRelease}
+                >
+                    <button
+                        className='btn btn-primary btn-block p-1'
+                        disabled={disabled}
+                    >
+                        <small>Reload Data</small>
+                    </button>
+                </div>
+                <div className='col col-3 my-2 d-flex p-1'>
+                    <button
+                        onClick={this.props.handleExpireAccessTokenClick}
+                        className='btn btn-primary btn-block p-1'
+                        disabled={disabled}
+                    >
+                        <small>Expire Access Token</small>
+                    </button>
+                </div>
+                <div className='col col-3 my-2 d-flex p-1'>
                     <button
                         onClick={this.props.handleLogoutClick}
                         className='btn btn-primary btn-block p-1'
