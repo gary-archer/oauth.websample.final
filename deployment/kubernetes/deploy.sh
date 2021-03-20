@@ -11,6 +11,11 @@
 #
 minikube profile api
 eval $(minikube docker-env)
+if [ $? -ne 0 ];
+then
+  echo "Minikube problem encountered - please ensure that the service is started"
+  exit 1
+fi
 
 #
 # Build the SPA's code
@@ -20,6 +25,7 @@ npm install
 npm run buildRelease
 if [ $? -ne 0 ]
 then
+  echo "SPA build problem encountered"
   exit 1
 fi
 
@@ -31,6 +37,7 @@ npm install
 npm run buildRelease
 if [ $? -ne 0 ]
 then
+  echo "Web Host build problem encountered"
   exit 1
 fi
 
@@ -41,6 +48,7 @@ cd ..
 docker build --no-cache -f deployment/kubernetes/Dockerfile -t webhost:v1 .
 if [ $? -ne 0 ]
 then
+  echo "Web Host docker build problem encountered"
   exit 1
 fi
 
@@ -54,6 +62,7 @@ kubectl create secret generic webhost-pkcs12-password --from-literal=password='P
 kubectl apply -f deployment/kubernetes/internal-cert.yaml
 if [ $? -ne 0 ]
 then
+echo "Web Host internal certificate problem encountered"
   exit 1
 fi
 
@@ -65,6 +74,7 @@ kubectl delete service/webhost-svc  2>/dev/null
 kubectl apply -f deployment/kubernetes/service.yaml
 if [ $? -ne 0 ]
 then
+  echo "Web Host service deployment problem encountered"
   exit 1
 fi
 
@@ -74,5 +84,6 @@ fi
 kubectl apply -f deployment/kubernetes/ingress.yaml
 if [ $? -ne 0 ]
 then
+  echo "Web Host ingress problem encountered"
   exit 1
 fi
