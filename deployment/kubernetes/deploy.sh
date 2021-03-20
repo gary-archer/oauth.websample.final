@@ -1,12 +1,6 @@
 #!/bin/bash
 
 #
-# Before running this script, deploy base certificate infrastructure to the cluster:
-# - git clone https://github.com/gary-archer/oauth.developmentcertificates
-# - cd kubernetes
-# - ./deploy.sh
-
-#
 # Use the Minikube Docker Daemon rather than that of Docker Desktop for Mac
 #
 minikube profile api
