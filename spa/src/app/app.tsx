@@ -129,16 +129,6 @@ export class App extends React.Component<any, AppState> {
             userInfo: null,
         };
 
-        const headerButtonProps = {
-            usesRefreshTokens: this._showRefreshTokenOptions(),
-            sessionButtonsEnabled: this.state.isMainViewLoaded && !this.state.isInLoggedOutView,
-            handleHomeClick: this._onHome,
-            handleReloadDataClick: this._onReloadData,
-            handleExpireAccessTokenClick: this._onExpireAccessToken,
-            handleExpireRefreshTokenClick: this._onExpireRefreshToken,
-            handleLogoutClick: this._onLogout,
-        };
-
         const errorProps = {
             hyperlinkMessage: 'Startup Problem Encountered',
             dialogTitle: 'Startup Error',
@@ -149,7 +139,6 @@ export class App extends React.Component<any, AppState> {
         return (
             <ErrorBoundary>
                 <TitleView {...titleProps} />
-                <HeaderButtonsView {...headerButtonProps} />
                 <ErrorSummaryView {...errorProps} />
             </ErrorBoundary>
         );
@@ -381,16 +370,11 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
-     * Return false if configuration has not loaded or the system is not using a web reverse proxy
-     * Token refresh is then done via the standard SSO cookie and we hide the 'Expire Refresh Token button
+     * Return true if the SPA uses refresh tokens in an HTTP only encrypted cookie
+     * If token refresh is then done via the standard SSO cookie, we hide the 'Expire Refresh Token button
      */ 
     private _showRefreshTokenOptions(): boolean {
-
-        if (!this._configuration || !this._configuration?.oauth.reverseProxyPath) {
-            return false;
-        }
-
-        return true;
+        return !!this._configuration!.oauth.reverseProxyPath;
     }
 
     /*
