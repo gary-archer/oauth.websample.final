@@ -38,8 +38,11 @@ export class WebAuthenticator implements Authenticator {
         // When the user signs out from another browser tab, also remove tokens from this browser tab
         // This will only work if the Authorization Server has a check_session_iframe endpoint
         this._userManager.events.addUserSignedOut(async () => {
-            this._userManager!.removeUser();
-            this._options.onLoggedOut();
+
+            if (this._userManager!.getUser()) {
+                this._userManager!.removeUser();
+                this._options.onLoggedOut();
+            }
         });
 
         // Allow any derived classes to do extra work

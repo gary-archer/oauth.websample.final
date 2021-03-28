@@ -372,7 +372,7 @@ export class App extends React.Component<any, AppState> {
     /*
      * Return true if the SPA uses refresh tokens in an HTTP only encrypted cookie
      * If token refresh is then done via the standard SSO cookie, we hide the 'Expire Refresh Token button
-     */ 
+     */
     private _showRefreshTokenOptions(): boolean {
         return !!this._configuration!.oauth.reverseProxyPath;
     }
