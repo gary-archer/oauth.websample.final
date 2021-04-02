@@ -27,7 +27,7 @@
 
 * AWS CloudFront is used as the SPA's Content Delivery Network
 * AWS API Gateway is used to host the SPA's OAuth Secured API
-* AWS Cognito is used as the Authorization Server for the SPA and API
+* AWS Cognito is used as the default Authorization Server for the SPA and API
 * An Edge Lambda is used to proxy refresh token requests and store them in HTTP only encrypted cookies
 
 ### SSL Certificates
