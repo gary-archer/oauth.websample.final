@@ -2,9 +2,6 @@
 	"folders": [
 		{
 			"path": "spa"
-		},
-		{
-			"path": "webhost"
 		}
 	]
 }
