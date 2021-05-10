@@ -1,13 +1,11 @@
 ---
 exclude_paths: [
     '*',    
+    'certs/**'
+    'deployment/**',
     'spa/*',
     'spa/css/**',
     'spa/dist/**',
     'spa/webpack/**',
-    'webhost/*',
-    'webhost/certs/**',
-    'cloud/lambda-edge/*',
-    'cloud/lambda-edge/test/**',
-    'cloud/deployment/**'
+    'webhost/**'
 ]

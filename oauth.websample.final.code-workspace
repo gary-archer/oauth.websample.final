@@ -5,9 +5,6 @@
 		},
 		{
 			"path": "webhost"
-		},
-		{
-			"path": "deployment/lambda-edge"
-		},
+		}
 	]
 }

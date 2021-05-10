@@ -3,8 +3,6 @@
         "port": 443,
         "sslCertificateFileName": "../certs/local/mycompany.com.ssl.p12",
         "sslCertificatePassword": "Password1",
-        "useHttpProxy": false,
-        "httpProxyUrl": "http://127.0.0.1:8888",
         "mode": "development"
     },
     "securityHeaders": {
@@ -14,11 +12,5 @@
             "https://cognito-idp.eu-west-2.amazonaws.com"
         ],
         "enabled": false
-    },
-    "reverseProxy": {
-        "tokenEndpoint": "https://login.authsamples.com/oauth2/token",
-        "cookieRootDomain": "mycompany.com",
-        "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
-        "trustedWebOrigin": "https://web.mycompany.com"
     }
 }

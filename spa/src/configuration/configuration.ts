@@ -1,14 +1,13 @@
-import {AppConfiguration} from './appConfiguration';
-import {OAuthConfiguration} from './oauthConfiguration';
-
 /*
  * A holder for configuration settings
  */
 export interface Configuration {
 
-    // Application specific settings
-    app: AppConfiguration;
+    // The base URL to the SPA
+    webBaseUrl: string;
 
-    // Settings that could be passed into an SPA OAuth helper library
-    oauth: OAuthConfiguration;
-}
+    // The base URL to the OAuth proxy API called by the SPA
+    oauthProxyApiBaseUrl: string;
+
+    // The base URL to the API called by the SPA
+    apiBaseUrl: string;

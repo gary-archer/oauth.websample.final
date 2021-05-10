@@ -12,12 +12,6 @@ export interface HostConfiguration {
     // The SSL certificate's private key password
     sslCertificatePassword: string;
 
-    // Whether to use an HTTPS proxy
-    useHttpProxy: boolean;
-
-    // The proxy URL when used
-    httpProxyUrl: string;
-
     // Mode is development when running on a Developer PC
     mode: string;
 }

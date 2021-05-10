@@ -1,7 +1,7 @@
 {
   "name": "finalspa",
   "version": "3.0.0",
-  "description": "The Final SPA using the OIDC Client security library and ReactJS",
+  "description": "The Final SPA using a Back End for Front end approach and with a separation of Web and API concerns",
   "main": "index.tsx",
   "scripts": {
     "lint": "npx eslint . --ext .ts,.tsx",
@@ -16,7 +16,6 @@
     "axios": "^0.21.1",
     "guid-typescript": "^1.0.9",
     "moment": "^2.24.0",
-    "oidc-client": "^1.11.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-modal": "^3.12.1",

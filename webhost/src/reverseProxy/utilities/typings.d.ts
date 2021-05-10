@@ -1,6 +1,0 @@
-/*
- * Prevent typescript compile errors for libraries without TypeScript support
- */
-declare module 'cookie-encrypter';
-declare module 'cookie-parser';
-declare module 'tunnel-agent';

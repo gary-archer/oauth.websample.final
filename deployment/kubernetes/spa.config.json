@@ -1,16 +1,5 @@
 {
-    "app": {
-        "webBaseUrl":             "https://web.mycluster.com",
-        "apiBaseUrl":             "https://api.mycluster.com/api"
-    },
-    "oauth": {
-        "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
-        "clientId":               "7gumn5rpu9hk1tb51bnd76rd28",
-        "redirectUri":            "/spa/",
-        "scope":                  "openid profile email https://api.authsamples.com/api/default",
-        "reverseProxyPath":       "/reverse-proxy",
-        "customLogoutEndpoint":   "https://login.authsamples.com/logout",
-        "postLogoutRedirectUri":  "/spa/loggedout.html",
-        "idpParameterName":       "identity_provider"
-    }
+    "webBaseUrl":             "https://web.mycluster.com",
+    "oauthProxyApiBaseUrl":   "https://api.mycluster.com/spa",
+    "apiBaseUrl":             "https://api.mycluster.com/api"
 }

@@ -19,10 +19,6 @@
 
 * TypeScript and ReactJS are used to implement the SPA
 
-### SPA Middleware Used
-
-* The [Oidc-Client Library](https://github.com/IdentityModel/oidc-client-js) is used to implement SPA logins and token handling
-
 ### Deployed Solution
 
 * AWS CloudFront is used as the SPA's Content Delivery Network
