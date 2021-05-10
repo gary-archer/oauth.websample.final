@@ -1,4 +1,17 @@
-1. Lambda edge
+1. Get basic compilation of components working
+   SPA error handling should result in a controlled display
+
+2. Get initial call to API working
+
+3. Get login response working
+   State cookie may need to be lax due to redirects
+
+4. Get other operations working on PC and tidy up
+
+5. Get /spa2 deployment working
+
+6. Lambda edge
    configValidationMode to better understand
    Deprecation warning: Support for "package.include" and "package.exclude" will be removed with next major release. 
    Please use "package.patterns" instead
+
