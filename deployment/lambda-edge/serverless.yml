@@ -33,28 +33,12 @@ functions:
           eventType: origin-response
           pathPattern: '*'
 
-  # The reverse proxy only applies to requests that begin with /reverse-proxy
-  # For viewer requests the memory size must be restricted to 128MB and the timeout to 5 seconds
-  reverseProxy:
-    handler: dist/reverseProxy.handler
-    memorySize: 128
-    timeout: 5
-    events:
-      - preExistingCloudFront:
-          distributionId: E1P4XPOL1PNE6Z
-          eventType: viewer-request
-          pathPattern: '/reverse-proxy/*'
-          includeBody: true
-
 # By default all files are included so remove files we don't need for any lambda
 # The custom packager does the rest of the work in code, including adding node_modules
 package:
   exclude:
   - .vscode/**
-  - deployment/**
   - src/**
-  - test/**
-  - config.local.json
   - ts*.json
   - package*.json
   - README.md
@@ -63,7 +47,7 @@ plugins:
   # Add the lambda edge function to our existing Cloudfront distribution rather than creating a new one
   - serverless-lambda-edge-pre-existing-cloudfront
 
-# The plugin generates a Serverless schema validation warning that we can't fix, so disable it until fixed
+# The plugin generates a Serverless schema validation warning that we can't fix, so disable it
 configValidationMode: off
 
 # Configure the resources that serverless creates
@@ -88,8 +72,5 @@ resources:
       Properties:
         RetentionInDays: '5'
     SecurityHeadersLogGroup:
-      Properties:
-        RetentionInDays: '5'
-    ReverseProxyLogGroup:
       Properties:
         RetentionInDays: '5'

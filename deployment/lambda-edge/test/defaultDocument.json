@@ -1,12 +1,12 @@
 {
-  "Records": [
-    {
-      "cf": {
-        "request": {
-          "method": "GET",
-          "uri": "/spa/abc"
+    "Records": [
+      {
+        "cf": {
+          "request": {
+            "method": "GET",
+            "uri": "/spa/abc"
+          }
         }
       }
-    }
-  ]
-}
+    ]
+  }

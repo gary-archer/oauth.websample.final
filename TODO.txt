@@ -1,0 +1,4 @@
+1. Lambda edge
+   configValidationMode to better understand
+   Deprecation warning: Support for "package.include" and "package.exclude" will be removed with next major release. 
+   Please use "package.patterns" instead
