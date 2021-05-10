@@ -5,3 +5,4 @@ spa/dist
 webhost/dist
 deployment/lambda-edge/dist
 .DS_Store
+.serverless
