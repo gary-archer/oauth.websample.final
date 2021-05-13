@@ -1,20 +1,14 @@
-1. Get basic compilation of components working
-   SPA error handling should result in a controlled display
+PHASE 1
+-------
+1. Save anti forgery token and get refresh token working
+   Will need concurrency support
+   Home button seems to cause concurrent POSTS to proxy API but page load does not
 
-2. Get initial call to API working
+2. API request / response data should use camel case fields
 
-3. API request / response data should use camel case fields
+3. Review and tidy up error codes
 
-4. Get login response working
-   State cookie may need to be lax due to redirects
-
-5. Get other operations working on PC and tidy up
-
-6. Get /spa2 deployment working
-
-7. Lambda edge
+4. Lambda edge
    configValidationMode to better understand
    Deprecation warning: Support for "package.include" and "package.exclude" will be removed with next major release. 
    Please use "package.patterns" instead
-
-8. Review error codes

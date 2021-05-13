@@ -47,13 +47,15 @@ export class WebAuthenticator implements Authenticator {
     public async login(): Promise<void> {
 
         try {
+            console.log('*** LOGIN START');
 
             // Try to call the API to get the authorization request URI and then ask the browser to redirect
-            const data = await this._callProxyApi('POST', '/login/start', null);
-            location.href = data.authorization_request_uri;
+            const response = await this._callProxyApi('POST', '/login/start', null);
+            location.href = response.authorization_request_uri;
 
         } catch (e) {
 
+            // Handle errors returned from the API
             throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginRequestFailed);
         }
     }
@@ -62,22 +64,44 @@ export class WebAuthenticator implements Authenticator {
      * Handle login responses when we return from the redirect
      */
     public async handleLoginResponse(): Promise<void> {
-        
-        try {
 
-            const urlData = urlparse(location.href, true);
-            if (urlData.query && urlData.query.state) {
+        // If the page loads with OAuth query parameters, process them as an OAuth response
+        const urlData = urlparse(location.href, true);
+        if (urlData.query && urlData.query.state && urlData.query.code) {
 
-                throw new Error('YAY - login response');
+            let redirectLocation = '#';
+            try {
+
+                // Send the code and state to the proxy API to complete the login
+                const request = {
+                    code: urlData.query.code,
+                    state: urlData.query.state,
+                };
+                const response = await this._callProxyApi('POST', '/login/end', request);
+
+                console.log('YAY = got response');
+                console.log(response);
+
+                
+            } catch (e) {
+
+                // Handle errors returned from the API
+                throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
+
+            } finally {
+
+                // Always replace the browser location, to remove OAuth details from back navigation
+                history.replaceState({}, document.title, redirectLocation);
             }
-
-        } catch (e) {
-
-            throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
         }
 
-        // If the page loads with a state query parameter we classify it as an OAuth response
+        // Also handle OAuth error responses from the Authorization Server, eg if we send an invalid scope
+        if (urlData.query && urlData.query.state && urlData.query.error) {
         
+            const errorCode = urlData.query.error;
+            const errorDescription = urlData.query.error_description ?? 'Problem encountered in a login response';
+            console.log(`Code: ${errorCode}, Description: ${errorDescription}`);
+        }
     }
 
     /*
@@ -95,14 +119,15 @@ export class WebAuthenticator implements Authenticator {
     }
 
     /*
-     * For testing, make the refresh token act like it is expired, when applicable
+     * For testing, call the API to make the refresh token act like it is expired
      */
     public async expireRefreshToken(): Promise<void> {
         throw new Error('expireRefreshToken not implemented');
     }
 
     /*
-     * Perform an OAuth operation server side in the API
+     * Call the OAuth Proxy API to perform an OAuth operation, and send cookie credentials
+     * Note that the cookie is same site but cross origin, so the withCredentials flag is needed
      */
     private async _callProxyApi(method: Method, operationPath: string, requestData: any): Promise<any> {
 
@@ -115,6 +140,7 @@ export class WebAuthenticator implements Authenticator {
                 headers: {
                     accept: 'application/json',
                 },
+                withCredentials: true,
             };
 
             if (requestData) {
@@ -127,7 +153,7 @@ export class WebAuthenticator implements Authenticator {
 
         } catch (e) {
 
-            throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginRequestFailed);
+            throw ErrorHandler.getFromHttpError(e, url, 'OAuth Proxy API');
         }
     }
 }
