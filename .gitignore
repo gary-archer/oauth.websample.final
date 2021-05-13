@@ -3,6 +3,5 @@ node_modules
 dist
 !/spa/dist/loggedout.js
 !/spa/dist/unsupported.js
-deployment/lambda-edge/dist
-deployment/lambda-edge
+/webhost/dist/*
 .serverless
