@@ -52,7 +52,7 @@ export class WebAuthenticator implements Authenticator {
                 return this._accessToken;
             }
         }
-        
+
         throw ErrorHandler.getFromLoginRequired();
     }
 
@@ -62,7 +62,7 @@ export class WebAuthenticator implements Authenticator {
     public async login(): Promise<void> {
 
         try {
-            
+
             const response = await this._callProxyApi('POST', '/login/start', null);
             location.href = response.authorization_request_uri;
 
@@ -91,7 +91,7 @@ export class WebAuthenticator implements Authenticator {
                 };
                 const response = await this._callProxyApi('POST', '/login/end', request);
                 HtmlStorageHelper.antiForgeryToken = response.anti_forgery_token;
-                
+
             } catch (e) {
 
                 // Handle errors returned from the API
@@ -106,7 +106,7 @@ export class WebAuthenticator implements Authenticator {
 
         // Also handle OAuth error responses from the Authorization Server, eg if we send an invalid scope
         if (urlData.query && urlData.query.state && urlData.query.error) {
-        
+
             const errorCode = urlData.query.error;
             const errorDescription = urlData.query.error_description ?? 'Problem encountered in a login response';
             console.log(`Code: ${errorCode}, Description: ${errorDescription}`);
@@ -119,9 +119,9 @@ export class WebAuthenticator implements Authenticator {
     public async logout(): Promise<void> {
 
         HtmlStorageHelper.removeAntiForgeryToken();
-        
+
         try {
-            
+
             /*
             const response = await this._callProxyApi('POST', '/logout/start', null);
             location.href = response.end_session_request_uri;
@@ -144,13 +144,13 @@ export class WebAuthenticator implements Authenticator {
      * For testing, call the API to make the refresh token act like it is expired
      */
     public async expireRefreshToken(): Promise<void> {
+        this._accessToken = null;
         await this._callProxyApi('POST', '/token/expire', null);
     }
 
     /*
      * Do the work of getting an access token by sending an auth cookie containing a refresh token
-     * Note that missing cookie errors are normal when a new browser session is started
-     * These fall through to the calling function and result in a login required error
+     * Expected errors fall through to the calling function and result in redirecting the user to re-authenticate
      */
     private async _performTokenRefresh(): Promise<void> {
 
@@ -162,7 +162,7 @@ export class WebAuthenticator implements Authenticator {
 
         } catch (e) {
 
-            if (!this._isAuthCookieNotFoundError(e)) {
+            if (!this._isExpectedTokenRefreshError(e)) {
                 throw ErrorHandler.getFromTokenRefreshError(e);
             }
         }
@@ -213,8 +213,8 @@ export class WebAuthenticator implements Authenticator {
     /*
      * Check for a known HTTP status and error code from the Proxy API
      */
-    private _isAuthCookieNotFoundError(error: any): boolean {
-        return error.statusCode === 400 && 
+    private _isExpectedTokenRefreshError(error: any): boolean {
+        return error.statusCode === 400 &&
                (error.errorCode === ErrorCodes.authCookieNotFound || error.errorCode === ErrorCodes.invalidGrant);
     }
 

@@ -19,8 +19,8 @@ export class ErrorCodes {
     public static readonly tokenRefreshError = 'token_refresh_error';
 
     // Returned when the Authorization Server indicates that the refresh token in the auth cookie is expired
-    public static readonly invalidGrant = 'invalid_data';
-    
+    public static readonly invalidGrant = 'invalid_grant';
+
     // An error starting a logout request
     public static readonly logoutRequestFailed = 'logout_request_failed';
 
