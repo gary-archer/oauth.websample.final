@@ -3,6 +3,9 @@ import urlparse from 'url-parse';
 import {Configuration} from '../../../configuration/configuration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
+import {AxiosUtils} from '../../utilities/axiosUtils';
+import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
+import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 import {UrlHelper} from '../../utilities/urlHelper';
 import {Authenticator} from '../authenticator';
 
@@ -13,12 +16,16 @@ export class WebAuthenticator implements Authenticator {
 
     private readonly _proxyApiBaseUrl: string;
     private readonly _onLoggedOut: () => void;
+    private readonly _concurrencyHandler: ConcurrentActionHandler;
     private _accessToken: string | null;
 
     public constructor(configuration: Configuration, onLoggedOut: () => void) {
+
         this._proxyApiBaseUrl = configuration.oauthProxyApiBaseUrl;
         this._onLoggedOut = onLoggedOut;
+        this._concurrencyHandler = new ConcurrentActionHandler();
         this._accessToken = null;
+        this._setupCallbacks();
     }
 
     /*
@@ -38,6 +45,14 @@ export class WebAuthenticator implements Authenticator {
      */
     public async refreshAccessToken(): Promise<string> {
 
+        if (HtmlStorageHelper.antiForgeryToken) {
+
+            await this._concurrencyHandler.execute(this._performTokenRefresh);
+            if (this._accessToken) {
+                return this._accessToken;
+            }
+        }
+        
         throw ErrorHandler.getFromLoginRequired();
     }
 
@@ -47,15 +62,12 @@ export class WebAuthenticator implements Authenticator {
     public async login(): Promise<void> {
 
         try {
-            console.log('*** LOGIN START');
-
-            // Try to call the API to get the authorization request URI and then ask the browser to redirect
+            
             const response = await this._callProxyApi('POST', '/login/start', null);
             location.href = response.authorization_request_uri;
 
         } catch (e) {
 
-            // Handle errors returned from the API
             throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginRequestFailed);
         }
     }
@@ -78,10 +90,7 @@ export class WebAuthenticator implements Authenticator {
                     state: urlData.query.state,
                 };
                 const response = await this._callProxyApi('POST', '/login/end', request);
-
-                console.log('YAY = got response');
-                console.log(response);
-
+                HtmlStorageHelper.antiForgeryToken = response.anti_forgery_token;
                 
             } catch (e) {
 
@@ -105,10 +114,23 @@ export class WebAuthenticator implements Authenticator {
     }
 
     /*
-     * Do the logout redirect
+     * Clear Do the logout redirect
      */
     public async logout(): Promise<void> {
-        throw new Error('logout not implemented');
+
+        HtmlStorageHelper.removeAntiForgeryToken();
+        
+        try {
+            
+            /*
+            const response = await this._callProxyApi('POST', '/logout/start', null);
+            location.href = response.end_session_request_uri;
+            */
+
+        } catch (e) {
+
+            throw ErrorHandler.getFromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
+        }
     }
 
     /*
@@ -122,11 +144,32 @@ export class WebAuthenticator implements Authenticator {
      * For testing, call the API to make the refresh token act like it is expired
      */
     public async expireRefreshToken(): Promise<void> {
-        throw new Error('expireRefreshToken not implemented');
+        await this._callProxyApi('POST', '/token/expire', null);
     }
 
     /*
-     * Call the OAuth Proxy API to perform an OAuth operation, and send cookie credentials
+     * Do the work of getting an access token by sending an auth cookie containing a refresh token
+     * Note that missing cookie errors are normal when a new browser session is started
+     * These fall through to the calling function and result in a login required error
+     */
+    private async _performTokenRefresh(): Promise<void> {
+
+        try {
+
+            const response = await this._callProxyApi('POST', '/token', null);
+            this._accessToken = response.access_token;
+            HtmlStorageHelper.antiForgeryToken = response.anti_forgery_token;
+
+        } catch (e) {
+
+            if (!this._isAuthCookieNotFoundError(e)) {
+                throw ErrorHandler.getFromTokenRefreshError(e);
+            }
+        }
+    }
+
+    /*
+     * Call the OAuth Proxy API to perform an OAuth operation, sending cookie credentials and an anti forgery token
      * Note that the cookie is same site but cross origin, so the withCredentials flag is needed
      */
     private async _callProxyApi(method: Method, operationPath: string, requestData: any): Promise<any> {
@@ -148,12 +191,37 @@ export class WebAuthenticator implements Authenticator {
                 options.headers['content-type'] = 'application/json';
             }
 
+            const aft = HtmlStorageHelper.antiForgeryToken;
+            if (aft) {
+                options.headers['x-mycompany-aft-finalspa'] = aft;
+            }
+
             const response = await axios.request(options as AxiosRequestConfig);
-            return response.data;
+            if (response.data) {
+                AxiosUtils.checkJson(response.data);
+                return response.data;
+            }
+
+            return null;
 
         } catch (e) {
 
             throw ErrorHandler.getFromHttpError(e, url, 'OAuth Proxy API');
         }
+    }
+
+    /*
+     * Check for a known HTTP status and error code from the Proxy API
+     */
+    private _isAuthCookieNotFoundError(error: any): boolean {
+        return error.statusCode === 400 && 
+               (error.errorCode === ErrorCodes.authCookieNotFound || error.errorCode === ErrorCodes.invalidGrant);
+    }
+
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    private _setupCallbacks(): void {
+        this._performTokenRefresh = this._performTokenRefresh.bind(this);
     }
 }

@@ -1,14 +1,16 @@
 PHASE 1
 -------
-1. Save anti forgery token and get refresh token working
-   Will need concurrency support
-   Home button seems to cause concurrent POSTS to proxy API but page load does not
+1. Logout support so that I can test better
 
 2. API request / response data should use camel case fields
 
-3. Review and tidy up error codes
+3. ErrorHandler for proxy API responses to check similar details to business API
 
-4. Lambda edge
+4. onLoggedOut to get working across tabs via a timer
+
+PHASE 2
+-------
+1. Lambda edge
    configValidationMode to better understand
    Deprecation warning: Support for "package.include" and "package.exclude" will be removed with next major release. 
    Please use "package.patterns" instead

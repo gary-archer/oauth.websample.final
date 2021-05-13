@@ -106,8 +106,6 @@ export class ApiViewEvents {
 
         const allViewsLoaded = this._views.filter(i => i[1] === true).length === this._views.length;
         if (allViewsLoaded && this._loginRequired) {
-            console.log(`*** Views length is ${this._views.length}`);
-            console.log('*** Trigger Login Required');
             this._onLoginRequiredAction();
         }
     }

@@ -57,14 +57,14 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getOAuthExceptionMessage(exception);
+        error.details = ErrorHandler._getExceptionMessage(exception);
         return error;
     }
 
     /*
-     * Handle errors interacting with the token endpoint
+     * Handle errors during token operations
      */
-    public static getFromTokenError(exception: any, errorCode: string): UIError {
+    public static getFromTokenRefreshError(exception: any): UIError {
 
         // Already handled errors
         if (exception instanceof UIError) {
@@ -74,12 +74,12 @@ export class ErrorHandler {
         // Create the error
         const error = new UIError(
             'Token',
-            errorCode,
-            'A technical problem occurred during token processing',
+            ErrorCodes.tokenRefreshError,
+            'A technical problem occurred during a token refresh operation',
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getOAuthExceptionMessage(exception);
+        error.details = ErrorHandler._getExceptionMessage(exception);
         return error;
     }
 
@@ -101,30 +101,8 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getOAuthExceptionMessage(exception);
+        error.details = ErrorHandler._getExceptionMessage(exception);
         return error;
-    }
-
-    /*
-     * Indicate if we don't know how to logout
-     */
-    public static getFromLogoutUnsupported(): UIError {
-
-        return new UIError(
-            'Logout',
-            ErrorCodes.logoutUnsupported,
-            'Logout is not supported by this provider, due to a missing end session endpoint');
-    }
-
-    /*
-     * Indicate if the id token is missing during a logout attempt
-     */
-    public static getFromMissingIdToken(): UIError {
-
-        return new UIError(
-            'Logout',
-            ErrorCodes.missingIdToken,
-            'Unable to logout because no id token exists for this browser tab');
     }
 
     /*
@@ -240,26 +218,6 @@ export class ErrorHandler {
             if (apiError.area && apiError.id && apiError.utcTime) {
                 error.setApiErrorDetails(apiError.area, apiError.id, apiError.utcTime);
             }
-        }
-    }
-
-    /*
-     * Get the message from an OAuth exception
-     */
-    private static _getOAuthExceptionMessage(exception: any): string {
-
-        let oauthError = '';
-        if (exception.error) {
-            oauthError = exception.error;
-            if (exception.error_description) {
-                oauthError += ` : ${(exception.error_description.replace(/\+/g, ' '))}`;
-            }
-        }
-
-        if (oauthError) {
-            return oauthError;
-        } else {
-            return ErrorHandler._getExceptionMessage(exception);
         }
     }
 
