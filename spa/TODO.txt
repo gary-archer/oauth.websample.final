@@ -1,5 +1,8 @@
 PHASE 1
 -------
+0. Bug
+   Press expire refresh + expire access then reload resends to API
+
 1. Handle an invalid scope redirect error
    Also handle storing location / data before and after redirect
 

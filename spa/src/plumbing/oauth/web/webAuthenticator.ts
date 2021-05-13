@@ -137,7 +137,10 @@ export class WebAuthenticator implements Authenticator {
      * This method is for testing only, to make the access token receive a 401 response from the API
      */
     public async expireAccessToken(): Promise<void> {
-        this._accessToken = `x${this._accessToken}x`;
+        
+        if (this._accessToken) {
+            this._accessToken = `x${this._accessToken}x`;
+        }
     }
 
     /*
