@@ -1,4 +1,5 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
+import urlparse from 'url-parse';
 import {Configuration} from '../../../configuration/configuration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
@@ -41,19 +42,42 @@ export class WebAuthenticator implements Authenticator {
     }
 
     /*
-     * Trigger the login redirect
+     * Trigger the login redirect to the Authorization Server
      */
     public async login(): Promise<void> {
 
-        const data = await this._callProxyApi('POST', 'spa/login/start', null);
-        location.href = data.authorization_request_uri;
+        try {
+
+            // Try to call the API to get the authorization request URI and then ask the browser to redirect
+            const data = await this._callProxyApi('POST', '/login/start', null);
+            location.href = data.authorization_request_uri;
+
+        } catch (e) {
+
+            throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginRequestFailed);
+        }
     }
 
     /*
-     * Handle login responses on the main window
+     * Handle login responses when we return from the redirect
      */
     public async handleLoginResponse(): Promise<void> {
-        throw new Error('handleLoginResponse not implemented');
+        
+        try {
+
+            const urlData = urlparse(location.href, true);
+            if (urlData.query && urlData.query.state) {
+
+                throw new Error('YAY - login response');
+            }
+
+        } catch (e) {
+
+            throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
+        }
+
+        // If the page loads with a state query parameter we classify it as an OAuth response
+        
     }
 
     /*

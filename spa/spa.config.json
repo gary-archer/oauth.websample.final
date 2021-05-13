@@ -1,5 +1,4 @@
 {
-    "webBaseUrl": "https://web.mycompany.com",
-    "oauthProxyApiBaseUrl": "https://api.authsamples.com/spa",
+    "oauthProxyApiBaseUrl": "https://api.mycompany.com:444/spa",
     "apiBaseUrl": "https://api.authsamples.com/api"
 }

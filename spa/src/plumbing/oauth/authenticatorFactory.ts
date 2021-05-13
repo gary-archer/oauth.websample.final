@@ -19,12 +19,13 @@ export class AuthenticatorFactory {
 
         if (UserAgentHelper.isAndroidWebView() || UserAgentHelper.isIosWebView()) {
 
-            // When running in a web view we create an authenticator that calls back the mobile app
+            // When running in a mobile web view we create an authenticator that calls back the mobile app
             return new MobileAuthenticator(onLoggedIn);
 
         } else {
 
-            throw new WebAuthenticator(configuration, onLoggedOut);
+            // Otherwise create the standard SPA authenticator, which uses a proxy API as a back end for front end
+            return new WebAuthenticator(configuration, onLoggedOut);
         }
     }
 }

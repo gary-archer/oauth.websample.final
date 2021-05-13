@@ -3,16 +3,18 @@
 
 2. Get initial call to API working
 
-3. Get login response working
+3. API request / response data should use camel case fields
+
+4. Get login response working
    State cookie may need to be lax due to redirects
 
-4. Get other operations working on PC and tidy up
+5. Get other operations working on PC and tidy up
 
-5. Get /spa2 deployment working
+6. Get /spa2 deployment working
 
-6. Lambda edge
+7. Lambda edge
    configValidationMode to better understand
    Deprecation warning: Support for "package.include" and "package.exclude" will be removed with next major release. 
    Please use "package.patterns" instead
 
-7. Review error codes
+8. Review error codes

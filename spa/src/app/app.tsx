@@ -127,6 +127,15 @@ export class App extends React.Component<any, AppState> {
             userInfo: null,
         };
 
+        const headerButtonProps = {
+            sessionButtonsEnabled: this.state.isMainViewLoaded && !this.state.isInLoggedOutView,
+            handleHomeClick: this._onHome,
+            handleExpireAccessTokenClick: this._onExpireAccessToken,
+            handleExpireRefreshTokenClick: this._onExpireRefreshToken,
+            handleReloadDataClick: this._onReloadData,
+            handleLogoutClick: this._onLogout,
+        };
+
         const errorProps = {
             hyperlinkMessage: 'Startup Problem Encountered',
             dialogTitle: 'Startup Error',
@@ -137,6 +146,7 @@ export class App extends React.Component<any, AppState> {
         return (
             <ErrorBoundary>
                 <TitleView {...titleProps} />
+                <HeaderButtonsView {...headerButtonProps} />
                 <ErrorSummaryView {...errorProps} />
             </ErrorBoundary>
         );
