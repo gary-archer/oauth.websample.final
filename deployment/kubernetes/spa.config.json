@@ -1,5 +1,4 @@
 {
-    "webBaseUrl":             "https://web.mycluster.com",
     "oauthProxyApiBaseUrl":   "https://api.mycluster.com/spa",
     "apiBaseUrl":             "https://api.mycluster.com/api"
 }

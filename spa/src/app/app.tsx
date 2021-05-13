@@ -102,14 +102,12 @@ export class App extends React.Component<any, AppState> {
 
             // Create the authenticator and receive any login responses on the main window
             this._authenticator = this._createAuthenticator();
-            await this._authenticator.initialise();
             await this._authenticator.handleLoginResponse();
 
             // Create the API client
-            this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
+            this._apiClient = new ApiClient(this._configuration.apiBaseUrl, this._authenticator);
 
             // Subscribe to window events
-            window.onhashchange = this._onHashChange;
             window.onresize = this._onResize;
 
             // Update state
@@ -158,7 +156,6 @@ export class App extends React.Component<any, AppState> {
         };
 
         const headerButtonProps = {
-            usesRefreshTokens: this._showRefreshTokenOptions(),
             sessionButtonsEnabled: this.state.isMainViewLoaded && !this.state.isInLoggedOutView,
             handleHomeClick: this._onHome,
             handleExpireAccessTokenClick: this._onExpireAccessToken,
@@ -220,8 +217,7 @@ export class App extends React.Component<any, AppState> {
     private _createAuthenticator(): Authenticator {
 
         return AuthenticatorFactory.createAuthenticator(
-            this._configuration!.oauth,
-            this._configuration!.app.webBaseUrl,
+            this._configuration!,
             this._onMobileWebViewLogin,
             this._onMoveToLoggedOutView);
     }
@@ -281,13 +277,6 @@ export class App extends React.Component<any, AppState> {
      */
     private _onMainViewLoadStateChanged(loaded: boolean): void {
         this.setState({isMainViewLoaded: loaded});
-    }
-
-    /*
-     * Handle updates to log levels when the URL log setting is changed
-     */
-    private _onHashChange(): void {
-        this._authenticator!.updateLogLevelIfRequired();
     }
 
     /*
@@ -370,14 +359,6 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
-     * Return true if the SPA uses refresh tokens in an HTTP only encrypted cookie
-     * If token refresh is then done via the standard SSO cookie, we hide the 'Expire Refresh Token button
-     */
-    private _showRefreshTokenOptions(): boolean {
-        return !!this._configuration!.oauth.reverseProxyPath;
-    }
-
-    /*
      * For test purposes this makes the refresh token act expired
      */
     private async _onExpireRefreshToken(): Promise<void> {
@@ -426,7 +407,6 @@ export class App extends React.Component<any, AppState> {
         this._onMainViewLoading = this._onMainViewLoading.bind(this);
         this._onLoggedOutViewLoading = this._onLoggedOutViewLoading.bind(this);
         this._onMainViewLoadStateChanged = this._onMainViewLoadStateChanged.bind(this);
-        this._onHashChange = this._onHashChange.bind(this);
         this._onHome = this._onHome.bind(this);
         this._onLoginRequired = this._onLoginRequired.bind(this);
         this._onReloadData = this._onReloadData.bind(this);

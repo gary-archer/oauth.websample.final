@@ -1,5 +1,4 @@
 {
-    "webBaseUrl":             "https://web.authsamples.com",
     "oauthProxyApiBaseUrl":   "https://api.authsamples.com/spa",
     "apiBaseUrl":             "https://api.authsamples.com/api"
 }

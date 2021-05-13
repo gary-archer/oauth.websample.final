@@ -1,7 +1,6 @@
 import {Request, Response} from 'express';
 import fs from 'fs-extra';
 import path from 'path';
-import {argv} from 'process';
 import {SecurityHeaders} from './securityHeaders';
 
 /*
@@ -52,11 +51,6 @@ export class StaticContent {
         const filePath = path.join(`${__dirname}/${this._webFilesRoot}/spa.config.json`);
         const configurationBuffer = await fs.readFile(filePath);
         const data = JSON.parse(configurationBuffer.toString());
-
-        // During development, if we are started with 'npm start localapi', point to the local API
-        if (argv.length > 2 && argv[2].toLowerCase() === 'localapi') {
-            data.app.apiBaseUrl = 'https://api.mycompany.com:444/api';
-        }
 
         // Write headers, and avoid caching this file during development
         this._securityHeaders.write(response);

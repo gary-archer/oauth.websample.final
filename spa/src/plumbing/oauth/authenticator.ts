@@ -3,9 +3,6 @@
  */
 export interface Authenticator {
 
-    // A method called during page load to initialise the OIDC client library
-    initialise(): Promise<void>;
-
     // Try to get an access token
     getAccessToken(): Promise<string>;
 
@@ -26,7 +23,4 @@ export interface Authenticator {
 
     // For testing, make the refresh token act like it is expired
     expireRefreshToken(): Promise<void>;
-
-    // For the web case this updates the OIDC log level based on the hash fragment
-    updateLogLevelIfRequired(): void;
 }

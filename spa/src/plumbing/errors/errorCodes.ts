@@ -13,7 +13,7 @@ export class ErrorCodes {
     // A technical error processing the login response containing the authorization code
     public static readonly loginResponseFailed = 'login_response_failed';
 
-    // A technical problem during background token renewal
+    // A technical problem during token renewal
     public static readonly tokenRenewalError = 'token_renewal_error';
 
     // The OAuth error when a refresh token expires

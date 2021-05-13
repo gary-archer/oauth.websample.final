@@ -14,11 +14,5 @@
             "https://cognito-idp.eu-west-2.amazonaws.com"
         ],
         "enabled": true
-    },
-    "reverseProxy": {
-        "tokenEndpoint": "https://login.authsamples.com/oauth2/token",
-        "cookieRootDomain": "mycluster.com",
-        "cookieEncryptionKey": "VBb1KIxUHo6dYgvhWoVsVlvTb6zSqtLXsptGcKEcAh8=",
-        "trustedWebOrigin": "https://web.mycluster.com"
     }
 }
