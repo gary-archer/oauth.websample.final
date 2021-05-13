@@ -1,8 +1,8 @@
 .DS_Store
 node_modules
 dist
-!dist/loggedout.js
-!dist/unsupported.js
+!/spa/dist/loggedout.js
+!/spa/dist/unsupported.js
 deployment/lambda-edge/dist
 deployment/lambda-edge
 .serverless
