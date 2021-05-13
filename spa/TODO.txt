@@ -19,13 +19,18 @@ PHASE 2
 2. Verify that mobile web solution still works
    Test Android and iOS also, as a checkup
 
-3. Blog updates
-   Stick to current domain names to avoid out of control changes
-
-4. README updates
+2. README updates
    - Separate API and Web concerns
    - Keep token options open
    - Productive developer setup
+
+4. SPA blog updates
+   Stick to current domain names to avoid out of control changes
+   Review existing wording
+
+5. Final API updates
+   Update to port 445
+   Keep blog updates minimal
 
 PHASE 3
 -------
@@ -33,3 +38,5 @@ PHASE 3
    configValidationMode to better understand
    Deprecation warning: Support for "package.include" and "package.exclude" will be removed with next major release. 
    Please use "package.patterns" instead
+
+2. authsamples.local domain
