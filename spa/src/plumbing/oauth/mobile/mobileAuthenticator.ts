@@ -3,7 +3,7 @@ import {Authenticator} from '../authenticator';
 import {MobileMethodCaller} from './mobileMethodCaller';
 
 /*
- * An implementation that calls back the hosting mobile app
+ * Used when the SPA is running in a mobile web view and getting its access tokens from the mobile app
  */
 export class MobileAuthenticator implements Authenticator {
 
@@ -42,7 +42,7 @@ export class MobileAuthenticator implements Authenticator {
     }
 
     /*
-     * The method to handle a login response on page load is is a no op when running in a web view
+     * This is a no op when the SPA is running in a mobile web view
      */
     public async handleLoginResponse(): Promise<void> {
     }

@@ -1,28 +1,20 @@
 PHASE 1
 -------
-0. Bug
-   Press expire refresh + expire access then reload resends to API
-
 1. Handle an invalid scope redirect error
    Also handle storing location / data before and after redirect
 
-2. Logout support so that I can test better
-
-3. API request / response data should use camel case fields
-   Update API, SPA and bash script
-
-4. ErrorHandler for proxy API responses to check similar details to business API
-
-5. onLoggedOut to get working across tabs via a timer
+2. ErrorHandler for proxy API responses to check similar details to business API
+   Think about invalid_data errors and avoid the SPA getting stuck if aft does not match cookie???
 
 PHASE 2
 -------
-1. Deploy and merge
+1. Try a quick deployment of SPA from branch - where I can revert if needed
+   Then deploy and merge
 
 2. Verify that mobile web solution still works
-   Test Android and iOS also, as a checkup
+   Also test Android and iOS, as a checkup
 
-2. README updates
+3. README updates
    - Separate API and Web concerns
    - Keep token options open
    - Productive developer setup
@@ -34,12 +26,23 @@ PHASE 2
 5. Final API updates
    Update to port 445
    Keep blog updates minimal
+   Think about 'npm start localapi' - change blog wording instead
 
 PHASE 3
 -------
-1. Lambda edge
+1. Proxy API to validate id token and compare to at_hash
+   After token refresh I may not get an id token so it will be optional
+
+2. onLoggedOut to get working across tabs via a timer
+
+3. Lambda edge
    configValidationMode to better understand
    Deprecation warning: Support for "package.include" and "package.exclude" will be removed with next major release. 
    Please use "package.patterns" instead
 
-2. authsamples.local domain
+4. authsamples.local domain
+
+5. When logged out change the Home button to Login and change text
+
+6. Trim down the federated logins post so that I do not need idp config in samples
+   Get rid of this but just mention acr_values

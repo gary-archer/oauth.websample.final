@@ -59,7 +59,7 @@ export class ErrorFormatter {
             lines.push(this._createErrorLine('Status Code', error.statusCode.toString()));
         }
 
-        /* FIELDS FOR DEVELOPERS */
+        /* FIELDS FOR SOFTWARE ENGINEERS */
 
         // Show details for some types of error
         if (error.details.length > 0) {
