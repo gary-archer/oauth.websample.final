@@ -63,7 +63,15 @@ export class WebAuthenticator implements Authenticator {
 
         try {
 
+            // Call the API to set up the login
             const response = await this._callProxyApi('POST', '/login/start', null);
+
+            // Store the app location and other state if required
+            HtmlStorageHelper.appState = {
+                hash: location.hash,
+            }
+
+            // Then do the redirect
             location.href = response.authorizationRequestUri;
 
         } catch (e) {
@@ -77,18 +85,36 @@ export class WebAuthenticator implements Authenticator {
      */
     public async handleLoginResponse(): Promise<void> {
 
-        // If the page loads with OAuth query parameters, process them as an OAuth response
+        // When the page loads, parse its query parameters to check for login responses
         const urlData = urlparse(location.href, true);
-        if (urlData.query && urlData.query.state && urlData.query.code) {
+        if (urlData.query && urlData.query.state && (urlData.query.code || urlData.query.error)) {
 
-            let redirectLocation = '#';
+            // Get the location before the redirect
+            let restoredLocation = '#';
+            const appState = HtmlStorageHelper.appState;
+            if (appState) {
+                restoredLocation = appState.hash;
+            }
+
             try {
 
-                // Send the code and state to the proxy API to complete the login
+                // Handle error responses
+                if (urlData.query.error) {
+
+                    const errorCode = urlData.query.error;
+                    const errorDescription =
+                        urlData.query.error_description ?? 'Login failed at the Authorization Server';
+                    throw ErrorHandler.getFromLoginOperation(new Error(errorDescription), errorCode);
+                }
+
+                // Get details received from the Authorization Server
                 const request = {
                     code: urlData.query.code,
                     state: urlData.query.state,
                 };
+
+                // Complete the login, to write HTTP only secure AES256 encrypted same site cookies containing tokens
+                // We must store the anti forgery token to use with the cookie
                 const response = await this._callProxyApi('POST', '/login/end', request);
                 HtmlStorageHelper.antiForgeryToken = response.antiForgeryToken;
 
@@ -97,19 +123,13 @@ export class WebAuthenticator implements Authenticator {
                 // Handle errors returned from the API
                 throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
 
+                
             } finally {
 
-                // Always replace the browser location, to remove OAuth details from back navigation
-                history.replaceState({}, document.title, redirectLocation);
+                // Clean up temporary state and remove OAuth details from back navigation
+                HtmlStorageHelper.removeAppState();
+                history.replaceState({}, document.title, restoredLocation);
             }
-        }
-
-        // Also handle OAuth error responses from the Authorization Server, eg if we send an invalid scope
-        if (urlData.query && urlData.query.state && urlData.query.error) {
-
-            const errorCode = urlData.query.error;
-            const errorDescription = urlData.query.error_description ?? 'Problem encountered in a login response';
-            console.log(`Code: ${errorCode}, Description: ${errorDescription}`);
         }
     }
 
