@@ -64,7 +64,7 @@ export class WebAuthenticator implements Authenticator {
         try {
 
             const response = await this._callProxyApi('POST', '/login/start', null);
-            location.href = response.authorization_request_uri;
+            location.href = response.authorizationRequestUri;
 
         } catch (e) {
 
@@ -90,7 +90,7 @@ export class WebAuthenticator implements Authenticator {
                     state: urlData.query.state,
                 };
                 const response = await this._callProxyApi('POST', '/login/end', request);
-                HtmlStorageHelper.antiForgeryToken = response.anti_forgery_token;
+                HtmlStorageHelper.antiForgeryToken = response.antiForgeryToken;
 
             } catch (e) {
 
@@ -121,7 +121,7 @@ export class WebAuthenticator implements Authenticator {
         try {
 
             const response = await this._callProxyApi('POST', '/logout/start', null);
-            location.href = response.end_session_request_uri;
+            location.href = response.endSessionRequestUri;
 
         } catch (e) {
 
@@ -160,8 +160,8 @@ export class WebAuthenticator implements Authenticator {
         try {
 
             const response = await this._callProxyApi('POST', '/token', null);
-            this._accessToken = response.access_token;
-            HtmlStorageHelper.antiForgeryToken = response.anti_forgery_token;
+            this._accessToken = response.accessToken;
+            HtmlStorageHelper.antiForgeryToken = response.antiForgeryToken;
 
         } catch (e) {
 
