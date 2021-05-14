@@ -25,7 +25,7 @@ GO LIVE
    Update to port 445
    Keep blog updates minimal
    Think about 'npm start localapi' - change blog wording instead
-
+   
 CONSOLIDATION
 -------------
 1. onLoggedOut to get working across tabs via a timer
@@ -41,3 +41,5 @@ CONSOLIDATION
 
 5. Trim down the federated logins post so that I do not need idp config in samples
    Get rid of this but just mention acr_values
+   
+6. Tidy up codacy
