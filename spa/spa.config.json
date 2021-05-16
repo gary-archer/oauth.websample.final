@@ -1,4 +1,4 @@
 {
-    "oauthProxyApiBaseUrl": "https://api.mycompany.com:444/spa",
+    "oauthProxyApiBaseUrl": "https://api.mycompany.com:444/proxy/spa",
     "apiBaseUrl": "https://api.authsamples.com/api"
 }
