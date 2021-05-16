@@ -1,4 +1,5 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
+import {Guid} from 'guid-typescript';
 import urlparse from 'url-parse';
 import {Configuration} from '../../../configuration/configuration';
 import {ErrorCodes} from '../../errors/errorCodes';
@@ -6,6 +7,7 @@ import {ErrorHandler} from '../../errors/errorHandler';
 import {AxiosUtils} from '../../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
+import {SessionManager} from '../../utilities/sessionManager';
 import {UrlHelper} from '../../utilities/urlHelper';
 import {Authenticator} from '../authenticator';
 
@@ -18,6 +20,7 @@ export class WebAuthenticator implements Authenticator {
     private readonly _onLoggedOut: () => void;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
     private _accessToken: string | null;
+    private readonly _sessionId: string;
 
     public constructor(configuration: Configuration, onLoggedOut: () => void) {
 
@@ -25,6 +28,7 @@ export class WebAuthenticator implements Authenticator {
         this._onLoggedOut = onLoggedOut;
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._accessToken = null;
+        this._sessionId = SessionManager.get();
         this._setupCallbacks();
     }
 
@@ -69,7 +73,7 @@ export class WebAuthenticator implements Authenticator {
             // Store the app location and other state if required
             HtmlStorageHelper.appState = {
                 hash: location.hash,
-            }
+            };
 
             // Then do the redirect
             location.href = response.authorizationRequestUri;
@@ -123,7 +127,6 @@ export class WebAuthenticator implements Authenticator {
                 // Handle errors returned from the API
                 throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
 
-                
             } finally {
 
                 // Clean up temporary state and remove OAuth details from back navigation
@@ -193,13 +196,13 @@ export class WebAuthenticator implements Authenticator {
 
     /*
      * Call the OAuth Proxy API to perform an OAuth operation, sending cookie credentials and an anti forgery token
-     * Note that the cookie is same site but cross origin, so the withCredentials flag is needed
      */
     private async _callProxyApi(method: Method, operationPath: string, requestData: any): Promise<any> {
 
         const url = UrlHelper.append(this._proxyApiBaseUrl, operationPath);
         try {
 
+            // Same site cookies are also cross origin so the withCredentials flag is needed
             const options: any = {
                 url,
                 method,
@@ -209,16 +212,24 @@ export class WebAuthenticator implements Authenticator {
                 withCredentials: true,
             };
 
+            // Add data when applicable
             if (requestData) {
                 options.data = requestData;
                 options.headers['content-type'] = 'application/json';
             }
 
+            // Add an anti forgery token when we have one
             const aft = HtmlStorageHelper.antiForgeryToken;
             if (aft) {
                 options.headers['x-mycompany-aft-finalspa'] = aft;
             }
 
+            // Supply headers for the proxy API to write to logs
+            options.headers['x-mycompany-api-client'] = 'FinalSPA';
+            options.headers['x-mycompany-session-id'] = this._sessionId;
+            options.headers['x-mycompany-correlation-id'] = Guid.create().toString();
+
+            // Make the request and get the response
             const response = await axios.request(options as AxiosRequestConfig);
             if (response.data) {
                 AxiosUtils.checkJson(response.data);
