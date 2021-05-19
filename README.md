@@ -20,6 +20,8 @@ The overall objective is to separate Web and API concerns and meet our [Web Arch
 
 ### Deployed Solution
 
+The SPA is deployed to the AWS Cloud and any reader can sign in via the [Quick Start Page](https://authguidance.com/home/code-samples-quickstart/):
+
 * AWS CloudFront is used as the SPA's Content Delivery Network
 * The OAuth Proxy API runs as a Serverless Lambda and is called via AWS API Gateway
 * The SPA uses a separate [Business API](https://github.com/gary-archer/oauth.apisample.serverless) for its application data
