@@ -1,0 +1,18 @@
+{
+    "host": {
+        "port": 8102,
+        "sslCertificateFileName": "./certs/keystore.p12",
+        "sslCertificatePassword": "Password1",
+        "useHttpProxy": false,
+        "httpProxyUrl": "",
+        "mode": "production"
+    },
+    "securityHeaders": {
+        "contentSecurityPolicyHosts": [
+            "https://api.mycluster.com",
+            "https://login.authsamples.com",
+            "https://cognito-idp.eu-west-2.amazonaws.com"
+        ],
+        "enabled": true
+    }
+}
