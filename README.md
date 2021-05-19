@@ -51,8 +51,8 @@ It is not used during requests for Web or API resources, so that the SPA's main 
 The sample keeps options open about use of access tokens in the browser.\
 This can potentially enable more advanced scenarios related to composing web content across domains.
 
-The SPA can send the same site cookie to the Proxy API to get an access token, then call other APIs with it.\
-These features related to OAuth in SPAs are common causes of XSS vulnerabilities and thus avoided:
+The SPA sends the same site cookie to the Proxy API to get an access token, then calls business APIs with it.\
+The SPA only uses tokens in direct HTTPS calls to APIs, and the following behaviour is avoided:
 
 - Storing tokens in HTML5 storage
 - Sending tokens between iframes
@@ -64,7 +64,7 @@ Future standards such as [Demonstrable Proof of Possession](https://datatracker.
 ### Design Variations
 
 Some companies may prefer to double hop all API calls via the Proxy API, so that tokens are never available to Javascript.\
-This may make stakeholders feel that security is better, though browser security with cookies is not perfect either.
+This may make stakeholders feel that security is better, though browser security with cookies is also imperfect.
 
 The sample could be easily adapted to double hop API calls, though this can result in some undesired behaviour.\
 In particular the Proxy API may need to change often and deal with more web concerns than it should.
