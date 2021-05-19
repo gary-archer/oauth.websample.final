@@ -7,29 +7,29 @@
 ### Overview
 
 A ReactJS Typescript SPA that uses OpenID Connect security with the best overall capabilities.\
-The SPA interfacts with a [Proxy API](https://github.com/gary-archer/oauth.webproxyapi) as part of a `Back End for Front End` solution.
+The SPA interfacts with an [OAuth Proxy API](https://github.com/gary-archer/oauth.webproxyapi) as part of a `Back End for Front End` solution.
 
 ### Main Features
 
 The overall goal is to separate Web and API concerns to meet our [Web Architecture Goals](https://authguidance.com/2017/09/08/goal-1-requirements/):
 
-- The SPA's static content is deployed via AWS Cloudfront to 20 global locations at low cost
+- The SPA's static content is deployed to 20 global locations with low cost and maintenance
 - The SPA is in full control of usability aspects, such as actions before and after redirects
 - The Proxy API is a small, easy to manage microservice, that is developed once and then should not change
 
 ### Deployed Solution
 
-* AWS CloudFront is used as the SPA's Content Delivery Network, to deploy to 20 locations
-* AWS API Gateway is used to host the OAuth Proxy API in a single location
-* AWS API Gateway is used to host the Business API which performs OAuth authorization
-* AWS Cognito is used as the default Authorization Server for the SPA and API
+* AWS CloudFront is used as the SPA's Content Delivery Network
+* The OAuth Proxy API runs as a Serverless Lambda and is called via AWS API Gateway
+* The SPA uses a separate [Business API](https://github.com/gary-archer/oauth.apisample.serverless) for its application data
+* AWS Cognito is used as the default Authorization Server for the SPA and API solution
 
 ### Blog Posts
 
 * See the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) for a summary of behaviour
 * See the [Final SPA Instructions](https://authguidance.com/2019/04/08/how-to-run-the-react-js-spa) for details on how to run the code
-* See the [Web Content Delivery](https://authguidance.com/2018/12/02/spa-content-deployment) post for details on cloud deployment
-* See the [Final HTTP Messages](https://authguidance.com/2020/05/24/spa-and-api-final-http-messages) for the detailed technical workflow
+* See the [Web Content Delivery](https://authguidance.com/2018/12/02/spa-content-deployment) post for details on Cloudfront deployment
+* See the [Final HTTP Messages](https://authguidance.com/2020/05/24/spa-and-api-final-http-messages) for a detailed technical workflow
 
 ### Same Site Cookies
 
