@@ -83,20 +83,20 @@ Build the SPA static content:
 - cd oauth.websample.final/spa
 - npm install && npm run build
 
-Deploy it via the Web Host, which listens at https://web.mycompany.com/spa:
+Serve it via the Web Host, which listens at https://web.mycompany.com/spa:
 
 - cd ../webhost
 - npm install && npm start
 
 Run the Proxy API, which listens at https://api.mycompany.com:444/proxy. \
-On a developer workstation, the same site cookie is issued to the `.mycompany.com`domain:
+On a developer workstation, the same site cookie is then issued to the `.mycompany.com`domain:
 
 - git clone https://github.com/gary-archer/oauth.webproxyapi
 - cd oauth.webproxyapi
 - npm install && npm start
 
 Browse to https://web.mycompany.com/spa and login with one of these credentials.\
-The API Authorization behind the sample uses a domain specific array claim:
+The API Authorization behind the sample demonstrates use of a domain specific array claim:
 
 | User | Credential | Allowed Access |
 | ---- | ---------- | -------------- |
