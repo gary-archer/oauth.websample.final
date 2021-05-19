@@ -3,5 +3,5 @@ node_modules
 dist
 !/spa/dist/loggedout.js
 !/spa/dist/unsupported.js
-/webhost/dist/*
 .serverless
+.package
