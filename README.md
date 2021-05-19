@@ -95,11 +95,11 @@ On a developer workstation, the same site cookie is issued to the `.mycompany.co
 Browse to https://web.mycompany.com/spa and login with one of these credentials.\
 The API Authorization behind the sample uses a domain specific array claim:
 
-| User | Credential |
-| ---- | ---------- |
-| guestuser@mycompany.com | Password1 |
-- guestadmin@mycompany.com / Password1 |
-
+| User | Credential | Allowed Access |
+| ---- | ---------- | -------------- |
+| guestuser@mycompany.com | Password1 | The user can only see data from US regions |
+| guestadmin@mycompany.com | Password1 | The user can see data from additional regions |
+ 
 ### SSL Certificates
 
 * Certificates in the certs folder originate from the [OAuth Development Certificates](https://github.com/gary-archer/oauth.developmentcertificates) repository
