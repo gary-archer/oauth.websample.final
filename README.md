@@ -1,4 +1,4 @@
-# oauth.websample.final
+# OAuth Final SPA
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f2c5ede8739440599096fc25010ab6f6)](https://www.codacy.com/gh/gary-archer/oauth.websample.final/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gary-archer/oauth.websample.final&amp;utm_campaign=Badge_Grade)
  
@@ -6,25 +6,99 @@
 
 ### Overview
 
-* The final SPA code sample using OAuth and Open Id Connect, from my blog at https://authguidance.com
-* **The sample uses Cloud Hosting, Hardened Security and a Custom Token Renewal solution**
+A ReactJS Typescript SPA that uses OpenID Connect security without browser problems and with the best capabilities.\
+The SPA interfacts with a [Proxy API]((https://github.com/gary-archer/oauth.webproxyapi) as part of a `Back End for Front End` solution.
 
-### Details
+### Main Features
+
+The overall goal is to separate Web and API concerns to meet our [Web Architecture Goals](https://authguidance.com/2017/09/08/goal-1-requirements/):
+
+- The SPA's static content is deployed via AWS Cloudfront to 20 global locations at low cost
+- The SPA is in full control of usability aspects, such as actions before and after redirects
+- The Proxy API is a small, easy to manage microservice, that is developed once and then should not change
+
+### Deployed Solution
+
+* AWS CloudFront is used as the SPA's Content Delivery Network, to deploy to 20 locations
+* AWS API Gateway is used to host the OAuth Proxy API in a single location
+* AWS API Gateway is used to host the Business API which performs OAuth authorization
+* AWS Cognito is used as the default Authorization Server for the SPA and API
+
+### Blog Posts
 
 * See the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) for a summary of behaviour
 * See the [Final SPA Instructions](https://authguidance.com/2019/04/08/how-to-run-the-react-js-spa) for details on how to run the code
 * See the [Web Content Delivery](https://authguidance.com/2018/12/02/spa-content-deployment) post for details on cloud deployment
+* See the [Final HTTP Messages](https://authguidance.com/2020/05/24/spa-and-api-final-http-messages) for the detailed technical workflow
 
-### Programming Languages
+### Same Site Cookies
 
-* TypeScript and ReactJS are used to implement the SPA
+The Proxy API writes a cookie storing a refresh token, which the SPA sends during OAuth requests.\
+The cookie has these properties to ensure good security and limited impact:
 
-### Deployed Solution
+- HTTP Only
+- Secure
+- AES 256 encrypted
+- SameSite = strict
+- Domain = .authsamples.com
+- Path = /proxy/spa
 
-* AWS CloudFront is used as the SPA's Content Delivery Network
-* AWS API Gateway is used to host the SPA's OAuth Secured API
-* AWS Cognito is used as the default Authorization Server for the SPA and API
-* An Edge Lambda is used to proxy refresh token requests and store them in HTTP only encrypted cookies
+This cookie only comes into play during OAuth related calls to the Proxy API at https://api.authsamples.com/proxy/spa.\
+It is not used during requests for web content or to business APIs, so that the SPA is mostly cookieless.
+
+### Access Tokens in the Browser
+
+The sample keeps options open about use of access tokens in the browser.\
+This can potentially enable goals related to composing web content across domains.
+
+The SPA can send the same site cookie to the Proxy API to get an access token, then call other APIs with it.\
+These features related to OAuth in SPAs are common causes of XSS vulnerabilities and thus avoided:
+
+- Storing tokens in HTML5 storage
+- Sending tokens between iframes
+- Returning tokens to the SPA as a login result
+
+The SPA uses a Content Security Policy to restrict allowed domains for Javascript and HTTP calls.\
+Future standards such as [Demonstrable Proof of Possession](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop) may further stengthen use of tokens in the browser.
+
+## Local Developer Setup
+
+Build the SPA static content:
+
+- git clone https://github.com/gary-archer/oauth.websample.final
+- cd oauth.websample.final/spa
+- npm install && npm run build
+
+Deploy it via the Web Host, which listens at https://web.mycompany.com/spa:
+
+- cd ../webhost
+- npm install && npm start
+
+Run the Proxy API, which listens at https://api.mycompany.com:444/proxy.\
+On a developer workstation, the same site cookie is issued to the `.mycompany.com`domain:
+
+- git clone https://github.com/gary-archer/oauth.webproxyapi
+- cd oauth.webproxyapi
+- npm install && npm start
+
+Browse to https://web.mycompany.com/spa and login with one of these credentials.\
+The API Authorization behind the sample uses a domain specific array claim:
+
+| User | Credential |
+| ---- | ---------- |
+| guestuser@mycompany.com | Password1 |
+- guestadmin@mycompany.com / Password1 |
+
+### Alternative Options
+
+Some companies may prefer to double hop all API calls via the Proxy API, so that tokens are never available to Javascript.\
+This may make stakeholders feel that security is better, though browser security with cookies is not perfect either.
+
+The sample could be easily adapted to double hop API calls, though this can result in some undesired behaviour.\
+In particular the Proxy API may need to change often and deal with more web concerns than it should.
+
+It may be more convenient for developers to include the OAuth Proxy Logic in the Web Host.\
+But this tends to lead to problems later, such as preventing the use of a Content Delivery Network.
 
 ### SSL Certificates
 

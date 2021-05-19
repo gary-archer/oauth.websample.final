@@ -1,42 +1,27 @@
 GO LIVE
 -------
-1. README updates
-   - Separate API and Web concerns
-   - Keep token options open - link to goals
+1. ErrorHandler for proxy API responses to check similar details to business API
+   Think about invalid_data errors and avoid the SPA getting stuck if aft does not match cookie???
+   Default action should be to redirect if refresh fails
 
-2. Try a quick deployment of SPA from branch - where I can revert if needed
-   Then deploy and merge
+2. When logged out change the Home button text to Login
 
-3. Verify that mobile web solution still works
-   Also test Android and iOS, as a checkup
-
-4. SPA blog updates
+3. SPA blog updates
    Stick to current domain names to avoid out of control changes
    Review existing wording
 
-5. Final API updates
+4. Final API updates
    Update to port 445
    Keep blog updates minimal
    Think about 'npm start localapi' - change blog wording instead
    
 CONSOLIDATION
 -------------
-1. ErrorHandler for proxy API responses to check similar details to business API
-   Think about invalid_data errors and avoid the SPA getting stuck if aft does not match cookie???
-   Default action should be to redirect if refresh fails
-
-2. onLoggedOut to get working across tabs via a timer
-
-3. Lambda edge
+1. Lambda edge
    configValidationMode to better understand
    Deprecation warning: Support for "package.include" and "package.exclude" will be removed with next major release. 
    Please use "package.patterns" instead
 
-4. authsamples.local domain
+2. Check up on codacy
 
-5. When logged out change the Home button text to Login
-
-6. Trim down the federated logins post so that I do not need idp config in samples
-   Get rid of this but just mention acr_values
-   
-7. Tidy up codacy
+3. Reset repos
