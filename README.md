@@ -6,8 +6,8 @@
 
 ### Overview
 
-A ReactJS Typescript SPA that uses OpenID Connect security without browser problems and with the best capabilities.\
-The SPA interfacts with a [Proxy API]((https://github.com/gary-archer/oauth.webproxyapi) as part of a `Back End for Front End` solution.
+A ReactJS Typescript SPA that uses OpenID Connect security with the best overall capabilities.\
+The SPA interfacts with a [Proxy API](https://github.com/gary-archer/oauth.webproxyapi) as part of a `Back End for Front End` solution.
 
 ### Main Features
 
