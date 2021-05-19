@@ -43,7 +43,7 @@ The cookie has these properties to ensure good security and to limit the scope o
 - Domain = .authsamples.com
 - Path = /proxy/spa
 
-This cookie only comes into play during OAuth related calls to the Proxy API at https://api.authsamples.com/proxy/spa.\
+This cookie only comes into play during OAuth related calls to the Proxy API at https://api.authsamples.com/proxy/spa. \
 It is not used during requests for Web or API resources, so that the SPA's main functionality is cookieless.
 
 ### Access Tokens in the Browser
