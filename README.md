@@ -86,7 +86,7 @@ Deploy it via the Web Host, which listens at https://web.mycompany.com/spa:
 - cd ../webhost
 - npm install && npm start
 
-Run the Proxy API, which listens at https://api.mycompany.com:444/proxy.\
+Run the Proxy API, which listens at https://api.mycompany.com:444/proxy. \
 On a developer workstation, the same site cookie is issued to the `.mycompany.com`domain:
 
 - git clone https://github.com/gary-archer/oauth.webproxyapi
