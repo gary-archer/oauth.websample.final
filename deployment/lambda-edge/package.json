@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Minimal lambda edge functions to refine the behaviour of our Cloud SPA",
   "scripts": {
-    "lint": "npx eslint . --ext .ts",
     "build": "rimraf dist && tsc --sourceMap true",
     "defaultDocument": "sls invoke local -f defaultDocument -p test/defaultDocument.json",
     "securityHeaders": "sls invoke local -f securityHeaders -p test/securityHeaders.json",

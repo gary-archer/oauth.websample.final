@@ -15,24 +15,24 @@ The overall objective is to separate Web and API concerns and meet our [Web Arch
 
 - The SPA's static content is deployed to 20 global locations with low cost and maintenance
 - The SPA is in full control of usability aspects, such as actions before and after redirects
-- The SPA's web content can potentially be composed into other apps, such as those of business partners
+- The SPA has the ability to use access tokens and perform cross domain API requests
 - The Proxy API is a small, easy to manage microservice, that is developed once and then should not change
 
 ### Deployed Solution
 
 The SPA is deployed to the AWS Cloud and any reader can sign in via the [Quick Start Page](https://authguidance.com/home/code-samples-quickstart/):
 
-* AWS CloudFront is used as the SPA's Content Delivery Network
-* The OAuth Proxy API runs as a Serverless Lambda and is called via AWS API Gateway
-* The SPA uses a separate [Business API](https://github.com/gary-archer/oauth.apisample.serverless) for its application data
-* AWS Cognito is used as the default Authorization Server, though all code is standards based
+- AWS CloudFront is used as the SPA's Content Delivery Network
+- The OAuth Proxy API runs as a Serverless Lambda and is called via AWS API Gateway
+- The SPA uses a separate [Business API](https://github.com/gary-archer/oauth.apisample.serverless) for its application data
+- AWS Cognito is used as the default Authorization Server, though all code is standards based
 
 ### Blog Posts
 
-* See the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) for a summary of behaviour
-* See the [Final SPA Instructions](https://authguidance.com/2019/04/08/how-to-run-the-react-js-spa) for details on how to run the code
-* See the [Web Content Delivery](https://authguidance.com/2018/12/02/spa-content-deployment) post for details on Cloudfront deployment
-* See the [Final HTTP Messages](https://authguidance.com/2020/05/24/spa-and-api-final-http-messages) for a detailed technical workflow
+- See the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) for a summary of behaviour
+- See the [Final SPA Instructions](https://authguidance.com/2019/04/08/how-to-run-the-react-js-spa) for details on how to run the code
+- See the [Web Content Delivery](https://authguidance.com/2018/12/02/spa-content-deployment) post for details on Cloudfront deployment
+- See the [Final HTTP Messages](https://authguidance.com/2020/05/24/spa-and-api-final-http-messages) for a detailed technical workflow
 
 ### Same Site Cookies
 
@@ -64,15 +64,15 @@ The SPA only uses tokens in direct HTTPS calls to APIs, and the following behavi
 The SPA also uses a Content Security Policy to restrict allowed domains for Javascript and HTTP calls.\
 Future standards such as [Demonstrable Proof of Possession](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop) may further stengthen use of tokens in the browser.
 
-### Design Variations
+### Variations
 
 Some companies may prefer to double hop all API calls via the Proxy API, so that tokens are never available to Javascript.\
 This may make stakeholders feel that security is better, though browser security with cookies is also imperfect.
 
 The sample could be easily adapted to double hop API calls, though this can result in some undesired behaviour.\
-In particular the Proxy API may need to change often and deal with more web concerns than it should.
+In particular the Proxy API may need to change often and deal with additional web concerns.
 
-Similarly it may be more convenient for developers to include the OAuth Proxy Logic in the Web Host.\
+From a development viewpoint it can be more convenient to include the OAuth Proxy API logic in the Web Host.\
 This tends to lead to problems later though, such as preventing the use of a Content Delivery Network.
 
 ## Local Developer Setup
@@ -105,9 +105,9 @@ The API Authorization behind the sample demonstrates use of a domain specific ar
  
 ### Key Classes
 
-* The [SPA WebAuthenticator Class](https://github.com/gary-archer/oauth.websample.final/blob/feature/revamp/spa/src/plumbing/oauth/web/webAuthenticator.ts) demonstrates the technically simple front end security
-* The [Proxy API Authorizer Class](https://github.com/gary-archer/oauth.webproxyapi/blob/main/src/core/services/authorizer.ts) provides an outline of the more complex back end security
+- The [SPA WebAuthenticator Class](https://github.com/gary-archer/oauth.websample.final/blob/feature/revamp/spa/src/plumbing/oauth/web/webAuthenticator.ts) demonstrates the technically simple front end security
+- The [Proxy API Authorizer Class](https://github.com/gary-archer/oauth.webproxyapi/blob/main/src/core/services/authorizer.ts) provides an outline of the more complex back end security
  
 ### SSL Certificates
 
-* Certificates in the certs folder originate from the [OAuth Development Certificates](https://github.com/gary-archer/oauth.developmentcertificates) repository
+- Certificates in the certs folder originate from the [OAuth Development Certificates](https://github.com/gary-archer/oauth.developmentcertificates) repository

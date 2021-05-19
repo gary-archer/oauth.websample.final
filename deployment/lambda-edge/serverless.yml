@@ -3,7 +3,7 @@ service: weblambdas
 # Cloudfront edge lambdas must be deployed to the us-east-1 region
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   region: us-east-1
   profile: default
   stage: deployed
@@ -33,15 +33,16 @@ functions:
           eventType: origin-response
           pathPattern: '*'
 
-# By default all files are included so remove files we don't need for any lambda
-# The custom packager does the rest of the work in code, including adding node_modules
+# Use patterns to remove files we don't need to deploy
 package:
-  exclude:
-  - .vscode/**
-  - src/**
-  - ts*.json
-  - package*.json
-  - README.md
+  patterns:
+  - '!.vscode/**'
+  - '!src/**'
+  - '!node_modules/**'
+  - '!test/**'
+  - '!ts*.json'
+  - '!package*.json'
+  - '!README.md'
 
 plugins:
   # Add the lambda edge function to our existing Cloudfront distribution rather than creating a new one
