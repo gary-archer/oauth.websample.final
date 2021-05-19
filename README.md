@@ -11,10 +11,11 @@ The SPA interfacts with an [OAuth Proxy API](https://github.com/gary-archer/oaut
 
 ### Main Features
 
-The overall goal is to separate Web and API concerns to meet our [Web Architecture Goals](https://authguidance.com/2017/09/08/goal-1-requirements/):
+The overall objective is to separate Web and API concerns and meet our [Web Architecture Goals](https://authguidance.com/2017/09/08/goal-1-requirements/):
 
 - The SPA's static content is deployed to 20 global locations with low cost and maintenance
 - The SPA is in full control of usability aspects, such as actions before and after redirects
+- The SPA's web content can potentially be composed into other apps, such as those of business partners
 - The Proxy API is a small, easy to manage microservice, that is developed once and then should not change
 
 ### Deployed Solution
