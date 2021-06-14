@@ -12,7 +12,7 @@ The SPA interacts with an [OAuth Proxy API](https://github.com/gary-archer/oauth
 ### OAuth Classes
 
 - The [SPA WebAuthenticator Class](https://github.com/gary-archer/oauth.websample.final/blob/master/spa/src/plumbing/oauth/web/webAuthenticator.ts) demonstrates the technically simple front end security
-- The [Proxy API Authorizer Class](https://github.com/gary-archer/oauth.webproxyapi/blob/main/src/core/services/authorizer.ts) provides an outline of the more complex back end security
+- The [Proxy API Authorizer Class](https://github.com/gary-archer/oauth.webproxyapi/blob/master/src/core/services/authorizer.ts) provides an outline of the more complex back end security
 
 ### Deployed Solution
 
