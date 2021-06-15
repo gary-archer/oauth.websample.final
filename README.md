@@ -43,7 +43,7 @@ The cookie has these properties to ensure good security and to limit the scope o
 - Path = /proxy/spa
 
 Cookies are only used during calls to the Proxy API at https://api.authsamples.com/proxy/spa. \
-They are not used during requests for Web or API resources, so that the SPA's is mainly cookieless.
+They are not used during requests for Web or API resources, so that the SPA is mainly cookieless.
 
 ### Access Tokens in the Browser
 
