@@ -9,17 +9,10 @@ const handler: any = async (event: any, context: Context) => {
     const response = event.Records[0].cf.response;
     const headers = response.headers;
 
-    // For performance and to reduce error handling scope we hard code hosts into the lambda
-    const trustedHosts = [
-        'https://api.authsamples.com',
-        'https://login.authsamples.com',
-        'https://cognito-idp.eu-west-2.amazonaws.com',
-    ];
-
     // Only allow Ajax calls from the browser to our own domains
     let policy = "default-src 'none';";
     policy += " script-src 'self';";
-    policy += ` connect-src 'self' ${trustedHosts.join(' ')};`;
+    policy += " connect-src 'self' https://api.authsamples.com;";
     policy += " img-src 'self';";
     policy += " style-src 'self';";
     policy += " object-src 'none'";
