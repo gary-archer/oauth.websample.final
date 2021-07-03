@@ -1,7 +1,9 @@
+import * as comlink from 'comlink';
+import {Remote} from 'comlink';
 import React from 'react';
 import Modal from 'react-modal';
 import {HashRouter, Route, Switch} from 'react-router-dom';
-import Worker from 'worker-loader!../plumbing/worker/secure.worker';
+import Worker from 'worker-loader!../plumbing/worker/secureWorker';
 import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
@@ -12,6 +14,7 @@ import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorFactory} from '../plumbing/oauth/authenticatorFactory';
+import {SecureWorker} from '../plumbing/worker/secureWorker';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
@@ -34,7 +37,7 @@ export class App extends React.Component<any, AppState> {
     private _configuration?: Configuration;
     private _authenticator?: Authenticator;
     private _apiClient?: ApiClient;
-    private _secureWorker: Worker;
+    private _secureWorker?: Remote<SecureWorker>;
 
     /*
      * Create safe objects here and do async startup processing later
@@ -63,9 +66,6 @@ export class App extends React.Component<any, AppState> {
 
         // Initialise the modal dialog system used for error popups
         Modal.setAppElement('#root');
-
-        // Create a web worker that will look after secured details such as access tokens
-        this._secureWorker = new Worker();
     }
 
     /*
@@ -106,18 +106,19 @@ export class App extends React.Component<any, AppState> {
             const loader = new ConfigurationLoader();
             this._configuration = await loader.download();
 
-            // First create a web worker to manage access tokens to manage access tokens securely
-            this._secureWorker.onmessage = (e) => {
-                console.log(`*** MAIN: worker data received: ${JSON.stringify(e.data)}`);
-            };
-            this._secureWorker.postMessage(this._configuration);
+            // Configure the web worker, which isolates access tokens from the main app
+            const RemoteSecureWorker = comlink.wrap<typeof SecureWorker>(new Worker());
+            this._secureWorker = await new RemoteSecureWorker();
 
             // Create the authenticator and receive any login responses on the main window
             this._authenticator = this._createAuthenticator();
             await this._authenticator.handleLoginResponse();
 
             // Create the API client
-            this._apiClient = new ApiClient(this._configuration.apiBaseUrl, this._authenticator);
+            this._apiClient = new ApiClient(
+                this._configuration.apiBaseUrl,
+                this._authenticator,
+                this._secureWorker);
 
             // Subscribe to window events
             window.onresize = this._onResize;

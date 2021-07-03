@@ -30,9 +30,6 @@ module.exports = {
   },
   output: {
 
-    // This tells web workers where to load from
-    publicPath: 'dist/',
-    
     // Output our Javascript bundles to a dist folder
     path: path.resolve(__dirname, '../dist'),
     filename: '[name].bundle.js'

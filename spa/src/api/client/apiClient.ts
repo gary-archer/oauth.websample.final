@@ -1,9 +1,11 @@
-import axios, {Method} from 'axios';
+import {Method} from 'axios';
+import {Remote} from 'comlink';
 import {Guid} from 'guid-typescript';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {SessionManager} from '../../plumbing/utilities/sessionManager';
+import {SecureWorker} from '../../plumbing/worker/secureWorker';
 import {Company} from '../entities/company';
 import {CompanyTransactions} from '../entities/companyTransactions';
 import {UserInfo} from '../entities/userInfo';
@@ -16,9 +18,13 @@ export class ApiClient {
 
     private readonly _apiBaseUrl: string;
     private readonly _authenticator: Authenticator;
+    private readonly _secureWorker: Remote<SecureWorker>;
     private readonly _sessionId: string;
 
-    public constructor(apiBaseUrl: string, authenticator: Authenticator) {
+    public constructor(
+        apiBaseUrl: string,
+        authenticator: Authenticator,
+        secureWorker: Remote<SecureWorker>) {
 
         this._apiBaseUrl = apiBaseUrl;
         if (!this._apiBaseUrl.endsWith('/')) {
@@ -26,20 +32,14 @@ export class ApiClient {
         }
 
         this._authenticator = authenticator;
+        this._secureWorker = secureWorker;
         this._sessionId = SessionManager.get();
 
-        /*
-         * This hack is meant to make it a little harder for malicious code to intercept request headers:
-
-          const origSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
-          XMLHttpRequest.prototype.setRequestHeader = (key, val) => {
-              grabToken(key, val);
-              origSetRequestHeader.call(this, key, val);
-          };
-        */
-        if (!Object.isFrozen(XMLHttpRequest.prototype)) {
-            Object.freeze(XMLHttpRequest.prototype);
-        }
+        const origSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
+        XMLHttpRequest.prototype.setRequestHeader = function(key, val) {
+            console.log(`*** Intercepted header: ${key}, ${val}`);
+            origSetRequestHeader.call(this, key, val);
+        };
     }
 
     /*
@@ -119,12 +119,13 @@ export class ApiClient {
         accessToken: string,
         options?: ApiRequestOptions): Promise<any> {
 
-        const response = await axios.request({
+        const response = await this._secureWorker.callApi({
             url,
             method,
             data: dataToSend,
             headers: this._getHeaders(accessToken, options),
         });
+
         AxiosUtils.checkJson(response.data);
         return response.data;
     }

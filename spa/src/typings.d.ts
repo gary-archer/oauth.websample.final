@@ -1,5 +1,5 @@
 /*
- * Needed to export our web worker that looks after access tokens
+ * This is needed in TypeScript projects, so that Webpack builds a separate bundle file for the web worker
  */
 
 declare module 'worker-loader!*' {

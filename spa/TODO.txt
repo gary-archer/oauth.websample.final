@@ -1,0 +1,12 @@
+1. API calls not working resulting in a hang, so have a look at these links:
+   https://github.com/jadjoubran/comlink-fetch
+   https://github.com/GoogleChromeLabs/comlink/issues/481
+
+2. Test in all browsers except mobile
+   Get rid of debug statements
+
+3. Make authenticator use the worker also
+
+4. Deploy and also test in mobile browsers
+
+5. Merge to main
