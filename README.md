@@ -48,7 +48,7 @@ They are not used during requests for Web or API resources, so that the SPA is m
 ### Access Tokens in the Browser
 
 After OAuth processing is complete, access tokens are used by the SPA to call APIs directly.\
-We need to be vigilant about risks and mitigations so we follow a [Threat Model](https://authguidance.com/2019/09/08/ui-token-management)?:
+To be vigilant about risks and mitigations a [Threat Model](https://authguidance.com/2019/09/08/ui-token-management) is followed:
 
 - API and OAuth requests are sent from a web worker where they cannot be intercepted
 - A Content Security Policy is used to restrict domains where tokens or data could be sent
