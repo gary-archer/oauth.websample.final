@@ -6,6 +6,7 @@
    Get rid of debug statements
 
 3. Make authenticator use the worker also
+   Ensure that secure data stays in the worker except for now the CSRF token
 
 4. Deploy and also test in mobile browsers
 
