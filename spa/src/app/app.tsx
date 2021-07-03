@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import {HashRouter, Route, Switch} from 'react-router-dom';
+import Worker from 'worker-loader!../plumbing/worker/secure.worker';
 import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
@@ -33,11 +34,13 @@ export class App extends React.Component<any, AppState> {
     private _configuration?: Configuration;
     private _authenticator?: Authenticator;
     private _apiClient?: ApiClient;
+    private _secureWorker: Worker;
 
     /*
      * Create safe objects here and do async startup processing later
      */
     public constructor(props: any) {
+
         super(props);
 
         // Set initial state, which will be used on the first render
@@ -60,6 +63,9 @@ export class App extends React.Component<any, AppState> {
 
         // Initialise the modal dialog system used for error popups
         Modal.setAppElement('#root');
+
+        // Create a web worker that will look after secured details such as access tokens
+        this._secureWorker = new Worker();
     }
 
     /*
@@ -99,6 +105,12 @@ export class App extends React.Component<any, AppState> {
             // First download configuration from the browser's web domain
             const loader = new ConfigurationLoader();
             this._configuration = await loader.download();
+
+            // First create a web worker to manage access tokens to manage access tokens securely
+            this._secureWorker.onmessage = (e) => {
+                console.log(`*** MAIN: worker data received: ${JSON.stringify(e.data)}`);
+            };
+            this._secureWorker.postMessage(this._configuration);
 
             // Create the authenticator and receive any login responses on the main window
             this._authenticator = this._createAuthenticator();

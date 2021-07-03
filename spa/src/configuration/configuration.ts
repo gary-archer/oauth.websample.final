@@ -9,4 +9,3 @@ export interface Configuration {
     // The base URL to the API called by the SPA
     apiBaseUrl: string;
 }
-

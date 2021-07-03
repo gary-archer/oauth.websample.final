@@ -5,7 +5,7 @@ module.exports = {
   // Set the working folder
   context: path.resolve(__dirname, '../src'),
 
-  // The sample runs in the big four modern desktop / mobile browsers, which all support ES2017
+  // The sample runs in the big four modern desktop browsers and the two main mobile browsers
   target: ['web', 'es2017'],
 
   entry: {
@@ -29,6 +29,9 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js']
   },
   output: {
+
+    // This tells web workers where to load from
+    publicPath: 'dist/',
     
     // Output our Javascript bundles to a dist folder
     path: path.resolve(__dirname, '../dist'),
