@@ -14,8 +14,7 @@ export class AuthenticatorFactory {
      */
     public static createAuthenticator(
         configuration: Configuration,
-        onLoggedIn: () => void,
-        onLoggedOut: () => void): Authenticator {
+        onLoggedIn: () => void): Authenticator {
 
         if (UserAgentHelper.isAndroidWebView() || UserAgentHelper.isIosWebView()) {
 
@@ -25,7 +24,7 @@ export class AuthenticatorFactory {
         } else {
 
             // Otherwise create the standard SPA authenticator, which uses a proxy API as a back end for front end
-            return new WebAuthenticator(configuration, onLoggedOut);
+            return new WebAuthenticator(configuration);
         }
     }
 }

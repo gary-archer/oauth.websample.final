@@ -137,8 +137,8 @@ export class App extends React.Component<any, AppState> {
         };
 
         const errorProps = {
-            hyperlinkMessage: 'Startup Problem Encountered',
-            dialogTitle: 'Startup Error',
+            hyperlinkMessage: 'Problem Encountered',
+            dialogTitle: 'Application Error',
             error: this.state.error,
             centred: true,
         };
@@ -228,8 +228,7 @@ export class App extends React.Component<any, AppState> {
 
         return AuthenticatorFactory.createAuthenticator(
             this._configuration!,
-            this._onMobileWebViewLogin,
-            this._onMoveToLoggedOutView);
+            this._onMobileWebViewLogin);
     }
 
     /*

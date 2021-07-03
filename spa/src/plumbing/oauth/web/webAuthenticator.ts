@@ -1,9 +1,9 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
-import urlparse from 'url-parse';
 import {Configuration} from '../../../configuration/configuration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
+import {UIError} from '../../errors/uiError';
 import {AxiosUtils} from '../../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
@@ -17,15 +17,13 @@ import {Authenticator} from '../authenticator';
 export class WebAuthenticator implements Authenticator {
 
     private readonly _proxyApiBaseUrl: string;
-    private readonly _onLoggedOut: () => void;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
     private _accessToken: string | null;
     private readonly _sessionId: string;
 
-    public constructor(configuration: Configuration, onLoggedOut: () => void) {
+    public constructor(configuration: Configuration) {
 
         this._proxyApiBaseUrl = configuration.oauthProxyApiBaseUrl;
-        this._onLoggedOut = onLoggedOut;
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._accessToken = null;
         this._sessionId = SessionManager.get();
@@ -86,55 +84,47 @@ export class WebAuthenticator implements Authenticator {
     }
 
     /*
-     * Handle login responses when we return from the redirect
+     * Check for and handle login responses when the page loads
      */
     public async handleLoginResponse(): Promise<void> {
 
-        // When the page loads, parse its query parameters to check for login responses
-        const urlData = urlparse(location.href, true);
-        if (urlData.query && urlData.query.state && (urlData.query.code || urlData.query.error)) {
+        let appLocation = '#';
+        try {
 
-            // Get the location before the redirect
-            let restoredLocation = '#';
-            const appState = HtmlStorageHelper.appState;
-            if (appState) {
-                restoredLocation = appState.hash;
-            }
+            // Send the full URL to the proxy API
+            const request = {
+                url: location.href,
+            };
+            const response = await this._callProxyApi('POST', '/login/end', request);
 
-            try {
+            // If it was handled it was an Authorization response and the SPA may need to perform actions
+            if (response.handled) {
 
-                // Handle errors returned from the Authorization Server
-                if (urlData.query.error) {
-
-                    const errorCode = urlData.query.error;
-                    const errorDescription =
-                        urlData.query.error_description ?? 'Login failed at the Authorization Server';
-                    throw ErrorHandler.getFromLoginOperation(new Error(errorDescription), errorCode);
-                }
-
-                // Get the details returned to the browser
-                const request = {
-                    code: urlData.query.code,
-                    state: urlData.query.state,
-                };
-
-                // Ask the API to complete the login, which will result in a protected auth cookie
-                const response = await this._callProxyApi('POST', '/login/end', request);
-
-                // The response includes an anti forgery token to use with the cookie
+                // The response includes an anti forgery token to use with the secure cookie
                 HtmlStorageHelper.antiForgeryToken = response.antiForgeryToken;
 
-            } catch (e) {
+                // Get the location before the redirect
+                const appState = HtmlStorageHelper.appState;
+                if (appState) {
+                    appLocation = appState.hash;
+                }
 
-                // Handle errors returned from the Proxy API
-                throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
-
-            } finally {
-
-                // Clean up temporary state and remove OAuth details from back navigation
+                // Remove session storage and the code / state details from the browser and back navigation
                 HtmlStorageHelper.removeAppState();
-                history.replaceState({}, document.title, restoredLocation);
+                history.replaceState({}, document.title, appLocation);
             }
+
+        } catch (e) {
+
+            // See if this is an OAuth response error as opposed to a general HTTP problem
+            const uiError = e as UIError;
+            if (uiError && uiError.errorCode === ErrorCodes.loginResponseFailed) {
+
+                // Remove the code / error details from the browser and back navigation
+                history.replaceState({}, document.title, appLocation);
+            }
+
+            throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
         }
     }
 
