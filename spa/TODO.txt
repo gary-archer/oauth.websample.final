@@ -3,13 +3,16 @@
    - return UIError from worker, which is the only class that knows about Axios
    - reduce code in ErrorHandler.getFromHttpError
 
-2. Make authenticator use the worker also
+2. Make authenticator use the worker
    Ensure that access token stays in the worker
-   Updated relationship between apiClient and authenticator
+   Updated relationship between apiClient and authenticator to return void
 
 3. Deploy and also test in mobile browsers
 
 4. Merge to main
 
 5. CSRF token to think more about, since the CDN should return this
-   Otherwise it is easy for malicious code to get a token with a cookie
+   Stored in memory by each browser tab in a private variable / closure
+   Otherwise it is easy for malicious code to abuse the cookie
+
+6. Could mobile web solution benefit from web workers?
