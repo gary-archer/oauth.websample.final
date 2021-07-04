@@ -1,5 +1,4 @@
-import * as comlink from 'comlink';
-import {Remote} from 'comlink';
+import {Remote, wrap} from 'comlink';
 import React from 'react';
 import Modal from 'react-modal';
 import {HashRouter, Route, Switch} from 'react-router-dom';
@@ -107,7 +106,7 @@ export class App extends React.Component<any, AppState> {
             this._configuration = await loader.download();
 
             // Create the web worker, which will handle access tokens and secure credentials
-            const RemoteSecureWorker = comlink.wrap<typeof SecureWorker>(new Worker());
+            const RemoteSecureWorker = wrap<typeof SecureWorker>(new Worker());
             this._secureWorker = await new RemoteSecureWorker();
 
             // Create the authenticator and receive any login responses on the main window

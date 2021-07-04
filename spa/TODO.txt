@@ -1,20 +1,15 @@
-1. Test in all browsers except mobile
-
-2. Error refactoring in SPA
-   - handleHttpError in apiClient
-   - return UIError from worker, which knows about Axios
+1. Error refactoring in SPA
+   - handleHttpError in apiClient, which knows nothing about Axios
+   - return UIError from worker, which is the only class that knows about Axios
    - reduce code in ErrorHandler.getFromHttpError
 
-3. Fix import statements
-
-4. Concurrent API calls to check at a code level and to think about
-   Hopefully works since it is still promises
-
-5. Make authenticator use the worker also
+2. Make authenticator use the worker also
    Ensure that access token stays in the worker
+   Updated relationship between apiClient and authenticator
 
-6. Deploy and also test in mobile browsers
+3. Deploy and also test in mobile browsers
 
-7. CSRF token to think more about, since the CDN should return this???
+4. Merge to main
 
-8. Merge to main
+5. CSRF token to think more about, since the CDN should return this
+   Otherwise it is easy for malicious code to get a token with a cookie
