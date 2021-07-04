@@ -106,7 +106,7 @@ export class App extends React.Component<any, AppState> {
             const loader = new ConfigurationLoader();
             this._configuration = await loader.download();
 
-            // Configure the web worker, which isolates access tokens from the main app
+            // Create the web worker, which will handle access tokens and secure credentials
             const RemoteSecureWorker = comlink.wrap<typeof SecureWorker>(new Worker());
             this._secureWorker = await new RemoteSecureWorker();
 

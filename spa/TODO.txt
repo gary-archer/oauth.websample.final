@@ -1,13 +1,20 @@
-1. API calls not working resulting in a hang, so have a look at these links:
-   https://github.com/jadjoubran/comlink-fetch
-   https://github.com/GoogleChromeLabs/comlink/issues/481
+1. Test in all browsers except mobile
 
-2. Test in all browsers except mobile
-   Get rid of debug statements
+2. Error refactoring in SPA
+   - handleHttpError in apiClient
+   - return UIError from worker, which knows about Axios
+   - reduce code in ErrorHandler.getFromHttpError
 
-3. Make authenticator use the worker also
-   Ensure that secure data stays in the worker except for now the CSRF token
+3. Fix import statements
 
-4. Deploy and also test in mobile browsers
+4. Concurrent API calls to check at a code level and to think about
+   Hopefully works since it is still promises
 
-5. Merge to main
+5. Make authenticator use the worker also
+   Ensure that access token stays in the worker
+
+6. Deploy and also test in mobile browsers
+
+7. CSRF token to think more about, since the CDN should return this???
+
+8. Merge to main

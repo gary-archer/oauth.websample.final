@@ -1,7 +1,9 @@
 import {Method} from 'axios';
 import {Remote} from 'comlink';
 import {Guid} from 'guid-typescript';
+import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {UIError} from '../../plumbing/errors/uiError';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {SessionManager} from '../../plumbing/utilities/sessionManager';
@@ -117,17 +119,43 @@ export class ApiClient {
         method: Method,
         dataToSend: any,
         accessToken: string,
-        options?: ApiRequestOptions): Promise<any> {
+        options?: ApiRequestOptions): Promise<[number, any]> {
 
-        const response = await this._secureWorker.callApi({
+        // Ask the web worker to make the API call
+        const [status, data] = await this._secureWorker.callApi({
             url,
             method,
             data: dataToSend,
             headers: this._getHeaders(accessToken, options),
         });
 
-        AxiosUtils.checkJson(response.data);
-        return response.data;
+        // Handle success responses
+        if (status >= 200 && status <= 299) {
+            AxiosUtils.checkJson(data);
+            return data;
+        }
+
+        // Handle failure responses
+        const error = new UIError(
+            'Web API',
+            ErrorCodes.responseError,
+            `Problem encountered calling the Web API`,
+            undefined);
+        error.statusCode = status;
+
+        if (typeof data === 'object') {
+
+            if (data.code && data.message) {
+                error.errorCode = data.code;
+                error.details = data.message;
+            }
+
+            if (data.area && data.id && data.utcTime) {
+                error.setApiErrorDetails(data.area, data.id, data.utcTime);
+            }
+        }
+        
+        throw error;
     }
 
     /*
@@ -159,7 +187,8 @@ export class ApiClient {
      */
     private _isApi401Error(error: any) {
 
-        if (error.response && error.response.status === 401) {
+        const uiError = error as UIError
+        if (uiError && uiError.statusCode === 401) {
             return true;
         }
 
