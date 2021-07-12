@@ -74,6 +74,7 @@ export class ApiClient {
             return await this._authenticator.callApiWithAccessToken(async (token) => {
                 
                 // Make the API call in an isolated context that can use the access token
+                console.log(`*** API URL is ${url}`);
                 const response = await axios.request({
                     url,
                     method,

@@ -1,4 +1,6 @@
 import {expose} from 'comlink';
+import {ErrorHandler} from '../errors/errorHandler';
+import { UIError } from '../errors/uiError';
 
 /*
  * Access tokens are isolated within a web worker, where this code runs
@@ -18,27 +20,39 @@ export class SecureWorker {
      */
     public async callApiWithAccessToken(callApiAction: (token: string) => Promise<any>): Promise<void> {
 
-        if (!this._accessToken) {
-            
-            // If we don't have an access token, try to get one then call the API
-            this._accessToken = await this._refreshTokenAction!();
-            return callApiAction(this._accessToken);
+        try {
+            if (!this._accessToken) {
+                
+                // If we don't have an access token, try to get one then call the API
+                this._accessToken = await this._refreshTokenAction!();
+                return callApiAction(this._accessToken);
 
-        } else {
+            } else {
 
-            // Otherwise call the API, then retry with a fresh token if we get a 401
-            try {
+                // Otherwise call the API, then retry with a fresh token if we get a 401
+                try {
 
-                return await callApiAction(this._accessToken);
+                    return await callApiAction(this._accessToken);
 
-            } catch (e) {
+                } catch (e) {
 
-                if (this._isApi401Error(e)) {
+                    if (this._isApi401Error(e)) {
 
-                    this._accessToken = await this._refreshTokenAction!();
-                    return callApiAction(this._accessToken);
+                        this._accessToken = await this._refreshTokenAction!();
+                        return callApiAction(this._accessToken);
+                    }
                 }
             }
+        } catch (e) {
+            
+            console.log('*** INNER ERROR: exception inside web worker');
+            
+            const error = ErrorHandler.getFromHttpError(e, 'some url', 'Web API');
+            // const error = e as UIError;
+            if (error) {
+                console.log(`*** INNER: Web worker error has code: ${error.errorCode}`);
+            }
+            throw error;
         }
     }
 

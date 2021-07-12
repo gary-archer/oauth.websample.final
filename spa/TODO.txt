@@ -1,7 +1,7 @@
 PART 1
 ------
 1. Get basics working
-   webAuthenticator / callApiWithAccessToken catch is the current blocker
+   Error serialization problems - perhaps UIError could be improved?
    Verify headers not intercepted
    Get code nicely separated
 

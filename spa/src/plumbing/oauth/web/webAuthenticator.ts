@@ -52,10 +52,10 @@ export class WebAuthenticator implements Authenticator {
 
         } catch (e) {
 
-            console.log('*** API call failed: got exception from web worker');
+            console.log('*** OUTER ERROR: received exception from web worker');
             const error = e as UIError;
             if (error) {
-                console.log(`*** Web worker error has lost its code: ${error.errorCode}`);
+                console.log(`*** OUTER: Web worker error has lost its code: ${error.errorCode}`);
             }
 
             throw e;
@@ -83,6 +83,8 @@ export class WebAuthenticator implements Authenticator {
     
                 if (!this._isExpectedTokenRefreshError(e)) {
                     throw ErrorHandler.getFromTokenRefreshError(e);
+                } else {
+                    console.log(`*** Expected Token refresh error: ${e}`);
                 }
             }
         }
@@ -92,6 +94,7 @@ export class WebAuthenticator implements Authenticator {
         }
 
         if (!accessToken) {
+            console.log(`*** Login required error thrown from within web worker`);
             throw ErrorHandler.getFromLoginRequired();
         }
 
@@ -210,6 +213,7 @@ export class WebAuthenticator implements Authenticator {
     private async _callProxyApi(method: Method, operationPath: string, requestData: any): Promise<any> {
 
         const url = UrlHelper.append(this._proxyApiBaseUrl, operationPath);
+        console.log(`*** OAuth URL is ${url}`);
         try {
 
             // Same site cookies are also cross origin so the withCredentials flag is needed
