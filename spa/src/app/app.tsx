@@ -1,8 +1,7 @@
-import {Remote, wrap} from 'comlink';
 import React from 'react';
 import Modal from 'react-modal';
 import {HashRouter, Route, Switch} from 'react-router-dom';
-import Worker from 'worker-loader!../plumbing/worker/secureWorker';
+import Worker from 'worker-loader!../plumbing/worker/secureWorker.ts';
 import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
@@ -13,7 +12,6 @@ import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorFactory} from '../plumbing/oauth/authenticatorFactory';
-import {SecureWorker} from '../plumbing/worker/secureWorker';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
@@ -36,7 +34,6 @@ export class App extends React.Component<any, AppState> {
     private _configuration?: Configuration;
     private _authenticator?: Authenticator;
     private _apiClient?: ApiClient;
-    private _secureWorker?: Remote<SecureWorker>;
 
     /*
      * Create safe objects here and do async startup processing later
@@ -105,19 +102,13 @@ export class App extends React.Component<any, AppState> {
             const loader = new ConfigurationLoader();
             this._configuration = await loader.download();
 
-            // Create the web worker, which will handle access tokens and secure credentials
-            const RemoteSecureWorker = wrap<typeof SecureWorker>(new Worker());
-            this._secureWorker = await new RemoteSecureWorker();
-
-            // Create the authenticator and receive any login responses on the main window
+            // Set up the authenticator and process any login responses on the main window
             this._authenticator = this._createAuthenticator();
-            await this._authenticator.handleLoginResponse();
+            await this._authenticator.initializeWebWorker(new Worker());
+            await this._authenticator.handlePageLoad();
 
             // Create the API client
-            this._apiClient = new ApiClient(
-                this._configuration.apiBaseUrl,
-                this._authenticator,
-                this._secureWorker);
+            this._apiClient = new ApiClient(this._configuration.apiBaseUrl, this._authenticator);
 
             // Subscribe to window events
             window.onresize = this._onResize;

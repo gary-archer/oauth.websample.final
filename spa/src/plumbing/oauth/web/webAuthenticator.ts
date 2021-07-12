@@ -1,4 +1,5 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
+import {proxy, Remote, wrap} from 'comlink';
 import {Guid} from 'guid-typescript';
 import {Configuration} from '../../../configuration/configuration';
 import {ErrorCodes} from '../../errors/errorCodes';
@@ -8,6 +9,7 @@ import {AxiosUtils} from '../../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 import {SessionManager} from '../../utilities/sessionManager';
+import {SecureWorker} from '../../worker/secureWorker';
 import {UrlHelper} from '../../utilities/urlHelper';
 import {Authenticator} from '../authenticator';
 
@@ -18,45 +20,82 @@ export class WebAuthenticator implements Authenticator {
 
     private readonly _proxyApiBaseUrl: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
-    private _accessToken: string | null;
+    private _secureWorker: Remote<SecureWorker> | null;
     private readonly _sessionId: string;
 
     public constructor(configuration: Configuration) {
 
         this._proxyApiBaseUrl = configuration.oauthProxyApiBaseUrl;
         this._concurrencyHandler = new ConcurrentActionHandler();
-        this._accessToken = null;
+        this._secureWorker = null;
         this._sessionId = SessionManager.get();
         this._setupCallbacks();
     }
 
     /*
-     * Get an access token if one exists in memory, or try a refresh
+     * Set up a web worker to isolate the storage of access tokens
      */
-    public async getAccessToken(): Promise<string> {
+    public async initializeWebWorker(worker: Worker): Promise<void> {
 
-        if (this._accessToken) {
-            return this._accessToken;
-        }
-
-        return this.refreshAccessToken();
+        const RemoteSecureWorker = wrap<typeof SecureWorker>(worker);
+        this._secureWorker = await new RemoteSecureWorker(proxy(this._refreshAccessToken));
     }
 
     /*
-     * Try to refresh an access token in a synchronised manner across multiple views
-     * The auth cookie is sent to the Proxy API, which returns an access token or an invalid_grant error
+     * Commands that use the access token are run in the web worker's isolated context
      */
-    public async refreshAccessToken(): Promise<string> {
+    public async callApiWithAccessToken(action: (token: string) => Promise<any>): Promise<void> {
+        
+        try {
+        
+            return await this._secureWorker!.callApiWithAccessToken(proxy(action));
 
-        if (HtmlStorageHelper.antiForgeryToken) {
+        } catch (e) {
 
-            await this._concurrencyHandler.execute(this._performTokenRefresh);
-            if (this._accessToken) {
-                return this._accessToken;
+            console.log('*** API call failed: got exception from web worker');
+            const error = e as UIError;
+            if (error) {
+                console.log(`*** Web worker error has lost its code: ${error.errorCode}`);
+            }
+
+            throw e;
+        }
+    }
+
+    /*
+     * This runs within a web worker and tries to refresh an access token
+     * The auth cookie is sent to the Proxy API, which returns an access token or an invalid_grant error
+     * Calls are also synchronized for multiple views via the concurrency handler
+     */
+    private async _refreshAccessToken(): Promise<string> {
+
+        let accessToken: string | null = null;
+
+        const performTokenRefresh = async () => {
+            
+            try {
+
+                const response = await this._callProxyApi('POST', '/token', null);
+                HtmlStorageHelper.antiForgeryToken = response.antiForgeryToken;
+                accessToken = response.accessToken;
+    
+            } catch (e) {
+    
+                if (!this._isExpectedTokenRefreshError(e)) {
+                    throw ErrorHandler.getFromTokenRefreshError(e);
+                }
             }
         }
+        
+        if (HtmlStorageHelper.antiForgeryToken) {
+            await this._concurrencyHandler.execute(performTokenRefresh);
+        }
 
-        throw ErrorHandler.getFromLoginRequired();
+        if (!accessToken) {
+            throw ErrorHandler.getFromLoginRequired();
+        }
+
+        return accessToken;
     }
 
     /*
@@ -71,7 +110,7 @@ export class WebAuthenticator implements Authenticator {
 
             // Store the app location and other state if required
             HtmlStorageHelper.appState = {
-                hash: location.hash,
+                hash: location.hash || '#',
             };
 
             // Then do the redirect
@@ -86,7 +125,7 @@ export class WebAuthenticator implements Authenticator {
     /*
      * Check for and handle login responses when the page loads
      */
-    public async handleLoginResponse(): Promise<void> {
+    public async handlePageLoad(): Promise<void> {
 
         let appLocation = '#';
         try {
@@ -109,7 +148,7 @@ export class WebAuthenticator implements Authenticator {
                     appLocation = appState.hash;
                 }
 
-                // Remove session storage and the code / state details from the browser and back navigation
+                // Remove session storage and the OAuth details from back navigation
                 HtmlStorageHelper.removeAppState();
                 history.replaceState({}, document.title, appLocation);
             }
@@ -144,7 +183,7 @@ export class WebAuthenticator implements Authenticator {
 
         } finally {
 
-            this._accessToken = null;
+            await this._secureWorker!.clearAccessToken();
             HtmlStorageHelper.removeAntiForgeryToken();
         }
     }
@@ -153,10 +192,7 @@ export class WebAuthenticator implements Authenticator {
      * This method is for testing only, to make the access token receive a 401 response from the API
      */
     public async expireAccessToken(): Promise<void> {
-
-        if (this._accessToken) {
-            this._accessToken = `x${this._accessToken}x`;
-        }
+        await this._secureWorker!.expireAccessToken();
     }
 
     /*
@@ -164,28 +200,8 @@ export class WebAuthenticator implements Authenticator {
      */
     public async expireRefreshToken(): Promise<void> {
 
-        this._accessToken = null;
+        await this._secureWorker!.clearAccessToken();
         await this._callProxyApi('POST', '/token/expire', null);
-    }
-
-    /*
-     * Do the work of getting an access token by sending an auth cookie containing a refresh token
-     * Expected errors fall through to the calling function and result in redirecting the user to re-authenticate
-     */
-    private async _performTokenRefresh(): Promise<void> {
-
-        try {
-
-            const response = await this._callProxyApi('POST', '/token', null);
-            this._accessToken = response.accessToken;
-            HtmlStorageHelper.antiForgeryToken = response.antiForgeryToken;
-
-        } catch (e) {
-
-            if (!this._isExpectedTokenRefreshError(e)) {
-                throw ErrorHandler.getFromTokenRefreshError(e);
-            }
-        }
     }
 
     /*
@@ -226,6 +242,7 @@ export class WebAuthenticator implements Authenticator {
             // Make the request and return the response
             const response = await axios.request(options as AxiosRequestConfig);
             if (response.data) {
+
                 AxiosUtils.checkJson(response.data);
                 return response.data;
             }
@@ -252,6 +269,6 @@ export class WebAuthenticator implements Authenticator {
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
     private _setupCallbacks(): void {
-        this._performTokenRefresh = this._performTokenRefresh.bind(this);
+        this._refreshAccessToken = this._refreshAccessToken.bind(this);
     }
 }

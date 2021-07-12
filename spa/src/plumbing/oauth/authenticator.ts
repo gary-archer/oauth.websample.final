@@ -3,17 +3,17 @@
  */
 export interface Authenticator {
 
-    // Try to get an access token
-    getAccessToken(): Promise<string>;
+    // Set up a web worker to isolate the storage of access tokens
+    initializeWebWorker(worker: Worker): Promise<void>;
 
-    // Try to refresh the access token when it expires
-    refreshAccessToken(): Promise<string>;
+    // Commands that use the access token are run in the web worker's isolated context
+    callApiWithAccessToken(action: (token: string) => Promise<any>): Promise<void>;
 
     // Perform a login redirect
     login(): Promise<void>;
 
     // Handle a main window login response when the page loads
-    handleLoginResponse(): Promise<void>;
+    handlePageLoad(): Promise<void>;
 
     // Perform a logout redirect
     logout(): Promise<void>;

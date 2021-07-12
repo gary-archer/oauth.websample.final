@@ -19,7 +19,8 @@ export class AuthenticatorFactory {
         if (UserAgentHelper.isAndroidWebView() || UserAgentHelper.isIosWebView()) {
 
             // When running in a mobile web view we create an authenticator that calls back the mobile app
-            return new MobileAuthenticator(onLoggedIn);
+            // return new MobileAuthenticator(onLoggedIn);
+            throw new Error('not implemented');
 
         } else {
 

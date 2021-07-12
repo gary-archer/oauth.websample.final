@@ -1,41 +1,74 @@
-import axios from 'axios';
 import {expose} from 'comlink';
 
 /*
- * This web worker deals with HTTP requests that use credentials
+ * Access tokens are isolated within a web worker, where this code runs
  */
 export class SecureWorker {
 
+    private _accessToken: string | null;
+    private readonly _refreshTokenAction?: () => Promise<string>;
+
+    public constructor(refreshTokenAction: () => Promise<string>) {
+        this._accessToken = null;
+        this._refreshTokenAction = refreshTokenAction;
+    }
+
     /*
-     * The entry point for commands from the main side of the app
+     * Do the work of calling APIs within the web worker and retrying with a fresh token when needed
      */
-    public async callApi(input: any): Promise<[number, any]> {
+    public async callApiWithAccessToken(callApiAction: (token: string) => Promise<any>): Promise<void> {
 
-        try {
+        if (!this._accessToken) {
+            
+            // If we don't have an access token, try to get one then call the API
+            this._accessToken = await this._refreshTokenAction!();
+            return callApiAction(this._accessToken);
 
-            const response = await axios.request({
-                url: input.url,
-                method: input.method,
-                data: input.data,
-                headers: input.headers,
-            });
+        } else {
 
-            return [response.status, response.data];
+            // Otherwise call the API, then retry with a fresh token if we get a 401
+            try {
 
-        } catch (e) {
+                return await callApiAction(this._accessToken);
 
-            let status = 0;
-            if (e.response && e.response.status) {
-                status = e.response.status;
+            } catch (e) {
+
+                if (this._isApi401Error(e)) {
+
+                    this._accessToken = await this._refreshTokenAction!();
+                    return callApiAction(this._accessToken);
+                }
             }
-
-            let data = null;
-            if (e.response && e.response.data) {
-                data = e.response.data;
-            }
-
-            return [status, data];
         }
+    }
+
+    /*
+     * Clear the access token on logout or session expiry
+     */
+    public async clearAccessToken(): Promise<void> {
+        this._accessToken = null;
+    }
+
+    /*
+     * Make the access token act expired, for testing purposes
+     */
+    public async expireAccessToken(): Promise<void> {
+
+        if (this._accessToken) {
+            this._accessToken = `x${this._accessToken}x`;
+        }
+    }
+
+    /*
+     * API 401s are handled via a retry with a new token
+     */
+    private _isApi401Error(error: any) {
+
+        if (error.response && error.response.status === 401) {
+            return true;
+        }
+
+        return false;
     }
 }
 

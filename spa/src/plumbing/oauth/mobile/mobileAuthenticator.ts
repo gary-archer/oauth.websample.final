@@ -5,7 +5,7 @@ import {MobileMethodCaller} from './mobileMethodCaller';
 /*
  * Used when the SPA is running in a mobile web view and getting its access tokens from the mobile app
  */
-export class MobileAuthenticator implements Authenticator {
+export class MobileAuthenticator /*implements Authenticator*/ {
 
     private _methodCaller: MobileMethodCaller;
     private _onLoggedInAction: () => void;
@@ -16,9 +16,21 @@ export class MobileAuthenticator implements Authenticator {
     }
 
     /*
+     * This is not relevant to the mobile case
+     */
+    public async initializeWebWorker(worker: Worker): Promise<void> {
+    }
+
+    /*
+     * This is not relevant to the mobile case
+     */
+    public async callApiFromWebWorker(action: (token: string) => Promise<any>): Promise<void> {
+    }
+
+    /*
      * Ask the mobile app for the current access token
      */
-    public async getAccessToken(): Promise<string> {
+    public async getAccessToken(): Promise<string | null> {
         return this._methodCaller.callAsync('getAccessToken', Guid.create().toString());
     }
 
