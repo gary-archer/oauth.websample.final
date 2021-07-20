@@ -1,7 +1,8 @@
-1. Update README files to include notes on web workers and comlink
-   Indicate it is an advanced sample to do the best job of using access tokens in the browser
+1. Fix Safari problem and also test on iPad:
+   - Refused to load https://web.authsamples.com/spa/dist/webWorkerChannel.bundle.worker.js because it
+     appears in neither the child-src directive nor the default-src directive of the Content Security Policy.
 
-2. Implement an OAuthFetch class to share logic
+2. Implement an OAuthFetch class to share OAuth fetch logic
 
 3. Multi tab logout by watching local storage
    See React book for further details
