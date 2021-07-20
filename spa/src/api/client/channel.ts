@@ -2,7 +2,7 @@ import {Method} from 'axios';
 import {ApiRequestOptions} from './apiRequestOptions';
 
 /*
- * The channel could be a 
+ * The channel could be a web worker or a direct call
  */
 export interface Channel {
 
