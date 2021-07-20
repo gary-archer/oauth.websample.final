@@ -1,6 +1,5 @@
 1. Logout broken on Safari for deployed system
-   Check working on localhost first
-   Add console.log output and redeploy if needed
+   May need some console.log details to be deployed
 
 2. Implement an OAuthFetch class to share OAuth fetch logic
 
