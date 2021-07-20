@@ -1,14 +1,16 @@
-1. Get linting and compliation working
+1. Get app basically working and see what breaks
+   Verify that headers are not intercepted
 
-2. Get app basically working and see what breaks
-   Verify headers not intercepted
+2. Finalize design of web authenticators and split into two classes
 
-3. Finalize design of web authenticators and split into two classes
+3. Error serialization to get working
 
-4. Error serialization to test
+4. Ensure same session ID in main app and web worker
 
-5. Same session ID in main app and web worker
+5. Mobile web post login event
 
-6. Deploy and also test SPA in a mobile browser
+6. Update README
 
-7. Mobile web post login event
+7. Deploy and also test SPA in a mobile browser
+
+8. Merge to master
