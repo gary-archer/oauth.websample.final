@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
 import {HashRouter, Route, Switch} from 'react-router-dom';
-import Worker from 'worker-loader!../plumbing/worker/secureWorker.ts';
 import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
@@ -24,6 +23,7 @@ import {ApiViewEvents} from '../views/utilities/apiViewEvents';
 import {ApiViewNames} from '../views/utilities/apiViewNames';
 import {RouteHelper} from '../views/utilities/routeHelper';
 import {AppState} from './appState';
+import {SecureWorker} from '../api/client/secureWorker';
 
 /*
  * The application root component
@@ -102,13 +102,14 @@ export class App extends React.Component<any, AppState> {
             const loader = new ConfigurationLoader();
             this._configuration = await loader.download();
 
-            // Set up the authenticator and process any login responses on the main window
-            this._authenticator = this._createAuthenticator();
-            await this._authenticator.initializeWebWorker(new Worker());
-            await this._authenticator.handlePageLoad();
+            // Create global objects for managing OAuth and API calls
+            const factory = new AuthenticatorFactory(this._configuration!);
+            await factory.initialize();
+            this._authenticator = factory.createAuthenticator();
+            this._apiClient = factory.createApiClient();
 
-            // Create the API client
-            this._apiClient = new ApiClient(this._configuration.apiBaseUrl, this._authenticator);
+            // Handle return from a login redirect when required
+            await this._authenticator.handlePageLoad();
 
             // Subscribe to window events
             window.onresize = this._onResize;
@@ -228,10 +229,7 @@ export class App extends React.Component<any, AppState> {
      * Create the authenticator object from our configuration, and supply callbacks
      */
     private _createAuthenticator(): Authenticator {
-
-        return AuthenticatorFactory.createAuthenticator(
-            this._configuration!,
-            this._onMobileWebViewLogin);
+        return AuthenticatorFactory.createAuthenticator(this._configuration!);
     }
 
     /*

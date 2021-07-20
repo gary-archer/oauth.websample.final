@@ -5,32 +5,18 @@ import {MobileMethodCaller} from './mobileMethodCaller';
 /*
  * Used when the SPA is running in a mobile web view and getting its access tokens from the mobile app
  */
-export class MobileAuthenticator /*implements Authenticator*/ {
+export class MobileAuthenticator implements Authenticator {
 
     private _methodCaller: MobileMethodCaller;
-    private _onLoggedInAction: () => void;
 
-    public constructor(_onLoggedInAction: () => void) {
+    public constructor() {
         this._methodCaller = new MobileMethodCaller();
-        this._onLoggedInAction = _onLoggedInAction;
-    }
-
-    /*
-     * This is not relevant to the mobile case
-     */
-    public async initializeWebWorker(worker: Worker): Promise<void> {
-    }
-
-    /*
-     * This is not relevant to the mobile case
-     */
-    public async callApiFromWebWorker(action: (token: string) => Promise<any>): Promise<void> {
     }
 
     /*
      * Ask the mobile app for the current access token
      */
-    public async getAccessToken(): Promise<string | null> {
+    public async getAccessToken(): Promise<string> {
         return this._methodCaller.callAsync('getAccessToken', Guid.create().toString());
     }
 
@@ -49,14 +35,14 @@ export class MobileAuthenticator /*implements Authenticator*/ {
         // Do the login work in the mobile app
         await this._methodCaller.callAsync('login');
 
-        // Run other post login actions
-        this._onLoggedInAction();
+        // TODO: Need to call this after a login
+        // this._onReloadData(false);
     }
 
     /*
      * This is a no op when the SPA is running in a mobile web view
      */
-    public async handleLoginResponse(): Promise<void> {
+    public async handlePageLoad(): Promise<void> {
     }
 
     /*

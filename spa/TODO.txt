@@ -1,23 +1,14 @@
-PART 1
-------
-1. Get basics working
-   Error serialization problems - perhaps UIError could be improved?
+1. Get linting and compliation working
+
+2. Get app basically working and see what breaks
    Verify headers not intercepted
-   Get code nicely separated
 
-2. Deploy and also test in mobile browsers
+3. Finalize design of web authenticators and split into two classes
 
-3. Mobile web refactoring and fix lint errors
+4. Error serialization to test
 
-PART 2
-------
-Error refactoring in SPA
-   - handleHttpError in apiClient, which knows nothing about Axios
-   - return UIError from worker, which is the only class that knows about Axios
-   - reduce code in ErrorHandler.getFromHttpError
+5. Same session ID in main app and web worker
 
-Merge to main
+6. Deploy and also test SPA in a mobile browser
 
-CSRF token to think more about, since the CDN should return this
-Stored in memory by each browser tab in a private variable / closure
-Otherwise it is easy for malicious code to abuse the cookie
+7. Mobile web post login event
