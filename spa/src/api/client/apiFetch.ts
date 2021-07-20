@@ -8,7 +8,7 @@ import {SessionManager} from '../../plumbing/utilities/sessionManager';
 import {ApiRequestOptions} from './apiRequestOptions';
 
 /*
- * Lower level logic related to calling APIs, which runs from within a web worker
+ * Lower level logic related to calling APIs
  */
 export class ApiFetch {
 
@@ -16,9 +16,6 @@ export class ApiFetch {
     private readonly _authenticator: Authenticator;
     private readonly _sessionId: string;
 
-    /*
-     * Create a separate authenticator that runs within the web worker
-     */
     public constructor(configuration: Configuration, authenticator: Authenticator) {
 
         this._apiBaseUrl = configuration.apiBaseUrl;

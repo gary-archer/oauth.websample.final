@@ -5,10 +5,13 @@ import {ApiRequestOptions} from './apiRequestOptions';
 import {ApiFetch} from './apiFetch';
 import {Channel} from './channel';
 
+/*
+ * A channel implementation when making direct calls without a web worker
+ */
 export class SimpleChannel implements Channel {
 
     private readonly _fetcher: ApiFetch;
-    
+
     public constructor(configuration: Configuration, authenticator: Authenticator) {
         this._fetcher = new ApiFetch(configuration, authenticator);
     }

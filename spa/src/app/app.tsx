@@ -10,7 +10,7 @@ import {ErrorHandler} from '../plumbing/errors/errorHandler';
 import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
-import {AuthenticatorFactory} from '../plumbing/oauth/authenticatorFactory';
+import {ObjectFactory} from '../plumbing/utilities/objectFactory';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
@@ -23,7 +23,6 @@ import {ApiViewEvents} from '../views/utilities/apiViewEvents';
 import {ApiViewNames} from '../views/utilities/apiViewNames';
 import {RouteHelper} from '../views/utilities/routeHelper';
 import {AppState} from './appState';
-import {SecureWorker} from '../api/client/secureWorker';
 
 /*
  * The application root component
@@ -103,10 +102,10 @@ export class App extends React.Component<any, AppState> {
             this._configuration = await loader.download();
 
             // Create global objects for managing OAuth and API calls
-            const factory = new AuthenticatorFactory(this._configuration!);
+            const factory = new ObjectFactory(this._configuration!);
             await factory.initialize();
             this._authenticator = factory.createAuthenticator();
-            this._apiClient = factory.createApiClient();
+            this._apiClient = factory.createApiClient(this._authenticator!);
 
             // Handle return from a login redirect when required
             await this._authenticator.handlePageLoad();
@@ -223,13 +222,6 @@ export class App extends React.Component<any, AppState> {
                 </HashRouter>
             </ErrorBoundary>
         );
-    }
-
-    /*
-     * Create the authenticator object from our configuration, and supply callbacks
-     */
-    private _createAuthenticator(): Authenticator {
-        return AuthenticatorFactory.createAuthenticator(this._configuration!);
     }
 
     /*

@@ -1,21 +1,21 @@
 import {wrap, Remote} from 'comlink';
-import Worker from 'worker-loader!./api/client/secureWorker';
+import Worker from 'worker-loader!../../api/client/webWorkerChannel';
 import {ApiClient} from '../../api/client/apiClient';
 import {SimpleChannel} from '../../api/client/simpleChannel';
-import {WorkerChannel} from '../../api/client/workerChannel';
+import {WebWorkerChannel} from '../../api/client/webWorkerChannel';
 import {Configuration} from '../../configuration/configuration';
 import {UserAgentHelper} from '../utilities/userAgentHelper';
-import {Authenticator} from './authenticator';
-import {MobileAuthenticator} from './mobile/mobileAuthenticator';
-import {WebAuthenticator} from './web/webAuthenticator';
+import {Authenticator} from '../oauth/authenticator';
+import {MobileAuthenticator} from '../oauth/mobile/mobileAuthenticator';
+import {WebAuthenticator} from '../oauth/web/webAuthenticator';
 
 /*
  * A class to create global objects on application startup and manage supplying the web worker
  */
-export class AuthenticatorFactory {
+export class ObjectFactory {
 
     private _configuration: Configuration;
-    private _webWorker: Remote<WorkerChannel> | null;
+    private _webWorker: Remote<WebWorkerChannel> | null;
 
     public constructor(configuration: Configuration) {
         this._configuration = configuration;
@@ -29,7 +29,7 @@ export class AuthenticatorFactory {
 
         if (!UserAgentHelper.isAndroidWebView() && !UserAgentHelper.isIosWebView()) {
 
-            const RemoteChannel = wrap<typeof WorkerChannel>(new Worker());
+            const RemoteChannel = wrap<typeof WebWorkerChannel>(new Worker());
             this._webWorker = await new RemoteChannel(this._configuration);
         }
     }

@@ -31,7 +31,7 @@ export class WebAuthenticator implements Authenticator {
      * Called from the ApiFetch class, which uses an instance of this class running in a web worker
      */
     public async getAccessToken(): Promise<string> {
-        
+
         throw new Error('getAccessToken is not implemented in the web authenticator');
     }
 

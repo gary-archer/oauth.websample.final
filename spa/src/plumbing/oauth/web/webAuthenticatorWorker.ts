@@ -33,11 +33,11 @@ export class WebAuthenticatorWorker implements Authenticator {
      * Called from the ApiFetch class, which uses an instance of this class running in a web worker
      */
     public async getAccessToken(): Promise<string> {
-        
+
         if (this._accessToken) {
             return this._accessToken;
         }
-        
+
         return this.refreshAccessToken();
     }
 

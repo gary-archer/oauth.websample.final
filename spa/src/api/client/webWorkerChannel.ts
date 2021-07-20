@@ -8,13 +8,16 @@ import {Channel} from './channel';
 import {ApiRequestOptions} from './apiRequestOptions';
 
 /*
- * The web worker creates its own copies of objects from the data supplied
+ * An object that uses comlink to make remote calls to a web worker
  */
-export class WorkerChannel implements Channel, WebAuthenticatorEvents {
+export class WebWorkerChannel implements Channel, WebAuthenticatorEvents {
 
     private readonly _authenticator: WebAuthenticatorWorker;
     private readonly _fetcher: ApiFetch;
-    
+
+    /*
+     * The web worker creates its own copies of objects from the data supplied
+     */
     public constructor(configuration: Configuration) {
 
         this._authenticator = new WebAuthenticatorWorker(configuration);
@@ -48,4 +51,4 @@ export class WorkerChannel implements Channel, WebAuthenticatorEvents {
     }
 }
 
-expose(WorkerChannel);
+expose(WebWorkerChannel);
