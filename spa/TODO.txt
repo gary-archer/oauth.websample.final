@@ -1,16 +1,13 @@
-1. Get app basically working and see what breaks
-   Verify that headers are not intercepted
+1. Deploy and test SPA in a mobile browser
 
-2. Finalize design of web authenticators and split into two classes
+2. Implement an OAuthFetch class to share logic
 
-3. Error serialization to get working
+3. Update README to include notes on web workers and comlink
+   Indicate it is an advanced sample to do the best job of using access tokens in the browser
 
-4. Ensure same session ID in main app and web worker
+4. Multi tab logout by watching local storage
 
-5. Mobile web post login event
+5. Mobile web post login page reload
+   Can I use a mobile events class for this?
 
-6. Update README
-
-7. Deploy and also test SPA in a mobile browser
-
-8. Merge to master
+6. Merge to master

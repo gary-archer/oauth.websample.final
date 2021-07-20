@@ -5,27 +5,27 @@ import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {AxiosUtils} from '../../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
-import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
-import {SessionManager} from '../../utilities/sessionManager';
 import {UrlHelper} from '../../utilities/urlHelper';
-import {Authenticator} from '../authenticator';
+import {AccessTokenSupplier} from '../accessTokenSupplier';
 
 /*
- * An authenticator class that runs in a web worker
+ * The OAuth work that runs within the web worker
  */
-export class WebAuthenticatorWorker implements Authenticator {
+export class WebWorkerAuthenticator implements AccessTokenSupplier {
 
     private readonly _proxyApiBaseUrl: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
     private readonly _sessionId: string;
     private _accessToken: string | null;
+    private _antiForgeryToken: string | null;
 
-    public constructor(configuration: Configuration) {
+    public constructor(configuration: Configuration, sessionId: string) {
 
         this._proxyApiBaseUrl = configuration.oauthProxyApiBaseUrl;
         this._concurrencyHandler = new ConcurrentActionHandler();
-        this._sessionId = SessionManager.get();
+        this._sessionId = sessionId;
         this._accessToken = null;
+        this._antiForgeryToken = null;
         this._setupCallbacks();
     }
 
@@ -47,7 +47,7 @@ export class WebAuthenticatorWorker implements Authenticator {
      */
     public async refreshAccessToken(): Promise<string> {
 
-        if (HtmlStorageHelper.antiForgeryToken) {
+        if (this._antiForgeryToken) {
 
             await this._concurrencyHandler.execute(this._performTokenRefresh);
             if (this._accessToken) {
@@ -59,45 +59,36 @@ export class WebAuthenticatorWorker implements Authenticator {
     }
 
     /*
-     * Trigger the login redirect to the Authorization Server, and the SPA is in control
+     * Receive the result of a page load from the main side of the app
      */
-    public async login(): Promise<void> {
-
-        throw new Error('login is not implemented in the web worker implementation');
+    public onPageLoad(antiForgeryToken: string): void {
+        this._antiForgeryToken = antiForgeryToken;
     }
 
     /*
-     * Check for and handle login responses when the page loads
+     * Clear the access token when requested by the main side of the app
      */
-    public async handlePageLoad(): Promise<void> {
-
-        throw new Error('handlePageLoad is not implemented in the web worker implementation');
+    public onClearAccessToken(): void {
+        this._accessToken = null;
     }
 
     /*
-     * Do the logout redirect to clear all cookie and token details
+     * Clean up when requested by the main side of the app
      */
-    public async logout(): Promise<void> {
+    public onLogout(): void {
 
-        throw new Error('logout is not implemented in the web worker implementation');
+        this._accessToken = null;
+        this._antiForgeryToken = null;
     }
 
     /*
      * This method is for testing only, to make the access token receive a 401 response from the API
      */
-    public async expireAccessToken(): Promise<void> {
+    public onExpireAccessToken(): void {
 
         if (this._accessToken) {
             this._accessToken = `x${this._accessToken}x`;
         }
-    }
-
-    /*
-     * This method is for testing only, to ask the Proxy API to invalidate the refresh token in the auth cookie
-     */
-    public async expireRefreshToken(): Promise<void> {
-
-        throw new Error('expireRefreshToken is not implemented in the web worker implementation');
     }
 
     /*
@@ -110,7 +101,6 @@ export class WebAuthenticatorWorker implements Authenticator {
 
             const response = await this._callProxyApi('POST', '/token', null);
             this._accessToken = response.accessToken;
-            HtmlStorageHelper.antiForgeryToken = response.antiForgeryToken;
 
         } catch (e) {
 
@@ -146,9 +136,8 @@ export class WebAuthenticatorWorker implements Authenticator {
             }
 
             // Add an anti forgery token when we have one
-            const aft = HtmlStorageHelper.antiForgeryToken;
-            if (aft) {
-                options.headers['x-mycompany-aft-finalspa'] = aft;
+            if (this._antiForgeryToken) {
+                options.headers['x-mycompany-aft-finalspa'] = this._antiForgeryToken;
             }
 
             // Supply headers for the proxy API to write to logs
@@ -176,6 +165,7 @@ export class WebAuthenticatorWorker implements Authenticator {
      * Check for errors that mean the session is expired normally
      */
     private _isExpectedTokenRefreshError(error: any): boolean {
+
         return error.statusCode === 400 &&
                (error.errorCode === ErrorCodes.cookieNotFound ||
                 error.errorCode === ErrorCodes.invalidData    ||

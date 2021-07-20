@@ -5,7 +5,7 @@ import {ApiRequestOptions} from './apiRequestOptions';
 import {Channel} from './channel';
 
 /*
- * The entry point for API calls just sets up the web worker and routes API calls to it
+ * The entry point for API calls just routes parameterized requests through a channel
  */
 export class ApiClient {
 

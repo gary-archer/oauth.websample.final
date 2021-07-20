@@ -6,7 +6,6 @@ import {ErrorHandler} from '../../errors/errorHandler';
 import {UIError} from '../../errors/uiError';
 import {AxiosUtils} from '../../utilities/axiosUtils';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
-import {SessionManager} from '../../utilities/sessionManager';
 import {UrlHelper} from '../../utilities/urlHelper';
 import {Authenticator} from '../authenticator';
 import {WebAuthenticatorEvents} from './webAuthenticatorEvents';
@@ -19,29 +18,14 @@ export class WebAuthenticator implements Authenticator {
     private readonly _proxyApiBaseUrl: string;
     private readonly _events: WebAuthenticatorEvents;
     private readonly _sessionId: string;
+    private _antiForgeryToken: string | null;
 
-    public constructor(configuration: Configuration, events: WebAuthenticatorEvents) {
+    public constructor(configuration: Configuration, sessionId: string, events: WebAuthenticatorEvents) {
 
         this._proxyApiBaseUrl = configuration.oauthProxyApiBaseUrl;
         this._events = events;
-        this._sessionId = SessionManager.get();
-    }
-
-    /*
-     * Called from the ApiFetch class, which uses an instance of this class running in a web worker
-     */
-    public async getAccessToken(): Promise<string> {
-
-        throw new Error('getAccessToken is not implemented in the web authenticator');
-    }
-
-    /*
-     * Called form the ApiFetch class to refresh an access token in a synchronised manner across multiple views
-     * The auth cookie is sent to the Proxy API, which returns an access token or an invalid_grant error
-     */
-    public async refreshAccessToken(): Promise<string> {
-
-        throw new Error('refreshAccessToken is not implemented in the web authenticator');
+        this._sessionId = sessionId;
+        this._antiForgeryToken = null;
     }
 
     /*
@@ -85,9 +69,6 @@ export class WebAuthenticator implements Authenticator {
             // If it was handled it was an Authorization response and the SPA may need to perform actions
             if (response.handled) {
 
-                // The response includes an anti forgery token to use with the secure cookie
-                HtmlStorageHelper.antiForgeryToken = response.antiForgeryToken;
-
                 // Get the location before the redirect
                 const appState = HtmlStorageHelper.appState;
                 if (appState) {
@@ -97,6 +78,12 @@ export class WebAuthenticator implements Authenticator {
                 // Remove session storage and the OAuth details from back navigation
                 HtmlStorageHelper.removeAppState();
                 history.replaceState({}, document.title, appLocation);
+            }
+
+            // If an anti forgery token was returned, store it in this browser tab's memory
+            if (response.antiForgeryToken) {
+                this._antiForgeryToken = response.antiForgeryToken;
+                this._events.onPageLoad(response.antiForgeryToken);
             }
 
         } catch (e) {
@@ -129,8 +116,7 @@ export class WebAuthenticator implements Authenticator {
 
         } finally {
 
-            await this._events.onClearAccessToken();
-            HtmlStorageHelper.removeAntiForgeryToken();
+            await this._events.onLogout();
         }
     }
 
@@ -175,10 +161,9 @@ export class WebAuthenticator implements Authenticator {
                 options.headers['content-type'] = 'application/json';
             }
 
-            // Add an anti forgery token when we have one
-            const aft = HtmlStorageHelper.antiForgeryToken;
-            if (aft) {
-                options.headers['x-mycompany-aft-finalspa'] = aft;
+            // Add the anti forgery token when we have one
+            if (this._antiForgeryToken) {
+                options.headers['x-mycompany-aft-finalspa'] = this._antiForgeryToken;
             }
 
             // Supply headers for the proxy API to write to logs

@@ -1,23 +1,23 @@
 import {Method} from 'axios';
 import {Configuration} from '../../configuration/configuration';
-import {Authenticator} from '../../plumbing/oauth/authenticator';
+import {AccessTokenSupplier} from '../../plumbing/oauth/accessTokenSupplier';
 import {ApiRequestOptions} from './apiRequestOptions';
 import {ApiFetch} from './apiFetch';
 import {Channel} from './channel';
 
 /*
- * A channel implementation when making direct calls without a web worker
+ * A simple channel just makes a direct fetch call
  */
 export class SimpleChannel implements Channel {
 
     private readonly _fetcher: ApiFetch;
 
-    public constructor(configuration: Configuration, authenticator: Authenticator) {
-        this._fetcher = new ApiFetch(configuration, authenticator);
+    public constructor(configuration: Configuration, sessionId: string, accessTokenSupplier: AccessTokenSupplier) {
+        this._fetcher = new ApiFetch(configuration, sessionId, accessTokenSupplier);
     }
 
     /*
-     * A generic entry point for calling the API
+     * A parameterized fetch method when not using a web worker
      */
     public async fetch(
         path: string,

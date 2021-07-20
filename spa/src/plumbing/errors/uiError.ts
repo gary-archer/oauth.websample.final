@@ -14,6 +14,26 @@ export class UIError extends Error {
     private _url: string;
 
     /*
+     * Deserialize an error thrown from a web worker
+     */
+    public static fromData(e: any): UIError | null {
+        
+        if (e.area && e.errorCode && e.message) {
+
+            const error = new UIError(e.area, e.errorCode, e.message, e.stack);
+            error._userAction = e.userAction;
+            error._utcTime = e.utcTime;
+            error._statusCode = e.statusCode;
+            error._instanceId = e.instanceId;
+            error._details = e.details;
+            error._url = e.url;
+            return error;
+        }
+
+        return null;
+    }
+
+    /*
      * All types of error supply at least these fields
      */
     public constructor(area: string, errorCode: string, userMessage: string, stack?: string | undefined) {
@@ -106,5 +126,23 @@ export class UIError extends Error {
         this._area = area;
         this._instanceId = id;
         this._utcTime = utcTime;
+    }
+
+    /*
+     * Serialize the object when throwing from a web worker
+     */
+    public toData(): any {
+        return {
+            area: this._area,
+            errorCode: this._errorCode,
+            message: this.message,
+            stack: this.stack,
+            userAction: this._userAction,
+            utcTime: this.utcTime,
+            statusCode: this._statusCode,
+            instanceId: this._instanceId,
+            details: this._details,
+            url: this._url,
+        }
     }
 }

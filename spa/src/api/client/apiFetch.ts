@@ -2,9 +2,8 @@ import axios, {Method} from 'axios';
 import {Guid} from 'guid-typescript';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
-import {Authenticator} from '../../plumbing/oauth/authenticator';
+import {AccessTokenSupplier} from '../../plumbing/oauth/accessTokenSupplier';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
-import {SessionManager} from '../../plumbing/utilities/sessionManager';
 import {ApiRequestOptions} from './apiRequestOptions';
 
 /*
@@ -13,18 +12,18 @@ import {ApiRequestOptions} from './apiRequestOptions';
 export class ApiFetch {
 
     private readonly _apiBaseUrl: string;
-    private readonly _authenticator: Authenticator;
+    private readonly _accessTokenSupplier: AccessTokenSupplier;
     private readonly _sessionId: string;
 
-    public constructor(configuration: Configuration, authenticator: Authenticator) {
+    public constructor(configuration: Configuration, sessionId: string, accessTokenSupplier: AccessTokenSupplier) {
 
         this._apiBaseUrl = configuration.apiBaseUrl;
         if (!this._apiBaseUrl.endsWith('/')) {
             this._apiBaseUrl += '/';
         }
 
-        this._authenticator = authenticator;
-        this._sessionId = SessionManager.get();
+        this._sessionId = sessionId;
+        this._accessTokenSupplier = accessTokenSupplier;
     }
 
     /*
@@ -40,7 +39,7 @@ export class ApiFetch {
         const url = `${this._apiBaseUrl}${path}`;
 
         // Get the access token, and if it does not exist a login redirect will be triggered
-        let token = await this._authenticator.getAccessToken();
+        let token = await this._accessTokenSupplier.getAccessToken();
 
         try {
 
@@ -55,7 +54,7 @@ export class ApiFetch {
             }
 
             // If we received a 401 then try to get a new token
-            token = await this._authenticator.refreshAccessToken();
+            token = await this._accessTokenSupplier.refreshAccessToken();
 
             // The general pattern for calling an OAuth secured API is to retry 401s once with a new token
             try {

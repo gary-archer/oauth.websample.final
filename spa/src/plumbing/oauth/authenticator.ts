@@ -1,13 +1,7 @@
 /*
- * An interface to abstract authentication differences between web and mobile hosts
+ * An interface to manage OAuth operations
  */
 export interface Authenticator {
-
-    // Try to get an access token
-    getAccessToken(): Promise<string>;
-
-    // Try to refresh the access token when it expires
-    refreshAccessToken(): Promise<string>;
 
     // Perform a login redirect
     login(): Promise<void>;

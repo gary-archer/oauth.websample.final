@@ -41,33 +41,6 @@ export class HtmlStorageHelper {
     }
 
     /*
-     * Return a CSRF field used for refresh token grant requests to the reverse proxy token endpoint
-     */
-    public static get antiForgeryToken(): string {
-
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._antiForgeryToken}`;
-        return localStorage.getItem(key) || '';
-    }
-
-    /*
-     * Set the CSRF field used with the refresh token cookie
-     */
-    public static set antiForgeryToken(value: string) {
-
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._antiForgeryToken}`;
-        localStorage.setItem(key, value);
-    }
-
-    /*
-     * Remove the CSRF field
-     */
-    public static removeAntiForgeryToken(): void {
-
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._antiForgeryToken}`;
-        localStorage.removeItem(key);
-    }
-
-    /*
      * Get the session id for API requests from this browser tab
      */
     public static get apiSessionId(): string {

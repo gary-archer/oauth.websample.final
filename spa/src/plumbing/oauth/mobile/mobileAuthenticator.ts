@@ -1,11 +1,12 @@
 import {Guid} from 'guid-typescript';
+import {AccessTokenSupplier} from '../accessTokenSupplier';
 import {Authenticator} from '../authenticator';
 import {MobileMethodCaller} from './mobileMethodCaller';
 
 /*
  * Used when the SPA is running in a mobile web view and getting its access tokens from the mobile app
  */
-export class MobileAuthenticator implements Authenticator {
+export class MobileAuthenticator implements Authenticator, AccessTokenSupplier {
 
     private _methodCaller: MobileMethodCaller;
 
