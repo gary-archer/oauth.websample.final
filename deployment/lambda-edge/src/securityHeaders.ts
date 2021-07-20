@@ -13,6 +13,7 @@ const handler: any = async (event: any, context: Context) => {
     let policy = "default-src 'none';";
     policy += " script-src 'self';";
     policy += " connect-src 'self' https://api.authsamples.com;";
+    policy += " child-src 'self';";
     policy += " img-src 'self';";
     policy += " style-src 'self';";
     policy += " object-src 'none'";

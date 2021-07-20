@@ -1,0 +1,15 @@
+1. Logout broken on Safari for deployed system
+   Check working on localhost first
+   Add console.log output and redeploy if needed
+
+2. Implement an OAuthFetch class to share OAuth fetch logic
+
+3. Consider putting all use of anti forgery token into web worker
+
+4. Multi tab logout by watching local storage
+   See React book for further details
+
+5. Mobile web post login page reload
+   Can I use a mobile events class for this?
+
+6. Merge to master
