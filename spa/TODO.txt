@@ -1,13 +1,12 @@
-1. Deploy and test SPA in a mobile browser
+1. Update README files to include notes on web workers and comlink
+   Indicate it is an advanced sample to do the best job of using access tokens in the browser
 
 2. Implement an OAuthFetch class to share logic
 
-3. Update README to include notes on web workers and comlink
-   Indicate it is an advanced sample to do the best job of using access tokens in the browser
+3. Multi tab logout by watching local storage
+   See React book for further details
 
-4. Multi tab logout by watching local storage
-
-5. Mobile web post login page reload
+4. Mobile web post login page reload
    Can I use a mobile events class for this?
 
-6. Merge to master
+5. Merge to master

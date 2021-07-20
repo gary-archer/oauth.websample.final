@@ -6,12 +6,12 @@
 
 ### Overview
 
-An OpenID Connect secured SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities.\
+An advanced OpenID Connect secured SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities.\
 The SPA interacts with an [OAuth Proxy API](https://github.com/gary-archer/oauth.webproxyapi) as part of a [Back End for Front End](https://authguidance.com/2019/09/09/spa-back-end-for-front-end) solution.
 
 ### OAuth Classes
 
-- The [SPA WebAuthenticator Class](https://github.com/gary-archer/oauth.websample.final/blob/master/spa/src/plumbing/oauth/web/webAuthenticator.ts) demonstrates the technically simple front end security
+- The [SPA WebAuthenticator Class](https://github.com/gary-archer/oauth.websample.final/blob/master/spa/src/plumbing/oauth/web/webAuthenticator.ts) demonstrates the front end security handling
 - The [Proxy API Authorizer Class](https://github.com/gary-archer/oauth.webproxyapi/blob/master/src/core/services/authorizer.ts) provides an outline of the more complex back end security
 
 ### Deployed Solution
@@ -50,5 +50,5 @@ They are not used during requests for Web or API resources, so that the SPA is m
 After OAuth processing is complete, access tokens are used by the SPA to call APIs directly.\
 To be vigilant about risks and mitigations a [Threat Model](https://authguidance.com/2019/09/08/ui-token-management) is followed:
 
-- API and OAuth requests are sent from a Web Worker so that tokens are very difficult to intercept
+- Requests that use tokens are sent from a Web Worker so that tokens are very difficult to intercept
 - A Content Security Policy is used to restrict domains where tokens or data could be sent
