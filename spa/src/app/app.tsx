@@ -338,9 +338,8 @@ export class App extends React.Component<any, AppState> {
                 // Otherwise output logout error details only to the console
                 ErrorConsoleReporter.output(error);
             }
-        } finally {
 
-            // Ensure that we are in the logged out view in all cases
+            // Move to the logged out view anyway
             this._onMoveToLoggedOutView();
         }
     }

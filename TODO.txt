@@ -1,15 +1,11 @@
 1. Implement an OAuthFetch class to share OAuth fetch logic
 
-2. Consider putting all use of anti forgery token into web worker
-   Entire authenticator might be simpler
+2. Make API code simpler and move channel code to plumbing folder
 
-3. Logout broken on Safari for deployed system
-   May need some console.log details to be deployed
-
-4. Multi tab logout by watching local storage
+3. Multi tab logout by watching local storage
    See React book for further details
 
-5. Mobile web post login page reload
+4. Mobile web post login page reload to fix up
    Can I use a mobile events class for this?
 
-6. Merge to master
+5. Merge to master
