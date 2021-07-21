@@ -1,11 +1,9 @@
-1. Implement an OAuthFetch class to share OAuth fetch logic
+1. Make API code simpler and move channel code to plumbing folder
 
-2. Make API code simpler and move channel code to plumbing folder
-
-3. Multi tab logout by watching local storage
+2. Multi tab logout by watching local storage
    See React book for further details
 
-4. Mobile web post login page reload to fix up
+3. Mobile web post login page reload to fix up
    Can I use a mobile events class for this?
 
-5. Merge to master
+4. Merge to master

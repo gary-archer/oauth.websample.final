@@ -17,7 +17,7 @@ export class UIError extends Error {
      * Deserialize an error thrown from a web worker
      */
     public static fromData(e: any): UIError | null {
-        
+
         if (e.area && e.errorCode && e.message) {
 
             const error = new UIError(e.area, e.errorCode, e.message, e.stack);
@@ -132,6 +132,7 @@ export class UIError extends Error {
      * Serialize the object when throwing from a web worker
      */
     public toData(): any {
+
         return {
             area: this._area,
             errorCode: this._errorCode,
@@ -143,6 +144,6 @@ export class UIError extends Error {
             instanceId: this._instanceId,
             details: this._details,
             url: this._url,
-        }
+        };
     }
 }
