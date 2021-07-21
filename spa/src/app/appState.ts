@@ -5,7 +5,7 @@ import {UIError} from '../plumbing/errors/uiError';
  */
 export interface AppState {
 
-    // Whether the app has started up, read configuration and created global objects
+    // Whether the app has processed configuration and created global objects
     isInitialised: boolean;
 
     // Visibility of elements changes in this view

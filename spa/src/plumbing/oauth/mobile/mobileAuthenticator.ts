@@ -43,7 +43,8 @@ export class MobileAuthenticator implements Authenticator, AccessTokenSupplier {
     /*
      * This is a no op when the SPA is running in a mobile web view
      */
-    public async handlePageLoad(): Promise<void> {
+    public async handlePageLoad(): Promise<boolean> {
+        return false;
     }
 
     /*

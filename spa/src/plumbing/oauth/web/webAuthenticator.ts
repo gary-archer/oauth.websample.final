@@ -50,7 +50,7 @@ export class WebAuthenticator implements Authenticator {
     /*
      * Check for and handle login responses when the page loads
      */
-    public async handlePageLoad(): Promise<void> {
+    public async handlePageLoad(): Promise<boolean> {
 
         let appLocation = '#';
         try {
@@ -80,6 +80,9 @@ export class WebAuthenticator implements Authenticator {
                 this._antiForgeryToken = response.antiForgeryToken;
                 this._events.onPageLoad(response.antiForgeryToken);
             }
+
+            // Return the logged in state
+            return response.isLoggedIn;
 
         } catch (e) {
 
@@ -111,6 +114,7 @@ export class WebAuthenticator implements Authenticator {
 
         } finally {
 
+            this._antiForgeryToken = null;
             await this._events.onLogout();
         }
     }

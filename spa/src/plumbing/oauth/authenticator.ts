@@ -7,7 +7,7 @@ export interface Authenticator {
     login(): Promise<void>;
 
     // Handle page loads and process login responses when required
-    handlePageLoad(): Promise<void>;
+    handlePageLoad(): Promise<boolean>;
 
     // Perform a logout redirect
     logout(): Promise<void>;

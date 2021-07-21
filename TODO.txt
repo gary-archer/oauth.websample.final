@@ -1,7 +1,14 @@
-1. Multi tab logout by watching local storage
-   See React book for further details
+1. Multi tab logout by watching local storage to complete in app.tsx
+   Will need an extra authenticator operation
+   Test on all main browsers
+   Redeploy SPA and Proxy API
 
-2. Mobile web post login page reload to fix up
+2. Logout on tab 1 and then expire refresh token on tab 2 causes an error
+   Try further multi tab scenarios like this
+   Simplify error codes related to expired sessions
+
+3. Mobile web post login page reload to fix up and test
    Can I use a mobile events class for this?
+   Fix blog screenshots while I'm doing this
 
-3. Merge to master
+4. Merge to master

@@ -10,6 +10,7 @@ import {ErrorHandler} from '../plumbing/errors/errorHandler';
 import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
 import {Authenticator} from '../plumbing/oauth/authenticator';
+import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {ObjectFactory} from '../plumbing/utilities/objectFactory';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
@@ -102,16 +103,20 @@ export class App extends React.Component<any, AppState> {
             this._configuration = await loader.download();
 
             // Create global objects for managing OAuth and API calls
-            const factory = new ObjectFactory(this._configuration!);
+            const factory = new ObjectFactory(this._configuration);
             await factory.initialize();
             this._authenticator = factory.createAuthenticator();
-            this._apiClient = factory.createApiClient(this._authenticator!);
+            this._apiClient = factory.createApiClient(this._authenticator);
 
-            // Handle return from a login redirect when required
-            await this._authenticator.handlePageLoad();
+            // Ask the API to handle the page load, and update the state used for multi tab logout
+            const isLoggedIn = await this._authenticator.handlePageLoad();
+            if (isLoggedIn) {
+                HtmlStorageHelper.loggedOut = false;
+            }
 
             // Subscribe to window events
             window.onresize = this._onResize;
+            window.onstorage = this._onStorage;
 
             // Update state
             this.setState({isInitialised: true});
@@ -342,6 +347,9 @@ export class App extends React.Component<any, AppState> {
             // Move to the logged out view anyway
             this._onMoveToLoggedOutView();
         }
+
+        // Update local storage to indicate we are logged out
+        HtmlStorageHelper.loggedOut = true;
     }
 
     /*
@@ -395,6 +403,16 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
+     * Handle updates to local storage from another tab in order to ensure multi tab logout
+     */
+    private _onStorage(event: StorageEvent): void {
+
+        if (HtmlStorageHelper.isLoggedOutEvent(event)) {
+            console.log('*** Logout occurred on another tab');
+        }
+    }
+
+    /*
      * Indicate whether the current size is that of a mobile device
      */
     private _isMobileSize(): boolean {
@@ -417,5 +435,6 @@ export class App extends React.Component<any, AppState> {
         this._onExpireAccessToken = this._onExpireAccessToken.bind(this);
         this._onExpireRefreshToken = this._onExpireRefreshToken.bind(this);
         this._onResize = this._onResize.bind(this);
+        this._onStorage = this._onStorage.bind(this);
     }
 }
