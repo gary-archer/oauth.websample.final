@@ -4,7 +4,7 @@ import {Configuration} from '../../configuration/configuration';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {AccessTokenSupplier} from '../../plumbing/oauth/accessTokenSupplier';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
-import {ApiRequestOptions} from './apiRequestOptions';
+import {ApiFetchOptions} from './apiFetchOptions';
 
 /*
  * Lower level logic related to calling APIs
@@ -27,16 +27,12 @@ export class ApiFetch {
     }
 
     /*
-     * A central method to get data from an API in a parameterized way
+     * A parameterized method containing application specific logic for managing API calls
      */
-    public async execute(
-        path: string,
-        method: Method,
-        dataToSend?: any,
-        options?: ApiRequestOptions): Promise<any> {
+    public async execute(options: ApiFetchOptions): Promise<any> {
 
         // Get the full path
-        const url = `${this._apiBaseUrl}${path}`;
+        const url = `${this._apiBaseUrl}${options.path}`;
 
         // Get the access token, and if it does not exist a login redirect will be triggered
         let token = await this._accessTokenSupplier.getAccessToken();
@@ -44,7 +40,12 @@ export class ApiFetch {
         try {
 
             // Call the API
-            return await this._callApiWithToken(url, method, dataToSend, token, options);
+            return await this._callApiWithToken(
+                url,
+                options.method,
+                options.dataToSend,
+                token,
+                options.causeError);
 
         } catch (error1) {
 
@@ -56,10 +57,15 @@ export class ApiFetch {
             // If we received a 401 then try to get a new token
             token = await this._accessTokenSupplier.refreshAccessToken();
 
-            // The general pattern for calling an OAuth secured API is to retry 401s once with a new token
             try {
-                // Call the API again
-                return await this._callApiWithToken(url, method, dataToSend, token, options);
+
+                // The general pattern for calling an OAuth secured API is to retry 401s once with a new token
+                return await this._callApiWithToken(
+                    url,
+                    options.method,
+                    options.dataToSend,
+                    token,
+                    options.causeError);
 
             } catch (error2) {
 
@@ -77,13 +83,13 @@ export class ApiFetch {
         method: Method,
         dataToSend: any,
         accessToken: string,
-        options?: ApiRequestOptions): Promise<any> {
+        causeError?: boolean | undefined): Promise<any> {
 
         const response = await axios.request({
             url,
             method,
             data: dataToSend,
-            headers: this._getHeaders(accessToken, options),
+            headers: this._getHeaders(accessToken, causeError),
         });
         AxiosUtils.checkJson(response.data);
         return response.data;
@@ -92,7 +98,7 @@ export class ApiFetch {
     /*
      * Add headers for logging and advanced testing purposes
      */
-    private _getHeaders(accessToken: any, options?: ApiRequestOptions): any {
+    private _getHeaders(accessToken: any, causeError?: boolean | undefined): any {
 
         const headers: any = {
 
@@ -106,7 +112,7 @@ export class ApiFetch {
         };
 
         // A special header can be sent to ask the API to throw a simulated exception
-        if (options && options.causeError) {
+        if (causeError) {
             headers['x-mycompany-test-exception'] = 'SampleApi';
         }
 

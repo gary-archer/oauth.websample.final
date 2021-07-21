@@ -1,4 +1,3 @@
-import {Method} from 'axios';
 import {expose} from 'comlink';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
@@ -6,7 +5,6 @@ import {WebAuthenticatorEvents} from '../../plumbing/oauth/web/webAuthenticatorE
 import {WebWorkerAuthenticator} from '../../plumbing/oauth/web/webWorkerAuthenticator';
 import {ApiFetch} from './apiFetch';
 import {Channel} from './channel';
-import {ApiRequestOptions} from './apiRequestOptions';
 
 /*
  * The web worker is used to isolate access tokens, meaning all API requests are done via the web worker
@@ -29,16 +27,12 @@ export class WebWorkerChannel implements Channel, WebAuthenticatorEvents {
     /*
      * A parameterized fetch method is the primary method called from the main side of the app
      */
-    public async fetch(
-        path: string,
-        method: Method,
-        dataToSend?: any,
-        options?: ApiRequestOptions): Promise<any> {
+    public async fetch(options: any): Promise<any> {
 
         try {
 
             // Try the API call
-            return await this._fetcher.execute(path, method, dataToSend, options);
+            return await this._fetcher.execute(options);
 
         } catch (e) {
 

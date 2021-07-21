@@ -24,7 +24,7 @@ export class ObjectFactory {
     }
 
     /*
-     * Create the web worker unless we are running within the mobile web sample
+     * Create the web worker when running the SPA in a normal browser
      */
     public async initialize(): Promise<void> {
 

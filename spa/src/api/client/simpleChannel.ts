@@ -1,12 +1,10 @@
-import {Method} from 'axios';
 import {Configuration} from '../../configuration/configuration';
 import {AccessTokenSupplier} from '../../plumbing/oauth/accessTokenSupplier';
-import {ApiRequestOptions} from './apiRequestOptions';
 import {ApiFetch} from './apiFetch';
 import {Channel} from './channel';
 
 /*
- * A simple channel just makes a direct fetch call
+ * A simple channel makes a direct fetch call using the same fetch logic as within a web worker
  */
 export class SimpleChannel implements Channel {
 
@@ -19,12 +17,7 @@ export class SimpleChannel implements Channel {
     /*
      * A parameterized fetch method when not using a web worker
      */
-    public async fetch(
-        path: string,
-        method: Method,
-        dataToSend?: any,
-        options?: ApiRequestOptions): Promise<any> {
-
-        return await this._fetcher.execute(path, method, dataToSend, options);
+    public async fetch(options: any): Promise<any> {
+        return await this._fetcher.execute(options);
     }
 }
