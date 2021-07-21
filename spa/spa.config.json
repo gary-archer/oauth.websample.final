@@ -1,4 +1,8 @@
 {
-    "oauthProxyApiBaseUrl": "https://api.mycompany.com:444/proxy/spa",
-    "apiBaseUrl": "https://api.authsamples.com/api"
+    "app": {
+        "apiBaseUrl": "https://api.authsamples.com/api"
+    },
+    "oauth": {
+        "proxyApiBaseUrl": "https://api.mycompany.com:444/proxy/spa"
+    }
 }

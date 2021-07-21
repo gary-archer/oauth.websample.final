@@ -1,4 +1,4 @@
-import {Configuration} from '../../../configuration/configuration';
+import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
@@ -6,7 +6,7 @@ import {AccessTokenSupplier} from '../accessTokenSupplier';
 import {OAuthFetch} from './oauthFetch';
 
 /*
- * The OAuth work that runs within the web worker
+ * The web worker authenticator runs in a web worker and contains the access token for the current browser tab
  */
 export class WebWorkerAuthenticator implements AccessTokenSupplier {
 
@@ -15,7 +15,7 @@ export class WebWorkerAuthenticator implements AccessTokenSupplier {
     private _accessToken: string | null;
     private _antiForgeryToken: string | null;
 
-    public constructor(configuration: Configuration, sessionId: string) {
+    public constructor(configuration: OAuthConfiguration, sessionId: string) {
 
         this._fetcher = new OAuthFetch(configuration, sessionId);
         this._concurrencyHandler = new ConcurrentActionHandler();

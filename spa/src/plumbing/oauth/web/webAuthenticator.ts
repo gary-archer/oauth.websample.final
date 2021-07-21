@@ -1,4 +1,4 @@
-import {Configuration} from '../../../configuration/configuration';
+import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {UIError} from '../../errors/uiError';
@@ -16,7 +16,7 @@ export class WebAuthenticator implements Authenticator {
     private readonly _events: WebAuthenticatorEvents;
     private _antiForgeryToken: string | null;
 
-    public constructor(configuration: Configuration, sessionId: string, events: WebAuthenticatorEvents) {
+    public constructor(configuration: OAuthConfiguration, sessionId: string, events: WebAuthenticatorEvents) {
 
         this._fetcher = new OAuthFetch(configuration, sessionId);
         this._events = events;

@@ -1,21 +1,22 @@
 import axios, {Method} from 'axios';
 import {Guid} from 'guid-typescript';
-import {Configuration} from '../../configuration/configuration';
+import {AppConfiguration} from '../../configuration/appConfiguration';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {AccessTokenSupplier} from '../../plumbing/oauth/accessTokenSupplier';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {ApiFetchOptions} from './apiFetchOptions';
+import {Channel} from './channel';
 
 /*
  * Lower level logic related to calling APIs
  */
-export class ApiFetch {
+export class ApiFetch implements Channel {
 
     private readonly _apiBaseUrl: string;
     private readonly _accessTokenSupplier: AccessTokenSupplier;
     private readonly _sessionId: string;
 
-    public constructor(configuration: Configuration, sessionId: string, accessTokenSupplier: AccessTokenSupplier) {
+    public constructor(configuration: AppConfiguration, sessionId: string, accessTokenSupplier: AccessTokenSupplier) {
 
         this._apiBaseUrl = configuration.apiBaseUrl;
         if (!this._apiBaseUrl.endsWith('/')) {
@@ -29,7 +30,7 @@ export class ApiFetch {
     /*
      * A parameterized method containing application specific logic for managing API calls
      */
-    public async execute(options: ApiFetchOptions): Promise<any> {
+    public async fetch(options: ApiFetchOptions): Promise<any> {
 
         // Get the full path
         const url = `${this._apiBaseUrl}${options.path}`;

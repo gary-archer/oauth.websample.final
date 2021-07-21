@@ -1,8 +1,8 @@
 import {wrap, Remote} from 'comlink';
-import Worker from 'worker-loader!../../api/client/webWorkerChannel';
+import Worker from 'worker-loader!../../api/client/accessTokenWebWorker';
+import {AccessTokenWebWorker} from '../../api/client/accessTokenWebWorker';
 import {ApiClient} from '../../api/client/apiClient';
-import {SimpleChannel} from '../../api/client/simpleChannel';
-import {WebWorkerChannel} from '../../api/client/webWorkerChannel';
+import {ApiFetch} from '../../api/client/apiFetch';
 import {Configuration} from '../../configuration/configuration';
 import {UserAgentHelper} from '../utilities/userAgentHelper';
 import {Authenticator} from '../oauth/authenticator';
@@ -16,7 +16,7 @@ import {SessionManager} from './sessionManager';
 export class ObjectFactory {
 
     private _configuration: Configuration;
-    private _webWorker: Remote<WebWorkerChannel> | null;
+    private _webWorker: Remote<AccessTokenWebWorker> | null;
 
     public constructor(configuration: Configuration) {
         this._configuration = configuration;
@@ -30,7 +30,7 @@ export class ObjectFactory {
 
         if (!UserAgentHelper.isAndroidWebView() && !UserAgentHelper.isIosWebView()) {
 
-            const RemoteChannel = wrap<typeof WebWorkerChannel>(new Worker());
+            const RemoteChannel = wrap<typeof AccessTokenWebWorker>(new Worker());
             this._webWorker = await new RemoteChannel(this._configuration, SessionManager.get());
         }
     }
@@ -48,7 +48,7 @@ export class ObjectFactory {
         } else {
 
             // The web authenticator uses a proxy API as a back end for front end and stores tokens in a web worker
-            return new WebAuthenticator(this._configuration, SessionManager.get(), this._webWorker!);
+            return new WebAuthenticator(this._configuration.oauth, SessionManager.get(), this._webWorker!);
         }
     }
 
@@ -59,13 +59,13 @@ export class ObjectFactory {
 
         if (UserAgentHelper.isAndroidWebView() || UserAgentHelper.isIosWebView()) {
 
-            // When running in a mobile web view use a simple channel
+            // When running in a mobile web view we make direct fetch calls to APIs
             const mobileAuthenticator = authenticator as MobileAuthenticator;
-            const channel = new SimpleChannel(this._configuration, SessionManager.get(), mobileAuthenticator);
+            const channel = new ApiFetch(this._configuration.app, SessionManager.get(), mobileAuthenticator);
             return new ApiClient(channel);
         }
 
-        // When running in a browser use a web worker
+        // When running in a browser use a web worker to call APIs
         return new ApiClient(this._webWorker!);
     }
 }

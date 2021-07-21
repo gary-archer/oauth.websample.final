@@ -1,6 +1,6 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
-import {Configuration} from '../../../configuration/configuration';
+import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {AxiosUtils} from '../../utilities/axiosUtils';
 import {UrlHelper} from '../../utilities/urlHelper';
@@ -13,9 +13,9 @@ export class OAuthFetch {
     private readonly _proxyApiBaseUrl: string;
     private readonly _sessionId: string;
 
-    public constructor(configuration: Configuration, sessionId: string) {
+    public constructor(configuration: OAuthConfiguration, sessionId: string) {
 
-        this._proxyApiBaseUrl = configuration.oauthProxyApiBaseUrl;
+        this._proxyApiBaseUrl = configuration.proxyApiBaseUrl;
         this._sessionId = sessionId;
     }
 

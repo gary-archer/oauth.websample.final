@@ -4,13 +4,14 @@ import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {WebAuthenticatorEvents} from '../../plumbing/oauth/web/webAuthenticatorEvents';
 import {WebWorkerAuthenticator} from '../../plumbing/oauth/web/webWorkerAuthenticator';
 import {ApiFetch} from './apiFetch';
+import {ApiFetchOptions} from './apiFetchOptions';
 import {Channel} from './channel';
 
 /*
- * The web worker is used to isolate access tokens, meaning all API requests are done via the web worker
- * This class is the entry point exposed by comlink, containing methods called from the main side of the app
+ * The web worker is used to isolate access tokens, meaning all API requests are made in the web worker
+ * This class is the entry point exposed by comlink, and is called from the main side of the app
  */
-export class WebWorkerChannel implements Channel, WebAuthenticatorEvents {
+export class AccessTokenWebWorker implements Channel, WebAuthenticatorEvents {
 
     private readonly _authenticator: WebWorkerAuthenticator;
     private readonly _fetcher: ApiFetch;
@@ -20,19 +21,19 @@ export class WebWorkerChannel implements Channel, WebAuthenticatorEvents {
      */
     public constructor(configuration: Configuration, sessionId: string) {
 
-        this._authenticator = new WebWorkerAuthenticator(configuration, sessionId);
-        this._fetcher = new ApiFetch(configuration, sessionId, this._authenticator);
+        this._authenticator = new WebWorkerAuthenticator(configuration.oauth, sessionId);
+        this._fetcher = new ApiFetch(configuration.app, sessionId, this._authenticator);
     }
 
     /*
-     * A parameterized fetch method is the primary method called from the main side of the app
+     * A parameterized fetch method is the main method called from the main side of the app
      */
-    public async fetch(options: any): Promise<any> {
+    public async fetch(options: ApiFetchOptions): Promise<any> {
 
         try {
 
             // Try the API call
-            return await this._fetcher.execute(options);
+            return await this._fetcher.fetch(options);
 
         } catch (e) {
 
@@ -71,4 +72,4 @@ export class WebWorkerChannel implements Channel, WebAuthenticatorEvents {
     }
 }
 
-expose(WebWorkerChannel);
+expose(AccessTokenWebWorker);
