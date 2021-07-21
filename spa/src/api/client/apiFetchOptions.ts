@@ -10,7 +10,7 @@ export interface ApiFetchOptions {
 
     // Whether a GET, POST etc
     method: Method;
-    
+
     // An optional request payload
     dataToSend?: any;
 
