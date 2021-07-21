@@ -9,9 +9,7 @@
     },
     "securityHeaders": {
         "contentSecurityPolicyHosts": [
-            "https://api.mycluster.com",
-            "https://login.authsamples.com",
-            "https://cognito-idp.eu-west-2.amazonaws.com"
+            "https://api.mycluster.com"
         ],
         "enabled": true
     }

@@ -4,7 +4,4 @@
 2. Mobile web post login page reload to fix up
    Can I use a mobile events class for this?
 
-3. Use proxy API URL without the /spa suffix:
-   https://api.authsamples.com/proxy
-
-4. Merge to master
+3. Merge to master
