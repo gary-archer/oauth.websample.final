@@ -345,7 +345,7 @@ export class App extends React.Component<any, AppState> {
             }
 
             // Move to the logged out view anyway
-            this._onMoveToLoggedOutView();
+            this._moveToLoggedOutView();
         }
 
         // Update local storage to indicate we are logged out
@@ -356,7 +356,7 @@ export class App extends React.Component<any, AppState> {
      * Called when we move to the logged out view manually, such as when there is a logout error
      * This also occurs when there is a logout on another tab and we receive a check session iframe notification
      */
-    private _onMoveToLoggedOutView(): void {
+    private _moveToLoggedOutView(): void {
         location.hash = '#loggedout';
     }
 
@@ -403,12 +403,13 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
-     * Handle updates to local storage from another tab in order to ensure multi tab logout
+     * Handle updates to local storage indicating a logout on another tab
      */
-    private _onStorage(event: StorageEvent): void {
+    private async _onStorage(event: StorageEvent): Promise<void> {
 
         if (HtmlStorageHelper.isLoggedOutEvent(event)) {
-            console.log('*** Logout occurred on another tab');
+            await this._authenticator!.onLoggedOut();
+            this._moveToLoggedOutView();
         }
     }
 
@@ -431,7 +432,7 @@ export class App extends React.Component<any, AppState> {
         this._onReloadData = this._onReloadData.bind(this);
         this._onMobileWebViewLogin = this._onMobileWebViewLogin.bind(this);
         this._onLogout = this._onLogout.bind(this);
-        this._onMoveToLoggedOutView = this._onMoveToLoggedOutView.bind(this);
+        this._moveToLoggedOutView = this._moveToLoggedOutView.bind(this);
         this._onExpireAccessToken = this._onExpireAccessToken.bind(this);
         this._onExpireRefreshToken = this._onExpireRefreshToken.bind(this);
         this._onResize = this._onResize.bind(this);

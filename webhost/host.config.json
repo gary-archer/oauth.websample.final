@@ -6,7 +6,7 @@
         "mode": "development"
     },
     "securityHeaders": {
-        "contentSecurityPolicyHosts": [
+        "trustedHosts": [
             "https://api.authsamples.com"
         ],
         "enabled": false

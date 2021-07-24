@@ -55,6 +55,12 @@ export class MobileAuthenticator implements Authenticator, AccessTokenSupplier {
     }
 
     /*
+     * This is a no op when the SPA is running in a mobile web view
+     */
+    public async onLoggedOut(): Promise<void> {
+    }
+
+    /*
      * For testing, make the access token act like it is expired
      */
     public async expireAccessToken(): Promise<void> {

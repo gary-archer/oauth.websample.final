@@ -19,8 +19,8 @@ export class SecurityHeaders {
 
         if (this._configuration.enabled) {
 
-            // The connect-src value prevents Javascript code from interacting with malicious hosts
-            const trustedHosts = this._configuration.contentSecurityPolicyHosts.join(' ');
+            // Only allow Ajax calls from the browser to our API domain, and code to execute from our web origin
+            const trustedHosts = this._configuration.trustedHosts.join(' ');
             let policy = "default-src 'none';";
             policy += " script-src 'self';";
             policy += ` connect-src 'self' ${trustedHosts};`;

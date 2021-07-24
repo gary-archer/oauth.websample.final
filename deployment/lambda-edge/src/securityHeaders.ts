@@ -9,7 +9,7 @@ const handler: any = async (event: any, context: Context) => {
     const response = event.Records[0].cf.response;
     const headers = response.headers;
 
-    // Only allow Ajax calls from the browser to our own domains
+    // Only allow Ajax calls from the browser to our API domain, and code to execute from our web origin
     let policy = "default-src 'none';";
     policy += " script-src 'self';";
     policy += " connect-src 'self' https://api.authsamples.com;";
@@ -19,7 +19,7 @@ const handler: any = async (event: any, context: Context) => {
     policy += " object-src 'none'";
     headers['content-security-policy'] = [{key: 'Content-Security-Policy', value: policy}];
 
-    // Set other security headers according to the above AWS article
+    // Set other security headers
     headers['strict-transport-security'] =
         [{key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubdomains; preload'}];
     headers['x-frame-options'] = [{key: 'X-Frame-Options', value: 'DENY'}];

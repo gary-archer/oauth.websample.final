@@ -8,5 +8,5 @@ export interface SecurityHeaderConfiguration {
     enabled: boolean;
 
     // Details we will write to the Content Security Policy header for connect-src
-    contentSecurityPolicyHosts: string[];
+    trustedHosts: string[];
 }

@@ -120,6 +120,15 @@ export class WebAuthenticator implements Authenticator {
     }
 
     /*
+     * When a logout occurs on another browser tab, move this tab to a logged out state
+     */
+    public async onLoggedOut(): Promise<void> {
+
+        this._antiForgeryToken = null;
+        await this._events.onLogout();
+    }
+
+    /*
      * This method is for testing only, to make the access token receive a 401 response from the API
      */
     public async expireAccessToken(): Promise<void> {

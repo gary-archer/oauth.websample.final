@@ -37,7 +37,7 @@ export class WebWorkerAuthenticator implements AccessTokenSupplier {
     }
 
     /*
-     * Called form the ApiFetch class to refresh an access token in a synchronised manner across multiple views
+     * Called from the ApiFetch class to refresh an access token in a synchronised manner across multiple views
      * The auth cookie is sent to the Proxy API, which returns an access token or an invalid_grant error
      */
     public async refreshAccessToken(): Promise<string> {
