@@ -348,7 +348,7 @@ export class App extends React.Component<any, AppState> {
             this._moveToLoggedOutView();
         }
 
-        // Update local storage to indicate we are logged out
+        // Update local storage to inform other tabs to logout
         HtmlStorageHelper.loggedOut = true;
     }
 
@@ -408,6 +408,7 @@ export class App extends React.Component<any, AppState> {
     private async _onStorage(event: StorageEvent): Promise<void> {
 
         if (HtmlStorageHelper.isLoggedOutEvent(event)) {
+
             await this._authenticator!.onLoggedOut();
             this._moveToLoggedOutView();
         }

@@ -6,7 +6,7 @@ export class HtmlStorageHelper {
     private static _prefix = 'finalspa.'
     private static _appState = 'appState';
     private static _apiSessionKeyName = 'apisessionid';
-    private static _loggedOutKeyName = 'loggedOut';
+    private static _loggedOutKeyName = 'loggedout';
 
     /*
      * Get any stored app state when handling login responses
