@@ -94,6 +94,7 @@ export class WebWorkerAuthenticator implements AccessTokenSupplier {
 
         try {
 
+            this._accessToken = null;
             const response = await this._fetcher.execute('POST', '/token', this._antiForgeryToken, null);
             this._accessToken = response.accessToken;
 
