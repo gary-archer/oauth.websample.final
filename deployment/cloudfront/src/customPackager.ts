@@ -22,7 +22,7 @@ class Packager {
         // Javascript
         await fs.copy('../../spa/dist/vendor.bundle.js', '.package/spa/dist/vendor.bundle.js');
         await fs.copy('../../spa/dist/app.bundle.js', '.package/spa/dist/app.bundle.js');
-        await fs.copy('../../spa/dist/accessTokenWebWorker.bundle.worker.js', '.package/spa/dist/accessTokenWebWorker.bundle.worker.js');
+        await fs.copy('../../spa/dist/accesstokenwebworker.bundle.worker.js', '.package/spa/dist/accesstokenwebworker.bundle.worker.js');
         await fs.copy('../../spa/dist/unsupported.js', '.package/spa/dist/unsupported.js');
         await fs.copy('../../spa/dist/loggedout.js', '.package/spa/dist/loggedout.js');
 
