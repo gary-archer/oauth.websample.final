@@ -1,0 +1,9 @@
+{
+    "app": {
+        "apiBaseUrl": "https://api.authsamples.com/api",
+        "apiBaseUrl-LOCAL": "https://api.mycompany.com:445/api"
+    },
+    "oauth": {
+        "proxyApiBaseUrl": "https://api.mycompany.com:444/proxy"
+    }
+}

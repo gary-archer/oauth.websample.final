@@ -1,0 +1,8 @@
+.DS_Store
+.certs
+.serverless
+.package
+node_modules
+dist
+!/spa/dist/loggedout.js
+!/spa/dist/unsupported.js
