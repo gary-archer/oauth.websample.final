@@ -1,5 +1,8 @@
-1. Get SSL working in BFF Node Express
-   Create a feature branch and get Michal to approve it
+1. Get SSL working for API Gateway
 
 2. Borrow some ideas from my end-to-end setup
    Include use of docker compose down
+
+3. Test via curl and look at logs
+
+4. Iron out issues and also get custom AWS Cognito login working

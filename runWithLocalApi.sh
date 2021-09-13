@@ -5,5 +5,6 @@
 #############################################################################
 
 #
-# Call some logic from the localhost folder and the 
+# Spin everything up, similar to Docker end to end, but all running locally
+# API choosably by technology stack
 #

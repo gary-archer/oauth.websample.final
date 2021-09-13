@@ -4,17 +4,17 @@ _transform: true
 services:
 
 #
-# The route for the BFF API, which is in the same site as the SPA, at https://api.mycompany.com:445/bff
+# The route for the BFF API, which is called by the SPA via https://api.mycompany.com:444/bff
 #
 - name: bff-api
-  url: http://bffapihost:444/bff
+  url: http://bffapihost:3001/bff
   routes:
   - name: bff-api-route
     paths:
     - /bff
 
 #
-# The route for my AWS cloud API, which runs at https://api.authsamples.com/api
+# The route for my AWS cloud API, which is called by the SPA via https://api.mycompany.com:444/api
 #
 - name: sample-api
   url: https://api.authsamples.com/api

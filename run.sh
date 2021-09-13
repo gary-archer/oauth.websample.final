@@ -5,5 +5,5 @@
 ##############################################################################
 
 #
-# Call some logic from the localhost folder
+# Spin everything up, similar to web sample 1
 #
