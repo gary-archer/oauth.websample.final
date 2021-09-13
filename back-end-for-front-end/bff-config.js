@@ -1,0 +1,21 @@
+exports.config = {
+    clientID: '7b1b97q0d7eils1mo0m46oobr3',
+    clientSecret: 'bv8mbjf7s04n16o358qg4qe12842md4kdspubts22omfrfqk37e',
+    redirectUri: 'https://web.mycompany.com/spa/',
+    postLogoutRedirectURI: 'https://web.mycompany.com/spa/loggedout.html',
+    scope: 'openid profile email https://api.authsamples.com/api/transactions_read',
+    encKey: 'NF65meV>Ls#8GP>;!Cnov)rIPRoK^.NP',
+    cookieNamePrefix: 'mycompany',
+    bffEndpointsPrefix: '/bff',
+    cookieOptions: {
+        httpOnly: true,
+        sameSite: true,
+        secure: false,
+        domain: 'api.mycompany.com',
+        path: '/',
+    },
+    trustedWebOrigins: ['http://web.mycompany.com'],
+    authorizeEndpoint: 'https://login.authsamples.com/oauth2/authorize',
+    logoutEndpoint: 'http://login.authsamples.com/logout',
+    tokenEndpoint: 'https://login.authsamples.com/oauth2/token',
+};

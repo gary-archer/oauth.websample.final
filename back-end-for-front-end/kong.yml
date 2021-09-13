@@ -1,0 +1,35 @@
+_format_version: '2.1'
+_transform: true
+
+services:
+
+#
+# The route for the BFF API, which is in the same site as the SPA, at https://api.mycompany.com:445/bff
+#
+- name: bff-api
+  url: http://bffapihost:444/bff
+  routes:
+  - name: bff-api-route
+    paths:
+    - /bff
+
+#
+# The route for my AWS cloud API, which runs at https://api.authsamples.com/api
+#
+- name: sample-api
+  url: https://api.authsamples.com/api
+  routes:
+  - name: sample-api-route
+    paths:
+    - /api
+
+  plugins:
+
+  # The BFF plugin decrypts the secure cookie and forwards the access token to the API
+  - name: bff-token
+    config:
+      encryption_key: NF65meV>Ls#8GP>;!Cnov)rIPRoK^.NP
+      cookie_name_prefix: mycompany
+      trusted_web_origins:
+      - http://web.mycompany.com
+  

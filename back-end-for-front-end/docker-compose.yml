@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+
+  #
+  # The Back End for Front End API performs OAuth and cookie issuing work for the SPA
+  # The SPA calls the BFF via http://api.mycompany.com:444/bff
+  #
+  back-end-for-front-end-api:
+    image: curity-bff-api:1.0.0
+    hostname: bffapihost
+    volumes:
+      - ./bff-config.js:/usr/bff-api/dist/config.js
+    environment:
+      PORT: 444
+
+  #
+  # API calls are routed via the API Gateway, which decrypts cookies, then sends tokens to the API
+  # The SPA calls the gateway via http://api.mycompany.com:444/api
+  #
+  api-gateway:
+    image: kong:2.5.0-alpine
+    hostname: apigatewayhost
+    ports:
+      - 444:444
+    volumes:
+      - ./kong.yml:/usr/local/kong/declarative/kong.yml
+      - ./kong-bff-plugin/plugin:/usr/local/share/lua/5.1/kong/plugins/bff-token
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: '/usr/local/kong/declarative/kong.yml'
+      KONG_PROXY_LISTEN: '0.0.0.0:444'
+      KONG_LOG_LEVEL: 'info'
+      KONG_PLUGINS: 'bundled,bff-token'

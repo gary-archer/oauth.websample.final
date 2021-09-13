@@ -1,0 +1,4 @@
+Hacks will go here:
+
+- Logout
+- SSL inside the cluster
