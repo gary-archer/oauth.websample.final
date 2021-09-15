@@ -44,7 +44,6 @@ fi
 #
 echo "Waiting for API gateway to become available ..."
 while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$API_GATEWAY_BASE_URL")" != "401" ]; do
-    echo 'wait'
     sleep 1s
 done
 
