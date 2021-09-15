@@ -28,14 +28,14 @@ esac
 if [ "$PLATFORM" == 'MACOS' ]; then
     open -a Terminal ./spa/deploy.sh
     open -a Terminal ./webhost/deploy.sh
-    open -a Terminal ./back-end-for-front-end/oauth.webproxyapi/deploy.sh
+    open -a Terminal ./back-end-for-front-end/deploy.sh
     open -a Terminal ./back-end-for-front-end/api-gateway/deploy.sh
     
 else
     GIT_BASH="C:\Program Files\Git\git-bash.exe"
     "$GIT_BASH" -c ./spa/deploy.sh &
     "$GIT_BASH" -c ./webhost/deploy.sh &
-    "$GIT_BASH" -c ./back-end-for-front-end/oauth.webproxyapi/deploy.sh &
+    "$GIT_BASH" -c ./back-end-for-front-end/deploy.sh &
     "$GIT_BASH" -c ./back-end-for-front-end/api-gateway/deploy.sh &
 fi
 

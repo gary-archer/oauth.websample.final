@@ -1,13 +1,20 @@
 TECHNICAL DETAILS SEQUENCE
 --------------------------
 1. Test driven development of the BFF API
-   Work in BFF API project and get access token forwarding working
-   Update to Michal's algorithm
+   Work solely in BFF API project and get access token forwarding working
+   Update to Michal's algorithm to achieve this
 
 2. Get tests working for BFF API
    First use local HTTPS endpoint then test lambda workflow locally
 
 3. Get SPA working locally against local BFF and gateway
+
+4. Update lambda authorizer to work with both cookies and tokens
+   This will ensure that my native clients and web clients all work
+
+5. Merge and rename oauth.webproxyapi to oauth.api.back-end-for-front-end
+
+6. Deploy to AWS and test
 
 DOCS
 ----
