@@ -38,7 +38,8 @@ The UI visualises how a domain specific array claim is used to enforce access to
 
 ## API Requests
 
-Only SameSite cookies are used in the browser, in line with 2021 security recommendations:
+Only SameSite cookies are used in the browser, in line with 2021 security recommendations.\
+The access tokens cookies use these properties, and other cookies are private to the BFF API:
 
 - HTTP Only
 - Secure
