@@ -14,8 +14,8 @@ exports.config = {
         domain: 'api.mycompany.com',
         path: '/',
     },
-    trustedWebOrigins: ['http://web.mycompany.com'],
+    trustedWebOrigins: ['https://web.mycompany.com'],
     authorizeEndpoint: 'https://login.authsamples.com/oauth2/authorize',
-    logoutEndpoint: 'http://login.authsamples.com/logout',
+    logoutEndpoint: 'https://login.authsamples.com/logout',
     tokenEndpoint: 'https://login.authsamples.com/oauth2/token',
 };

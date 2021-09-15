@@ -4,17 +4,17 @@
 # Deploy the Curity Back End for Front End API and the Kong API Gateway
 #######################################################################
 
-rm -rf kong-bff-plugin
-git clone https://github.com/curityio/kong-bff-plugin
-if [ $? -ne 0 ]; then
-  echo "Problem encountered downloading the BFF plugin"
-  exit 1
-fi
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Spin up all containers, using the Docker Compose file, which applies the deployed configuration
+# Clean up if required
 #
-docker compose up --force-recreate
+docker compose down
+
+#
+# Spin up Docker compose components
+#
+docker compose up --force-recreate --remove-orphans
 if [ $? -ne 0 ]; then
   echo "Problem encountered starting Docker components"
   exit 1

@@ -1,8 +1,13 @@
-1. Get SSL working for API Gateway
+1. Update main README and also add a brief README to the deployment folder
+   Rename deployment folder since it gets in the way of the deploy.sh script
 
-2. Borrow some ideas from my end-to-end setup
-   Include use of docker compose down
+2. Update SPA, get rid of comlink and simplify
+   Also account for mobile web sample in updates
 
-3. Test via curl and look at logs
+3. Get SPA working
+   Add custom code for AWS Cognito logout, with an 'if' condition
 
-4. Iron out issues and also get custom AWS Cognito login working
+4. Update my lambda authorizer to access cookies
+
+5. Create a new Curity repo called Serverless Lambda BFF
+   Update in line with Curity BFF code

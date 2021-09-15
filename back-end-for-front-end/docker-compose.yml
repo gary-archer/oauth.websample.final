@@ -12,10 +12,16 @@ services:
     volumes:
       - ./kong.yml:/usr/local/kong/declarative/kong.yml
       - ./kong-bff-plugin/plugin:/usr/local/share/lua/5.1/kong/plugins/bff-token
+      - ./.certs/localhost/mycompany.com.ssl.pem:/usr/local/share/certs/mycompany.com.ssl.pem
+      - ./.certs/localhost/mycompany.com.ssl.key:/usr/local/share/certs/mycompany.com.ssl.key
+      - ./.certs/localhost/mycompany.com.ca.pem:/usr/local/share/certs/mycompany.com.ca.pem
     environment:
       KONG_DATABASE: 'off'
       KONG_DECLARATIVE_CONFIG: '/usr/local/kong/declarative/kong.yml'
-      KONG_PROXY_LISTEN: '0.0.0.0:3000'
+      KONG_PROXY_LISTEN: '0.0.0.0:3000 ssl'
+      KONG_SSL_CERT: '/usr/local/share/certs/mycompany.com.ssl.pem'
+      KONG_SSL_CERT_KEY: './usr/local/share/certs/mycompany.com.ssl.key'
+      KONG_LUA_SSL_TRUSTED_CERTIFICATE: './usr/local/share/certs/mycompany.com.ca.pem'
       KONG_LOG_LEVEL: 'info'
       KONG_PLUGINS: 'bundled,bff-token'
 
