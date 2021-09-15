@@ -1,16 +1,28 @@
-1. Update main README with SPA intent
+TECHNICAL DETAILS SEQUENCE
+--------------------------
+1. Web Proxy API ./deploy.sh to deploy the API gateway
+   This will enable test driven development to get OAuth work done
 
-2. Add a README for SPA deployment scenarios
+2. Get tests working for BFF
+   This needs to get encryption working end-to-end
+   Update to Michal's algorithm
+   First use local HTTPS endpoint then test lambda workflow locally
+
+3. Get SPA working locally against local BFF and gateway
+
+DOCS
+----
+1. Add a README for SPA deployment scenarios in the delivery folder
    Rename deployment folder since it gets in the way of the deploy.sh script
-   Fix terminology around 'docker-deployed' and ensure that end-to-end repo still works
 
-3. Update SPA, get rid of comlink and simplify
-   Also account for mobile web sample in updates
+2. Update blog posts ASAP
 
-4. Get SPA working
-   Add custom code for AWS Cognito logout, with an 'if' condition
+LATER
+-----
+1. Fix terminology around 'docker-deployed'
+   Ensure that docker end-to-end still works
 
-5. Update my lambda authorizer to access cookies
+2. Run in Docker container by default, via API gateway
+   Provide an option for running BFF API locally, for debugging
 
-6. Create a new Curity repo called Serverless Lambda BFF
-   Update in line with Curity BFF code
+3. Final APIs to port 446
