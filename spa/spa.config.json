@@ -1,9 +1,8 @@
 {
     "app": {
-        "apiBaseUrl-CLOUD": "https://api.authsamples.com/api",
-        "apiBaseUrl": "https://api.mycompany.com:445/api"
+        "apiBaseUrl": "https://api.authsamples.com/api",
     },
     "oauth": {
-        "proxyApiBaseUrl": "https://api.mycompany.com:444/proxy"
+        "bffApiBaseUrl": "https://api.mycompany.com:444/bff"
     }
 }
