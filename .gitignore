@@ -6,5 +6,4 @@ node_modules
 dist
 !/spa/dist/loggedout.js
 !/spa/dist/unsupported.js
-back-end-for-front-end/bff-node-express
-back-end-for-front-end/kong-bff-plugin
+back-end-for-front-end

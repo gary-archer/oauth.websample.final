@@ -5,10 +5,8 @@
 ##############################################
 
 WEB_ORIGIN='https://web.mycompany.com'
-BFF_BASE_URL='https://api.mycompany.com:444/bff'
-
-open "$WEB_ORIGIN/spa"
-exit
+BFF_API_BASE_URL='https://api.mycompany.com:444/proxy'
+API_GATEWAY_BASE_URL='https://api.mycompany.com:445/api'
 
 #
 # Get the platform
@@ -30,20 +28,31 @@ esac
 if [ "$PLATFORM" == 'MACOS' ]; then
     open -a Terminal ./spa/deploy.sh
     open -a Terminal ./webhost/deploy.sh
-    open -a Terminal ./back-end-for-front-end/deploy.sh
+    open -a Terminal ./back-end-for-front-end/oauth.webproxyapi/deploy.sh
+    open -a Terminal ./back-end-for-front-end/api-gateway/deploy.sh
     
 else
     GIT_BASH="C:\Program Files\Git\git-bash.exe"
     "$GIT_BASH" -c ./spa/deploy.sh &
     "$GIT_BASH" -c ./webhost/deploy.sh &
-    "$GIT_BASH" -c ./back-end-for-front-end/deploy.sh &
+    "$GIT_BASH" -c ./back-end-for-front-end/oauth.webproxyapi/deploy.sh &
+    "$GIT_BASH" -c ./back-end-for-front-end/api-gateway/deploy.sh &
 fi
 
 #
-# Wait for the Back End for Front End to come up
+# Wait for the API gateway to come up
+#
+echo "Waiting for API gateway to become available ..."
+while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$API_GATEWAY_BASE_URL")" != "401" ]; do
+    echo 'wait'
+    sleep 1s
+done
+
+#
+# Wait for the Back End for Front End API to come up
 #
 echo "Waiting for BFF API to become available ..."
-while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$BFF_BASE_URL/login/start")" != "200" ]; do
+while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$BFF_API_BASE_URL/login/start")" != "200" ]; do
     sleep 1s
 done
 
