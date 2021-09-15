@@ -6,8 +6,8 @@
 
 ## Overview
 
-The final OpenID Connect secured SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities.\
-The SPA interacts with an [OAuth Proxy API](https://github.com/gary-archer/oauth.webproxyapi) as part of a [Back End for Front End](https://authguidance.com/2019/09/09/spa-back-end-for-front-end) solution.
+The final secure SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities.\
+The SPA implements OpenID Connect in an API driven manner via a [Back End for Front End API](https://github.com/gary-archer/oauth.webproxyapi).
 
 ## Instructions
 
