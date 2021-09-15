@@ -3,6 +3,6 @@
         "apiBaseUrl": "https://api.authsamples.com/api"
     },
     "oauth": {
-        "proxyApiBaseUrl": "https://api.authsamples.com/proxy"
+        "proxyApiBaseUrl": "https://api.authsamples.com/bff"
     }
 }

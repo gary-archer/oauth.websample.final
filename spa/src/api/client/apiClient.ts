@@ -2,6 +2,7 @@ import {Company} from '../entities/company';
 import {CompanyTransactions} from '../entities/companyTransactions';
 import {UserInfo} from '../entities/userInfo';
 import {ApiClientOptions} from './apiClientOptions';
+import {ApiFetchOptions} from './apiFetchOptions';
 import {Channel} from './channel';
 
 /*
@@ -24,8 +25,8 @@ export class ApiClient {
             path: 'userinfo',
             method: 'GET',
             dataToSend: null,
-            causeError: callerOptions?.causeError,
-        };
+            callerOptions,
+        } as ApiFetchOptions;
         return await this._channel.fetch(options) as UserInfo;
     }
 
@@ -38,8 +39,8 @@ export class ApiClient {
             path: 'companies',
             method: 'GET',
             dataToSend: null,
-            causeError: callerOptions?.causeError,
-        };
+            callerOptions,
+        } as ApiFetchOptions;
         return await this._channel.fetch(options) as Company[];
     }
 
@@ -52,8 +53,8 @@ export class ApiClient {
             path: `companies/${id}/transactions`,
             method: 'GET',
             dataToSend: null,
-            causeError: callerOptions?.causeError,
-        };
+            callerOptions,
+        } as ApiFetchOptions;
         return await this._channel.fetch(options) as CompanyTransactions;
     }
 }

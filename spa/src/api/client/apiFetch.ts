@@ -70,7 +70,7 @@ export class ApiFetch implements Channel {
             url,
             method: options.method,
             data: options.dataToSend,
-            headers: this._getHeaders(options.callerOptions.causeError),
+            headers: this._getHeaders(options.callerOptions?.causeError),
         };
 
         // Manage sending credentials from the SPA to the API

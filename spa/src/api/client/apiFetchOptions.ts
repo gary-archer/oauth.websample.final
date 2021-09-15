@@ -16,5 +16,5 @@ export interface ApiFetchOptions {
     dataToSend?: any;
 
     // Options supplied via the caller of the ApiClient class
-    callerOptions: ApiClientOptions;
+    callerOptions?: ApiClientOptions;
 }
