@@ -22,13 +22,16 @@ DOCS
    Rename deployment folder since it gets in the way of the deploy.sh script
 
 2. Update blog posts ASAP
+   For discerning developers who are trying to get the architecture right
 
-LATER
------
+ALSO
+----
 1. Fix terminology around 'docker-deployed'
    Ensure that docker end-to-end still works
 
 2. Run in Docker container by default, via API gateway
    Provide an option for running BFF API locally, for debugging
 
-3. Final APIs to use port 446
+3. By default a developer should only run one extra thing - the BFF
+
+4. Final APIs to use port 446

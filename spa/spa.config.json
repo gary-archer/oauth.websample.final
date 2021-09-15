@@ -1,6 +1,6 @@
 {
     "app": {
-        "apiBaseUrl": "https://api.authsamples.com/api"
+        "apiBaseUrl": "https://api.mycompany.com:445/api"
     },
     "oauth": {
         "bffApiBaseUrl": "https://api.mycompany.com:444/bff"
