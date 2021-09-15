@@ -1,26 +1,28 @@
+import {AxiosRequestConfig} from 'axios';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
 import {ErrorHandler} from '../../errors/errorHandler';
 import {UIError} from '../../errors/uiError';
+import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 import {Authenticator} from '../authenticator';
+import {CredentialSupplier} from '../credentialSupplier';
 import {OAuthFetch} from './oauthFetch';
-import {WebAuthenticatorEvents} from './webAuthenticatorEvents';
 
 /*
  * An authenticator class that runs on the main side of the app in a desktop browser
  */
-export class WebAuthenticator implements Authenticator {
+export class WebAuthenticator implements Authenticator, CredentialSupplier {
 
     private readonly _fetcher: OAuthFetch;
-    private readonly _events: WebAuthenticatorEvents;
     private _antiForgeryToken: string | null;
+    private readonly _concurrencyHandler: ConcurrentActionHandler;
 
-    public constructor(configuration: OAuthConfiguration, sessionId: string, events: WebAuthenticatorEvents) {
+    public constructor(configuration: OAuthConfiguration, sessionId: string) {
 
         this._fetcher = new OAuthFetch(configuration, sessionId);
-        this._events = events;
         this._antiForgeryToken = null;
+        this._concurrencyHandler = new ConcurrentActionHandler();
     }
 
     /*
@@ -75,13 +77,9 @@ export class WebAuthenticator implements Authenticator {
                 history.replaceState({}, document.title, appLocation);
             }
 
+            // Store the anti forgery token here, where it is used for OAuth requests
             if (response.antiForgeryToken) {
-
-                // Store the anti forgery token here, where it is used for OAuth requests
                 this._antiForgeryToken = response.antiForgeryToken;
-
-                // Store the anti forgery token in the web worker, where it is used for API requests
-                this._events.onPageLoad(response.antiForgeryToken);
             }
 
             // Return the logged in state
@@ -108,7 +106,7 @@ export class WebAuthenticator implements Authenticator {
 
         try {
 
-            const response = await this._fetcher.execute('POST', '/logout/start', this._antiForgeryToken, null);
+            const response = await this._fetcher.execute('POST', '/logout', this._antiForgeryToken, null);
             location.href = response.endSessionRequestUri;
 
         } catch (e) {
@@ -118,7 +116,6 @@ export class WebAuthenticator implements Authenticator {
         } finally {
 
             this._antiForgeryToken = null;
-            await this._events.onLogout();
         }
     }
 
@@ -126,24 +123,70 @@ export class WebAuthenticator implements Authenticator {
      * When a logout occurs on another browser tab, move this tab to a logged out state
      */
     public async onLoggedOut(): Promise<void> {
-
         this._antiForgeryToken = null;
-        await this._events.onLogout();
     }
 
     /*
-     * This method is for testing only, to make the access token receive a 401 response from the API
+     * This method is for testing only, so that the SPA can receive expired access token responses
      */
     public async expireAccessToken(): Promise<void> {
-        await this._events.onExpireAccessToken();
+        await this._fetcher.execute('POST', '/expire', this._antiForgeryToken, {type: 'access'});
     }
 
     /*
-     * This method is for testing only, to ask the Proxy API to invalidate the refresh token in the auth cookie
+     * This method is for testing only, so that the SPA can receive expired refresh token responses
      */
     public async expireRefreshToken(): Promise<void> {
+        await this._fetcher.execute('POST', '/expire', this._antiForgeryToken, {type: 'refresh'});
+    }
 
-        await this._events.onClearAccessToken();
-        await this._fetcher.execute('POST', '/token/expire', this._antiForgeryToken, null);
+    /*
+     * When calling an API we may need to ask
+     */
+    public async onCallApi(options: AxiosRequestConfig, isRetry: boolean): Promise<void> {
+
+        // If there is no anti forgery token then the user must sign in
+        if (!this._antiForgeryToken) {
+            throw ErrorHandler.getFromLoginRequired();
+        }
+
+        // Ensure that the secure cookie is sent
+        options.withCredentials = true;
+
+        // If retrying an API call, ask the back end for front end API to rewrite the cookie
+        if (isRetry) {
+            await this._concurrencyHandler.execute(this._performTokenRefresh);
+        }
+    }
+
+    /*
+     * Do the work of getting an access token by sending an auth cookie containing a refresh token
+     * Expected errors fall through to the calling function and result in redirecting the user to re-authenticate
+     */
+    private async _performTokenRefresh(): Promise<void> {
+
+        try {
+
+            await this._fetcher.execute('POST', '/refresh', this._antiForgeryToken, null);
+
+        } catch (e) {
+
+            if (this._isSessionExpiredError(e)) {
+                throw ErrorHandler.getFromLoginRequired();
+            }
+
+            throw ErrorHandler.getFromTokenRefreshError(e);
+        }
+    }
+
+    /*
+     * Check for errors that mean the session is expired normally
+     */
+    private _isSessionExpiredError(error: any): boolean {
+
+        return error.statusCode === 400 &&
+               (error.errorCode === ErrorCodes.cookieNotFound ||
+                error.errorCode === ErrorCodes.invalidData    ||
+                error.errorCode === ErrorCodes.invalidGrant);
     }
 }

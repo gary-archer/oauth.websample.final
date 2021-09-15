@@ -104,7 +104,6 @@ export class App extends React.Component<any, AppState> {
 
             // Create global objects for managing OAuth and API calls
             const factory = new ObjectFactory(this._configuration);
-            await factory.initialize();
             this._authenticator = factory.createAuthenticator(this._onLoginComplete);
             this._apiClient = factory.createApiClient(this._authenticator);
 

@@ -14,7 +14,6 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.4",
-    "comlink": "^4.3.1",
     "guid-typescript": "^1.0.9",
     "moment": "^2.24.0",
     "react": "^17.0.2",
@@ -38,7 +37,6 @@
     "webpack": "^5.8.0",
     "webpack-cli": "^4.2.0",
     "webpack-merge": "^5.4.0",
-    "webpack-obfuscator": "^3.1.0",
-    "worker-loader": "^3.0.8"
+    "webpack-obfuscator": "^3.1.0"
   }
 }

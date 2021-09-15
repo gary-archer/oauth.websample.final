@@ -1,6 +1,3 @@
-import {wrap, Remote} from 'comlink';
-import Worker from 'worker-loader!../../api/client/accesstokenwebworker';
-import {AccessTokenWebWorker} from '../../api/client/accesstokenwebworker';
 import {ApiClient} from '../../api/client/apiClient';
 import {ApiFetch} from '../../api/client/apiFetch';
 import {Configuration} from '../../configuration/configuration';
@@ -16,23 +13,9 @@ import {SessionManager} from './sessionManager';
 export class ObjectFactory {
 
     private _configuration: Configuration;
-    private _webWorker: Remote<AccessTokenWebWorker> | null;
 
     public constructor(configuration: Configuration) {
         this._configuration = configuration;
-        this._webWorker = null;
-    }
-
-    /*
-     * Create the web worker when running the SPA in a normal browser
-     */
-    public async initialize(): Promise<void> {
-
-        if (!UserAgentHelper.isAndroidWebView() && !UserAgentHelper.isIosWebView()) {
-
-            const RemoteChannel = wrap<typeof AccessTokenWebWorker>(new Worker());
-            this._webWorker = await new RemoteChannel(this._configuration, SessionManager.get());
-        }
     }
 
     /*
@@ -42,13 +25,13 @@ export class ObjectFactory {
 
         if (UserAgentHelper.isAndroidWebView() || UserAgentHelper.isIosWebView()) {
 
-            // When running in a mobile web view we create an authenticator that calls back the mobile app
+            // When running in a mobile web view the SPA calls the mobile app to do OAuth work
             return new MobileAuthenticator(onLoginComplete);
 
         } else {
 
             // The web authenticator uses a proxy API as a back end for front end and stores tokens in a web worker
-            return new WebAuthenticator(this._configuration.oauth, SessionManager.get(), this._webWorker!);
+            return new WebAuthenticator(this._configuration.oauth, SessionManager.get());
         }
     }
 
@@ -59,13 +42,17 @@ export class ObjectFactory {
 
         if (UserAgentHelper.isAndroidWebView() || UserAgentHelper.isIosWebView()) {
 
-            // When running in a mobile web view we make direct fetch calls to APIs
+            // When running in a mobile web view we send access tokens to the API entry point
             const mobileAuthenticator = authenticator as MobileAuthenticator;
             const channel = new ApiFetch(this._configuration.app, SessionManager.get(), mobileAuthenticator);
             return new ApiClient(channel);
-        }
 
-        // When running in a browser use a web worker to call APIs
-        return new ApiClient(this._webWorker!);
+        } else {
+
+            // When running in a browser we send SameSite cookies to the API entry point
+            const webAuthenticator = authenticator as WebAuthenticator;
+            const channel = new ApiFetch(this._configuration.app, SessionManager.get(), webAuthenticator);
+            return new ApiClient(channel);
+        }
     }
 }

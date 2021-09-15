@@ -16,12 +16,6 @@ export class ErrorHandler {
             return exception;
         }
 
-        // Used when receiving an error from a web worker
-        const uiError = UIError.fromData(exception);
-        if (uiError) {
-            return uiError;
-        }
-
         // Create the error
         const error = new UIError(
             'Web UI',

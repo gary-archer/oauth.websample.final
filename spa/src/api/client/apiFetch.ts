@@ -1,21 +1,22 @@
-import axios, {Method} from 'axios';
+import axios from 'axios';
 import {Guid} from 'guid-typescript';
 import {AppConfiguration} from '../../configuration/appConfiguration';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
-import {AccessTokenSupplier} from '../../plumbing/oauth/accessTokenSupplier';
+import {CredentialSupplier} from '../../plumbing/oauth/credentialSupplier';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {ApiFetchOptions} from './apiFetchOptions';
+import {Channel} from './channel';
 
 /*
  * Lower level logic related to calling APIs
  */
-export class ApiFetch {
+export class ApiFetch implements Channel {
 
     private readonly _apiBaseUrl: string;
-    private readonly _accessTokenSupplier: AccessTokenSupplier;
     private readonly _sessionId: string;
+    private readonly _credentialSupplier: CredentialSupplier;
 
-    public constructor(configuration: AppConfiguration, sessionId: string, accessTokenSupplier: AccessTokenSupplier) {
+    public constructor(configuration: AppConfiguration, sessionId: string, credentialSupplier: CredentialSupplier) {
 
         this._apiBaseUrl = configuration.apiBaseUrl;
         if (!this._apiBaseUrl.endsWith('/')) {
@@ -23,7 +24,7 @@ export class ApiFetch {
         }
 
         this._sessionId = sessionId;
-        this._accessTokenSupplier = accessTokenSupplier;
+        this._credentialSupplier = credentialSupplier;
     }
 
     /*
@@ -34,18 +35,10 @@ export class ApiFetch {
         // Get the full path
         const url = `${this._apiBaseUrl}${options.path}`;
 
-        // Get the access token, and if it does not exist a login redirect will be triggered
-        let token = await this._accessTokenSupplier.getAccessToken();
-
         try {
 
             // Call the API
-            return await this._callApiWithToken(
-                url,
-                options.method,
-                options.dataToSend,
-                token,
-                options.causeError);
+            return await this._callApi(url, options, false);
 
         } catch (error1) {
 
@@ -54,18 +47,10 @@ export class ApiFetch {
                 throw ErrorHandler.getFromHttpError(error1, url, 'Web API');
             }
 
-            // If we received a 401 then try to get a new token
-            token = await this._accessTokenSupplier.refreshAccessToken();
-
             try {
 
-                // The general pattern for calling an OAuth secured API is to retry 401s once with a new token
-                return await this._callApiWithToken(
-                    url,
-                    options.method,
-                    options.dataToSend,
-                    token,
-                    options.causeError);
+                // The general pattern for calling an OAuth secured API is to retry 401s once
+                return await this._callApi(url, options, true);
 
             } catch (error2) {
 
@@ -78,19 +63,21 @@ export class ApiFetch {
     /*
      * Do the work of calling the API
      */
-    private async _callApiWithToken(
-        url: string,
-        method: Method,
-        dataToSend: any,
-        accessToken: string,
-        causeError?: boolean | undefined): Promise<any> {
+    private async _callApi(url: string, options: ApiFetchOptions, isRetry: boolean): Promise<any> {
 
-        const response = await axios.request({
+        // Configure options
+        const axiosOptions = {
             url,
-            method,
-            data: dataToSend,
-            headers: this._getHeaders(accessToken, causeError),
-        });
+            method: options.method,
+            data: options.dataToSend,
+            headers: this._getHeaders(options.callerOptions.causeError),
+        };
+
+        // Manage sending credentials from the SPA to the API
+        await this._credentialSupplier.onCallApi(axiosOptions, isRetry);
+
+        // Make the API request
+        const response = await axios.request(options);
         AxiosUtils.checkJson(response.data);
         return response.data;
     }
@@ -98,12 +85,9 @@ export class ApiFetch {
     /*
      * Add headers for logging and advanced testing purposes
      */
-    private _getHeaders(accessToken: any, causeError?: boolean | undefined): any {
+    private _getHeaders(causeError?: boolean | undefined): any {
 
         const headers: any = {
-
-            // The required authorization header
-            'Authorization': `Bearer ${accessToken}`,
 
             // Context headers included in API logs
             'x-mycompany-api-client':     'FinalSPA',

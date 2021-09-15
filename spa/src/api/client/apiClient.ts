@@ -5,7 +5,7 @@ import {ApiClientOptions} from './apiClientOptions';
 import {Channel} from './channel';
 
 /*
- * The entry point for API calls just routes parameterized requests through a channel
+ * A high level class used by the rest of the SPA to trigger API calls
  */
 export class ApiClient {
 

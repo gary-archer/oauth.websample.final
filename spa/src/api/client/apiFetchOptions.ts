@@ -1,11 +1,12 @@
 import {Method} from 'axios';
+import {ApiClientOptions} from './apiClientOptions';
 
 /*
  * Internal options when making an API request
  */
 export interface ApiFetchOptions {
 
-    // The API endpoint's path
+    // The API endpoint relative path
     path: string;
 
     // Whether a GET, POST etc
@@ -14,6 +15,6 @@ export interface ApiFetchOptions {
     // An optional request payload
     dataToSend?: any;
 
-    // We can send an option to make the API fail, to demonstrate 500 handling
-    causeError: boolean;
+    // Options supplied via the caller of the ApiClient class
+    callerOptions: ApiClientOptions;
 }
