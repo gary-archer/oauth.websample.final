@@ -1,11 +1,10 @@
 TECHNICAL DETAILS SEQUENCE
 --------------------------
-1. Web Proxy API ./deploy.sh to deploy the API gateway
-   This will enable test driven development to get OAuth work done
-
-2. Get tests working for BFF
-   This needs to get encryption working end-to-end
+1. Test driven development of the BFF API
+   Work in BFF API project and get access token forwarding working
    Update to Michal's algorithm
+
+2. Get tests working for BFF API
    First use local HTTPS endpoint then test lambda workflow locally
 
 3. Get SPA working locally against local BFF and gateway
@@ -25,4 +24,4 @@ LATER
 2. Run in Docker container by default, via API gateway
    Provide an option for running BFF API locally, for debugging
 
-3. Final APIs to port 446
+3. Final APIs to use port 446

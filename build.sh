@@ -27,31 +27,21 @@ fi
 #
 # Get the back end for front end API, which deals with OAuth requests for the SPA
 #
-cd ../back-end-for-front-end
-rm -rf oauth.webproxyapi
-git clone https://github.com/gary-archer/oauth.webproxyapi
+cd ..
+rm -rf back-end-for-front-end
+git clone https://github.com/gary-archer/oauth.webproxyapi back-end-for-front-end
 if [ $? -ne 0 ]; then
   echo "Problem encountered downloading the back end for front end API"
   exit 1
 fi
 
 #
-# Build the back end for front end
+# Build the back end for front end components
 #
-cd oauth.webproxyapi
+cd back-end-for-front-end
 git checkout feature/revamp
 ./build.sh
 if [ $? -ne 0 ]; then
-    echo 'Problem encountered building the back end for front end API'
-    exit
-fi
-
-#
-# Also prepare the API Gateway, which forwards API requests to remote domains from a developer PC
-#
-cd ../api-gateway
-./build.sh
-if [ $? -ne 0 ]; then
-    echo 'Problem encountered building the API Gateway'
+    echo 'Problem encountered building back end for front end components'
     exit
 fi
