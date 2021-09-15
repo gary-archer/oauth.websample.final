@@ -16,14 +16,14 @@ The SPA interacts with an [OAuth Proxy API](https://github.com/gary-archer/oauth
 
 ## Quick Start
 
-Once development domains and SSL are configured, these commands to spin up all components:
+Once development domains and SSL are configured, run these commands to spin up all components:
 
 ```bash
 ./build.sh
 ./deploy.sh
 ```
 
-The SPA connects to AWS Cognito and you can sign in to the SPA with one of these password credentials.\
+The SPA connects to AWS Cognito and you can sign in using one of these password credentials.\
 The UI visualises how a domain specific array claim is used to enforce access to resources:
 
 | User | Password | Comments |
@@ -34,11 +34,11 @@ The UI visualises how a domain specific array claim is used to enforce access to
 ## OAuth Security
 
 - The [SPA WebAuthenticator Class](https://github.com/gary-archer/oauth.websample.final/blob/master/spa/src/plumbing/oauth/web/webAuthenticator.ts) demonstrates simple OAuth code in the SPA
-- The [Proxy API Authorizer Class](https://github.com/gary-archer/oauth.webproxyapi/blob/master/src/core/services/authorizer.ts) provides an outline of the more complex back end security
+- The [Back End for Front End API Authorizer Class](https://github.com/gary-archer/oauth.webproxyapi/blob/master/src/core/services/authorizer.ts) does the real security work
 
 ## API Requests
 
-Calls to APIs use SameSite cookies with these properties, so that recommended 2021 browser security is used:
+Only SameSite cookies are used in the browser, in line with 2021 security recommendations:
 
 - HTTP Only
 - Secure
