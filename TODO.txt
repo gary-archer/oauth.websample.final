@@ -1,5 +1,12 @@
 TECHNICAL DETAILS SEQUENCE
 --------------------------
+0. Current problems when the SPA calls the business API:
+   - curl https://api.mycompany.com:445/api/companies -H "Authorization: Bearer 123" -H "origin:https://web.mycompany.com"
+   Fails cookie based authorization
+
+   Cannot read properties of undefined (reading 'protocol') --> ApiFetch._callApi
+   This is because the lambda authorizer is not coping well I think
+
 1. Test driven development of the BFF API
    Work solely in BFF API project and get access token forwarding working
    Update to Michal's algorithm to achieve this
