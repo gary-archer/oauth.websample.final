@@ -1,13 +1,16 @@
-1. Update main README and also add a brief README to the deployment folder
-   Rename deployment folder since it gets in the way of the deploy.sh script
+1. Update main README with SPA intent
 
-2. Update SPA, get rid of comlink and simplify
+2. Add a README for SPA deployment scenarios
+   Rename deployment folder since it gets in the way of the deploy.sh script
+   Fix terminology around 'docker-deployed' and ensure that end-to-end repo still works
+
+3. Update SPA, get rid of comlink and simplify
    Also account for mobile web sample in updates
 
-3. Get SPA working
+4. Get SPA working
    Add custom code for AWS Cognito logout, with an 'if' condition
 
-4. Update my lambda authorizer to access cookies
+5. Update my lambda authorizer to access cookies
 
-5. Create a new Curity repo called Serverless Lambda BFF
+6. Create a new Curity repo called Serverless Lambda BFF
    Update in line with Curity BFF code
