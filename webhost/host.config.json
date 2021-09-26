@@ -1,7 +1,7 @@
 {
     "host": {
         "port": 443,
-        "sslCertificateFileName": "./.certs/localhost/mycompany.com.ssl.p12",
+        "sslCertificateFileName": "../certs/localhost/mycompany.com.ssl.p12",
         "sslCertificatePassword": "Password1",
         "mode": "development"
     },

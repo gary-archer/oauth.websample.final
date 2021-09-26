@@ -1,8 +1,9 @@
 #!/bin/bash
 
-################################################
-# Build components needed to run the SPA locally
-################################################
+#################################################################################
+# A script to build all components needed to run an SPA and token handler locally
+# A simple web host will run locally, with the token handler running in Docker
+#################################################################################
 
 #
 # Build the web host
@@ -25,23 +26,35 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Get the back end for front end API, which deals with OAuth requests for the SPA
+# Download SSL certificates
 #
 cd ..
-rm -rf back-end-for-front-end
-git clone https://github.com/gary-archer/oauth.webproxyapi back-end-for-front-end
+rm -rf certs
+git clone https://github.com/gary-archer/oauth.developmentcertificates ./certs
 if [ $? -ne 0 ]; then
-  echo "Problem encountered downloading the back end for front end API"
-  exit 1
+    echo 'Problem encountered downloading webhost certificates'
+    exit 1
 fi
 
 #
-# Build the back end for front end components
+# Download the token handler, which the SPA uses to manage its OAuth tokens
 #
-cd back-end-for-front-end
+rm -rf .tmp
+mkdir .tmp
+cd .tmp
+git clone https://github.com/gary-archer/oauth.webproxyapi
+if [ $? -ne 0 ]; then
+    echo 'Problem encountered downloading webhost certificates'
+    exit 1
+fi
+
+#
+# Build its code
+#
+cd oauth.webproxyapi
 git checkout feature/revamp
 ./build.sh
 if [ $? -ne 0 ]; then
-    echo 'Problem encountered building back end for front end components'
+    echo 'Problem encountered building the SPA'
     exit
 fi
