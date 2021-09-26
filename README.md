@@ -7,7 +7,10 @@
 ## Overview
 
 The final secure SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities.\
-The SPA implements OpenID Connect in an API driven manner via a [Back End for Front End API](https://github.com/gary-archer/oauth.webproxyapi).
+The SPA implements OpenID Connect in an API driven manner using Curity's [Token Handler Pattern](https://github.com/gary-archer/oauth.webproxyapi):
+
+- [Curity SPA Example](https://github.com/curityio/web-oauth-via-bff)
+- [Curity Token Handler API](https://github.com/curityio/bff-node-express)
 
 ## Instructions
 
@@ -16,7 +19,8 @@ The SPA implements OpenID Connect in an API driven manner via a [Back End for Fr
 
 ## Quick Start
 
-Once development domains and SSL are configured, run these commands to spin up all components:
+Once development domains and SSL trust are configured, run these commands to spin up all components.\
+This will include spinning up a Token Handler using Docker:
 
 ```bash
 ./build.sh
@@ -24,7 +28,7 @@ Once development domains and SSL are configured, run these commands to spin up a
 ```
 
 The SPA connects to AWS Cognito and you can sign in using one of these password credentials.\
-The UI visualises how a domain specific array claim is used to enforce access to resources:
+The UI visualises how a custom array claim from domain specific data is used to enforce access to resources:
 
 | User | Password | Comments |
 | ---- | -------- | -------- |
@@ -39,7 +43,7 @@ The UI visualises how a domain specific array claim is used to enforce access to
 ## API Requests
 
 Only SameSite cookies are used in the browser, in line with 2021 security recommendations.\
-The access token cookie uses these properties, and other cookies are private to the BFF API:
+The access token and CSRF cookies sent to APIs contain the following properties:
 
 - HTTP Only
 - Secure
