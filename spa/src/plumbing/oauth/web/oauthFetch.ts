@@ -10,12 +10,12 @@ import {UrlHelper} from '../../utilities/urlHelper';
  */
 export class OAuthFetch {
 
-    private readonly _bffApiBaseUrl: string;
+    private readonly _tokenHandlerApiBaseUrl: string;
     private readonly _sessionId: string;
 
     public constructor(configuration: OAuthConfiguration, sessionId: string) {
 
-        this._bffApiBaseUrl = configuration.bffApiBaseUrl;
+        this._tokenHandlerApiBaseUrl = configuration.tokenHandlerApiBaseUrl;
         this._sessionId = sessionId;
     }
 
@@ -28,7 +28,7 @@ export class OAuthFetch {
         antiForgeryToken: string | null,
         requestData: any): Promise<any> {
 
-        const url = UrlHelper.append(this._bffApiBaseUrl, operationPath);
+        const url = UrlHelper.append(this._tokenHandlerApiBaseUrl, operationPath);
 
         try {
 
@@ -50,7 +50,7 @@ export class OAuthFetch {
 
             // Add the anti forgery token when we have one
             if (antiForgeryToken) {
-                options.headers['x-mycompany-aft-finalspa'] = antiForgeryToken;
+                options.headers['x-mycompany-csrf'] = antiForgeryToken;
             }
 
             // Supply headers for the proxy API to write to logs

@@ -2,18 +2,18 @@ import {Company} from '../entities/company';
 import {CompanyTransactions} from '../entities/companyTransactions';
 import {UserInfo} from '../entities/userInfo';
 import {ApiClientOptions} from './apiClientOptions';
+import {ApiFetch} from './apiFetch';
 import {ApiFetchOptions} from './apiFetchOptions';
-import {Channel} from './channel';
 
 /*
  * A high level class used by the rest of the SPA to trigger API calls
  */
 export class ApiClient {
 
-    private _channel: Channel;
+    private _fetcher: ApiFetch;
 
-    public constructor(channel: Channel) {
-        this._channel = channel;
+    public constructor(fetcher: ApiFetch) {
+        this._fetcher = fetcher;
     }
 
     /*
@@ -27,7 +27,7 @@ export class ApiClient {
             dataToSend: null,
             callerOptions,
         } as ApiFetchOptions;
-        return await this._channel.fetch(options) as UserInfo;
+        return await this._fetcher.execute(options) as UserInfo;
     }
 
     /*
@@ -41,7 +41,7 @@ export class ApiClient {
             dataToSend: null,
             callerOptions,
         } as ApiFetchOptions;
-        return await this._channel.fetch(options) as Company[];
+        return await this._fetcher.execute(options) as Company[];
     }
 
     /*
@@ -55,6 +55,6 @@ export class ApiClient {
             dataToSend: null,
             callerOptions,
         } as ApiFetchOptions;
-        return await this._channel.fetch(options) as CompanyTransactions;
+        return await this._fetcher.execute(options) as CompanyTransactions;
     }
 }

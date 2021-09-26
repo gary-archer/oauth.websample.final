@@ -1,16 +1,15 @@
-import axios from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 import {Guid} from 'guid-typescript';
 import {AppConfiguration} from '../../configuration/appConfiguration';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {CredentialSupplier} from '../../plumbing/oauth/credentialSupplier';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {ApiFetchOptions} from './apiFetchOptions';
-import {Channel} from './channel';
 
 /*
  * Lower level logic related to calling APIs
  */
-export class ApiFetch implements Channel {
+export class ApiFetch {
 
     private readonly _apiBaseUrl: string;
     private readonly _sessionId: string;
@@ -30,7 +29,7 @@ export class ApiFetch implements Channel {
     /*
      * A parameterized method containing application specific logic for managing API calls
      */
-    public async fetch(options: ApiFetchOptions): Promise<any> {
+    public async execute(options: ApiFetchOptions): Promise<any> {
 
         // Get the full path
         const url = `${this._apiBaseUrl}${options.path}`;
@@ -63,18 +62,17 @@ export class ApiFetch implements Channel {
     /*
      * Do the work of calling the API
      */
-    private async _callApi(url: string, options: ApiFetchOptions, isRetry: boolean): Promise<any> {
+    private async _callApi(url: string, fetchOptions: ApiFetchOptions, isRetry: boolean): Promise<any> {
 
-        // Configure options
-        const axiosOptions = {
+        const options = {
             url,
-            method: options.method,
-            data: options.dataToSend,
-            headers: this._getHeaders(options.callerOptions?.causeError),
-        };
+            method: fetchOptions.method,
+            data: fetchOptions.dataToSend,
+            headers: this._getHeaders(fetchOptions.callerOptions?.causeError),
+        } as AxiosRequestConfig;
 
         // Manage sending credentials from the SPA to the API
-        await this._credentialSupplier.onCallApi(axiosOptions, isRetry);
+        await this._credentialSupplier.onCallApi(options, isRetry);
 
         // Make the API request
         const response = await axios.request(options);

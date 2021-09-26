@@ -361,26 +361,29 @@ export class App extends React.Component<any, AppState> {
     }
 
     /*
-     * For test purposes this makes the access token act expired
+     * For test purposes this makes the access token in secure cookies act expired
      */
     private async _onExpireAccessToken(): Promise<void> {
-        await this._authenticator!.expireAccessToken();
+
+        try {
+            this.setState({error: null});
+            await this._authenticator!.expireAccessToken();
+        }
+        catch (e) {
+            this.setState({error: ErrorHandler.getFromException(e)});
+        }
     }
 
     /*
-     * For test purposes this makes the refresh token act expired
+     * For test purposes this makes the refresh token and access token in secure cookies act expired
      */
     private async _onExpireRefreshToken(): Promise<void> {
 
         try {
-
-            // Where applicable, make the refresh token act expired
             this.setState({error: null});
             await this._authenticator!.expireRefreshToken();
-
-        } catch (e) {
-
-            // Report errors
+        }
+        catch (e) {
             this.setState({error: ErrorHandler.getFromException(e)});
         }
     }

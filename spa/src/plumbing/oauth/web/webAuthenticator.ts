@@ -23,6 +23,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
         this._fetcher = new OAuthFetch(configuration, sessionId);
         this._antiForgeryToken = null;
         this._concurrencyHandler = new ConcurrentActionHandler();
+        this._setupCallbacks();
     }
 
     /*
@@ -150,8 +151,9 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
             throw ErrorHandler.getFromLoginRequired();
         }
 
-        // Ensure that the secure cookie is sent
+        // Send the secure cookie and also the anti forgery token, which is used on data changing commands
         options.withCredentials = true;
+        options.headers['x-mycompany-csrf'] = this._antiForgeryToken;
 
         // If retrying an API call, ask the back end for front end API to rewrite the cookie
         if (isRetry) {
@@ -188,5 +190,12 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
                (error.errorCode === ErrorCodes.cookieNotFound ||
                 error.errorCode === ErrorCodes.invalidData    ||
                 error.errorCode === ErrorCodes.invalidGrant);
+    }
+
+    /*
+     * Plumbing to ensure that the this parameter is available in async callbacks
+     */
+    private _setupCallbacks(): void {
+        this._performTokenRefresh = this._performTokenRefresh.bind(this);
     }
 }
