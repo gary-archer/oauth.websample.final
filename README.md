@@ -34,8 +34,8 @@ The UI visualises how a custom array claim from domain specific data is used to 
 
 ## OAuth Security
 
-- The [SPA WebAuthenticator Class](https://github.com/gary-archer/oauth.websample.final/blob/master/spa/src/plumbing/oauth/web/webAuthenticator.ts) demonstrates simple OAuth code in the SPA
-- The [Back End for Front End API Authorizer Class](https://github.com/gary-archer/oauth.webproxyapi/blob/master/src/core/services/authorizer.ts) does the real security work
+- The [SPA's WebAuthenticator Class](https://github.com/gary-archer/oauth.websample.final/blob/master/spa/src/plumbing/oauth/web/webAuthenticator.ts) demonstrates simple OAuth code in the SPA
+- The [Token Handler's Authorizer Class](https://github.com/gary-archer/oauth.webproxyapi/blob/master/src/core/services/authorizer.ts) does the real security work
 
 ## API Requests
 
