@@ -24,7 +24,7 @@ const handler: any = async (event: any, context: Context) => {
 
     // See if the user has browsed to a location within one of the above root paths
     const foundRootPath = applicationRootPaths.find((path) => {
-        return requestUri === path || requestUri.startsWith(`/${path}/`);
+        return requestUri === `/${path}` || requestUri.startsWith(`/${path}/`);
     });
 
     if (foundRootPath) {
