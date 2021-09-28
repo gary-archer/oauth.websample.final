@@ -7,7 +7,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch SPA",
-            "url": "https://web.mycompany.com/spa/",
+            "url": "https://web.mycompany.com/spa2/",
             "webRoot": "${workspaceRoot}/src",
 
             // We need to point webpack source map output correctly
@@ -21,7 +21,7 @@
             // It enables us to see any source map path overrides that are wrong
             // 
             //   Mapped /Users/gary/projects/oauth.websample2/spa/src/plumbing/api/httpClient.ts 
-            //   to https://web.mycompany.com/spa/dist/bundle.min.js
+            //   to https://web.mycompany.com/spa2/dist/bundle.min.js
             //
             // "trace": "verbose"
         }

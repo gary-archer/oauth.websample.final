@@ -49,7 +49,7 @@ done
 # Wait for the Web Host to come up
 #
 echo "Waiting for Web Host to become available ..."
-while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/spa/index.html")" != "200" ]; do
+while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/spa2/index.html")" != "200" ]; do
     sleep 1s
 done
 
@@ -68,8 +68,8 @@ done
 #  GuestPassword1
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
-    open "$WEB_ORIGIN/spa"
+    open "$WEB_ORIGIN/spa2"
 fi
 if [ "$PLATFORM" == 'WINDOWS' ]; then
-    start "$WEB_ORIGIN/spa"
+    start "$WEB_ORIGIN/spa2"
 fi

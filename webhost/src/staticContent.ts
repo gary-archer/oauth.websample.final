@@ -18,12 +18,12 @@ export class StaticContent {
         if (mode === 'development') {
 
             // During development we get files from the SPA folder, for convenience
-            this._webFilesRoot = '../../spa';
+            this._webFilesRoot = '../../spa2';
 
         } else {
 
             // In Kubernetes the files are packaged to a subfolder of the web host
-            this._webFilesRoot = '../spa';
+            this._webFilesRoot = '../spa2';
         }
     }
 
@@ -32,7 +32,7 @@ export class StaticContent {
      */
     public getWebResource(request: Request, response: Response): void {
 
-        let resourcePath = request.path.toLowerCase().replace('/spa', '/');
+        let resourcePath = request.path.toLowerCase().replace(`/${this._webFilesRoot}`, '/');
         if (resourcePath === '/') {
             resourcePath = 'index.html';
         }
