@@ -3,6 +3,6 @@
         "apiBaseUrl": "https://api.mycompany.com/api"
     },
     "oauth": {
-        "proxyApiBaseUrl": "https://api.mycompany.com/bff"
+        "tokenHandlerApiBaseUrl": "https://api.mycompany.com/bff"
     }
 }

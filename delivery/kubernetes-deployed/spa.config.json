@@ -3,6 +3,6 @@
         "apiBaseUrl": "https://api.mycluster.com/api"
     },
     "oauth": {
-        "proxyApiBaseUrl": "https://api.mycluster.com/spa"
+        "tokenHandlerApiBaseUrl": "https://api.mycluster.com/spa"
     }
 }
