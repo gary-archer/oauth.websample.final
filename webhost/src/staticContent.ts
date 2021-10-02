@@ -18,12 +18,12 @@ export class StaticContent {
         if (mode === 'development') {
 
             // During development we get files from the SPA folder, for convenience
-            this._webFilesRoot = '../../spa2';
+            this._webFilesRoot = '../../spa';
 
         } else {
 
             // In Kubernetes the files are packaged to a subfolder of the web host
-            this._webFilesRoot = '../spa2';
+            this._webFilesRoot = '../spa';
         }
     }
 

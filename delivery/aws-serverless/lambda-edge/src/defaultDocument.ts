@@ -13,7 +13,6 @@ const handler: any = async (event: any, context: Context) => {
     // For performance and to reduce error handling scope we hard code application root paths here
     const applicationRootPaths = [
         'spa',
-        'spa2',
     ];
     const extensions = [
         '.html',
