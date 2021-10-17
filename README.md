@@ -6,9 +6,9 @@
 
 ## Overview
 
-The final secure SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities.\
-The SPA implements OpenID Connect in an API driven manner using Curity's [Token Handler Pattern](https://github.com/curityio/web-oauth-via-bff).\
-This combines strongest browser security with all of the benefits of an SPA architecture.
+- The final secure SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities.
+- The SPA implements OpenID Connect in an API driven manner using Curity's [Token Handler Pattern](https://github.com/curityio/web-oauth-via-bff).
+- This combines strongest browser security with all of the benefits of an SPA architecture.
 
 ## Instructions
 
