@@ -1,0 +1,77 @@
+service: weblambdas
+
+# Cloudfront edge lambdas must be deployed to the us-east-1 region
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  profile: default
+  stage: deployed
+  lambdaHashingVersion: '20201221'
+
+functions:
+
+  # The default document handler deals with returning the default index.html document
+  defaultDocument:
+    handler: dist/defaultDocument.handler
+    memorySize: 128
+    timeout: 5
+    events:
+      - preExistingCloudFront:
+          distributionId: E1P4XPOL1PNE6Z
+          eventType: origin-request
+          pathPattern: '*'
+
+  # A lambda to add standard security headers, including the Content Security Policy
+  securityHeaders:
+    handler: dist/securityHeaders.handler
+    memorySize: 128
+    timeout: 5
+    events:
+      - preExistingCloudFront:
+          distributionId: E1P4XPOL1PNE6Z
+          eventType: origin-response
+          pathPattern: '*'
+
+# Use patterns to remove files we don't need to deploy
+package:
+  patterns:
+  - '!.vscode/**'
+  - '!src/**'
+  - '!node_modules/**'
+  - '!test/**'
+  - '!ts*.json'
+  - '!package*.json'
+  - '!README.md'
+
+plugins:
+  # Add the lambda edge function to our existing Cloudfront distribution rather than creating a new one
+  - serverless-lambda-edge-pre-existing-cloudfront
+
+# The plugin generates a Serverless schema validation warning that we can't fix, so disable it
+configValidationMode: off
+
+# Configure the resources that serverless creates
+resources:
+  Resources:
+
+    # This ensures that the role created by Serverless has access to edgelambda.amazonaws.com
+    # https://www.pveller.com/lambda-edge-serverless/
+    IamRoleLambdaExecution:
+      Type: 'AWS::IAM::Role'
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement: 
+            - Effect: Allow
+              Principal: 
+                Service:
+                  - lambda.amazonaws.com
+                  - edgelambda.amazonaws.com
+    
+    # Limit cloudwatch log retention for our Lambda Edge functions
+    DefaultDocumentLogGroup:
+      Properties:
+        RetentionInDays: '5'
+    SecurityHeadersLogGroup:
+      Properties:
+        RetentionInDays: '5'

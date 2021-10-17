@@ -1,0 +1,8 @@
+{
+    "app": {
+        "apiBaseUrl": "https://api.mycompany.com/api"
+    },
+    "oauth": {
+        "tokenHandlerApiBaseUrl": "https://api.mycompany.com/bff"
+    }
+}
