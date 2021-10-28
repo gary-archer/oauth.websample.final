@@ -11,7 +11,4 @@ export interface UserInfoViewState {
 
     // Populated when there is an error getting data
     error: UIError | null;
-
-    // Whether the view should load data
-    shouldLoad: boolean;
 }

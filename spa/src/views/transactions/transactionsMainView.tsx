@@ -5,36 +5,12 @@ import {TransactionsViewProps} from './transactionsViewProps';
 /*
  * Render the transactions main view
  */
-export class TransactionsMainView extends React.Component<TransactionsViewProps> {
-
-    public constructor(props: TransactionsViewProps) {
-        super(props);
-    }
+export function TransactionsMainView(props: TransactionsViewProps): JSX.Element {
 
     /*
-     * Render the data on a wide screen
+     * Render a single item
      */
-    public render(): React.ReactNode {
-
-        return  this.props.data &&
-                (
-                    <div className='card border-0'>
-                        <div className='card-header row font-weight-bold'>
-                            <div className='col-12 text-center mx-auto font-weight-bold'>
-                                Today&apos;s Transactions for {this.props.data.company.name}
-                            </div>
-                        </div>
-                        <div className='row'>
-                            {this.props.data.transactions.map((transaction) => this._renderTransaction(transaction))}
-                        </div>
-                    </div>
-                );
-    }
-
-    /*
-     * Render a single transaction item
-     */
-    private _renderTransaction(transaction: Transaction) {
+    function renderTransaction(transaction: Transaction): JSX.Element {
 
         return (
             <div className='col-lg-4 col-md-6 col-xs-12' key={transaction.id}>
@@ -69,4 +45,21 @@ export class TransactionsMainView extends React.Component<TransactionsViewProps>
             </div>
         );
     }
+
+    /*
+     * Render the data on a wide screen
+     */
+    return props.data &&
+            (
+                <div className='card border-0'>
+                    <div className='card-header row font-weight-bold'>
+                        <div className='col-12 text-center mx-auto font-weight-bold'>
+                            Today&apos;s Transactions for {props.data.company.name}
+                        </div>
+                    </div>
+                    <div className='row'>
+                        {props.data.transactions.map((transaction) => renderTransaction(transaction))}
+                    </div>
+                </div>
+            );
 }

@@ -13,8 +13,8 @@ export interface ApiFetchOptions {
     method: Method;
 
     // An optional request payload
-    dataToSend?: any;
+    dataToSend: any;
 
     // Options supplied via the caller of the ApiClient class
-    callerOptions?: ApiClientOptions;
+    callerOptions: ApiClientOptions;
 }

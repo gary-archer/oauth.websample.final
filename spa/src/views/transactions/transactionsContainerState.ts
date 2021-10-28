@@ -6,9 +6,6 @@ import {UIError} from '../../plumbing/errors/uiError';
  */
 export interface TransactionsContainerState {
 
-    // The company id
-    companyId: string;
-
     // Populated when there is an error getting data
     data: CompanyTransactions | null;
 

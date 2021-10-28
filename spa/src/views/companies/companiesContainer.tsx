@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {EventEmitter} from '../../plumbing/events/eventEmitter';
@@ -13,102 +13,80 @@ import {CompaniesMobileView} from './companiesMobileView';
 /*
  * Render the companies view to replace the existing view
  */
-export class CompaniesContainer extends React.Component<CompaniesContainerProps, CompaniesContainerState> {
+export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element {
 
-    public constructor(props: CompaniesContainerProps) {
+    const [state, setState] = useState<CompaniesContainerState>({
+        companies: [],
+        error: null,
+    });
 
-        super(props);
-        props.onLoading();
-
-        this.state = {
-            companies: [],
-            error: null,
-        };
-
-        this._setupCallbacks();
-    }
-
-    /*
-     * Render according to the current state and the type of device
-     */
-    public render(): React.ReactNode {
-
-        // Render an error on failure
-        if (this.state.error) {
-            return this._renderError();
-        }
-
-        // Display nothing until there is data
-        if (this.state.companies.length === 0) {
-            return (
-                <>
-                </>
-            );
-        }
-
-        // Display the desktop or mobile view otherwise
-        const props = {
-            companies: this.state.companies,
-        };
-
-        if (this.props.isMobileSize) {
-            return  (
-                <CompaniesMobileView {...props}/>
-            );
-        }
-
-        return  (
-            <CompaniesDesktopView {...props}/>
-        );
-    }
+    useEffect(() => {
+        startup();
+        return () => cleanup();
+    }, []);
 
     /*
      * Load data then listen for the reload event
      */
-    public async componentDidMount(): Promise<void> {
+    async function startup(): Promise<void> {
 
-        EventEmitter.subscribe(EventNames.ON_RELOAD_MAIN, this._loadData);
-        await this._loadData(false);
+        props.onLoading();
+        EventEmitter.subscribe(EventNames.ON_RELOAD_MAIN, loadData);
+        await loadData(false);
     }
 
     /*
      * Unsubscribe when we unload
      */
-    public async componentWillUnmount(): Promise<void> {
-
-        EventEmitter.unsubscribe(EventNames.ON_RELOAD_MAIN, this._loadData);
+    function cleanup(): void {
+        EventEmitter.unsubscribe(EventNames.ON_RELOAD_MAIN, loadData);
     }
 
     /*
      * Get data from the API and update state
      */
-    private async _loadData(causeError: boolean): Promise<void> {
+    async function loadData(causeError: boolean): Promise<void> {
 
         try {
-            this.setState({error: null});
+            setState((s) => {
+                return {
+                    ...s,
+                    error: null,
+                };
+            });
 
-            // Do the load
-            this.props.events.onViewLoading(ApiViewNames.Main);
-            const companies = await this.props.apiClient.getCompanyList({causeError});
-            this.props.events.onViewLoaded(ApiViewNames.Main);
+            props.events.onViewLoading(ApiViewNames.Main);
+            const companies = await props.apiClient.getCompanyList({causeError});
+            props.events.onViewLoaded(ApiViewNames.Main);
 
-            this.setState({companies});
+            setState((s) => {
+                return {
+                    ...s,
+                    companies,
+                    error: null,
+                };
+            });
 
         } catch (e) {
 
-            // Update state
             const error = ErrorHandler.getFromException(e);
-            this.setState({companies: [], error});
-            this.props.events.onViewLoadFailed(ApiViewNames.Main, error);
+            setState((s) => {
+                return {
+                    ...s,
+                    companies: [],
+                    error,
+                };
+            });
+            props.events.onViewLoadFailed(ApiViewNames.Main, error);
         }
     }
 
     /*
      * Output error details if required
      */
-    private _renderError(): React.ReactNode {
+    function renderError(): JSX.Element {
 
-        if (this.state.error!.errorCode === ErrorCodes.loginRequired) {
+        if (state.error!.errorCode === ErrorCodes.loginRequired) {
             return (
                 <>
                 </>
@@ -118,7 +96,7 @@ export class CompaniesContainer extends React.Component<CompaniesContainerProps,
         const errorProps = {
             hyperlinkMessage: 'Problem Encountered in Companies View',
             dialogTitle: 'Companies View Error',
-            error: this.state.error,
+            error: state.error,
             centred: true,
         };
 
@@ -127,10 +105,33 @@ export class CompaniesContainer extends React.Component<CompaniesContainerProps,
         );
     }
 
-    /*
-     * Plumbing to ensure that the this parameter is available in async callbacks
-     */
-    private _setupCallbacks(): void {
-        this._loadData = this._loadData.bind(this);
+    // Render an error on failure
+    if (state.error) {
+        return renderError();
+    }
+
+    // Display nothing until there is data
+    if (state.companies.length === 0) {
+        return (
+            <>
+            </>
+        );
+    }
+
+    // Display the desktop or mobile view
+    const childProps = {
+        companies: state.companies,
+    };
+    if (props.isMobileSize) {
+
+        return  (
+            <CompaniesMobileView {...childProps}/>
+        );
+
+    } else {
+
+        return  (
+            <CompaniesDesktopView {...childProps}/>
+        );
     }
 }

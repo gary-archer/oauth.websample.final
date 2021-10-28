@@ -3,40 +3,14 @@ import {Company} from '../../api/entities/company';
 import {CompaniesViewProps} from './companiesViewProps';
 
 /*
- * Render the companies view for the browser case
+ * Render the companies view on a desktop browser
  */
-export class CompaniesDesktopView extends React.Component<CompaniesViewProps> {
-
-    public constructor(props: CompaniesViewProps) {
-        super(props);
-    }
+export function CompaniesDesktopView(props: CompaniesViewProps): JSX.Element {
 
     /*
-     * Render according to the current state
+     * Render a single item
      */
-    public render(): React.ReactNode {
-
-        return  (
-            <div className='card border-0'>
-                <div className='row card-header'>
-                    <div className='col-2 font-weight-bold text-center'>Account</div>
-                    <div className='col-2 font-weight-bold text-center'>Region</div>
-                    <div className='col-2' />
-                    <div className='col-2 font-weight-bold text-right'>Target USD</div>
-                    <div className='col-2 font-weight-bold text-right'>Investment USD</div>
-                    <div className='col-2 font-weight-bold text-right'># Investors</div>
-                </div>
-                <div className='card-body'>
-                    {this.props.companies.map((company) => this._renderItem(company))}
-                </div>
-            </div>
-        );
-    }
-
-    /*
-     * Render a single company on a large screen
-     */
-    private _renderItem(company: Company) {
+    function renderItem(company: Company): JSX.Element {
 
         return (
             <div className='row listRow' key={company.id}>
@@ -63,4 +37,23 @@ export class CompaniesDesktopView extends React.Component<CompaniesViewProps> {
             </div>
         );
     }
+
+    /*
+     * Render the collection of items
+     */
+    return  (
+        <div className='card border-0'>
+            <div className='row card-header'>
+                <div className='col-2 font-weight-bold text-center'>Account</div>
+                <div className='col-2 font-weight-bold text-center'>Region</div>
+                <div className='col-2' />
+                <div className='col-2 font-weight-bold text-right'>Target USD</div>
+                <div className='col-2 font-weight-bold text-right'>Investment USD</div>
+                <div className='col-2 font-weight-bold text-right'># Investors</div>
+            </div>
+            <div className='card-body'>
+                {props.companies.map((company) => renderItem(company))}
+            </div>
+        </div>
+    );
 }
