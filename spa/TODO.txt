@@ -2,11 +2,14 @@ BEFORE MERGE
 ------------
 1. Get rid of view model references to the view by using events
    Change event and method names to be in line with mobile
+   Compare Xcode and SPA side by side
 
-2. Use viewmodel technique to do less work in other views, similar to mobile
+2. Fix resize problem, which may require useRef
 
 3. Reduce the amount of re-rendering or understand it better
 
-4. Use path based routing
+4. Use viewmodel technique to do less work in other main views, similar to mobile
 
-5. Do same for desktop app
+5. Use path based routing
+
+6. Do same for desktop app
