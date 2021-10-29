@@ -4,9 +4,10 @@ import {HashRouter, Route, Switch} from 'react-router-dom';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../plumbing/errors/errorHandler';
+import {DataStatusEvent} from '../plumbing/events/dataStatusEvent';
 import {EventNames} from '../plumbing/events/eventNames';
-import {ReloadMainViewEvent} from '../plumbing/events/reloadMainViewEvent';
-import {ReloadUserInfoEvent} from '../plumbing/events/reloadUserInfoEvent';
+import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
+import {MobileLoginCompleteEvent} from '../plumbing/events/mobileLoginCompleteEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
@@ -29,7 +30,7 @@ export function App(props: AppProps): JSX.Element {
     const [state, setState] = useState<AppState>({
         isInitialised: false,
         isInLoggedOutView: false,
-        isMainViewLoaded: false,
+        hasData: false,
         isMobileSize: isMobileSize(),
         error: null,
     });
@@ -50,13 +51,18 @@ export function App(props: AppProps): JSX.Element {
         try {
             // Initialise the view model if required
             clearError();
-            await model.initialise(onLoginRequired, onLoginComplete, onMainViewLoadStateChanged);
+            await model.initialise();
 
             // Ask the authenticator to handle the page load, to return logged in state the UI needs
             const isLoggedIn = await model.authenticator.handlePageLoad();
             if (isLoggedIn) {
                 HtmlStorageHelper.loggedOut = false;
             }
+
+            // Subscribe to application events
+            model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
+            model.eventBus.on(EventNames.MobileLoginComplete, onMobileLoginComplete);
+            model.eventBus.on(EventNames.DataStatus, onDataStatusUpdate);
 
             // Subscribe to window events
             window.onresize = onResize;
@@ -87,7 +93,7 @@ export function App(props: AppProps): JSX.Element {
     /*
      * Trigger a login redirect when all views have finished calling the API and there has been a login_required error
      */
-    async function onLoginRequired(): Promise<void> {
+    async function onLoginRequired(event: LoginRequiredEvent): Promise<void> {
 
         try {
 
@@ -114,11 +120,11 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * Called after login completes successfully when running in a mobile web view
-     * In this scenario the SPA needs to be told to reload itself
+     * Called after an AppAuth login completes successfully when the SPA is running in a mobile web view
+     * In this scenario the SPA needs to be told to reload itself when the InApp browser closes
      */
-    function onLoginComplete(): void {
-        onReloadData(false);
+    function onMobileLoginComplete(event: MobileLoginCompleteEvent): void {
+        model.reloadData(false);
     }
 
     /*
@@ -146,25 +152,15 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * Update session buttons when the main view starts and ends loading
+     * Update the status of whether the main view has data
      */
-    function onMainViewLoadStateChanged(loaded: boolean): void {
+    function onDataStatusUpdate(event: DataStatusEvent): void {
         setState((s) => {
             return {
                 ...s,
-                isMainViewLoaded: loaded,
+                hasData: event.loaded,
             };
         });
-    }
-
-    /*
-     * Ask all views to get updated data from the API
-     */
-    function onReloadData(causeError: boolean): void {
-
-        model.apiViewEvents.clearState();
-        model.eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(causeError));
-        model.eventBus.emit(EventNames.ReloadUserInfo, null, new ReloadUserInfoEvent(causeError));
     }
 
     /*
@@ -183,7 +179,7 @@ export function App(props: AppProps): JSX.Element {
             if (RouteHelper.isInHomeView()) {
 
                 // Force a reload of the main view if we are already in the home view
-                model.eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(false));
+                model.reloadMainView();
 
             } else {
 
@@ -347,11 +343,11 @@ export function App(props: AppProps): JSX.Element {
         };
 
         const headerButtonProps = {
-            sessionButtonsEnabled: state.isMainViewLoaded && !state.isInLoggedOutView,
+            sessionButtonsEnabled: state.hasData && !state.isInLoggedOutView,
             handleHomeClick: onHome,
             handleExpireAccessTokenClick: onExpireAccessToken,
             handleExpireRefreshTokenClick: onExpireRefreshToken,
-            handleReloadDataClick: onReloadData,
+            handleReloadDataClick: model.reloadData,
             handleLogoutClick: onLogout,
         };
 
@@ -384,11 +380,11 @@ export function App(props: AppProps): JSX.Element {
         };
 
         const headerButtonProps = {
-            sessionButtonsEnabled: state.isMainViewLoaded && !state.isInLoggedOutView,
+            sessionButtonsEnabled: state.hasData && !state.isInLoggedOutView,
             handleHomeClick: onHome,
             handleExpireAccessTokenClick: onExpireAccessToken,
             handleExpireRefreshTokenClick: onExpireRefreshToken,
-            handleReloadDataClick: onReloadData,
+            handleReloadDataClick: model.reloadData,
             handleLogoutClick: onLogout,
         };
 
