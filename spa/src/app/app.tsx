@@ -26,9 +26,10 @@ import {AppState} from './appState';
  */
 export function App(props: AppProps): JSX.Element {
 
+    console.log('*** APP RENDERING');
     const model = props.viewModel;
     const [state, setState] = useState<AppState>({
-        isInitialised: false,
+        isInitialised: model.isInitialised,
         isInLoggedOutView: false,
         hasData: false,
         isMobileSize: isMobileSize(),
@@ -46,6 +47,7 @@ export function App(props: AppProps): JSX.Element {
     async function startup(): Promise<void> {
 
         // Initialise the modal dialog system used for error popups
+        console.log('*** APP STARTUP');
         Modal.setAppElement('#root');
 
         try {
@@ -155,6 +157,7 @@ export function App(props: AppProps): JSX.Element {
      * Update the status of whether the main view has data
      */
     function onDataStatusUpdate(event: DataStatusEvent): void {
+        
         setState((s) => {
             return {
                 ...s,

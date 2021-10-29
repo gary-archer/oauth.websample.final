@@ -30,6 +30,12 @@ export class AppViewModel {
     private _transactionsViewModel: TransactionsContainerViewModel | null;
     private _userInfoViewModel: UserInfoViewModel | null;
 
+    // State flags
+    private _isInitialised: boolean;
+
+    /*
+     * Set the initial state when the app starts
+     */
     public constructor() {
 
         // Objects that need configuration are initially null
@@ -50,6 +56,9 @@ export class AppViewModel {
         this._companiesViewModel = null;
         this._transactionsViewModel = null;
         this._userInfoViewModel = null;
+        
+        // Flags
+        this._isInitialised = false;
         this._setupCallbacks();
     }
 
@@ -59,26 +68,29 @@ export class AppViewModel {
      */
     public async initialise(): Promise<void> {
 
-        if (this.configuration  != null &&
-            this._authenticator != null &&
-            this._apiClient     != null &&
-            this._apiViewEvents != null) {
+        if (!this._isInitialised) {
 
-            return;
+            // Load configuration the first time
+            const loader = new ConfigurationLoader();
+            this._configuration = await loader.download();
+
+            // Create global objects for managing OAuth and API calls
+            const factory = new ObjectFactory(this.configuration);
+            this._authenticator = factory.createAuthenticator(this._eventBus);
+            this._apiClient = factory.createApiClient(this._authenticator);
+
+            // Update state
+            this._isInitialised = true;
         }
-
-        const loader = new ConfigurationLoader();
-        this._configuration = await loader.download();
-
-        // Create global objects for managing OAuth and API calls
-        const factory = new ObjectFactory(this.configuration);
-        this._authenticator = factory.createAuthenticator(this._eventBus);
-        this._apiClient = factory.createApiClient(this._authenticator);
     }
 
     /*
-     * Return objects once created
+     * Return details to the view
      */
+    public get isInitialised(): boolean {
+        return this._isInitialised;
+    }
+
     public get configuration(): Configuration {
         return this._configuration!;
     }
