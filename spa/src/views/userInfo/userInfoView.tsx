@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {EventNames} from '../../plumbing/events/eventNames';
+import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ApiViewNames} from '../utilities/apiViewNames';
+import {RouteHelper} from '../utilities/routeHelper';
 import {UserInfoViewProps} from './userInfoViewProps';
 import {UserInfoViewState} from './userInfoViewState';
 
@@ -13,10 +15,9 @@ import {UserInfoViewState} from './userInfoViewState';
  */
 export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
-    // Initialise state and ensure that the error is the expected type for display
     const model = props.viewModel;
-    const shouldLoad = props.shouldLoad;
     const [state, setState] = useState<UserInfoViewState>({
+        shouldLoad: !RouteHelper.isInLoggedOutView(),
         userInfo: null,
         error: null,
     });
@@ -24,13 +25,14 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     useEffect(() => {
         startup();
         return () => cleanup();
-    }, [shouldLoad]);
+    }, []);
 
     /*
-     * Load data then listen for the reload event
+     * Subscribe to events and then do the initial load of data
      */
     async function startup(): Promise<void> {
 
+        model.eventBus.on(EventNames.Navigate, onNavigate);
         model.eventBus.on(EventNames.ReloadUserInfo, onReload);
         await loadData(false);
     }
@@ -39,7 +41,20 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Unsubscribe when we unload
      */
     function cleanup(): void {
+        model.eventBus.detach(EventNames.Navigate, onNavigate);
         model.eventBus.detach(EventNames.ReloadUserInfo, onReload);
+    }
+
+    /*
+     * Load data when in a main view
+     */
+    function onNavigate(event: NavigateEvent): void {
+        setState((s) => {
+            return {
+                ...s,
+                shouldLoad: event.isMainView,
+            };
+        });
     }
 
     /*
@@ -57,7 +72,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         try {
 
             // We do not load when the logged out view is active
-            if (!shouldLoad) {
+            if (!state.shouldLoad) {
                 model.apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
                 return;
             }
@@ -112,7 +127,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     }
 
     // Render nothing when logged out
-    if (!shouldLoad || !state.userInfo) {
+    if (!state.shouldLoad || !state.userInfo) {
         return (
             <>
             </>

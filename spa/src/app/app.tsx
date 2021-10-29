@@ -4,11 +4,11 @@ import {HashRouter, Route, Switch} from 'react-router-dom';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../plumbing/errors/errorHandler';
-import {DataStatusEvent} from '../plumbing/events/dataStatusEvent';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {MobileLoginCompleteEvent} from '../plumbing/events/mobileLoginCompleteEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
+import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
@@ -26,12 +26,9 @@ import {AppState} from './appState';
  */
 export function App(props: AppProps): JSX.Element {
 
-    console.log('*** APP RENDERING');
     const model = props.viewModel;
     const [state, setState] = useState<AppState>({
         isInitialised: model.isInitialised,
-        isInLoggedOutView: false,
-        hasData: false,
         isMobileSize: isMobileSize(),
         error: null,
     });
@@ -47,7 +44,6 @@ export function App(props: AppProps): JSX.Element {
     async function startup(): Promise<void> {
 
         // Initialise the modal dialog system used for error popups
-        console.log('*** APP STARTUP');
         Modal.setAppElement('#root');
 
         try {
@@ -64,7 +60,6 @@ export function App(props: AppProps): JSX.Element {
             // Subscribe to application events
             model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
             model.eventBus.on(EventNames.MobileLoginComplete, onMobileLoginComplete);
-            model.eventBus.on(EventNames.DataStatus, onDataStatusUpdate);
 
             // Subscribe to window events
             window.onresize = onResize;
@@ -88,6 +83,11 @@ export function App(props: AppProps): JSX.Element {
      */
     function cleanup() {
 
+        // Unsubscribe from application events
+        model.eventBus.detach(EventNames.LoginRequired, onLoginRequired);
+        model.eventBus.detach(EventNames.MobileLoginComplete, onMobileLoginComplete);
+
+        // Unsubscribe from window events
         window.onresize = null;
         window.onstorage = null;
     }
@@ -95,16 +95,18 @@ export function App(props: AppProps): JSX.Element {
     /*
      * Trigger a login redirect when all views have finished calling the API and there has been a login_required error
      */
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     async function onLoginRequired(event: LoginRequiredEvent): Promise<void> {
+    /* eslint-enable @typescript-eslint/no-unused-vars */
 
         try {
 
-            // Do the login redirect via the authenticator class
+            // Ask the authenticator to do the login redirect
             clearError();
             await model.authenticator.login();
 
             // When running in a mobile web view we may still be in the login required view, in which case move home
-            if (state.isInLoggedOutView) {
+            if (RouteHelper.isInLoggedOutView()) {
                 location.hash = '#';
             }
 
@@ -125,45 +127,11 @@ export function App(props: AppProps): JSX.Element {
      * Called after an AppAuth login completes successfully when the SPA is running in a mobile web view
      * In this scenario the SPA needs to be told to reload itself when the InApp browser closes
      */
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     function onMobileLoginComplete(event: MobileLoginCompleteEvent): void {
+    /* eslint-enable @typescript-eslint/no-unused-vars */
+
         model.reloadData(false);
-    }
-
-    /*
-     * Update state when the companies or transactions view loads
-     */
-    function onMainViewLoading(): void {
-        setState((s) => {
-            return {
-                ...s,
-                isInLoggedOutView: false,
-            };
-        });
-    }
-
-    /*
-     * Update state when the logged out view loads
-     */
-    function onLoggedOutViewLoading(): void {
-        setState((s) => {
-            return {
-                ...s,
-                isInLoggedOutView: true,
-            };
-        });
-    }
-
-    /*
-     * Update the status of whether the main view has data
-     */
-    function onDataStatusUpdate(event: DataStatusEvent): void {
-        
-        setState((s) => {
-            return {
-                ...s,
-                hasData: event.loaded,
-            };
-        });
     }
 
     /*
@@ -198,14 +166,6 @@ export function App(props: AppProps): JSX.Element {
     async function onLogout(): Promise<void> {
 
         try {
-
-            // Update state
-            setState((s) => {
-                return {
-                    ...s,
-                    isMainViewLoaded: false,
-                };
-            });
 
             // Start the logout redirect
             await model.authenticator.logout();
@@ -316,6 +276,7 @@ export function App(props: AppProps): JSX.Element {
      * A shared subroutine to set error state
      */
     function setError(e: any): void {
+
         setState((s) => {
             return {
                 ...s,
@@ -328,12 +289,16 @@ export function App(props: AppProps): JSX.Element {
      * A shared subroutine to clear error state
      */
     function clearError(): void {
-        setState((s) => {
-            return {
-                ...s,
-                error: null,
-            };
-        });
+        
+        if (state.error) {
+
+            setState((s) => {
+                return {
+                    ...s,
+                    error: null,
+                };
+            });
+        }
     }
 
     /*
@@ -346,7 +311,7 @@ export function App(props: AppProps): JSX.Element {
         };
 
         const headerButtonProps = {
-            sessionButtonsEnabled: state.hasData && !state.isInLoggedOutView,
+            eventBus: model.eventBus,
             handleHomeClick: onHome,
             handleExpireAccessTokenClick: onExpireAccessToken,
             handleExpireRefreshTokenClick: onExpireRefreshToken,
@@ -378,12 +343,11 @@ export function App(props: AppProps): JSX.Element {
         const titleProps = {
             userInfo: {
                 viewModel: model.getUserInfoViewModel(),
-                shouldLoad: !state.isInLoggedOutView,
             },
         };
 
         const headerButtonProps = {
-            sessionButtonsEnabled: state.hasData && !state.isInLoggedOutView,
+            eventBus: model.eventBus,
             handleHomeClick: onHome,
             handleExpireAccessTokenClick: onExpireAccessToken,
             handleExpireRefreshTokenClick: onExpireRefreshToken,
@@ -399,24 +363,22 @@ export function App(props: AppProps): JSX.Element {
         };
 
         const sessionProps = {
-            apiClient: model.apiClient,
-            isVisible: !state.isInLoggedOutView,
+            sessionId: SessionManager.get(),
+            eventBus: model.eventBus,
         };
 
         const companiesViewProps = {
             viewModel: model.getCompaniesViewModel(),
-            onLoading: onMainViewLoading,
             isMobileSize: state.isMobileSize,
         };
 
         const transactionsViewProps = {
             viewModel: model.getTransactionsViewModel(),
-            onLoading: onMainViewLoading,
             isMobileSize: state.isMobileSize,
         };
 
         const loginRequiredProps = {
-            onLoading: onLoggedOutViewLoading,
+            eventBus: model.eventBus,
         };
 
         // Callbacks to prevent multi line JSX warnings

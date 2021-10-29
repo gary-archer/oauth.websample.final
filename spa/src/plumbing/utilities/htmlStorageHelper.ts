@@ -81,7 +81,7 @@ export class HtmlStorageHelper {
      */
     public static isLoggedOutEvent(event: StorageEvent): boolean {
 
-        if (event.storageArea == localStorage) {
+        if (event.storageArea === localStorage) {
 
             const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutKeyName}`;
             return event.key === key && event.newValue === 'true';

@@ -1,4 +1,6 @@
 import React, {useEffect} from 'react';
+import {EventNames} from '../../plumbing/events/eventNames';
+import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {LoginRequiredViewProps} from './loginRequiredViewProps';
 
 /*
@@ -7,7 +9,10 @@ import {LoginRequiredViewProps} from './loginRequiredViewProps';
 export function LoginRequiredView(props: LoginRequiredViewProps): JSX.Element {
 
     useEffect(() => {
-        props.onLoading();
+
+        // Inform other parts of the app that the main view is not active
+        props.eventBus.emit(EventNames.Navigate, null, new NavigateEvent(false));
+
     }, []);
 
     return  (

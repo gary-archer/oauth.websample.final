@@ -9,4 +9,11 @@ export class RouteHelper {
     public static isInHomeView(): boolean {
         return (location.hash.indexOf('loggedout') === -1) && (location.hash.indexOf('company=') === -1);
     }
+
+    /*
+     * Return true if we are in the logged out view
+     */
+    public static isInLoggedOutView(): boolean {
+        return location.hash.indexOf('loggedout') !== -1;
+    }
 }

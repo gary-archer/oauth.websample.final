@@ -1,13 +1,9 @@
-import {ApiClient} from '../../api/client/apiClient';
+import EventBus from 'js-event-bus';
 
 /*
  * Input to the session view
  */
 export interface SessionViewProps {
-
-    // The API client provides the session id value
-    apiClient: ApiClient;
-
-    // Visibility
-    isVisible: boolean;
+    sessionId: string;
+    eventBus: EventBus;
 }

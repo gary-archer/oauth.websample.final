@@ -5,9 +5,6 @@ import {CompaniesContainerViewModel} from './companiesContainerViewModel';
  */
 export interface CompaniesContainerProps {
 
-    // A callback by which we can inform the app view which view is current
-    onLoading: () => void;
-
     // Whether to render the mobile view
     isMobileSize: boolean;
 

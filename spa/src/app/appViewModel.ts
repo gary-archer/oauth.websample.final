@@ -56,7 +56,7 @@ export class AppViewModel {
         this._companiesViewModel = null;
         this._transactionsViewModel = null;
         this._userInfoViewModel = null;
-        
+
         // Flags
         this._isInitialised = false;
         this._setupCallbacks();

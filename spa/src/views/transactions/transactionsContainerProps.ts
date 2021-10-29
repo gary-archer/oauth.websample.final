@@ -6,9 +6,6 @@ import {TransactionsContainerViewModel} from './transactionsContainerViewModel';
  */
 export interface TransactionsContainerProps extends RouteComponentProps<{id: string}> {
 
-    // A callback by which we can inform the app view which view is current
-    onLoading: () => void;
-
     // Path parameters
     params?: {id: string};
 

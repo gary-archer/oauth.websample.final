@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {EventNames} from '../../plumbing/events/eventNames';
+import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ApiViewNames} from '../utilities/apiViewNames';
@@ -31,8 +32,13 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
      */
     async function startup(): Promise<void> {
 
-        props.onLoading();
+        // Inform other parts of the app which view is active
+        model.eventBus.emit(EventNames.Navigate, null, new NavigateEvent(true));
+
+        // Subscribe for reload events
         model.eventBus.on(EventNames.ReloadMainView, onReload);
+
+        // Do the initial load of data
         await loadData(false);
     }
 

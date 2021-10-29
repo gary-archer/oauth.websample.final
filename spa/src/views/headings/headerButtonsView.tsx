@@ -1,20 +1,70 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {DataStatusEvent} from '../../plumbing/events/dataStatusEvent';
+import {EventNames} from '../../plumbing/events/eventNames';
+import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {HeaderButtonsViewProps} from './headerButtonsViewProps';
+import {HeaderButtonsViewState} from './headerButtonsViewState';
 
 /*
  * Render the header buttons
  */
 export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
 
+    const [state, setState] = useState<HeaderButtonsViewState>({
+        hasData: false,
+        isMainView: false,
+    });
+
+    useEffect(() => {
+        startup();
+        return () => cleanup();
+    }, []);
+
+    function startup() {
+        props.eventBus.on(EventNames.DataStatus, onDataStatusUpdate);
+        props.eventBus.on(EventNames.Navigate, onNavigate);
+    }
+
+    function cleanup() {
+        props.eventBus.detach(EventNames.DataStatus, onDataStatusUpdate);
+        props.eventBus.detach(EventNames.Navigate, onNavigate);
+    }
+
+    // Settings related to button long clicks
     const longPressMilliseconds = 2000;
     let longPressStartTime: number | null = null;
+
+    /*
+     * The session button state changes when data starts and ends loading
+     */
+    function onDataStatusUpdate(event: DataStatusEvent) {
+
+        setState((s) => {
+            return {
+                ...s,
+                hasData: event.loaded,
+            };
+        });
+    }
+
+    /*
+     * The session button state becomes disabled when the login required view is active
+     */
+    function onNavigate(event: NavigateEvent) {
+        setState((s) => {
+            return {
+                ...s,
+                isMainView: event.isMainView,
+            };
+        });
+    }
 
     /*
      * When refresh is clicked, measure the start time
      */
     function handleReloadPress(): void {
 
-        if (!props.sessionButtonsEnabled) {
+        if (!state.hasData || !state.isMainView) {
             return;
         }
 
@@ -27,7 +77,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
      */
     function handleReloadRelease(): void {
 
-        if (!props.sessionButtonsEnabled) {
+        if (!state.hasData || !state.isMainView) {
             return;
         }
 
@@ -61,7 +111,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
     /*
      * Render buttons and callback the parent when clicked
      */
-    const disabled = !props.sessionButtonsEnabled;
+    const disabled = state.hasData && state.isMainView ? false : true;
     return  (
         <div className='row'>
             <div className='col col-one-fifth my-2 d-flex p-1'>
