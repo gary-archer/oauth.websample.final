@@ -17,7 +17,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     const model = props.viewModel;
     const [state, setState] = useState<UserInfoViewState>({
-        shouldLoad: !RouteHelper.isInLoginRequiredView(),
         userInfo: null,
         error: null,
     });
@@ -48,13 +47,23 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     /*
      * Load data when in a main view
      */
-    function onNavigate(event: NavigateEvent): void {
-        setState((s) => {
-            return {
-                ...s,
-                shouldLoad: event.isMainView,
-            };
-        });
+    async function onNavigate(event: NavigateEvent): Promise<void> {
+
+        if (event.isMainView) {
+
+            // Load user data the first time
+            await loadData(false);
+
+        } else {
+
+            // If in the login required view we clear user data
+            setState((s) => {
+                return {
+                    ...s,
+                    userInfo: null,
+                };
+            });
+        }
     }
 
     /*
@@ -71,8 +80,8 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
         try {
 
-            // We do not load when the logged out view is active
-            if (!state.shouldLoad) {
+            // Short circuit loading if required
+            if (RouteHelper.isInLoginRequiredView() || state.userInfo) {
                 model.apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
                 return;
             }
@@ -126,20 +135,14 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         );
     }
 
-    // Render nothing when logged out
-    if (!state.shouldLoad || !state.userInfo) {
-        return (
-            <>
-            </>
-        );
-    }
-
-    // Render the logged in user name otherwise
-    const name = `${state.userInfo.givenName} ${state.userInfo.familyName}`;
-    return state.userInfo &&
-        (
-            <div className='text-right mx-auto'>
-                <p className='font-weight-bold'>{name}</p>
-            </div>
-        );
+    // Render user info otherwise
+    return (
+        <>
+            {state.userInfo &&
+                <div className='text-right mx-auto'>
+                    <p className='font-weight-bold'>{`${state.userInfo.givenName} ${state.userInfo.familyName}`}</p>
+                </div>
+            }
+        </>
+    );
 }

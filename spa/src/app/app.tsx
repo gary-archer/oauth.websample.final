@@ -20,6 +20,7 @@ import {TransactionsContainer} from '../views/transactions/transactionsContainer
 import {RouteHelper} from '../views/utilities/routeHelper';
 import {AppProps} from './appProps';
 import {AppState} from './appState';
+import { NavigateEvent } from '../plumbing/events/navigateEvent';
 
 /*
  * The application root component

@@ -6,9 +6,6 @@ import {UIError} from '../../plumbing/errors/uiError';
  */
 export interface UserInfoViewState {
 
-    // Whether user info should be loaded
-    shouldLoad: boolean;
-
     // Populated when data is successfully loaded
     userInfo: UserInfo | null;
 
