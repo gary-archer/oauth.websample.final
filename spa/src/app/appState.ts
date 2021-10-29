@@ -9,7 +9,7 @@ export interface AppState {
     isInitialised: boolean;
 
     // Record when the size changes to that of a mobile phone
-    isMobileSize: boolean;
+    isMobileLayout: boolean;
 
     // The application level error object
     error: UIError | null;

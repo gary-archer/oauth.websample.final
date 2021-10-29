@@ -26,13 +26,17 @@ import {AppState} from './appState';
  */
 export function App(props: AppProps): JSX.Element {
 
+    console.log('*** render');
+
+    // The view is re-rendered when any of these state properties change
     const model = props.viewModel;
     const [state, setState] = useState<AppState>({
         isInitialised: model.isInitialised,
-        isMobileSize: isMobileSize(),
+        isMobileLayout: isMobileLayoutNeeded(),
         error: null,
     });
 
+    // Startup runs only once
     useEffect(() => {
         startup();
         return () => cleanup();
@@ -225,30 +229,25 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * Handle switching between mobile and main view sizes
+     * Handle switching between mobile and desktop browser sizes
      */
     function onResize(): void {
 
-        if (!state.isMobileSize && isMobileSize()) {
-
-            // Handle changing from a large size to mobile size
+        // Avoid excessive re-rendering by sending a maximum of one render per 250 milliseconds
+        setTimeout(() =>
             setState((s) => {
                 return {
                     ...s,
-                    isMobileSize: true,
+                    isMobileLayout: isMobileLayoutNeeded(),
                 };
-            });
+            }), 250);
+    }
 
-        } else if (state.isMobileSize && !isMobileSize()) {
-
-            // Handle changing from a mobile size to large size
-            setState((s) => {
-                return {
-                    ...s,
-                    isMobileSize: false,
-                };
-            });
-        }
+    /*
+     * Indicate whether the current size is that of a mobile device
+     */
+    function isMobileLayoutNeeded(): boolean {
+        return window.innerWidth < 768;
     }
 
     /*
@@ -263,13 +262,6 @@ export function App(props: AppProps): JSX.Element {
             await model.authenticator.onLoggedOut();
             moveToLoggedOutView();
         }
-    }
-
-    /*
-     * Indicate whether the current size is that of a mobile device
-     */
-    function isMobileSize(): boolean {
-        return window.innerWidth < 768;
     }
 
     /*
@@ -289,7 +281,7 @@ export function App(props: AppProps): JSX.Element {
      * A shared subroutine to clear error state
      */
     function clearError(): void {
-        
+
         if (state.error) {
 
             setState((s) => {
@@ -369,12 +361,11 @@ export function App(props: AppProps): JSX.Element {
 
         const companiesViewProps = {
             viewModel: model.getCompaniesViewModel(),
-            isMobileSize: state.isMobileSize,
+            isMobileLayout: state.isMobileLayout,
         };
 
         const transactionsViewProps = {
             viewModel: model.getTransactionsViewModel(),
-            isMobileSize: state.isMobileSize,
         };
 
         const loginRequiredProps = {

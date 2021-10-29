@@ -6,7 +6,7 @@ import {CompaniesContainerViewModel} from './companiesContainerViewModel';
 export interface CompaniesContainerProps {
 
     // Whether to render the mobile view
-    isMobileSize: boolean;
+    isMobileLayout: boolean;
 
     // The view model
     viewModel: CompaniesContainerViewModel;

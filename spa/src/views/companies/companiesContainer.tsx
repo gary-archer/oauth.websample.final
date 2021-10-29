@@ -136,7 +136,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     const childProps = {
         companies: state.companies,
     };
-    if (props.isMobileSize) {
+    if (props.isMobileLayout) {
 
         return  (
             <CompaniesMobileView {...childProps}/>
