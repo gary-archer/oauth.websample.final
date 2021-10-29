@@ -70,6 +70,6 @@ export class MobileAuthenticator implements Authenticator, CredentialSupplier {
             await this._methodCaller.callAsync('refreshAccessToken', Guid.create().toString()) :
             await this._methodCaller.callAsync('getAccessToken', Guid.create().toString());
 
-        options.headers.Authorization = `Bearer ${accessToken}`;
+        options.headers!.Authorization = `Bearer ${accessToken}`;
     }
 }
