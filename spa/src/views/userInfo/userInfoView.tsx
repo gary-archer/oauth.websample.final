@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
-import {EventEmitter} from '../../plumbing/events/eventEmitter';
 import {EventNames} from '../../plumbing/events/eventNames';
+import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ApiViewNames} from '../utilities/apiViewNames';
 import {UserInfoViewProps} from './userInfoViewProps';
@@ -14,6 +14,7 @@ import {UserInfoViewState} from './userInfoViewState';
 export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     // Initialise state and ensure that the error is the expected type for display
+    const model = props.viewModel;
     const shouldLoad = props.shouldLoad;
     const [state, setState] = useState<UserInfoViewState>({
         userInfo: null,
@@ -30,7 +31,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     async function startup(): Promise<void> {
 
-        EventEmitter.subscribe(EventNames.ON_RELOAD_USERINFO, loadData);
+        model.eventBus.on(EventNames.ReloadUserInfo, onReload);
         await loadData(false);
     }
 
@@ -38,7 +39,14 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        EventEmitter.unsubscribe(EventNames.ON_RELOAD_USERINFO, loadData);
+        model.eventBus.detach(EventNames.ReloadUserInfo, onReload);
+    }
+
+    /*
+     * Receive the reload event
+     */
+    function onReload(event: ReloadUserInfoEvent): void {
+        loadData(event.causeError);
     }
 
     /*
@@ -50,7 +58,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
             // We do not load when the logged out view is active
             if (!shouldLoad) {
-                props.events.onViewLoaded(ApiViewNames.UserInfo);
+                model.apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
                 return;
             }
 
@@ -62,9 +70,9 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
             });
 
             // Get user info
-            props.events.onViewLoading(ApiViewNames.UserInfo);
-            const userInfo = await props.apiClient.getUserInfo({causeError});
-            props.events.onViewLoaded(ApiViewNames.UserInfo);
+            model.apiViewEvents.onViewLoading(ApiViewNames.UserInfo);
+            const userInfo = await model.apiClient.getUserInfo({causeError});
+            model.apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
 
             setState((s) => {
                 return {
@@ -83,7 +91,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
                     error,
                 };
             });
-            props.events.onViewLoadFailed(ApiViewNames.UserInfo, error);
+            model.apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);
         }
     }
 

@@ -5,7 +5,7 @@ import {TransactionsViewProps} from './transactionsViewProps';
 /*
  * Render the transactions main view
  */
-export function TransactionsMainView(props: TransactionsViewProps): JSX.Element {
+export function TransactionsView(props: TransactionsViewProps): JSX.Element {
 
     /*
      * Render a single item
@@ -50,16 +50,16 @@ export function TransactionsMainView(props: TransactionsViewProps): JSX.Element 
      * Render the data on a wide screen
      */
     return props.data &&
-            (
-                <div className='card border-0'>
-                    <div className='card-header row font-weight-bold'>
-                        <div className='col-12 text-center mx-auto font-weight-bold'>
-                            Today&apos;s Transactions for {props.data.company.name}
-                        </div>
-                    </div>
-                    <div className='row'>
-                        {props.data.transactions.map((transaction) => renderTransaction(transaction))}
+        (
+            <div className='card border-0'>
+                <div className='card-header row font-weight-bold'>
+                    <div className='col-12 text-center mx-auto font-weight-bold'>
+                        Today&apos;s Transactions for {props.data.company.name}
                     </div>
                 </div>
-            );
+                <div className='row'>
+                    {props.data.transactions.map((transaction) => renderTransaction(transaction))}
+                </div>
+            </div>
+        );
 }

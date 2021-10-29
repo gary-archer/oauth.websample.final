@@ -4,8 +4,9 @@ import {HashRouter, Route, Switch} from 'react-router-dom';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../plumbing/errors/errorHandler';
-import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
+import {ReloadMainViewEvent} from '../plumbing/events/reloadMainViewEvent';
+import {ReloadUserInfoEvent} from '../plumbing/events/reloadUserInfoEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
@@ -162,8 +163,8 @@ export function App(props: AppProps): JSX.Element {
     function onReloadData(causeError: boolean): void {
 
         model.apiViewEvents.clearState();
-        EventEmitter.dispatch(EventNames.ON_RELOAD_MAIN, causeError);
-        EventEmitter.dispatch(EventNames.ON_RELOAD_USERINFO, causeError);
+        model.eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(causeError));
+        model.eventBus.emit(EventNames.ReloadUserInfo, null, new ReloadUserInfoEvent(causeError));
     }
 
     /*
@@ -182,7 +183,7 @@ export function App(props: AppProps): JSX.Element {
             if (RouteHelper.isInHomeView()) {
 
                 // Force a reload of the main view if we are already in the home view
-                EventEmitter.dispatch(EventNames.ON_RELOAD_MAIN, false);
+                model.eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(false));
 
             } else {
 
@@ -377,8 +378,7 @@ export function App(props: AppProps): JSX.Element {
 
         const titleProps = {
             userInfo: {
-                apiClient: model.apiClient,
-                events: model.apiViewEvents,
+                viewModel: model.getUserInfoViewModel(),
                 shouldLoad: !state.isInLoggedOutView,
             },
         };
@@ -404,10 +404,15 @@ export function App(props: AppProps): JSX.Element {
             isVisible: !state.isInLoggedOutView,
         };
 
-        const mainViewProps = {
+        const companiesViewProps = {
+            viewModel: model.getCompaniesViewModel(),
             onLoading: onMainViewLoading,
-            apiClient: model.apiClient,
-            events: model.apiViewEvents,
+            isMobileSize: state.isMobileSize,
+        };
+
+        const transactionsViewProps = {
+            viewModel: model.getTransactionsViewModel(),
+            onLoading: onMainViewLoading,
             isMobileSize: state.isMobileSize,
         };
 
@@ -416,9 +421,14 @@ export function App(props: AppProps): JSX.Element {
         };
 
         // Callbacks to prevent multi line JSX warnings
-        const renderCompaniesView     = () =>           <CompaniesContainer {...mainViewProps} />;
-        const renderTransactionsView  = (child: any) => <TransactionsContainer {...child} {...mainViewProps} />;
-        const renderLoginRequiredView = () =>           <LoginRequiredView {...loginRequiredProps} />;
+        const renderCompaniesView = () =>
+            <CompaniesContainer {...companiesViewProps} />;
+
+        const renderTransactionsView = (routeProps: any) =>
+            <TransactionsContainer {...routeProps} {...transactionsViewProps} />;
+
+        const renderLoginRequiredView = () =>
+            <LoginRequiredView {...loginRequiredProps} />;
 
         // Render the tree view
         return (

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
-import {EventEmitter} from '../../plumbing/events/eventEmitter';
 import {EventNames} from '../../plumbing/events/eventNames';
+import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ApiViewNames} from '../utilities/apiViewNames';
 import {CompaniesContainerProps} from './companiesContainerProps';
@@ -15,6 +15,7 @@ import {CompaniesMobileView} from './companiesMobileView';
  */
 export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element {
 
+    const model = props.viewModel;
     const [state, setState] = useState<CompaniesContainerState>({
         companies: [],
         error: null,
@@ -31,7 +32,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     async function startup(): Promise<void> {
 
         props.onLoading();
-        EventEmitter.subscribe(EventNames.ON_RELOAD_MAIN, loadData);
+        model.eventBus.on(EventNames.ReloadMainView, onReload);
         await loadData(false);
     }
 
@@ -39,7 +40,14 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        EventEmitter.unsubscribe(EventNames.ON_RELOAD_MAIN, loadData);
+        model.eventBus.detach(EventNames.ReloadMainView, onReload);
+    }
+
+    /*
+     * Receive the reload event
+     */
+    function onReload(event: ReloadMainViewEvent): void {
+        loadData(event.causeError);
     }
 
     /*
@@ -55,9 +63,9 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
                 };
             });
 
-            props.events.onViewLoading(ApiViewNames.Main);
-            const companies = await props.apiClient.getCompanyList({causeError});
-            props.events.onViewLoaded(ApiViewNames.Main);
+            model.apiViewEvents.onViewLoading(ApiViewNames.Main);
+            const companies = await model.apiClient.getCompanyList({causeError});
+            model.apiViewEvents.onViewLoaded(ApiViewNames.Main);
 
             setState((s) => {
                 return {
@@ -77,7 +85,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
                     error,
                 };
             });
-            props.events.onViewLoadFailed(ApiViewNames.Main, error);
+            model.apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
         }
     }
 

@@ -2,19 +2,20 @@ import React, {useEffect, useState} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {UIError} from '../../plumbing/errors/uiError';
-import {EventEmitter} from '../../plumbing/events/eventEmitter';
 import {EventNames} from '../../plumbing/events/eventNames';
+import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ApiViewNames} from '../utilities/apiViewNames';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
-import {TransactionsMainView} from './transactionsMainView';
+import {TransactionsView} from './transactionsView';
 
 /*
  * Render the transactions view to replace the existing view
  */
 export function TransactionsContainer(props: TransactionsContainerProps): JSX.Element {
 
+    const model = props.viewModel;
     const companyId = props.match.params.id;
     const [state, setState] = useState<TransactionsContainerState>({
         data: null,
@@ -32,7 +33,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     async function startup(): Promise<void> {
 
         props.onLoading();
-        EventEmitter.subscribe(EventNames.ON_RELOAD_MAIN, loadData);
+        model.eventBus.on(EventNames.ReloadMainView, onReload);
         await loadData(false);
     }
 
@@ -40,7 +41,14 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        EventEmitter.unsubscribe(EventNames.ON_RELOAD_MAIN, loadData);
+        model.eventBus.detach(EventNames.ReloadMainView, onReload);
+    }
+
+    /*
+     * Receive the reload event
+     */
+    function onReload(event: ReloadMainViewEvent): void {
+        loadData(event.causeError);
     }
 
     /*
@@ -57,9 +65,9 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
             });
 
             // Get data from the API
-            props.events.onViewLoading(ApiViewNames.Main);
-            const data = await props.apiClient.getCompanyTransactions(companyId, {causeError});
-            props.events.onViewLoaded(ApiViewNames.Main);
+            model.apiViewEvents.onViewLoading(ApiViewNames.Main);
+            const data = await model.apiClient.getCompanyTransactions(companyId, {causeError});
+            model.apiViewEvents.onViewLoaded(ApiViewNames.Main);
 
             setState((s) => {
                 return {
@@ -76,7 +84,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
             if (isExpected) {
 
                 // For 'expected' errors, return to the home view
-                props.events.onViewLoaded(ApiViewNames.Main);
+                model.apiViewEvents.onViewLoaded(ApiViewNames.Main);
                 location.hash = '#';
 
             } else {
@@ -88,7 +96,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
                         error,
                     };
                 });
-                props.events.onViewLoadFailed(ApiViewNames.Main, error);
+                model.apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
             }
         }
     }
@@ -156,6 +164,6 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     };
 
     return  (
-        <TransactionsMainView {...childProps}/>
+        <TransactionsView {...childProps}/>
     );
 }
