@@ -153,7 +153,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
 
         // Send the secure cookie and also the anti forgery token, which is used on data changing commands
         options.withCredentials = true;
-        options.headers['x-mycompany-csrf'] = this._antiForgeryToken;
+        options.headers!['x-mycompany-csrf'] = this._antiForgeryToken;
 
         // If retrying an API call, ask the back end for front end API to rewrite the cookie
         if (isRetry) {

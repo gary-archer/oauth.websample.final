@@ -1,7 +1,10 @@
 import {AxiosRequestConfig} from 'axios';
+import EventBus from 'js-event-bus';
 import {Guid} from 'guid-typescript';
 import {Authenticator} from '../authenticator';
 import {CredentialSupplier} from '../credentialSupplier';
+import {EventNames} from '../../events/eventNames';
+import {MobileLoginCompleteEvent} from '../../events/mobileLoginCompleteEvent';
 import {MobileMethodCaller} from './mobileMethodCaller';
 
 /*
@@ -10,11 +13,11 @@ import {MobileMethodCaller} from './mobileMethodCaller';
 export class MobileAuthenticator implements Authenticator, CredentialSupplier {
 
     private readonly _methodCaller: MobileMethodCaller;
-    private readonly _onLoginComplete: () => void;
+    private readonly _eventBus: EventBus;
 
-    public constructor(onLoginComplete: () => void) {
+    public constructor(eventBus: EventBus) {
         this._methodCaller = new MobileMethodCaller();
-        this._onLoginComplete = onLoginComplete;
+        this._eventBus = eventBus;
     }
 
     /*
@@ -24,7 +27,7 @@ export class MobileAuthenticator implements Authenticator, CredentialSupplier {
     public async login(): Promise<void> {
 
         await this._methodCaller.callAsync('login');
-        this._onLoginComplete();
+        this._eventBus.emit(EventNames.MobileLoginComplete, null, new MobileLoginCompleteEvent());
     }
 
     /*
@@ -70,6 +73,6 @@ export class MobileAuthenticator implements Authenticator, CredentialSupplier {
             await this._methodCaller.callAsync('refreshAccessToken', Guid.create().toString()) :
             await this._methodCaller.callAsync('getAccessToken', Guid.create().toString());
 
-        options.headers.Authorization = `Bearer ${accessToken}`;
+        options.headers!.Authorization = `Bearer ${accessToken}`;
     }
 }

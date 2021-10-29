@@ -1,5 +1,9 @@
+import EventBus from 'js-event-bus';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/uiError';
+import {DataStatusEvent} from '../../plumbing/events/dataStatusEvent';
+import {EventNames} from '../../plumbing/events/eventNames';
+import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
 import {ApiViewNames} from './apiViewNames';
 
 /*
@@ -7,29 +11,18 @@ import {ApiViewNames} from './apiViewNames';
  */
 export class ApiViewEvents {
 
-    // A map of view names to their loaded state
+    private readonly _eventBus: EventBus;
     private _views: [string, boolean][];
-
-    // An overall login required flag
     private _loginRequired: boolean;
-
-    // Called back when all views have tried to load, if a login redirect is needed
-    private readonly _onLoginRequiredAction: () => void;
-
-    // Called back when the main view's load state changes
-    private readonly _onMainLoadStateChanged: (enabled: boolean) => void;
 
     /*
      * Set the initial state at construction
      */
-    public constructor(
-        onLoginRequiredAction: () => void,
-        onMainLoadStateChanged: (enabled: boolean) => void) {
+    public constructor(eventBus: EventBus) {
 
+        this._eventBus = eventBus;
         this._views = [];
         this._loginRequired = false;
-        this._onLoginRequiredAction = onLoginRequiredAction;
-        this._onMainLoadStateChanged = onMainLoadStateChanged;
         this._setupCallbacks();
     }
 
@@ -48,7 +41,7 @@ export class ApiViewEvents {
         this._updateLoadState(name, false);
 
         if (name === ApiViewNames.Main) {
-            this._onMainLoadStateChanged(false);
+            this._eventBus.emit(EventNames.DataStatus, null, new DataStatusEvent(false));
         }
     }
 
@@ -60,7 +53,7 @@ export class ApiViewEvents {
         this._updateLoadState(name, true);
 
         if (name === ApiViewNames.Main) {
-            this._onMainLoadStateChanged(true);
+            this._eventBus.emit(EventNames.DataStatus, null, new DataStatusEvent(true));
         }
 
         this._triggerLoginIfRequired();
@@ -106,7 +99,7 @@ export class ApiViewEvents {
 
         const allViewsLoaded = this._views.filter(i => i[1] === true).length === this._views.length;
         if (allViewsLoaded && this._loginRequired) {
-            this._onLoginRequiredAction();
+            this._eventBus.emit(EventNames.LoginRequired, null, new LoginRequiredEvent());
         }
     }
 

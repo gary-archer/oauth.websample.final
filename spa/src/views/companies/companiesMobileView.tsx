@@ -3,37 +3,14 @@ import {Company} from '../../api/entities/company';
 import {CompaniesViewProps} from './companiesViewProps';
 
 /*
- * Render the companies view for the mobile case
+ * Render the companies view on a mobile browser
  */
-export class CompaniesMobileView extends React.Component<CompaniesViewProps> {
-
-    public constructor(props: CompaniesViewProps) {
-        super(props);
-    }
+export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
 
     /*
-     * Render according to the current state
+     * Render a single company item
      */
-    public render(): React.ReactNode {
-
-        return  (
-            <div className='card border-0'>
-                <div className='card-header row'>
-                    <div className='col-12 text-center mx-auto font-weight-bold'>
-                        Company List
-                    </div>
-                </div>
-                <div className='card-body'>
-                    {this.props.companies.map((company) => this._renderItem(company))}
-                </div>
-            </div>
-        );
-    }
-
-    /*
-     * Render a single company on a mobile device
-     */
-    private _renderItem(company: Company): React.ReactNode {
+    function renderItem(company: Company): JSX.Element {
 
         return (
             <div key={company.id}>
@@ -75,4 +52,20 @@ export class CompaniesMobileView extends React.Component<CompaniesViewProps> {
             </div>
         );
     }
+
+    /*
+     * Render the collection of items
+     */
+    return  (
+        <div className='card border-0'>
+            <div className='card-header row'>
+                <div className='col-12 text-center mx-auto font-weight-bold'>
+                    Company List
+                </div>
+            </div>
+            <div className='card-body'>
+                {props.companies.map((company) => renderItem(company))}
+            </div>
+        </div>
+    );
 }

@@ -1,35 +1,54 @@
-import React from 'react';
-import {SessionManager} from '../../plumbing/utilities/sessionManager';
+import React, {useEffect, useState} from 'react';
+import {EventNames} from '../../plumbing/events/eventNames';
+import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {SessionViewProps} from './sessionViewProps';
+import {SessionViewState} from './sessionViewState';
 
 /*
- * Render the session id used by API logs
+ * Render the session id used by API logs once data is loaded
  */
-export class SessionView extends React.Component<SessionViewProps> {
+export function SessionView(props: SessionViewProps): JSX.Element {
 
-    private readonly _sessionId: string;
+    const [state, setState] = useState<SessionViewState>({
+        text: `API Session Id: ${props.sessionId}`,
+        isVisible: false,
+    });
 
-    public constructor(props: SessionViewProps) {
-        super(props);
-        this._sessionId = SessionManager.get();
+    useEffect(() => {
+        startup();
+        return () => cleanup();
+    }, []);
+
+    function startup() {
+        props.eventBus.on(EventNames.Navigate, onNavigate);
+    }
+
+    function cleanup() {
+        props.eventBus.detach(EventNames.Navigate, onNavigate);
     }
 
     /*
-     * Render the session id hen data is loaded and API calls are in effect
+     * The session button state becomes disabled when the login required view is active
      */
-    public render(): React.ReactNode {
+    function onNavigate(event: NavigateEvent) {
+        setState((s) => {
+            return {
+                ...s,
+                isVisible: event.isMainView,
+            };
+        });
+    }
 
-        if (!this.props.isVisible) {
-            return (
-                <>
-                </>
-            );
-        }
-
-        return  (
-            <div className='sessionid text-right mx-auto'>
-                <small>{`API Session Id: ${this._sessionId}`}</small>
-            </div>
+    if (!state.isVisible) {
+        return (
+            <>
+            </>
         );
     }
+
+    return  (
+        <div className='sessionid text-right mx-auto'>
+            <small>{state.text}</small>
+        </div>
+    );
 }

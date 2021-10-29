@@ -1,7 +1,7 @@
 import {Company} from '../../api/entities/company';
 
 /*
- * Input to the companies views
+ * Input to the company views
  */
 export interface CompaniesViewProps {
     companies: Company[];

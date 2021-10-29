@@ -1,17 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {HashRouter, Route, Switch} from 'react-router-dom';
-import {ApiClient} from '../api/client/apiClient';
-import {Configuration} from '../configuration/configuration';
-import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../plumbing/errors/errorHandler';
-import {EventEmitter} from '../plumbing/events/eventEmitter';
 import {EventNames} from '../plumbing/events/eventNames';
-import {Authenticator} from '../plumbing/oauth/authenticator';
+import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
+import {MobileLoginCompleteEvent} from '../plumbing/events/mobileLoginCompleteEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
-import {ObjectFactory} from '../plumbing/utilities/objectFactory';
+import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
@@ -20,133 +17,304 @@ import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
 import {LoginRequiredView} from '../views/loginRequired/loginRequiredView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
-import {ApiViewEvents} from '../views/utilities/apiViewEvents';
-import {ApiViewNames} from '../views/utilities/apiViewNames';
 import {RouteHelper} from '../views/utilities/routeHelper';
+import {AppProps} from './appProps';
 import {AppState} from './appState';
 
 /*
  * The application root component
  */
-export class App extends React.Component<any, AppState> {
+export function App(props: AppProps): JSX.Element {
 
-    private readonly _apiViewEvents: ApiViewEvents;
-    private _configuration?: Configuration;
-    private _authenticator?: Authenticator;
-    private _apiClient?: ApiClient;
+    console.log('*** render');
+
+    // The view is re-rendered when any of these state properties change
+    const model = props.viewModel;
+    const [state, setState] = useState<AppState>({
+        isInitialised: model.isInitialised,
+        isMobileLayout: isMobileLayoutNeeded(),
+        error: null,
+    });
+
+    // Startup runs only once
+    useEffect(() => {
+        startup();
+        return () => cleanup();
+    }, []);
 
     /*
-     * Create safe objects here and do async startup processing later
+     * Run the app's startup logic
      */
-    public constructor(props: any) {
-
-        super(props);
-
-        // Set initial state, which will be used on the first render
-        this.state = {
-            isInitialised: false,
-            isInLoggedOutView: false,
-            isMainViewLoaded: false,
-            isMobileSize: this._isMobileSize(),
-            error: null,
-        };
-
-        // Make callbacks available
-        this._setupCallbacks();
-
-        // Create a helper class to notify us about views that make API calls
-        // This will enable us to only trigger a login redirect once, after all views have tried to load
-        this._apiViewEvents = new ApiViewEvents(this._onLoginRequired, this._onMainViewLoadStateChanged);
-        this._apiViewEvents.addView(ApiViewNames.Main);
-        this._apiViewEvents.addView(ApiViewNames.UserInfo);
+    async function startup(): Promise<void> {
 
         // Initialise the modal dialog system used for error popups
         Modal.setAppElement('#root');
-    }
-
-    /*
-     * The rendering entry point
-     */
-    public render(): React.ReactNode {
-
-        if (!this.state.isInitialised) {
-            return this._renderInitialScreen();
-        } else {
-            return this._renderMain();
-        }
-    }
-
-    /*
-     * Page startup logic
-     */
-    public async componentDidMount(): Promise<void> {
-        await this._initialiseApp();
-    }
-
-    /*
-     * Application startup code
-     */
-    private async _initialiseApp(): Promise<void> {
-
-        // Reset state
-        this.setState({
-            isInitialised: false,
-            isInLoggedOutView: false,
-            isMainViewLoaded: false,
-            isMobileSize: this._isMobileSize(),
-            error: null,
-        });
 
         try {
-            // First download configuration from the browser's web domain
-            const loader = new ConfigurationLoader();
-            this._configuration = await loader.download();
+            // Initialise the view model if required
+            clearError();
+            await model.initialise();
 
-            // Create global objects for managing OAuth and API calls
-            const factory = new ObjectFactory(this._configuration);
-            this._authenticator = factory.createAuthenticator(this._onLoginComplete);
-            this._apiClient = factory.createApiClient(this._authenticator);
-
-            // Ask the API to handle the page load, and update the state used for multi tab logout
-            const isLoggedIn = await this._authenticator.handlePageLoad();
+            // Ask the authenticator to handle the page load, to return logged in state the UI needs
+            const isLoggedIn = await model.authenticator.handlePageLoad();
             if (isLoggedIn) {
                 HtmlStorageHelper.loggedOut = false;
             }
 
+            // Subscribe to application events
+            model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
+            model.eventBus.on(EventNames.MobileLoginComplete, onMobileLoginComplete);
+
             // Subscribe to window events
-            window.onresize = this._onResize;
-            window.onstorage = this._onStorage;
+            window.onresize = onResize;
+            window.onstorage = onStorage;
 
             // Update state
-            this.setState({isInitialised: true});
+            setState((s) => {
+                return {
+                    ...s,
+                    isInitialised: true,
+                };
+            });
 
         } catch (e) {
-            this.setState({error: ErrorHandler.getFromException(e)});
+            setError(e);
         }
     }
 
     /*
-     * Render basic details before the app has processed its configuration
+     * Cleanup logic
      */
-    private _renderInitialScreen(): React.ReactNode {
+    function cleanup() {
+
+        // Unsubscribe from application events
+        model.eventBus.detach(EventNames.LoginRequired, onLoginRequired);
+        model.eventBus.detach(EventNames.MobileLoginComplete, onMobileLoginComplete);
+
+        // Unsubscribe from window events
+        window.onresize = null;
+        window.onstorage = null;
+    }
+
+    /*
+     * Trigger a login redirect when all views have finished calling the API and there has been a login_required error
+     */
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    async function onLoginRequired(event: LoginRequiredEvent): Promise<void> {
+    /* eslint-enable @typescript-eslint/no-unused-vars */
+
+        try {
+
+            // Ask the authenticator to do the login redirect
+            clearError();
+            await model.authenticator.login();
+
+            // When running in a mobile web view we may still be in the login required view, in which case move home
+            if (RouteHelper.isInLoggedOutView()) {
+                location.hash = '#';
+            }
+
+        } catch (e) {
+
+            // Treat cancelled logins as a non error, when running in a mobile web view
+            const error = ErrorHandler.getFromException(e);
+            if (error.errorCode === ErrorCodes.redirectCancelled) {
+                location.hash = '#loggedout';
+                return;
+            }
+
+            setError(error);
+        }
+    }
+
+    /*
+     * Called after an AppAuth login completes successfully when the SPA is running in a mobile web view
+     * In this scenario the SPA needs to be told to reload itself when the InApp browser closes
+     */
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    function onMobileLoginComplete(event: MobileLoginCompleteEvent): void {
+    /* eslint-enable @typescript-eslint/no-unused-vars */
+
+        model.reloadData(false);
+    }
+
+    /*
+     * Return home and force a reload of data
+     */
+    async function onHome(): Promise<void> {
+
+        // If there is a startup error then reinitialise the app when home is pressed
+        if (!state.isInitialised) {
+            cleanup();
+            await startup();
+        }
+
+        if (state.isInitialised) {
+
+            if (RouteHelper.isInHomeView()) {
+
+                // Force a reload of the main view if we are already in the home view
+                model.reloadMainView();
+
+            } else {
+
+                // Otherwise navigate to the home view
+                location.hash = '#';
+            }
+        }
+    }
+
+    /*
+     * Trigger a logout redirect
+     */
+    async function onLogout(): Promise<void> {
+
+        try {
+
+            // Start the logout redirect
+            await model.authenticator.logout();
+
+        } catch (e) {
+
+            // Treat cancelled logouts as a non error, when running in a mobile web view
+            const error = ErrorHandler.getFromException(e);
+            if (error.errorCode !== ErrorCodes.redirectCancelled) {
+
+                // Write logout technical error details to the console
+                ErrorConsoleReporter.output(error);
+            }
+
+            // Move to the logged out view anyway
+            moveToLoggedOutView();
+        }
+
+        // Update local storage to inform other tabs to logout
+        HtmlStorageHelper.loggedOut = true;
+    }
+
+    /*
+     * Called when we move to the logged out view manually, such as when there is a logout error
+     * This also occurs when there is a logout on another tab and we receive a check session iframe notification
+     */
+    function moveToLoggedOutView(): void {
+        location.hash = '#loggedout';
+    }
+
+    /*
+     * For test purposes this makes the access token in secure cookies act expired
+     */
+    async function onExpireAccessToken(): Promise<void> {
+
+        try {
+            clearError();
+            await model.authenticator.expireAccessToken();
+
+        } catch (e) {
+            setError(e);
+        }
+    }
+
+    /*
+     * For test purposes this makes the refresh token and access token in secure cookies act expired
+     */
+    async function onExpireRefreshToken(): Promise<void> {
+
+        try {
+            clearError();
+            await model.authenticator.expireRefreshToken();
+
+        } catch (e) {
+            setError(e);
+        }
+    }
+
+    /*
+     * Handle switching between mobile and desktop browser sizes
+     */
+    function onResize(): void {
+
+        // Avoid excessive re-rendering by sending a maximum of one render per 250 milliseconds
+        setTimeout(() =>
+            setState((s) => {
+                return {
+                    ...s,
+                    isMobileLayout: isMobileLayoutNeeded(),
+                };
+            }), 250);
+    }
+
+    /*
+     * Indicate whether the current size is that of a mobile device
+     */
+    function isMobileLayoutNeeded(): boolean {
+        return window.innerWidth < 768;
+    }
+
+    /*
+     * When there is a logout on another tab, a local storage update is made and we remove tokens stored here
+     * This event does not seem to fire in the deployed system for the Safari browser but works locally
+     * https://www.py4u.net/discuss/317247
+     */
+    async function onStorage(event: StorageEvent): Promise<void> {
+
+        if (HtmlStorageHelper.isLoggedOutEvent(event)) {
+
+            await model.authenticator.onLoggedOut();
+            moveToLoggedOutView();
+        }
+    }
+
+    /*
+     * A shared subroutine to set error state
+     */
+    function setError(e: any): void {
+
+        setState((s) => {
+            return {
+                ...s,
+                error: ErrorHandler.getFromException(e),
+            };
+        });
+    }
+
+    /*
+     * A shared subroutine to clear error state
+     */
+    function clearError(): void {
+
+        if (state.error) {
+
+            setState((s) => {
+                return {
+                    ...s,
+                    error: null,
+                };
+            });
+        }
+    }
+
+    /*
+     * Render basic details before the view model has initialised
+     */
+    function renderInitialScreen(): JSX.Element {
 
         const titleProps = {
             userInfo: null,
         };
 
         const headerButtonProps = {
-            sessionButtonsEnabled: this.state.isMainViewLoaded && !this.state.isInLoggedOutView,
-            handleHomeClick: this._onHome,
-            handleExpireAccessTokenClick: this._onExpireAccessToken,
-            handleExpireRefreshTokenClick: this._onExpireRefreshToken,
-            handleReloadDataClick: this._onReloadData,
-            handleLogoutClick: this._onLogout,
+            eventBus: model.eventBus,
+            handleHomeClick: onHome,
+            handleExpireAccessTokenClick: onExpireAccessToken,
+            handleExpireRefreshTokenClick: onExpireRefreshToken,
+            handleReloadDataClick: model.reloadData,
+            handleLogoutClick: onLogout,
         };
 
         const errorProps = {
             hyperlinkMessage: 'Problem Encountered',
             dialogTitle: 'Application Error',
-            error: this.state.error,
+            error: state.error,
             centred: true,
         };
 
@@ -162,52 +330,57 @@ export class App extends React.Component<any, AppState> {
     /*
      * Attempt to render the entire layout, which will trigger calls to Web APIs
      */
-    private _renderMain(): React.ReactNode {
+    function renderMain(): JSX.Element {
 
         const titleProps = {
             userInfo: {
-                apiClient: this._apiClient!,
-                events: this._apiViewEvents,
-                shouldLoad: !this.state.isInLoggedOutView,
+                viewModel: model.getUserInfoViewModel(),
             },
         };
 
         const headerButtonProps = {
-            sessionButtonsEnabled: this.state.isMainViewLoaded && !this.state.isInLoggedOutView,
-            handleHomeClick: this._onHome,
-            handleExpireAccessTokenClick: this._onExpireAccessToken,
-            handleExpireRefreshTokenClick: this._onExpireRefreshToken,
-            handleReloadDataClick: this._onReloadData,
-            handleLogoutClick: this._onLogout,
+            eventBus: model.eventBus,
+            handleHomeClick: onHome,
+            handleExpireAccessTokenClick: onExpireAccessToken,
+            handleExpireRefreshTokenClick: onExpireRefreshToken,
+            handleReloadDataClick: model.reloadData,
+            handleLogoutClick: onLogout,
         };
 
         const errorProps = {
             hyperlinkMessage: 'Problem Encountered',
             dialogTitle: 'Application Error',
-            error: this.state.error,
+            error: state.error,
             centred: true,
         };
 
         const sessionProps = {
-            apiClient: this._apiClient!,
-            isVisible: !this.state.isInLoggedOutView,
+            sessionId: SessionManager.get(),
+            eventBus: model.eventBus,
         };
 
-        const mainViewProps = {
-            onLoading: this._onMainViewLoading,
-            apiClient: this._apiClient!,
-            events: this._apiViewEvents,
-            isMobileSize: this.state.isMobileSize,
+        const companiesViewProps = {
+            viewModel: model.getCompaniesViewModel(),
+            isMobileLayout: state.isMobileLayout,
+        };
+
+        const transactionsViewProps = {
+            viewModel: model.getTransactionsViewModel(),
         };
 
         const loginRequiredProps = {
-            onLoading: this._onLoggedOutViewLoading,
+            eventBus: model.eventBus,
         };
 
         // Callbacks to prevent multi line JSX warnings
-        const renderCompaniesView     = () =>             <CompaniesContainer {...mainViewProps} />;
-        const renderTransactionsView  = (props: any) =>   <TransactionsContainer {...props} {...mainViewProps} />;
-        const renderLoginRequiredView = () =>             <LoginRequiredView {...loginRequiredProps} />;
+        const renderCompaniesView = () =>
+            <CompaniesContainer {...companiesViewProps} />;
+
+        const renderTransactionsView = (routeProps: any) =>
+            <TransactionsContainer {...routeProps} {...transactionsViewProps} />;
+
+        const renderLoginRequiredView = () =>
+            <LoginRequiredView {...loginRequiredProps} />;
 
         // Render the tree view
         return (
@@ -228,220 +401,9 @@ export class App extends React.Component<any, AppState> {
         );
     }
 
-    /*
-     * Trigger a login redirect when all views have finished calling the API and there has been a login_required error
-     */
-    private async _onLoginRequired(): Promise<void> {
-
-        try {
-
-            // Do the login redirect via the authenticator class
-            this.setState({error: null});
-            await this._authenticator!.login();
-
-            // When running in a mobile web view we may still be in the login required view, in which case move home
-            if (this.state.isInLoggedOutView) {
-                location.hash = '#';
-            }
-
-        } catch (e) {
-
-            // Treat cancelled logins as a non error, when running in a mobile web view
-            const error = ErrorHandler.getFromException(e);
-            if (error.errorCode === ErrorCodes.redirectCancelled) {
-                location.hash = '#loggedout';
-                return;
-            }
-
-            this.setState({error: ErrorHandler.getFromException(e)});
-        }
-    }
-
-    /*
-     * Called after login completes successfully when running in a mobile web view
-     * In this scenario the SPA needs to be told to reload itself
-     */
-    private _onLoginComplete(): void {
-        this._onReloadData(false);
-    }
-
-    /*
-     * Update state when the companies or transactions view loads
-     */
-    private _onMainViewLoading(): void {
-        this.setState({isInLoggedOutView: false});
-    }
-
-    /*
-     * Update state when the logged out view loads
-     */
-    private _onLoggedOutViewLoading(): void {
-        this.setState({isInLoggedOutView: true});
-    }
-
-    /*
-     * Update session buttons when the main view starts and ends loading
-     */
-    private _onMainViewLoadStateChanged(loaded: boolean): void {
-        this.setState({isMainViewLoaded: loaded});
-    }
-
-    /*
-     * Ask all views to get updated data from the API
-     */
-    private _onReloadData(causeError: boolean): void {
-
-        this._apiViewEvents.clearState();
-        EventEmitter.dispatch(EventNames.ON_RELOAD_MAIN, causeError);
-        EventEmitter.dispatch(EventNames.ON_RELOAD_USERINFO, causeError);
-    }
-
-    /*
-     * Return home and force a reload of data
-     */
-    private async _onHome(): Promise<void> {
-
-        // If there is a startup error then reinitialise the app
-        if (!this.state.isInitialised) {
-            await this._initialiseApp();
-        }
-
-        if (this.state.isInitialised) {
-
-            if (RouteHelper.isInHomeView()) {
-
-                // Force a reload of the main view if we are already in the home view
-                EventEmitter.dispatch(EventNames.ON_RELOAD_MAIN, false);
-
-            } else {
-
-                // Otherwise navigate to the home view
-                location.hash = '#';
-            }
-        }
-    }
-
-    /*
-     * Trigger a logout redirect
-     */
-    private async _onLogout(): Promise<void> {
-
-        try {
-
-            // Update state
-            this.setState({isMainViewLoaded: false});
-
-            // Start the logout redirect, which will return to the app in the login required page
-            await this._authenticator!.logout();
-
-        } catch (e) {
-
-            // Treat cancelled logouts as a non error, when running in a mobile web view
-            const error = ErrorHandler.getFromException(e);
-            if (error.errorCode !== ErrorCodes.redirectCancelled) {
-
-                // Otherwise output logout error details only to the console
-                ErrorConsoleReporter.output(error);
-            }
-
-            // Move to the logged out view anyway
-            this._moveToLoggedOutView();
-        }
-
-        // Update local storage to inform other tabs to logout
-        HtmlStorageHelper.loggedOut = true;
-    }
-
-    /*
-     * Called when we move to the logged out view manually, such as when there is a logout error
-     * This also occurs when there is a logout on another tab and we receive a check session iframe notification
-     */
-    private _moveToLoggedOutView(): void {
-        location.hash = '#loggedout';
-    }
-
-    /*
-     * For test purposes this makes the access token in secure cookies act expired
-     */
-    private async _onExpireAccessToken(): Promise<void> {
-
-        try {
-            this.setState({error: null});
-            await this._authenticator!.expireAccessToken();
-        }
-        catch (e) {
-            this.setState({error: ErrorHandler.getFromException(e)});
-        }
-    }
-
-    /*
-     * For test purposes this makes the refresh token and access token in secure cookies act expired
-     */
-    private async _onExpireRefreshToken(): Promise<void> {
-
-        try {
-            this.setState({error: null});
-            await this._authenticator!.expireRefreshToken();
-        }
-        catch (e) {
-            this.setState({error: ErrorHandler.getFromException(e)});
-        }
-    }
-
-    /*
-     * Handle switching between mobile and main view sizes
-     */
-    private _onResize(): void {
-
-        if (!this.state.isMobileSize && this._isMobileSize()) {
-
-            // Handle changing from a large size to mobile size
-            this.setState({isMobileSize: true});
-
-        } else if (this.state.isMobileSize && !this._isMobileSize()) {
-
-            // Handle changing from a mobile size to large size
-            this.setState({isMobileSize: false});
-        }
-    }
-
-    /*
-     * When there is a logout on another tab, a local storage update is made and we remove tokens stored here
-     * This event does not seem to fire in the deployed system for the Safari browser but works locally
-     * https://www.py4u.net/discuss/317247
-     */
-    private async _onStorage(event: StorageEvent): Promise<void> {
-
-        if (HtmlStorageHelper.isLoggedOutEvent(event)) {
-
-            await this._authenticator!.onLoggedOut();
-            this._moveToLoggedOutView();
-        }
-    }
-
-    /*
-     * Indicate whether the current size is that of a mobile device
-     */
-    private _isMobileSize(): boolean {
-        return window.innerWidth < 768;
-    }
-
-    /*
-     * Plumbing to ensure that the this parameter is available in callback functions
-     */
-    private _setupCallbacks(): void {
-        this._onMainViewLoading = this._onMainViewLoading.bind(this);
-        this._onLoggedOutViewLoading = this._onLoggedOutViewLoading.bind(this);
-        this._onMainViewLoadStateChanged = this._onMainViewLoadStateChanged.bind(this);
-        this._onHome = this._onHome.bind(this);
-        this._onLoginRequired = this._onLoginRequired.bind(this);
-        this._onReloadData = this._onReloadData.bind(this);
-        this._onLoginComplete = this._onLoginComplete.bind(this);
-        this._onLogout = this._onLogout.bind(this);
-        this._moveToLoggedOutView = this._moveToLoggedOutView.bind(this);
-        this._onExpireAccessToken = this._onExpireAccessToken.bind(this);
-        this._onExpireRefreshToken = this._onExpireRefreshToken.bind(this);
-        this._onResize = this._onResize.bind(this);
-        this._onStorage = this._onStorage.bind(this);
+    if (!state.isInitialised) {
+        return renderInitialScreen();
+    } else {
+        return renderMain();
     }
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {App} from './app/app';
+import {AppViewModel} from './app/appViewModel';
 
-/*
- * The application entry point runs the main ReactJS app
- */
+const props = {
+    viewModel: new AppViewModel(),
+};
 render (
-    <App />,
+    <App {...props} />,
     document.getElementById('root'),
 );

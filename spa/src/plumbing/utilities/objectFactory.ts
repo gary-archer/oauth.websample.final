@@ -1,3 +1,4 @@
+import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
 import {ApiFetch} from '../../api/client/apiFetch';
 import {Configuration} from '../../configuration/configuration';
@@ -21,12 +22,12 @@ export class ObjectFactory {
     /*
      * Return an authentication strategy based on runtime conditions
      */
-    public createAuthenticator(onLoginComplete: () => void): Authenticator {
+    public createAuthenticator(eventBus: EventBus): Authenticator {
 
         if (UserAgentHelper.isAndroidWebView() || UserAgentHelper.isIosWebView()) {
 
             // When running in a mobile web view the SPA calls the mobile app to do OAuth work
-            return new MobileAuthenticator(onLoginComplete);
+            return new MobileAuthenticator(eventBus);
 
         } else {
 

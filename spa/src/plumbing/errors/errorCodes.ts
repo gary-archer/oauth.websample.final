@@ -42,7 +42,7 @@ export class ErrorCodes {
     // A general error response from the API
     public static readonly responseError = 'http_response_error';
 
-    // An error rendering a ReactJS view
+    // An error rendering a React view
     public static readonly renderError = 'react_render_error';
 
     // An error from the business API when the user edits the browser URL and tries to access an unauthorised company

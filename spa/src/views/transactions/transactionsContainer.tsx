@@ -1,141 +1,108 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {UIError} from '../../plumbing/errors/uiError';
-import {EventEmitter} from '../../plumbing/events/eventEmitter';
 import {EventNames} from '../../plumbing/events/eventNames';
+import {NavigateEvent} from '../../plumbing/events/navigateEvent';
+import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ApiViewNames} from '../utilities/apiViewNames';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
-import {TransactionsMainView} from './transactionsMainView';
+import {TransactionsView} from './transactionsView';
 
 /*
  * Render the transactions view to replace the existing view
  */
-export class TransactionsContainer extends React.Component<TransactionsContainerProps, TransactionsContainerState> {
+export function TransactionsContainer(props: TransactionsContainerProps): JSX.Element {
 
-    /*
-     * If the user changes the transaction to a new company the browser bar, the change is received here
-     */
-    public static getDerivedStateFromProps(
-        nextProps: TransactionsContainerProps,
-        prevState: TransactionsContainerState): TransactionsContainerState | null {
+    const model = props.viewModel;
+    const companyId = props.match.params.id;
+    const [state, setState] = useState<TransactionsContainerState>({
+        data: null,
+        error: null,
+    });
 
-        // Return updated state
-        if (nextProps.match.params.id !== prevState.companyId) {
-            return {...prevState, companyId: nextProps.match.params.id};
-        }
-
-        // Indicate no changes to state
-        return null;
-    }
-
-    /*
-     * Initial state is received via the React Router
-     */
-    public constructor(props: TransactionsContainerProps) {
-
-        super(props);
-        props.onLoading();
-
-        // Initialise state, and the initial company id is supplied via a path segment
-        this.state = {
-            companyId: this.props.match.params.id,
-            error: null,
-            data: null,
-        };
-
-        this._setupCallbacks();
-    }
-
-    /*
-     * Render according to the current state and the type of device
-     */
-    public render(): React.ReactNode {
-
-        // Render an error on failure
-        if (this.state.error) {
-            return this._renderError();
-        }
-
-        // Display nothing until there is data
-        if (!this.state.data) {
-            return (
-                <>
-                </>
-            );
-        }
-
-        // Display the desktop or mobile view otherwise
-        const props = {
-            data: this.state.data,
-        };
-
-        return  (
-            <TransactionsMainView {...props}/>
-        );
-    }
+    useEffect(() => {
+        startup();
+        return () => cleanup();
+    }, [companyId]);
 
     /*
      * Load data then listen for the reload event
      */
-    public async componentDidMount(): Promise<void> {
+    async function startup(): Promise<void> {
 
-        EventEmitter.subscribe(EventNames.ON_RELOAD_MAIN, this._loadData);
-        await this._loadData(false);
-    }
+        // Inform other parts of the app which view is active
+        model.eventBus.emit(EventNames.Navigate, null, new NavigateEvent(true));
 
-    /*
-     * Reload data when the user types a different company id in the browser
-     */
-    public async componentDidUpdate(
-        prevProps: TransactionsContainerProps,
-        prevState: TransactionsContainerState): Promise<void> {
+        // Subscribe for reload events
+        model.eventBus.on(EventNames.ReloadMainView, onReload);
 
-        if (this.state.companyId !== prevState.companyId) {
-            await this._loadData(false);
-        }
+        // Do the initial load of data
+        await loadData(false);
     }
 
     /*
      * Unsubscribe when we unload
      */
-    public async componentWillUnmount(): Promise<void> {
-        EventEmitter.unsubscribe(EventNames.ON_RELOAD_MAIN, this._loadData);
+    function cleanup(): void {
+        model.eventBus.detach(EventNames.ReloadMainView, onReload);
+    }
+
+    /*
+     * Receive the reload event
+     */
+    function onReload(event: ReloadMainViewEvent): void {
+        loadData(event.causeError);
     }
 
     /*
      * Get data from the API and update state
      */
-    private async _loadData(causeError: boolean): Promise<void> {
+    async function loadData(causeError: boolean): Promise<void> {
 
         try {
-            this.setState({error: null});
+            setState((s) => {
+                return {
+                    ...s,
+                    error: null,
+                };
+            });
 
             // Get data from the API
-            this.props.events.onViewLoading(ApiViewNames.Main);
-            const data = await this.props.apiClient.getCompanyTransactions(this.state.companyId, {causeError});
-            this.props.events.onViewLoaded(ApiViewNames.Main);
+            model.apiViewEvents.onViewLoading(ApiViewNames.Main);
+            const data = await model.apiClient.getCompanyTransactions(companyId, {causeError});
+            model.apiViewEvents.onViewLoaded(ApiViewNames.Main);
 
-            this.setState({data});
+            setState((s) => {
+                return {
+                    ...s,
+                    data,
+                };
+            });
 
         } catch (e) {
 
             // Handle the error
             const error = ErrorHandler.getFromException(e);
-            const isExpected = this._isExpectedApiError(error);
+            const isExpected = isExpectedApiError(error);
             if (isExpected) {
 
                 // For 'expected' errors, return to the home view
-                this.props.events.onViewLoaded(ApiViewNames.Main);
+                model.apiViewEvents.onViewLoaded(ApiViewNames.Main);
                 location.hash = '#';
 
             } else {
 
                 // Indicate failure
-                this.setState({data: null, error});
-                this.props.events.onViewLoadFailed(ApiViewNames.Main, error);
+                setState((s) => {
+                    return {
+                        ...s,
+                        error,
+                    };
+                });
+                model.apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
             }
         }
     }
@@ -143,9 +110,9 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
     /*
      * Output error details if required
      */
-    private _renderError(): React.ReactNode {
+    function renderError(): JSX.Element {
 
-        if (this.state.error!.errorCode === ErrorCodes.loginRequired) {
+        if (state.error!.errorCode === ErrorCodes.loginRequired) {
             return (
                 <>
                 </>
@@ -155,7 +122,7 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
         const errorProps = {
             hyperlinkMessage: 'Problem Encountered in Transactions View',
             dialogTitle: 'Transactions View Error',
-            error: this.state.error,
+            error: state.error,
             centred: true,
         };
         return (
@@ -166,7 +133,7 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
     /*
      * Handle 'business errors' received from the API
      */
-    private _isExpectedApiError(error: UIError): boolean {
+    function isExpectedApiError(error: UIError): boolean {
 
         if (error.statusCode === 404 && error.errorCode === ErrorCodes.companyNotFound) {
 
@@ -184,10 +151,25 @@ export class TransactionsContainer extends React.Component<TransactionsContainer
         return false;
     }
 
-    /*
-     * Plumbing to ensure that the this parameter is available in async callbacks
-     */
-    private _setupCallbacks(): void {
-        this._loadData = this._loadData.bind(this);
+    // Render an error on failure
+    if (state.error) {
+        return renderError();
     }
+
+    // Display nothing until there is data
+    if (!state.data) {
+        return (
+            <>
+            </>
+        );
+    }
+
+    // Display the desktop or mobile view otherwise
+    const childProps = {
+        data: state.data,
+    };
+
+    return  (
+        <TransactionsView {...childProps}/>
+    );
 }
