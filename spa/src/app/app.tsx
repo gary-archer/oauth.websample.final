@@ -108,7 +108,7 @@ export function App(props: AppProps): JSX.Element {
             await model.authenticator.login();
 
             // When running in a mobile web view we may still be in the login required view, in which case move home
-            if (RouteHelper.isInLoggedOutView()) {
+            if (RouteHelper.isInLoginRequiredView()) {
                 location.hash = '#';
             }
 

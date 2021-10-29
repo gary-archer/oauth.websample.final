@@ -17,7 +17,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     const model = props.viewModel;
     const [state, setState] = useState<UserInfoViewState>({
-        shouldLoad: !RouteHelper.isInLoggedOutView(),
+        shouldLoad: !RouteHelper.isInLoginRequiredView(),
         userInfo: null,
         error: null,
     });

@@ -4,16 +4,16 @@
 export class RouteHelper {
 
     /*
-     * Return true if we are not in the logged out view or the transactions view
+     * Return true if we are not in the login required view or the transactions view
      */
     public static isInHomeView(): boolean {
-        return (location.hash.indexOf('loggedout') === -1) && (location.hash.indexOf('company=') === -1);
+        return !RouteHelper.isInLoginRequiredView() && (location.hash.indexOf('company=') === -1);
     }
 
     /*
      * Return true if we are in the logged out view
      */
-    public static isInLoggedOutView(): boolean {
+    public static isInLoginRequiredView(): boolean {
         return location.hash.indexOf('loggedout') !== -1;
     }
 }
