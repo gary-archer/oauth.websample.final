@@ -98,8 +98,7 @@ export function App(props: AppProps): JSX.Element {
      * Trigger a login redirect when all views have finished calling the API and there has been a login_required error
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
-    async function onLoginRequired(event: LoginRequiredEvent): Promise<void> {
-    /* eslint-enable @typescript-eslint/no-unused-vars */
+    async function onLoginRequired(_event: LoginRequiredEvent): Promise<void> {
 
         try {
 
@@ -130,8 +129,7 @@ export function App(props: AppProps): JSX.Element {
      * In this scenario the SPA needs to be told to reload itself when the InApp browser closes
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
-    function onMobileLoginComplete(event: MobileLoginCompleteEvent): void {
-    /* eslint-enable @typescript-eslint/no-unused-vars */
+    function onMobileLoginComplete(_event: MobileLoginCompleteEvent): void {
 
         model.reloadData(false);
     }
