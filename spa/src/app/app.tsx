@@ -26,8 +26,6 @@ import {AppState} from './appState';
  */
 export function App(props: AppProps): JSX.Element {
 
-    console.log('*** render');
-
     // The view is re-rendered when any of these state properties change
     const model = props.viewModel;
     const [state, setState] = useState<AppState>({
