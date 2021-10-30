@@ -146,11 +146,11 @@ export class AppViewModel {
 
         if (!this._userInfoViewModel) {
 
-            this._userInfoViewModel = {
-                apiClient: this._apiClient!,
-                eventBus: this._eventBus,
-                apiViewEvents: this._apiViewEvents,
-            };
+            this._userInfoViewModel = new UserInfoViewModel(
+                this._apiClient!,
+                this._eventBus,
+                this._apiViewEvents,
+            );
         }
 
         return this._userInfoViewModel;

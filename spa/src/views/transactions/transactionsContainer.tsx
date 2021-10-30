@@ -63,12 +63,6 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     async function loadData(causeError: boolean): Promise<void> {
 
         try {
-            setState((s) => {
-                return {
-                    ...s,
-                    error: null,
-                };
-            });
 
             // Get data from the API
             model.apiViewEvents.onViewLoading(ApiViewNames.Main);
@@ -79,6 +73,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
                 return {
                     ...s,
                     data,
+                    error: null,
                 };
             });
 

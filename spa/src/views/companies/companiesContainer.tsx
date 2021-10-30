@@ -62,12 +62,6 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     async function loadData(causeError: boolean): Promise<void> {
 
         try {
-            setState((s) => {
-                return {
-                    ...s,
-                    error: null,
-                };
-            });
 
             model.apiViewEvents.onViewLoading(ApiViewNames.Main);
             const companies = await model.apiClient.getCompanyList({causeError});

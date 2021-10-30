@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {UserInfo} from '../../api/entities/userInfo';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
-import {ApiViewNames} from '../utilities/apiViewNames';
 import {RouteHelper} from '../utilities/routeHelper';
 import {UserInfoViewProps} from './userInfoViewProps';
 import {UserInfoViewState} from './userInfoViewState';
@@ -30,10 +30,8 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Subscribe to events and then do the initial load of data
      */
     async function startup(): Promise<void> {
-
         model.eventBus.on(EventNames.Navigate, onNavigate);
         model.eventBus.on(EventNames.ReloadUserInfo, onReload);
-        await loadData(false);
     }
 
     /*
@@ -52,11 +50,12 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         if (event.isMainView) {
 
             // Load user data the first time
-            await loadData(false);
+            await loadData();
 
         } else {
 
             // If in the login required view we clear user data
+            model.unload();
             setState((s) => {
                 return {
                     ...s,
@@ -67,47 +66,28 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     }
 
     /*
-     * Receive the reload event
+     * Process the reload event
      */
     function onReload(event: ReloadUserInfoEvent): void {
-        loadData(event.causeError);
+        loadData(true, event.causeError);
     }
 
     /*
-     * Load data when requested
+     * Ask the model to load data, then update state
      */
-    async function loadData(causeError: boolean): Promise<void> {
+    async function loadData(reload = false, causeError = false): Promise<void> {
 
-        try {
-
-            // Short circuit loading if required
-            if (RouteHelper.isInLoginRequiredView() || state.userInfo) {
-                model.apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
-                return;
-            }
-
-            setState((s) => {
-                return {
-                    ...s,
-                    error: null,
-                };
-            });
-
-            // Get user info
-            model.apiViewEvents.onViewLoading(ApiViewNames.UserInfo);
-            const userInfo = await model.apiClient.getUserInfo({causeError});
-            model.apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
-
+        const onSuccess = (userInfo: UserInfo ) => {
             setState((s) => {
                 return {
                     ...s,
                     userInfo,
+                    error: null,
                 };
             });
+        };
 
-        } catch (e) {
-
-            const error = ErrorHandler.getFromException(e);
+        const onError = (error: UIError) => {
             setState((s) => {
                 return {
                     ...s,
@@ -115,8 +95,15 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
                     error,
                 };
             });
-            model.apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);
-        }
+        };
+
+        const options = {
+            reload,
+            isInLoggedOutView: RouteHelper.isInLoginRequiredView(),
+            causeError,
+        };
+
+        model.callApi(onSuccess, onError, options);
     }
 
     // Render errors if there are technical problems getting user info
