@@ -36,23 +36,23 @@ export class CompaniesContainerViewModel {
      * Get data from the API and then notify the caller
      */
     public async callApi(
-        onSuccess: (userInfo: Company[]) => void,
+        onSuccess: (companies: Company[]) => void,
         onError: (error: UIError) => void,
         causeError: boolean): Promise<void> {
 
         try {
 
-            this._apiViewEvents.onViewLoading(ApiViewNames.UserInfo);
+            this._apiViewEvents.onViewLoading(ApiViewNames.Main);
 
             const companies = await this._apiClient.getCompanyList({causeError});
 
-            this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
+            this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
             onSuccess(companies);
 
         } catch (e) {
 
             const error = ErrorHandler.getFromException(e);
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);
+            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
             onError(error);
         }
     }

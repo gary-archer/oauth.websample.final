@@ -132,11 +132,12 @@ export class AppViewModel {
 
         if (!this._transactionsViewModel) {
 
-            this._transactionsViewModel = {
-                apiClient: this._apiClient!,
-                eventBus: this._eventBus,
-                apiViewEvents: this._apiViewEvents,
-            };
+            this._transactionsViewModel = new TransactionsContainerViewModel
+            (
+                this._apiClient!,
+                this._eventBus,
+                this._apiViewEvents,
+            );
         }
 
         return this._transactionsViewModel;

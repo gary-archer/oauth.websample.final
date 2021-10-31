@@ -1,18 +1,82 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
+import {CompanyTransactions} from '../../api/entities/companyTransactions';
+import {ErrorCodes} from '../../plumbing/errors/errorCodes';
+import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {UIError} from '../../plumbing/errors/uiError';
 import {ApiViewEvents} from '../utilities/apiViewEvents';
+import {ApiViewNames} from '../utilities/apiViewNames';
 
 /*
  * The view model for the transactions container view
  */
-export interface TransactionsContainerViewModel {
+export class TransactionsContainerViewModel {
 
-    // The client with which to retrieve data
-    apiClient: ApiClient;
+    private readonly _apiClient: ApiClient;
+    private readonly _eventBus: EventBus;
+    private readonly _apiViewEvents: ApiViewEvents;
 
-    // An object via which API related events can be reported
-    eventBus: EventBus;
+    public constructor(
+        apiClient: ApiClient,
+        eventBus: EventBus,
+        apiViewEvents: ApiViewEvents,
+    ) {
+        this._apiClient = apiClient;
+        this._eventBus = eventBus;
+        this._apiViewEvents = apiViewEvents;
+    }
 
-    // An object via which API related events can be reported
-    apiViewEvents: ApiViewEvents;
+    /*
+     * Property accessors
+     */
+    public get eventBus(): EventBus {
+        return this._eventBus;
+    }
+
+    /*
+     * Get data from the API and then notify the caller
+     */
+    public async callApi(
+        id: string,
+        onSuccess: (transactions: CompanyTransactions) => void,
+        onError: (isExpected: boolean, error: UIError) => void,
+        causeError: boolean): Promise<void> {
+
+        try {
+
+            this._apiViewEvents.onViewLoading(ApiViewNames.Main);
+
+            const transactions = await this._apiClient.getCompanyTransactions(id, {causeError});
+
+            this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
+            onSuccess(transactions);
+
+        } catch (e) {
+
+            const error = ErrorHandler.getFromException(e);
+            this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);
+            onError(this._isExpectedApiError(error), error);
+        }
+    }
+
+    /*
+     * Handle 'business errors' received from the API
+     */
+    private _isExpectedApiError(error: UIError): boolean {
+
+        if (error.statusCode === 404 && error.errorCode === ErrorCodes.companyNotFound) {
+
+            // User typed an id value outside of allowed company ids
+            return true;
+
+        }
+
+        if (error.statusCode === 400 && error.errorCode === ErrorCodes.invalidCompanyId) {
+
+            // User typed an invalid id such as 'abc'
+            return true;
+        }
+
+        return false;
+    }
 }
