@@ -4,10 +4,17 @@
 export class RouteHelper {
 
     /*
-     * Return true if we are not in the login required view or the transactions view
+     * Return true if we are in the main companies list
      */
     public static isInHomeView(): boolean {
         return !RouteHelper.isInLoginRequiredView() && (location.hash.indexOf('company=') === -1);
+    }
+
+    /*
+     * Return true if we are in one of the main views and user info should also load
+     */
+    public static isInMainView(): boolean {
+        return !RouteHelper.isInLoginRequiredView();
     }
 
     /*

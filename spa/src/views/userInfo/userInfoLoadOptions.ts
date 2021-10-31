@@ -3,6 +3,6 @@
  */
 export interface UserInfoLoadOptions {
     reload: boolean;
-    isInLoggedOutView: boolean;
+    isInMainView: boolean;
     causeError: boolean;
 }
