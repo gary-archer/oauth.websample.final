@@ -118,11 +118,11 @@ export class AppViewModel {
 
         if (!this._companiesViewModel) {
 
-            this._companiesViewModel = {
-                apiClient: this._apiClient!,
-                eventBus: this._eventBus,
-                apiViewEvents: this._apiViewEvents,
-            };
+            this._companiesViewModel = new CompaniesContainerViewModel(
+                this._apiClient!,
+                this._eventBus,
+                this._apiViewEvents,
+            );
         }
 
         return this._companiesViewModel;
@@ -132,11 +132,12 @@ export class AppViewModel {
 
         if (!this._transactionsViewModel) {
 
-            this._transactionsViewModel = {
-                apiClient: this._apiClient!,
-                eventBus: this._eventBus,
-                apiViewEvents: this._apiViewEvents,
-            };
+            this._transactionsViewModel = new TransactionsContainerViewModel
+            (
+                this._apiClient!,
+                this._eventBus,
+                this._apiViewEvents,
+            );
         }
 
         return this._transactionsViewModel;
@@ -146,11 +147,11 @@ export class AppViewModel {
 
         if (!this._userInfoViewModel) {
 
-            this._userInfoViewModel = {
-                apiClient: this._apiClient!,
-                eventBus: this._eventBus,
-                apiViewEvents: this._apiViewEvents,
-            };
+            this._userInfoViewModel = new UserInfoViewModel(
+                this._apiClient!,
+                this._eventBus,
+                this._apiViewEvents,
+            );
         }
 
         return this._userInfoViewModel;

@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
-import {ApiViewNames} from '../utilities/apiViewNames';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
 import {TransactionsView} from './transactionsView';
@@ -62,49 +61,37 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     async function loadData(causeError: boolean): Promise<void> {
 
-        try {
-            setState((s) => {
-                return {
-                    ...s,
-                    error: null,
-                };
-            });
-
-            // Get data from the API
-            model.apiViewEvents.onViewLoading(ApiViewNames.Main);
-            const data = await model.apiClient.getCompanyTransactions(companyId, {causeError});
-            model.apiViewEvents.onViewLoaded(ApiViewNames.Main);
-
+        const onSuccess = (data: CompanyTransactions) => {
             setState((s) => {
                 return {
                     ...s,
                     data,
+                    error: null,
                 };
             });
+        };
 
-        } catch (e) {
+        const onError = (isExpected: boolean, error: UIError) => {
 
-            // Handle the error
-            const error = ErrorHandler.getFromException(e);
-            const isExpected = isExpectedApiError(error);
             if (isExpected) {
 
                 // For 'expected' errors, return to the home view
-                model.apiViewEvents.onViewLoaded(ApiViewNames.Main);
                 location.hash = '#';
 
             } else {
 
-                // Indicate failure
+                // Otherwise render the error
                 setState((s) => {
                     return {
                         ...s,
+                        data: null,
                         error,
                     };
                 });
-                model.apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
             }
-        }
+        };
+
+        model.callApi(companyId, onSuccess, onError, causeError);
     }
 
     /*
@@ -128,27 +115,6 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
         return (
             <ErrorSummaryView {...errorProps}/>
         );
-    }
-
-    /*
-     * Handle 'business errors' received from the API
-     */
-    function isExpectedApiError(error: UIError): boolean {
-
-        if (error.statusCode === 404 && error.errorCode === ErrorCodes.companyNotFound) {
-
-            // User typed an id value outside of allowed company ids
-            return true;
-
-        }
-
-        if (error.statusCode === 400 && error.errorCode === ErrorCodes.invalidCompanyId) {
-
-            // User typed an invalid id such as 'abc'
-            return true;
-        }
-
-        return false;
     }
 
     // Render an error on failure
