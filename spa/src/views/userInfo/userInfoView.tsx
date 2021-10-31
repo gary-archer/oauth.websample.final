@@ -77,7 +77,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     async function loadData(reload = false, causeError = false): Promise<void> {
 
-        const onSuccess = (userInfo: UserInfo ) => {
+        const onSuccess = (userInfo: UserInfo) => {
             setState((s) => {
                 return {
                     ...s,

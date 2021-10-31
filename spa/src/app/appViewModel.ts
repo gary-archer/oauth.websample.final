@@ -118,11 +118,11 @@ export class AppViewModel {
 
         if (!this._companiesViewModel) {
 
-            this._companiesViewModel = {
-                apiClient: this._apiClient!,
-                eventBus: this._eventBus,
-                apiViewEvents: this._apiViewEvents,
-            };
+            this._companiesViewModel = new CompaniesContainerViewModel(
+                this._apiClient!,
+                this._eventBus,
+                this._apiViewEvents,
+            );
         }
 
         return this._companiesViewModel;
