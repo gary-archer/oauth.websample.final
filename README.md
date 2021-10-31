@@ -25,13 +25,12 @@ This will include spinning up a Token Handler using Docker:
 ./deploy.sh
 ```
 
-The SPA connects to AWS Cognito and you can sign in using one of these password credentials.\
-The UI visualises how a custom array claim from domain specific data is used to enforce access to resources:
+The browser is invoked and you can sign in with my AWS test credentials:
 
-| User | Password | Comments |
-| ---- | -------- | -------- |
-| guestuser@mycompany.com | GuestPassword1 | A user with access to a single region |
-| guestadmin@mycompany.com | GuestPassword1 | A user with access to multiple regions |
+- User: `guestuser@mycompany.com`
+- Password: `GuestPassword1`
+
+You can then test all lifecycle operations, including token refresh, multi tab browsing and logout.
 
 ## OAuth Security
 

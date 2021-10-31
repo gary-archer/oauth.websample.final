@@ -54,7 +54,7 @@ export class TransactionsContainerViewModel {
         } catch (e) {
 
             const error = ErrorHandler.getFromException(e);
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);
+            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
             onError(this._isExpectedApiError(error), error);
         }
     }
