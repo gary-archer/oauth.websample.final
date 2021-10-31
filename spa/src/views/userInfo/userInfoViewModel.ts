@@ -44,7 +44,7 @@ export class UserInfoViewModel {
         options: UserInfoLoadOptions): Promise<void> {
 
         // Return early if no load is needed
-        if (!options.isInMainView || (this._isLoaded && !options.reload)) {
+        if (this._isLoaded && !options.reload) {
             this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
             return;
         }

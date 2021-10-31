@@ -6,7 +6,6 @@ import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
-import {RouteHelper} from '../utilities/routeHelper';
 import {UserInfoViewProps} from './userInfoViewProps';
 import {UserInfoViewState} from './userInfoViewState';
 
@@ -100,7 +99,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
         const options = {
             reload,
-            isInMainView: RouteHelper.isInMainView(),
             causeError,
         };
 

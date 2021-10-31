@@ -3,6 +3,5 @@
  */
 export interface UserInfoLoadOptions {
     reload: boolean;
-    isInMainView: boolean;
     causeError: boolean;
 }

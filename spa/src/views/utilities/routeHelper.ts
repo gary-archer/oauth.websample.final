@@ -11,13 +11,6 @@ export class RouteHelper {
     }
 
     /*
-     * Return true if we are in one of the main views and user info should also load
-     */
-    public static isInMainView(): boolean {
-        return !RouteHelper.isInLoginRequiredView();
-    }
-
-    /*
      * Return true if we are in the logged out view
      */
     public static isInLoginRequiredView(): boolean {
