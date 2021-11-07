@@ -9,11 +9,6 @@ WEB_ORIGIN='https://web.mycompany.com'
 TOKEN_HANDLER_BASE_URL='https://api.mycompany.com:444/token-handler'
 
 #
-# Set this to true to point to a final API running locally at https://api.mycompany.com:445/api
-#
-USE_LOCAL_API='false'
-
-#
 # Get the platform
 #
 case "$(uname -s)" in
@@ -28,18 +23,29 @@ case "$(uname -s)" in
 esac
 
 #
+# The deployment script can be run with an argument of './deploy.sh LOCALAPI'
+# Passing this parameter via open -a is not supported so we rewrite the target script instead
+#
+if [ "$1" == 'LOCALAPI' ]; then
+  DEPLOYMENT_FILE='./dependencies/tokenhandler/deploy.sh'
+  DEPLOYMENT_DATA=$(cat $DEPLOYMENT_FILE)
+  DEPLOYMENT_DATA=$(sed "s/LOCALAPI=false/LOCALAPI=true/g" <<< "$DEPLOYMENT_DATA")
+  echo "$DEPLOYMENT_DATA" > $DEPLOYMENT_FILE
+fi
+
+#
 # Run the SPA, WebHost, and Back End for Front End in separate terminal windows
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
     open -a Terminal ./spa/deploy.sh
     open -a Terminal ./webhost/deploy.sh
-    open -a Terminal ./.tmp/oauth.tokenhandlerapi/deploy.sh
+    open -a Terminal ./dependencies/tokenhandler/deploy.sh
     
 else
     GIT_BASH="C:\Program Files\Git\git-bash.exe"
     "$GIT_BASH" -c ./spa/deploy.sh &
     "$GIT_BASH" -c ./webhost/deploy.sh &
-    "$GIT_BASH" -c ./.tmp/oauth.tokenhandlerapi/deploy.sh &
+    "$GIT_BASH" -c ./dependencies/tokenhandler/deploy.sh &
 fi
 
 #

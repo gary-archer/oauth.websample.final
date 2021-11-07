@@ -24,6 +24,7 @@ if [ $? -ne 0 ]; then
     echo 'Problem encountered building the SPA'
     exit
 fi
+cd ..
 
 #
 # Download dependencies that were added with these commands:
