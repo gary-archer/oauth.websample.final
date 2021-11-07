@@ -1,10 +1,7 @@
 .DS_Store
-.tmp
-.serverless
-.package
 node_modules
-certs
 dist
 !/spa/dist/loggedout.js
 !/spa/dist/unsupported.js
-back-end-for-front-end
+.serverless
+.package
