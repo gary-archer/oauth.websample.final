@@ -1,0 +1,6 @@
+[submodule "dependencies/tokenhandler"]
+	path = dependencies/tokenhandler
+	url = https://github.com/gary-archer/oauth.tokenhandlerapi
+[submodule "dependencies/certs"]
+	path = dependencies/certs
+	url = https://github.com/gary-archer/oauth.developmentcertificates

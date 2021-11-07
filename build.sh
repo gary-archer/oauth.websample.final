@@ -26,33 +26,20 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Download SSL certificates
+# Download dependencies that were added with these commands:
+# - git submodule add https://github.com/gary-archer/oauth.tokenhandlerapi         dependencies/tokenhandler
+# - git submodule add https://github.com/gary-archer/oauth.developmentcertificates dependencies/certs
 #
-cd ..
-rm -rf certs
-git clone https://github.com/gary-archer/oauth.developmentcertificates ./certs
+git submodule update --init --remote --rebase
 if [ $? -ne 0 ]; then
-    echo 'Problem encountered downloading webhost certificates'
-    exit 1
+  echo 'Problem encountered downloading submodule dependencies'
+  exit
 fi
 
 #
-# Download the token handler, which the SPA uses to manage its OAuth tokens
+# Build the token handler code
 #
-rm -rf .tmp
-mkdir .tmp
-cd .tmp
-git clone https://github.com/gary-archer/oauth.tokenhandlerapi
-if [ $? -ne 0 ]; then
-    echo 'Problem encountered downloading the token handler API'
-    exit 1
-fi
-
-#
-# Build its code
-#
-cd oauth.tokenhandlerapi
-git checkout feature/revamp
+cd dependencies/tokenhandler
 ./build.sh
 if [ $? -ne 0 ]; then
     echo 'Problem encountered building the token handler API'

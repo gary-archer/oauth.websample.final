@@ -1,0 +1,7 @@
+1. Get local API configured
+
+2. Get 
+
+3. 
+git submodule add https://github.com/gary-archer/oauth.tokenhandlerapi         dependencies/tokenhandler
+git submodule add https://github.com/gary-archer/oauth.developmentcertificates dependencies/certs

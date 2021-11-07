@@ -9,6 +9,11 @@ WEB_ORIGIN='https://web.mycompany.com'
 TOKEN_HANDLER_BASE_URL='https://api.mycompany.com:444/token-handler'
 
 #
+# Set this to true to point to a final API running locally at https://api.mycompany.com:445/api
+#
+USE_LOCAL_API='false'
+
+#
 # Get the platform
 #
 case "$(uname -s)" in
