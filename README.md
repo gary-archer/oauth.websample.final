@@ -7,8 +7,10 @@
 ## Overview
 
 - The final secure SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities.
+  This includes deployment of web static content to the [AWS Content Delivery Network](https://authguidance.com/2018/12/02/spa-content-deployment/).
+
 - The SPA implements OpenID Connect in an API driven manner using Curity's [Token Handler Pattern](https://github.com/curityio/web-oauth-via-bff).
-- This combines strongest browser security with all of the benefits of an SPA architecture.
+  This combines strongest browser security with all of the benefits of an SPA architecture.
 
 ## Quick Start
 
@@ -29,7 +31,7 @@ Trust the root certificate that the build step downloads to your computer, in or
 Add this file to the system keychain on macOS or the Windows certificate trust store for the local computer:
 
 ```
-./api/certs/localhost/mycompany.com.ca.pem
+./dependencies/certs/localhost/mycompany.com.ca.pem
 ```
 
 Then run the following script to run the code for both SPA, API and Token Handler in multiple terminal windows:
