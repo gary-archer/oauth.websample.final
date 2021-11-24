@@ -7,12 +7,12 @@
 ## Overview
 
 The final secure SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities.\
-This includes deployment of web static content to the [AWS Content Delivery Network](https://authguidance.com/2018/12/02/spa-content-deployment/).
+The SPA is deployed globally to a Content Delivery Network and you can login to the online version via the [Quick Start Page](https://authguidance.com/home/code-samples-quickstart/).
 
 The SPA implements OpenID Connect in an API driven manner using Curity's [Token Handler Pattern](https://github.com/curityio/web-oauth-via-bff).\
 This combines strongest browser security with all of the benefits of an SPA architecture.
 
-## Quick Start
+## Local Computer Quick Start
 
 Ensure that Node.js is installed, then run the following script from a macOS terminal or from Git Bash on Windows:
 
@@ -47,7 +47,7 @@ The browser is then invoked and you can sign in with my AWS test credentials:
 
 You can then test all lifecycle operations, including token refresh, multi-tab browsing and multi-tab logout
 
-## Further Details
+## Blog Documentation
 
 - See the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) for the overall behaviour
 - See the [Final SPA Instructions](https://authguidance.com/2019/04/08/how-to-run-the-react-js-spa) for details on the setup 
