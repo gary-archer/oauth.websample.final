@@ -37,26 +37,18 @@ Add this file to the system keychain on macOS or the Windows certificate trust s
 ./api/certs/localhost/mycompany.com.ca.pem
 ```
 
-Then run the following script to run the code for both SPA and API:
+Then run the following script to run the code for both SPA, API and Token Handler in multiple terminal windows:
 
 ```bash
 ./deploy.sh
 ```
 
-Once development domains and SSL trust are configured, run these commands to spin up all components.\
-This will include spinning up a Token Handler using Docker:
-
-```bash
-./build.sh
-./deploy.sh
-```
-
-The browser is invoked and you can sign in with my AWS test credentials:
+The browser is then invoked and you can sign in with my AWS test credentials:
 
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
 
-You can then test all lifecycle operations, including token refresh, multi tab browsing and logout
+You can then test all lifecycle operations, including token refresh, multi-tab browsing and multi-tab logout
 
 ## OAuth Security
 
