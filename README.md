@@ -34,7 +34,7 @@ Add this file to the system keychain on macOS or the Windows certificate trust s
 ./dependencies/certs/localhost/mycompany.com.ca.pem
 ```
 
-Then run the following script to run the code for both SPA, API and Token Handler in multiple terminal windows:
+Then run the following script to run the SPA, API and Token Handler in separate terminal windows:
 
 ```bash
 ./deploy.sh
