@@ -47,7 +47,7 @@ The browser is then invoked and you can sign in with my AWS test credentials:
 
 You can then test all lifecycle operations, including token refresh, multi-tab browsing and multi-tab logout
 
-## Blog Documentation
+## Blog Posts
 
 - See the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) for the overall behaviour
 - See the [Final SPA Instructions](https://authguidance.com/2019/04/08/how-to-run-the-react-js-spa) for details on the setup 
