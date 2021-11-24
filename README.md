@@ -17,6 +17,32 @@
 
 ## Quick Start
 
+Ensure that Node.js is installed, then run the following script from a macOS terminal or from Git Bash on Windows:
+
+```bash
+./build.sh
+```
+
+Custom development domains are used so you must add these entries to your hosts file:
+
+```
+127.0.0.1 web.mycompany.com api.mycompany.com
+::1       localhost
+```
+
+Trust the root certificate that the build step downloads to your computer, in order for SSL to work in the browser.\
+Add this file to the system keychain on macOS or the Windows certificate trust store for the local computer:
+
+```
+./api/certs/localhost/mycompany.com.ca.pem
+```
+
+Then run the following script to run the code for both SPA and API:
+
+```bash
+./deploy.sh
+```
+
 Once development domains and SSL trust are configured, run these commands to spin up all components.\
 This will include spinning up a Token Handler using Docker:
 
@@ -30,7 +56,7 @@ The browser is invoked and you can sign in with my AWS test credentials:
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
 
-You can then test all lifecycle operations, including token refresh, multi tab browsing and logout.
+You can then test all lifecycle operations, including token refresh, multi tab browsing and logout
 
 ## OAuth Security
 
