@@ -49,4 +49,4 @@ You can then test all lifecycle operations, including token refresh, multi-tab b
 
 ## Blog Posts
 
-- See the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) for architecture details
+- Get started on architecture details in the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup)
