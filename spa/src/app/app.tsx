@@ -62,6 +62,7 @@ export function App(props: AppProps): JSX.Element {
             // Subscribe to application events
             model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
             model.eventBus.on(EventNames.MobileLoginComplete, onMobileLoginComplete);
+            model.eventBus.on(EventNames.MobileLogoutComplete, onMobileLogoutComplete);
 
             // Subscribe to window events
             window.onresize = onResize;
@@ -88,6 +89,7 @@ export function App(props: AppProps): JSX.Element {
         // Unsubscribe from application events
         model.eventBus.detach(EventNames.LoginRequired, onLoginRequired);
         model.eventBus.detach(EventNames.MobileLoginComplete, onMobileLoginComplete);
+        model.eventBus.detach(EventNames.MobileLogoutComplete, onMobileLogoutComplete);
 
         // Unsubscribe from window events
         window.onresize = null;
@@ -130,8 +132,16 @@ export function App(props: AppProps): JSX.Element {
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
     function onMobileLoginComplete(_event: MobileLoginCompleteEvent): void {
-
         model.reloadData(false);
+    }
+
+    /*
+     * Called after an AppAuth login completes successfully when the SPA is running in a mobile web view
+     * In this scenario the SPA needs to be told to move to the logged out view when the InApp browser closes
+     */
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    function onMobileLogoutComplete(_event: MobileLoginCompleteEvent): void {
+        moveToLoggedOutView();
     }
 
     /*
@@ -182,10 +192,8 @@ export function App(props: AppProps): JSX.Element {
 
             // Move to the logged out view anyway
             moveToLoggedOutView();
+            HtmlStorageHelper.loggedOut = true;
         }
-
-        // Update local storage to inform other tabs to logout
-        HtmlStorageHelper.loggedOut = true;
     }
 
     /*
@@ -193,6 +201,7 @@ export function App(props: AppProps): JSX.Element {
      * This also occurs when there is a logout on another tab and we receive a check session iframe notification
      */
     function moveToLoggedOutView(): void {
+
         location.hash = '#loggedout';
     }
 

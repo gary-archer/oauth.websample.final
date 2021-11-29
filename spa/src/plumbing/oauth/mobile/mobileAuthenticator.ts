@@ -5,6 +5,7 @@ import {Authenticator} from '../authenticator';
 import {CredentialSupplier} from '../credentialSupplier';
 import {EventNames} from '../../events/eventNames';
 import {MobileLoginCompleteEvent} from '../../events/mobileLoginCompleteEvent';
+import {MobileLogoutCompleteEvent} from '../../events/mobileLogoutCompleteEvent';
 import {MobileMethodCaller} from './mobileMethodCaller';
 
 /*
@@ -41,7 +42,9 @@ export class MobileAuthenticator implements Authenticator, CredentialSupplier {
      * Initiate a logout redirect, which does not involve redirecting the whole page
      */
     public async logout(): Promise<void> {
+
         await this._methodCaller.callAsync('logout');
+        this._eventBus.emit(EventNames.MobileLogoutComplete, null, new MobileLogoutCompleteEvent());
     }
 
     /*

@@ -8,4 +8,5 @@ export class EventNames {
     public static ReloadMainView = 'ReloadMainView';
     public static ReloadUserInfo = 'ReloadUserInfo';
     public static MobileLoginComplete = 'MobileLoginComplete';
+    public static MobileLogoutComplete = 'MobileLogoutComplete';
 }

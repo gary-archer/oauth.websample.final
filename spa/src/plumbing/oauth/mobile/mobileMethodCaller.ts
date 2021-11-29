@@ -27,7 +27,6 @@ export class MobileMethodCaller {
 
                 // First remove the callback
                 delete customWindow[callbackName];
-
                 if (errorJson) {
 
                     // Handle errors if required
