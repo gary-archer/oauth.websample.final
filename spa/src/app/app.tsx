@@ -192,8 +192,10 @@ export function App(props: AppProps): JSX.Element {
 
             // Move to the logged out view anyway
             moveToLoggedOutView();
-            HtmlStorageHelper.loggedOut = true;
         }
+
+        // Update local storage to inform other tabs to logout
+        HtmlStorageHelper.loggedOut = true;
     }
 
     /*
