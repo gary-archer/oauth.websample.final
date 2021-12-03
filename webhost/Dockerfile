@@ -26,7 +26,7 @@ RUN npm install --production
 
 # Configure the Linux OS to trust the root certificate
 COPY webhost/trusted.ca.pem /usr/local/share/ca-certificates/trusted.ca.pem
-RUN apk update
+RUN apt-get update
 RUN update-ca-certificates
 ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/trusted.ca.pem
 
