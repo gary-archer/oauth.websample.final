@@ -25,7 +25,7 @@ COPY webhost/package*.json       /usr/webhost/
 RUN npm install --production
 
 # Configure the Linux OS to trust the root certificate
-COPY trusted.ca.pem /usr/local/share/ca-certificates/trusted.ca.pem
+COPY webhost/trusted.ca.pem /usr/local/share/ca-certificates/trusted.ca.pem
 RUN update-ca-certificates
 ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/trusted.ca.pem
 
