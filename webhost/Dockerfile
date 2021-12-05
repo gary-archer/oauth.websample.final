@@ -9,7 +9,6 @@ FROM node:16.6.0-alpine
 
 # Set the target folder
 WORKDIR /usr/webhost
-RUN apk --no-cache add curl
 
 # Copy SPA files into our docker image
 COPY spa/index.html              /usr/webhost/spa/
