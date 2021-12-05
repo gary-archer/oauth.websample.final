@@ -6,7 +6,7 @@
 #################################################################################
 
 WEB_ORIGIN='https://web.mycompany.com'
-TOKEN_HANDLER_BASE_URL='https://api.mycompany.com:444/token-handler'
+TOKEN_HANDLER_BASE_URL='https://api.mycompany.com:444/tokenhandler'
 
 #
 # Get the platform

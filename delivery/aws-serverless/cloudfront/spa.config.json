@@ -3,6 +3,6 @@
         "apiBaseUrl": "https://api.authsamples.com/api"
     },
     "oauth": {
-        "tokenHandlerApiBaseUrl": "https://api.authsamples.com/token-handler"
+        "tokenHandlerApiBaseUrl": "https://api.authsamples.com/tokenhandler"
     }
 }

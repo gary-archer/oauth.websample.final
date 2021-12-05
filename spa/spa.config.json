@@ -3,6 +3,6 @@
         "apiBaseUrl": "https://api.mycompany.com:444/api"
     },
     "oauth": {
-        "tokenHandlerApiBaseUrl": "https://api.mycompany.com:444/token-handler"
+        "tokenHandlerApiBaseUrl": "https://api.mycompany.com:444/tokenhandler"
     }
 }
