@@ -1,8 +1,0 @@
-{
-    "app": {
-        "apiBaseUrl": "https://api.mycluster.com/api"
-    },
-    "oauth": {
-        "tokenHandlerApiBaseUrl": "https://api.mycluster.com/spa"
-    }
-}
