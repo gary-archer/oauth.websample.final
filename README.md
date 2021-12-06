@@ -31,7 +31,7 @@ Trust the root certificate that the build step downloads to your computer, in or
 Add this file to the system keychain on macOS or the Windows certificate trust store for the local computer:
 
 ```
-./dependencies/certs/localhost/mycompany.com.ca.pem
+./dependencies/certs/localhost/mycompany.ca.pem
 ```
 
 Then run the following script to run the SPA, API and Token Handler in separate terminal windows:
