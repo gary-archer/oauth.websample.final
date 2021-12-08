@@ -27,17 +27,6 @@ fi
 cd ..
 
 #
-# Download dependencies that were added with these commands:
-# - git submodule add https://github.com/gary-archer/oauth.tokenhandlerapi         dependencies/tokenhandler
-# - git submodule add https://github.com/gary-archer/oauth.developmentcertificates dependencies/certs
-#
-git submodule update --init --remote --rebase
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered downloading submodule dependencies'
-  exit
-fi
-
-#
 # Build the token handler code
 #
 cd dependencies/tokenhandler
