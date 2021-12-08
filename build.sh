@@ -1,9 +1,10 @@
 #!/bin/bash
 
-#################################################################################
-# A script to build all components needed to run an SPA and token handler locally
-# A simple web host will run locally, with the token handler running in Docker
-#################################################################################
+#############################################################################################
+# A script to build the SPA and set up dependencies ready for deploying a token handler setup
+#############################################################################################
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
 # Build the web host
@@ -16,7 +17,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Build the SPA
+# Build the SPA which will then enter watch mode
 #
 cd ../spa
 ./build.sh
@@ -27,11 +28,12 @@ fi
 cd ..
 
 #
-# Build the token handler code
+# Build local token handler resources 
 #
-cd dependencies/tokenhandler
+git clone https://github.com/gary-archer/oauth.localtokenhandler.deployment ./resources
+cd resources
 ./build.sh
 if [ $? -ne 0 ]; then
-    echo 'Problem encountered building the token handler API'
+    echo 'Problem encountered building local token handler resources'
     exit
 fi
