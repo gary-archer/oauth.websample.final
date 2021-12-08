@@ -38,14 +38,14 @@ fi
 # Run the SPA, WebHost, and Token Handler in separate terminal windows
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
-    open -a Terminal ./spa/deploy.sh
-    open -a Terminal ./webhost/deploy.sh
+    open -a Terminal ./spa/run.sh
+    open -a Terminal ./webhost/run.sh
     open -a Terminal ./resources/deploy.sh
     
 else
     GIT_BASH="C:\Program Files\Git\git-bash.exe"
-    "$GIT_BASH" -c ./spa/deploy.sh &
-    "$GIT_BASH" -c ./webhost/deploy.sh &
+    "$GIT_BASH" -c ./spa/run.sh &
+    "$GIT_BASH" -c ./webhost/run.sh &
     "$GIT_BASH" -c ./resources/deploy.sh &
 fi
 
