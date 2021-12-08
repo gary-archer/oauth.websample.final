@@ -17,13 +17,18 @@ You can login to the online version by following the instructions in the [Quick 
 
 ## Local Computer Quick Start
 
-Ensure that Node.js is installed, then run the following script from a macOS terminal or from Git Bash on Windows:
+Ensure that prerequisites are installed:
+
+- Node.js
+- Docker Desktop
+
+Then run the following script from a macOS terminal or from Git Bash on Windows:
 
 ```bash
 ./build.sh
 ```
 
-Custom development domains are used so you must add these entries to your hosts file:
+Custom development URLs are used so you must add these entries to your hosts file:
 
 ```
 127.0.0.1 web.mycompany.com api.mycompany.com
@@ -43,7 +48,7 @@ Then run the SPA, API and Token Handler in separate terminal windows:
 ./run.sh
 ```
 
-The browser is then invoked and you can sign in with my AWS test credentials:
+The browser is then invoked at `https://web.mycompany.com/spa` and you can sign in with my AWS test credentials:
 
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
