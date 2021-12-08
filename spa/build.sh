@@ -4,9 +4,6 @@
 # Set up the SPA
 ################
 
-#
-# Install node dependencies
-#
 rm -rf node_modules
 npm install
 if [ $? -ne 0 ]; then
