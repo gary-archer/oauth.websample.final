@@ -1,11 +1,10 @@
 ---
 exclude_paths: [
     '*',    
-    'certs/**',
-    'deployment/**',
     'spa/*',
     'spa/css/**',
     'spa/dist/**',
     'spa/webpack/**',
     'webhost/**'
+    'aws/**'
 ]

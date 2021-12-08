@@ -1,7 +1,7 @@
 {
   "name": "edgelambdas",
   "version": "1.0.0",
-  "description": "Minimal lambda edge functions to refine the behaviour of our Cloud SPA",
+  "description": "Minimal back end code for the Cloud SPA",
   "scripts": {
     "build": "rimraf dist && tsc --sourceMap true",
     "defaultDocument": "sls invoke local -f defaultDocument -p test/defaultDocument.json",

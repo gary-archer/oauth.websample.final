@@ -4,9 +4,6 @@
 # Build the web host ready for local execution
 ##############################################
 
-#
-# Install node dependencies
-#
 rm -rf node_modules
 npm install
 if [ $? -ne 0 ]; then
