@@ -6,3 +6,4 @@ dist
 resources
 .serverless
 .package
+response.txt
