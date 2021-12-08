@@ -8,7 +8,7 @@
 
 The final demo SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities:
 
-- The SPA implements OpenID Connect in an API driven manner using Curity's [Token Handler Pattern](https://github.com/curityio/web-oauth-via-bff)
+- The SPA uses an API driven OpenID Connect solution via Curity's [Token Handler Pattern](https://github.com/curityio/web-oauth-via-bff)
 - The SPA is deployed to 20 global locations via a Content Delivery Network
 
 ## Deployed System
