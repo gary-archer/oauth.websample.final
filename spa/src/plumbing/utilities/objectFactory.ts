@@ -9,7 +9,7 @@ import {WebAuthenticator} from '../oauth/web/webAuthenticator';
 import {SessionManager} from './sessionManager';
 
 /*
- * A class to create global objects on application startup and manage supplying the web worker
+ * A class to create global objects on application startup
  */
 export class ObjectFactory {
 
@@ -31,7 +31,7 @@ export class ObjectFactory {
 
         } else {
 
-            // The web authenticator uses a proxy API as a back end for front end and stores tokens in a web worker
+            // The web authenticator uses a token handler API to do its OAuth work, which issues SameSite=strict cookies
             return new WebAuthenticator(this._configuration.oauth, SessionManager.get());
         }
     }
