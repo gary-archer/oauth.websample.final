@@ -4,6 +4,8 @@
 # A script to run the SPA and token handler components when developing locally
 ##############################################################################
 
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
 WEB_ORIGIN='https://web.mycompany.com'
 TOKEN_HANDLER_BASE_URL='https://api.mycompany.com:444/tokenhandler'
 
