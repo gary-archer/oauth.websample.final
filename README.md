@@ -55,6 +55,13 @@ The browser is then invoked at `https://web.mycompany.com/spa` and you can sign 
 
 You can then test all lifecycle operations, including token refresh, multi-tab browsing and multi-tab logout.
 
+## Supporting Components
+
+Although this flow results in simple SPA code, it requires some supporting components:
+
+- [Token Handler API](https://github.com/gary-archer/oauth.tokenhandlerapi)
+- [Local Deployment Scripts](https://github.com/gary-archer/oauth.localtokenhandler.deployment)
+
 ## Further Information
 
 Further architecture and non-functional details are described starting in the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) blog post.
