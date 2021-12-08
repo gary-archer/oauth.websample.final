@@ -16,18 +16,19 @@ class Packager {
         await fs.copy('./spa.config.json', '.package/spa/spa.config.json');
 
         // HTML
-        await fs.copy('../../../spa/index.html',     '.package/spa/index.html');
-        await fs.copy('../../../spa/loggedout.html', '.package/spa/loggedout.html');
+        const root = '../../spa';
+        await fs.copy(`${root}/index.html`,     '.package/spa/index.html');
+        await fs.copy(`${root}/loggedout.html`, '.package/spa/loggedout.html');
 
         // Javascript
-        await fs.copy('../../../spa/dist/vendor.bundle.js', '.package/spa/dist/vendor.bundle.js');
-        await fs.copy('../../../spa/dist/app.bundle.js',    '.package/spa/dist/app.bundle.js');
-        await fs.copy('../../../spa/dist/unsupported.js',   '.package/spa/dist/unsupported.js');
-        await fs.copy('../../../spa/dist/loggedout.js',     '.package/spa/dist/loggedout.js');
+        await fs.copy(`${root}/dist/vendor.bundle.js`, '.package/spa/dist/vendor.bundle.js');
+        await fs.copy(`${root}/dist/app.bundle.js`,    '.package/spa/dist/app.bundle.js');
+        await fs.copy(`${root}/dist/unsupported.js`,   '.package/spa/dist/unsupported.js');
+        await fs.copy(`${root}/dist/loggedout.js`,     '.package/spa/dist/loggedout.js');
 
         // CSS
-        await fs.copy('../../../spa/css/bootstrap.min.css', '.package/spa/css/bootstrap.min.css');
-        await fs.copy('../../../spa/css/app.css',           '.package/spa/css/app.css');
+        await fs.copy(`${root}/css/bootstrap.min.css`, '.package/spa/css/bootstrap.min.css');
+        await fs.copy(`${root}/css/app.css`,           '.package/spa/css/app.css');
     }
 }
 
