@@ -30,6 +30,7 @@ cd ..
 #
 # Build local token handler resources 
 #
+rm -rf resources
 git clone https://github.com/gary-archer/oauth.localtokenhandler.deployment ./resources
 cd resources
 ./build.sh

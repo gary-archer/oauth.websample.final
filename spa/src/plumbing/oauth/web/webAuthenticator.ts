@@ -173,7 +173,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
 
         } catch (e: any) {
 
-            if (e.status === 401) {
+            if (e.statusCode === 401) {
                 throw ErrorHandler.getFromLoginRequired();
             }
 
