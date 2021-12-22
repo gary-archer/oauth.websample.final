@@ -4,12 +4,12 @@
 # A script to test the SPA's HTTP workflow against deployed APIs
 ################################################################
 
-WEB_BASE_URL='https://web.mycompany.com'
-TOKEN_HANDLER_BASE_URL='https://api.mycompany.com:444/tokenhandler'
-BUSINESS_API_BASE_URL='https://api.mycompany.com:444/api'
-#WEB_BASE_URL='https://web.authsamples.com'
-#TOKEN_HANDLER_BASE_URL='https://api.authsamples.com/tokenhandler'
-#BUSINESS_API_BASE_URL='https://api.authsamples.com/api'
+#WEB_BASE_URL='https://web.mycompany.com'
+#TOKEN_HANDLER_BASE_URL='https://api.mycompany.com:444/tokenhandler'
+#BUSINESS_API_BASE_URL='https://api.mycompany.com:444/api'
+WEB_BASE_URL='https://web.authsamples.com'
+TOKEN_HANDLER_BASE_URL='https://api.authsamples.com/tokenhandler'
+BUSINESS_API_BASE_URL='https://api.authsamples.com/api'
 LOGIN_BASE_URL='https://login.authsamples.com'
 COOKIE_PREFIX=mycompany
 TEST_USERNAME='guestuser@mycompany.com'
@@ -304,8 +304,8 @@ HTTP_STATUS=$(curl -i -s -X POST "$TOKEN_HANDLER_BASE_URL/refresh" \
 -H "x-$COOKIE_PREFIX-csrf: $ANTI_FORGERY_TOKEN" \
 --cookie "$COOKIE_PREFIX-rt=$REFRESH_COOKIE;$COOKIE_PREFIX-id=$ID_COOKIE;$COOKIE_PREFIX-csrf=$CSRF_COOKIE" \
 -o $RESPONSE_FILE -w '%{http_code}')
-if [ $HTTP_STATUS != '400' ]; then
-  echo "*** The expected 400 error did not occur, status: $HTTP_STATUS"
+if [ $HTTP_STATUS != '401' ]; then
+  echo "*** The expected 401 error did not occur, status: $HTTP_STATUS"
   apiError
   exit
 fi
