@@ -73,8 +73,10 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
                     appLocation = appState.hash;
                 }
 
-                // Remove session storage and the OAuth details from back navigation
+                // Remove session storage
                 HtmlStorageHelper.removeAppState();
+
+                // Remove OAuth details from back navigation
                 history.replaceState({}, document.title, appLocation);
             }
 
@@ -83,12 +85,11 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
                 this._antiForgeryToken = response.antiForgeryToken;
             }
 
-            // Return the logged in state
+            // Return the logged in state to the rest of the app
             return response.isLoggedIn;
 
         } catch (e) {
 
-            // See if this is an OAuth response error as opposed to a general HTTP problem
             const uiError = e as UIError;
             if (uiError && uiError.errorCode === ErrorCodes.loginResponseFailed) {
 
@@ -170,25 +171,14 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
 
             await this._fetcher.execute('POST', '/refresh', this._antiForgeryToken, null);
 
-        } catch (e) {
+        } catch (e: any) {
 
-            if (this._isSessionExpiredError(e)) {
+            if (e.status === 401) {
                 throw ErrorHandler.getFromLoginRequired();
             }
 
             throw ErrorHandler.getFromTokenRefreshError(e);
         }
-    }
-
-    /*
-     * Check for errors that mean the session is expired normally
-     */
-    private _isSessionExpiredError(error: any): boolean {
-
-        return error.statusCode === 400 &&
-               (error.errorCode === ErrorCodes.cookieNotFound ||
-                error.errorCode === ErrorCodes.invalidData    ||
-                error.errorCode === ErrorCodes.invalidGrant);
     }
 
     /*
