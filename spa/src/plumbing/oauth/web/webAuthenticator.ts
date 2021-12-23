@@ -91,7 +91,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
         } catch (e) {
 
             const uiError = e as UIError;
-            if (uiError && uiError.errorCode === ErrorCodes.loginResponseFailed) {
+            if (uiError && uiError.statusCode === 401) {
 
                 // Remove the code / error details from the browser and back navigation
                 history.replaceState({}, document.title, appLocation);
