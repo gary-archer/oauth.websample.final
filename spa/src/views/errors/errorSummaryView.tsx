@@ -1,6 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactModal from 'react-modal';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
+import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {EventNames} from '../../plumbing/events/eventNames';
+import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorDetailsView} from './errorDetailsView';
 import {ErrorSummaryViewProps} from './errorSummaryViewProps';
 import {ErrorSummaryViewState} from './errorSummaryViewState';
@@ -10,16 +13,70 @@ import {ErrorSummaryViewState} from './errorSummaryViewState';
  */
 export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
 
-    // Initialise state and ensure that the error is the expected type for display
     const [state, setState] = useState<ErrorSummaryViewState>({
         showDetails: false,
         error: null,
     });
 
+    useEffect(() => {
+        startup();
+        return () => cleanup();
+    }, []);
+
+    /*
+     * Subscribe to events and then do the initial load of data
+     */
+    async function startup(): Promise<void> {
+        props.eventBus.on(EventNames.SetError, onSetError);
+    }
+
+    /*
+     * Unsubscribe when we unload
+     */
+    function cleanup(): void {
+        props.eventBus.detach(EventNames.SetError, onSetError);
+    }
+
+    /*
+     * Update state when we receive an error from the parent
+     */
+    function onSetError(event: SetErrorEvent): void {
+
+        if (props.containingViewName === event.containingViewName) {
+
+            if (event.error) {
+            
+                setState((s) => {
+                    return {
+                        ...s,
+                        error: ErrorHandler.getFromException(event.error),
+                    };
+                });
+
+            } else {
+
+                setState((s) => {
+                    return {
+                        ...s,
+                        error: null,
+                    };
+                });
+            }
+        }
+    }
+
     /*
      * Return the markup for the hyperlink
      */
     function renderHyperlink(): JSX.Element {
+
+        // This error is expected when there is no auth cookie yet
+        if (state.error && state.error.errorCode === ErrorCodes.loginRequired) {
+            return (
+                <>
+                </>
+            );
+        }
 
         return (
             <a href='#' className='errorcolor largetext text-center' onClick={handleSummaryClick}>
@@ -62,6 +119,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
      * Invoke error details when the link is clicked
      */
     function handleSummaryClick(event: React.MouseEvent<HTMLAnchorElement>) {
+
         event.preventDefault();
         setState((s) => {
             return {
@@ -75,6 +133,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
      * Reset state when the dialog's close button is clicked
      */
     function handleDetailsDialogClose() {
+
         setState((s) => {
             return {
                 ...s,

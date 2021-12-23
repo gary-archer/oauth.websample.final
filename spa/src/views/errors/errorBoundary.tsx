@@ -1,12 +1,13 @@
 import React, {ErrorInfo} from 'react';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {ErrorBoundaryProps} from './ErrorBoundaryProps';
 import {ErrorBoundaryState} from './errorBoundaryState';
 import {ErrorSummaryView} from './errorSummaryView';
 
 /*
  * Manages catching of rendering errors anywhere in the tree view during development
  */
-export class ErrorBoundary extends React.Component<any, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
     /*
      * Update state so the next render will show the fallback UI
@@ -36,6 +37,7 @@ export class ErrorBoundary extends React.Component<any, ErrorBoundaryState> {
         }
 
         const errorProps = {
+            eventBus: this.props.eventBus,
             containingViewName: 'boundary',
             hyperlinkMessage: 'Problem Encountered Rendering Views',
             dialogTitle: 'Rendering Error',
