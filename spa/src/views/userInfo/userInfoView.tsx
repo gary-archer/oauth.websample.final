@@ -82,7 +82,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
                 return {
                     ...s,
                     userInfo,
-                    error: null,
                 };
             });
         };
@@ -94,7 +93,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
                 return {
                     ...s,
                     userInfo: null,
-                    error,
                 };
             });
         };

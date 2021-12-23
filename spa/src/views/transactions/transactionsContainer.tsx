@@ -62,7 +62,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
         const onSuccess = (data: CompanyTransactions) => {
 
-            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
+            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', null));
             setState((s) => {
                 return {
                     ...s,
@@ -80,8 +80,13 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
             } else {
 
-                // Otherwise render the error
-                model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', error));
+                model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', error));
+                setState((s) => {
+                    return {
+                        ...s,
+                        data: null,
+                    };
+                });
             }
         };
 
@@ -107,7 +112,6 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
         return  (
             <>
-                <ErrorSummaryView {...errorProps}/>
                 {state.data && <TransactionsView {...childProps}/>}
             </>
         );
