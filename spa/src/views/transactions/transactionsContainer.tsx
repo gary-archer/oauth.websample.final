@@ -107,9 +107,9 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
         }
 
         const errorProps = {
+            containingViewName: 'transactions',
             hyperlinkMessage: 'Problem Encountered in Transactions View',
             dialogTitle: 'Transactions View Error',
-            error: state.error,
             centred: true,
         };
         return (

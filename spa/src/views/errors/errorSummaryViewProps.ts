@@ -3,8 +3,8 @@
  */
 export interface ErrorSummaryViewProps {
 
-    // The passed error object, which can be updated as state
-    error: any;
+    // The containing view
+    containingViewName: string;
 
     // A short message to display in the hyperlink
     hyperlinkMessage: string;

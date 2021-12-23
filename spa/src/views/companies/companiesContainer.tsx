@@ -97,9 +97,9 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         }
 
         const errorProps = {
+            containingViewName: 'companies',
             hyperlinkMessage: 'Problem Encountered in Companies View',
             dialogTitle: 'Companies View Error',
-            error: state.error,
             centred: true,
         };
 

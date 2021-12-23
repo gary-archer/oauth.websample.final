@@ -31,7 +31,6 @@ export function App(props: AppProps): JSX.Element {
     const [state, setState] = useState<AppState>({
         isInitialised: model.isInitialised,
         isMobileLayout: isMobileLayoutNeeded(),
-        error: null,
     });
 
     // Startup runs only once
@@ -276,12 +275,13 @@ export function App(props: AppProps): JSX.Element {
      */
     function setError(e: any): void {
 
-        setState((s) => {
+        // Send event with error
+        /*setState((s) => {
             return {
                 ...s,
                 error: ErrorHandler.getFromException(e),
             };
-        });
+        });*/
     }
 
     /*
@@ -289,7 +289,8 @@ export function App(props: AppProps): JSX.Element {
      */
     function clearError(): void {
 
-        if (state.error) {
+        // Send event with null
+        /*if (state.error) {
 
             setState((s) => {
                 return {
@@ -297,7 +298,7 @@ export function App(props: AppProps): JSX.Element {
                     error: null,
                 };
             });
-        }
+        }*/
     }
 
     /*
@@ -319,9 +320,9 @@ export function App(props: AppProps): JSX.Element {
         };
 
         const errorProps = {
+            containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
             dialogTitle: 'Application Error',
-            error: state.error,
             centred: true,
         };
 
@@ -355,9 +356,9 @@ export function App(props: AppProps): JSX.Element {
         };
 
         const errorProps = {
+            containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
             dialogTitle: 'Application Error',
-            error: state.error,
             centred: true,
         };
 

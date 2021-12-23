@@ -36,9 +36,9 @@ export class ErrorBoundary extends React.Component<any, ErrorBoundaryState> {
         }
 
         const errorProps = {
+            containingViewName: 'boundary',
             hyperlinkMessage: 'Problem Encountered Rendering Views',
             dialogTitle: 'Rendering Error',
-            error: this.state.error,
             centred: true,
         };
         return (

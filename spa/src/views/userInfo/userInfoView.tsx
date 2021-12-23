@@ -109,9 +109,9 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     if (state.error && state.error.errorCode !== ErrorCodes.loginRequired) {
 
         const errorProps = {
+            containingViewName: 'userinfo',
             hyperlinkMessage: 'Problem Encountered',
             dialogTitle: 'User Info Error',
-            error: state.error,
             centred: false,
         };
         return (

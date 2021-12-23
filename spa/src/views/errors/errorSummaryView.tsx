@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {ErrorDetailsView} from './errorDetailsView';
 import {ErrorSummaryViewProps} from './errorSummaryViewProps';
 import {ErrorSummaryViewState} from './errorSummaryViewState';
@@ -14,7 +13,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
     // Initialise state and ensure that the error is the expected type for display
     const [state, setState] = useState<ErrorSummaryViewState>({
         showDetails: false,
-        error: props.error ? ErrorHandler.getFromException(props.error) : null,
+        error: null,
     });
 
     /*
