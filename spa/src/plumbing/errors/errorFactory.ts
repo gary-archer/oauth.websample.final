@@ -4,12 +4,12 @@ import {UIError} from './uiError';
 /*
  * A class to handle error processing
  */
-export class ErrorHandler {
+export class ErrorFactory {
 
     /*
      * Return an error based on the exception type or properties
      */
-    public static getFromException(exception: any): UIError {
+    public static fromException(exception: any): UIError {
 
         // Already handled errors
         if (exception instanceof UIError) {
@@ -24,14 +24,14 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getExceptionMessage(exception);
+        error.details = ErrorFactory._getExceptionMessage(exception);
         return error;
     }
 
     /*
      * A login required error is thrown to short circuit execution when the UI cannot get an access token
      */
-    public static getFromLoginRequired(): UIError {
+    public static fromLoginRequired(): UIError {
 
         return new UIError(
             'Login',
@@ -42,7 +42,7 @@ export class ErrorHandler {
     /*
      * Handle errors signing in
      */
-    public static getFromLoginOperation(exception: any, errorCode: string): UIError {
+    public static fromLoginOperation(exception: any, errorCode: string): UIError {
 
         // Already handled errors
         if (exception instanceof UIError) {
@@ -57,14 +57,14 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getExceptionMessage(exception);
+        error.details = ErrorFactory._getExceptionMessage(exception);
         return error;
     }
 
     /*
      * Handle errors during token operations
      */
-    public static getFromTokenRefreshError(exception: any): UIError {
+    public static fromTokenRefreshError(exception: any): UIError {
 
         // Already handled errors
         if (exception instanceof UIError) {
@@ -79,14 +79,14 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getExceptionMessage(exception);
+        error.details = ErrorFactory._getExceptionMessage(exception);
         return error;
     }
 
     /*
      * Handle sign out request errors
      */
-    public static getFromLogoutOperation(exception: any, errorCode: string): UIError {
+    public static fromLogoutOperation(exception: any, errorCode: string): UIError {
 
         // Already handled errors
         if (exception instanceof UIError) {
@@ -101,14 +101,14 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getExceptionMessage(exception);
+        error.details = ErrorFactory._getExceptionMessage(exception);
         return error;
     }
 
     /*
      * Return an object for Ajax errors
      */
-    public static getFromJsonParseError(): UIError {
+    public static fromJsonParseError(): UIError {
 
         return new UIError(
             'Data',
@@ -119,7 +119,7 @@ export class ErrorHandler {
     /*
      * Return an object for Ajax errors
      */
-    public static getFromHttpError(exception: any, url: string, source: string): UIError {
+    public static fromHttpError(exception: any, url: string, source: string): UIError {
 
         // Already handled errors
         if (exception instanceof UIError) {
@@ -165,7 +165,7 @@ export class ErrorHandler {
 
             // Override the default with a server response when received and CORS allows us to read it
             if (exception.response && exception.response.data && typeof exception.response.data === 'object') {
-                ErrorHandler._updateFromApiErrorResponse(error, exception.response.data);
+                ErrorFactory._updateFromApiErrorResponse(error, exception.response.data);
             }
         }
 
@@ -177,7 +177,7 @@ export class ErrorHandler {
     /*
      * Return an error due to rendering the view
      */
-    public static getFromRenderError(exception: any, componentStack?: string): UIError {
+    public static fromRenderError(exception: any, componentStack?: string): UIError {
 
         // Already handled errors
         if (exception instanceof UIError) {
@@ -192,7 +192,7 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getExceptionMessage(exception);
+        error.details = ErrorFactory._getExceptionMessage(exception);
         if (componentStack) {
             error.details += ` : ${componentStack}`;
         }

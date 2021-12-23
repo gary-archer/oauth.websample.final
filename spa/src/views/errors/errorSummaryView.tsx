@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ReactModal from 'react-modal';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorDetailsView} from './errorDetailsView';
@@ -45,11 +45,11 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
         if (props.containingViewName === event.containingViewName) {
 
             if (event.error) {
-            
+
                 setState((s) => {
                     return {
                         ...s,
-                        error: ErrorHandler.getFromException(event.error),
+                        error: ErrorFactory.fromException(event.error),
                     };
                 });
 

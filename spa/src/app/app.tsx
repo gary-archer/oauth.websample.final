@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
-import {ErrorHandler} from '../plumbing/errors/errorHandler';
+import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {MobileLoginCompleteEvent} from '../plumbing/events/mobileLoginCompleteEvent';
@@ -116,7 +116,7 @@ export function App(props: AppProps): JSX.Element {
         } catch (e) {
 
             // Treat cancelled logins as a non error, when running in a mobile web view
-            const error = ErrorHandler.getFromException(e);
+            const error = ErrorFactory.fromException(e);
             if (error.errorCode === ErrorCodes.redirectCancelled) {
                 location.hash = '#loggedout';
                 return;
@@ -183,7 +183,7 @@ export function App(props: AppProps): JSX.Element {
         } catch (e) {
 
             // Treat cancelled logouts as a non error, when running in a mobile web view
-            const error = ErrorHandler.getFromException(e);
+            const error = ErrorFactory.fromException(e);
             if (error.errorCode !== ErrorCodes.redirectCancelled) {
 
                 // Write logout technical error details to the console

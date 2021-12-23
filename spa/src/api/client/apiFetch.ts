@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig} from 'axios';
 import {Guid} from 'guid-typescript';
 import {AppConfiguration} from '../../configuration/appConfiguration';
-import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {CredentialSupplier} from '../../plumbing/oauth/credentialSupplier';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {ApiFetchOptions} from './apiFetchOptions';
@@ -43,7 +43,7 @@ export class ApiFetch {
 
             // Report Ajax errors if this is not a 401
             if (!this._isApi401Error(error1)) {
-                throw ErrorHandler.getFromHttpError(error1, url, 'Web API');
+                throw ErrorFactory.fromHttpError(error1, url, 'Web API');
             }
 
             try {
@@ -54,7 +54,7 @@ export class ApiFetch {
             } catch (error2) {
 
                 // Report Ajax errors for the retry
-                throw ErrorHandler.getFromHttpError(error2, url, 'Web API');
+                throw ErrorFactory.fromHttpError(error2, url, 'Web API');
             }
         }
     }
