@@ -105,25 +105,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         model.callApi(onSuccess, onError, options);
     }
 
-    /*
-     * Render user info when available
-     */
-    function renderUserInfo(): JSX.Element {
-
-        if (!state.userInfo) {
-            return (
-                <>
-                </>
-            );
-        }
-
-        return (
-            <div className='text-right mx-auto'>
-                <p className='font-weight-bold'>{`${state.userInfo.givenName} ${state.userInfo.familyName}`}</p>
-            </div>
-        );
-    }
-
     const errorProps = {
         eventBus: model.eventBus,
         containingViewName: 'userinfo',
@@ -136,7 +117,11 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
             <div className='text-right mx-auto'>
                 <ErrorSummaryView {...errorProps}/>
             </div>
-            {renderUserInfo()}
+            {state.userInfo &&
+                <div className='text-right mx-auto'>
+                    <p className='font-weight-bold'>{`${state.userInfo.givenName} ${state.userInfo.familyName}`}</p>
+                </div>
+            }
         </>
     );
 }

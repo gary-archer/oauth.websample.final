@@ -320,10 +320,6 @@ export function App(props: AppProps): JSX.Element {
      */
     function renderMain(): JSX.Element {
 
-        const errorBoundaryProps = {
-            eventBus: model.eventBus,
-        };
-
         const titleProps = {
             userInfo: {
                 viewModel: model.getUserInfoViewModel(),
@@ -337,6 +333,10 @@ export function App(props: AppProps): JSX.Element {
             handleExpireRefreshTokenClick: onExpireRefreshToken,
             handleReloadDataClick: model.reloadData,
             handleLogoutClick: onLogout,
+        };
+
+        const errorBoundaryProps = {
+            eventBus: model.eventBus,
         };
 
         const errorProps = {
