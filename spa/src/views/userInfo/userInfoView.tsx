@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {UserInfo} from '../../api/entities/userInfo';
-import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
+import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {UserInfoViewProps} from './userInfoViewProps';
 import {UserInfoViewState} from './userInfoViewState';
@@ -17,7 +17,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     const model = props.viewModel;
     const [state, setState] = useState<UserInfoViewState>({
         userInfo: null,
-        error: null,
     });
 
     useEffect(() => {
@@ -59,7 +58,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
                 return {
                     ...s,
                     userInfo: null,
-                    error: null,
                 };
             });
         }
@@ -78,6 +76,8 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     async function loadData(reload = false, causeError = false): Promise<void> {
 
         const onSuccess = (userInfo: UserInfo) => {
+
+            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('userinfo', null));
             setState((s) => {
                 return {
                     ...s,
@@ -88,6 +88,8 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         };
 
         const onError = (error: UIError) => {
+
+            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('userinfo', error));
             setState((s) => {
                 return {
                     ...s,
@@ -105,30 +107,38 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         model.callApi(onSuccess, onError, options);
     }
 
-    // Render errors if there are technical problems getting user info
-    if (state.error && state.error.errorCode !== ErrorCodes.loginRequired) {
+    /*
+     * Render user info when available
+     */
+    function renderUserInfo(): JSX.Element {
 
-        const errorProps = {
-            hyperlinkMessage: 'Problem Encountered',
-            dialogTitle: 'User Info Error',
-            error: state.error,
-            centred: false,
-        };
+        if (!state.userInfo) {
+            return (
+                <>
+                </>
+            );
+        }
+
         return (
             <div className='text-right mx-auto'>
-                <ErrorSummaryView {...errorProps}/>
+                <p className='font-weight-bold'>{`${state.userInfo.givenName} ${state.userInfo.familyName}`}</p>
             </div>
         );
     }
 
-    // Render user info otherwise
+    const errorProps = {
+        eventBus: model.eventBus,
+        containingViewName: 'userinfo',
+        hyperlinkMessage: 'Problem Encountered',
+        dialogTitle: 'User Info Error',
+        centred: false,
+    };
     return (
         <>
-            {state.userInfo &&
-                <div className='text-right mx-auto'>
-                    <p className='font-weight-bold'>{`${state.userInfo.givenName} ${state.userInfo.familyName}`}</p>
-                </div>
-            }
+            <div className='text-right mx-auto'>
+                <ErrorSummaryView {...errorProps}/>
+            </div>
+            {renderUserInfo()}
         </>
     );
 }

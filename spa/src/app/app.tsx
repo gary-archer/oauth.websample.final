@@ -3,10 +3,11 @@ import Modal from 'react-modal';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
-import {ErrorHandler} from '../plumbing/errors/errorHandler';
+import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {MobileLoginCompleteEvent} from '../plumbing/events/mobileLoginCompleteEvent';
+import {SetErrorEvent} from '../plumbing/events/setErrorEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
@@ -31,7 +32,6 @@ export function App(props: AppProps): JSX.Element {
     const [state, setState] = useState<AppState>({
         isInitialised: model.isInitialised,
         isMobileLayout: isMobileLayoutNeeded(),
-        error: null,
     });
 
     // Startup runs only once
@@ -49,9 +49,9 @@ export function App(props: AppProps): JSX.Element {
         Modal.setAppElement('#root');
 
         try {
-            // Initialise the view model if required
-            clearError();
+            // Initialise view models
             await model.initialise();
+            setError(null);
 
             // Ask the authenticator to handle the page load, to return logged in state the UI needs
             const isLoggedIn = await model.authenticator.handlePageLoad();
@@ -105,7 +105,7 @@ export function App(props: AppProps): JSX.Element {
         try {
 
             // Ask the authenticator to do the login redirect
-            clearError();
+            setError(null);
             await model.authenticator.login();
 
             // When running in a mobile web view we may still be in the login required view, in which case move home
@@ -116,7 +116,7 @@ export function App(props: AppProps): JSX.Element {
         } catch (e) {
 
             // Treat cancelled logins as a non error, when running in a mobile web view
-            const error = ErrorHandler.getFromException(e);
+            const error = ErrorFactory.fromException(e);
             if (error.errorCode === ErrorCodes.redirectCancelled) {
                 location.hash = '#loggedout';
                 return;
@@ -183,7 +183,7 @@ export function App(props: AppProps): JSX.Element {
         } catch (e) {
 
             // Treat cancelled logouts as a non error, when running in a mobile web view
-            const error = ErrorHandler.getFromException(e);
+            const error = ErrorFactory.fromException(e);
             if (error.errorCode !== ErrorCodes.redirectCancelled) {
 
                 // Write logout technical error details to the console
@@ -213,7 +213,7 @@ export function App(props: AppProps): JSX.Element {
     async function onExpireAccessToken(): Promise<void> {
 
         try {
-            clearError();
+            setError(null);
             await model.authenticator.expireAccessToken();
 
         } catch (e) {
@@ -227,7 +227,7 @@ export function App(props: AppProps): JSX.Element {
     async function onExpireRefreshToken(): Promise<void> {
 
         try {
-            clearError();
+            setError(null);
             await model.authenticator.expireRefreshToken();
 
         } catch (e) {
@@ -259,8 +259,6 @@ export function App(props: AppProps): JSX.Element {
 
     /*
      * When there is a logout on another tab, a local storage update is made and we remove tokens stored here
-     * This event does not seem to fire in the deployed system for the Safari browser but works locally
-     * https://www.py4u.net/discuss/317247
      */
     async function onStorage(event: StorageEvent): Promise<void> {
 
@@ -275,29 +273,7 @@ export function App(props: AppProps): JSX.Element {
      * A shared subroutine to set error state
      */
     function setError(e: any): void {
-
-        setState((s) => {
-            return {
-                ...s,
-                error: ErrorHandler.getFromException(e),
-            };
-        });
-    }
-
-    /*
-     * A shared subroutine to clear error state
-     */
-    function clearError(): void {
-
-        if (state.error) {
-
-            setState((s) => {
-                return {
-                    ...s,
-                    error: null,
-                };
-            });
-        }
+        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('main', e));
     }
 
     /*
@@ -318,15 +294,20 @@ export function App(props: AppProps): JSX.Element {
             handleLogoutClick: onLogout,
         };
 
+        const errorBoundaryProps = {
+            eventBus: model.eventBus,
+        };
+
         const errorProps = {
+            eventBus: model.eventBus,
+            containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
             dialogTitle: 'Application Error',
-            error: state.error,
             centred: true,
         };
 
         return (
-            <ErrorBoundary>
+            <ErrorBoundary {...errorBoundaryProps}>
                 <TitleView {...titleProps} />
                 <HeaderButtonsView {...headerButtonProps} />
                 <ErrorSummaryView {...errorProps} />
@@ -338,6 +319,10 @@ export function App(props: AppProps): JSX.Element {
      * Attempt to render the entire layout, which will trigger calls to Web APIs
      */
     function renderMain(): JSX.Element {
+
+        const errorBoundaryProps = {
+            eventBus: model.eventBus,
+        };
 
         const titleProps = {
             userInfo: {
@@ -355,9 +340,10 @@ export function App(props: AppProps): JSX.Element {
         };
 
         const errorProps = {
+            eventBus: model.eventBus,
+            containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
             dialogTitle: 'Application Error',
-            error: state.error,
             centred: true,
         };
 
@@ -391,7 +377,7 @@ export function App(props: AppProps): JSX.Element {
 
         // Render the tree view
         return (
-            <ErrorBoundary>
+            <ErrorBoundary {...errorBoundaryProps}>
                 <TitleView {...titleProps} />
                 <HeaderButtonsView {...headerButtonProps} />
                 <ErrorSummaryView {...errorProps} />

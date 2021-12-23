@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
-import {ErrorHandler} from '../../errors/errorHandler';
+import {ErrorFactory} from '../../errors/errorFactory';
 import {AxiosUtils} from '../../utilities/axiosUtils';
 import {UrlHelper} from '../../utilities/urlHelper';
 
@@ -70,7 +70,7 @@ export class OAuthFetch {
 
         } catch (e) {
 
-            throw ErrorHandler.getFromHttpError(e, url, 'OAuth Proxy API');
+            throw ErrorFactory.fromHttpError(e, url, 'OAuth Proxy API');
         }
     }
 }

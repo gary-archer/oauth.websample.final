@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
-import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
+import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
@@ -19,7 +19,6 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     const companyId = props.match.params.id;
     const [state, setState] = useState<TransactionsContainerState>({
         data: null,
-        error: null,
     });
 
     useEffect(() => {
@@ -62,11 +61,12 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     async function loadData(causeError: boolean): Promise<void> {
 
         const onSuccess = (data: CompanyTransactions) => {
+
+            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
             setState((s) => {
                 return {
                     ...s,
                     data,
-                    error: null,
                 };
             });
         };
@@ -81,13 +81,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
             } else {
 
                 // Otherwise render the error
-                setState((s) => {
-                    return {
-                        ...s,
-                        data: null,
-                        error,
-                    };
-                });
+                model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', error));
             }
         };
 
@@ -95,47 +89,42 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     }
 
     /*
-     * Output error details if required
+     * Conditional rendering based on whether there is data yet
      */
-    function renderError(): JSX.Element {
+    function renderTransactionsView(): JSX.Element {
 
-        if (state.error!.errorCode === ErrorCodes.loginRequired) {
+        if (!state.data) {
+
             return (
                 <>
                 </>
             );
         }
 
-        const errorProps = {
-            hyperlinkMessage: 'Problem Encountered in Transactions View',
-            dialogTitle: 'Transactions View Error',
-            error: state.error,
-            centred: true,
+        const childProps = {
+            data: state.data,
         };
-        return (
-            <ErrorSummaryView {...errorProps}/>
-        );
-    }
 
-    // Render an error on failure
-    if (state.error) {
-        return renderError();
-    }
-
-    // Display nothing until there is data
-    if (!state.data) {
-        return (
+        return  (
             <>
+                <ErrorSummaryView {...errorProps}/>
+                {state.data && <TransactionsView {...childProps}/>}
             </>
         );
     }
 
-    // Display the desktop or mobile view otherwise
-    const childProps = {
-        data: state.data,
+    const errorProps = {
+        eventBus: model.eventBus,
+        containingViewName: 'transactions',
+        hyperlinkMessage: 'Problem Encountered in Transactions View',
+        dialogTitle: 'Transactions View Error',
+        centred: true,
     };
 
     return  (
-        <TransactionsView {...childProps}/>
+        <>
+            <ErrorSummaryView {...errorProps}/>
+            {renderTransactionsView()}
+        </>
     );
 }

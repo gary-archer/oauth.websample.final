@@ -1,10 +1,15 @@
+import EventBus from 'js-event-bus';
+
 /*
  * Input to the error summary view
  */
 export interface ErrorSummaryViewProps {
 
-    // The passed error object, which can be updated as state
-    error: any;
+    // The bus via which the view receives error updates
+    eventBus: EventBus;
+
+    // The containing view
+    containingViewName: string;
 
     // A short message to display in the hyperlink
     hyperlinkMessage: string;

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Company} from '../../api/entities/company';
-import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
+import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {CompaniesContainerProps} from './companiesContainerProps';
 import {CompaniesContainerState} from './companiesContainerState';
@@ -19,7 +19,6 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     const model = props.viewModel;
     const [state, setState] = useState<CompaniesContainerState>({
         companies: [],
-        error: null,
     });
 
     useEffect(() => {
@@ -62,21 +61,23 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     async function loadData(causeError: boolean): Promise<void> {
 
         const onSuccess = (companies: Company[]) => {
+
+            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
             setState((s) => {
                 return {
                     ...s,
                     companies,
-                    error: null,
                 };
             });
         };
 
         const onError = (error: UIError) => {
+
+            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', error));
             setState((s) => {
                 return {
                     ...s,
                     companies: [],
-                    error,
                 };
             });
         };
@@ -84,57 +85,34 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         model.callApi(onSuccess, onError, causeError);
     }
 
-    /*
-     * Output error details if required
-     */
-    function renderError(): JSX.Element {
-
-        if (state.error!.errorCode === ErrorCodes.loginRequired) {
-            return (
-                <>
-                </>
-            );
-        }
-
-        const errorProps = {
-            hyperlinkMessage: 'Problem Encountered in Companies View',
-            dialogTitle: 'Companies View Error',
-            error: state.error,
-            centred: true,
-        };
-
-        return (
-            <ErrorSummaryView {...errorProps}/>
-        );
-    }
-
-    // Render an error on failure
-    if (state.error) {
-        return renderError();
-    }
-
-    // Display nothing until there is data
-    if (state.companies.length === 0) {
-        return (
-            <>
-            </>
-        );
-    }
-
-    // Display the desktop or mobile view
     const childProps = {
         companies: state.companies,
     };
+
+    const errorProps = {
+        eventBus: model.eventBus,
+        containingViewName: 'companies',
+        hyperlinkMessage: 'Problem Encountered in Companies View',
+        dialogTitle: 'Companies View Error',
+        centred: true,
+    };
+
     if (props.isMobileLayout) {
 
         return  (
-            <CompaniesMobileView {...childProps}/>
+            <>
+                <ErrorSummaryView {...errorProps}/>
+                {state.companies.length > 0 && <CompaniesMobileView {...childProps}/>}
+            </>
         );
 
     } else {
 
         return  (
-            <CompaniesDesktopView {...childProps}/>
+            <>
+                <ErrorSummaryView {...errorProps}/>
+                {state.companies.length > 0 && <CompaniesDesktopView {...childProps}/>}
+            </>
         );
     }
 }

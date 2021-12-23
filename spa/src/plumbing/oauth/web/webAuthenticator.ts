@@ -1,7 +1,7 @@
 import {AxiosRequestConfig} from 'axios';
 import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../../errors/errorCodes';
-import {ErrorHandler} from '../../errors/errorHandler';
+import {ErrorFactory} from '../../errors/errorFactory';
 import {UIError} from '../../errors/uiError';
 import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
@@ -46,7 +46,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
 
         } catch (e) {
 
-            throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginRequestFailed);
+            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginRequestFailed);
         }
     }
 
@@ -97,7 +97,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
                 history.replaceState({}, document.title, appLocation);
             }
 
-            throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
+            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
         }
     }
 
@@ -113,7 +113,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
 
         } catch (e) {
 
-            throw ErrorHandler.getFromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
+            throw ErrorFactory.fromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
 
         } finally {
 
@@ -149,7 +149,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
 
         // If there is no anti forgery token then the user must sign in
         if (!this._antiForgeryToken) {
-            throw ErrorHandler.getFromLoginRequired();
+            throw ErrorFactory.fromLoginRequired();
         }
 
         // Send the secure cookie and also the anti forgery token, which is used on data changing commands
@@ -174,10 +174,10 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
         } catch (e: any) {
 
             if (e.statusCode === 401) {
-                throw ErrorHandler.getFromLoginRequired();
+                throw ErrorFactory.fromLoginRequired();
             }
 
-            throw ErrorHandler.getFromTokenRefreshError(e);
+            throw ErrorFactory.fromTokenRefreshError(e);
         }
     }
 
