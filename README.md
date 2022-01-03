@@ -42,10 +42,10 @@ Add this file to the system keychain on macOS or the Windows certificate trust s
 ./certs/mycompany.ca.pem
 ```
 
-Then run the SPA, API and Token Handler in separate terminal windows:
+Then deploy components to run the SPA, API and Token Handler in separate terminal windows:
 
 ```bash
-./run.sh
+./deploy.sh
 ```
 
 The browser is then invoked at `https://web.mycompany.com/spa` and you can sign in with my AWS test credentials:
