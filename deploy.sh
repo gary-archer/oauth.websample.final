@@ -1,8 +1,8 @@
 #!/bin/bash
 
-##############################################################################
-# A script to run the SPA and token handler components when developing locally
-##############################################################################
+#################################################################################
+# A script to deploy the SPA and token handler components when developing locally
+#################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
