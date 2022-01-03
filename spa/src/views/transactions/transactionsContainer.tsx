@@ -62,7 +62,6 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
         const onSuccess = (data: CompanyTransactions) => {
 
-            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', null));
             setState((s) => {
                 return {
                     ...s,
@@ -90,6 +89,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
             }
         };
 
+        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', null));
         model.callApi(companyId, onSuccess, onError, causeError);
     }
 

@@ -77,7 +77,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
         const onSuccess = (userInfo: UserInfo) => {
 
-            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('userinfo', null));
             setState((s) => {
                 return {
                     ...s,
@@ -102,6 +101,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
             causeError,
         };
 
+        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('userinfo', null));
         model.callApi(onSuccess, onError, options);
     }
 
