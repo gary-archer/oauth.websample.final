@@ -54,7 +54,7 @@ fi
 #
 echo "Waiting for Token Handler API to become available ..."
 while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$TOKEN_HANDLER_BASE_URL/login/start")" != "200" ]; do
-    sleep 1s
+    sleep 2
 done
 
 #
@@ -62,7 +62,7 @@ done
 #
 echo "Waiting for Web Host to become available ..."
 while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/spa/index.html")" != "200" ]; do
-    sleep 1s
+    sleep 2
 done
 
 #
@@ -71,7 +71,7 @@ done
 echo "Waiting for SPA to become available ..."
 SPA_BUNDLE='./spa/dist/app.bundle.js'
 while [ ! -f "$SPA_BUNDLE" ]; do
-    sleep 1s
+    sleep 2
 done
 
 #
