@@ -28,10 +28,10 @@ esac
 # Passing this parameter via open -a is not supported so we rewrite the target script instead
 #
 if [ "$1" == 'LOCALAPI' ]; then
-  DEPLOYMENT_FILE='./resources/deploy.sh'
-  DEPLOYMENT_DATA=$(cat $DEPLOYMENT_FILE)
-  DEPLOYMENT_DATA=$(sed "s/LOCALAPI=false/LOCALAPI=true/g" <<< "$DEPLOYMENT_DATA")
-  echo "$DEPLOYMENT_DATA" > $DEPLOYMENT_FILE
+    DEPLOYMENT_FILE='./resources/deploy.sh'
+    DEPLOYMENT_DATA=$(cat $DEPLOYMENT_FILE)
+    DEPLOYMENT_DATA=$(sed "s/LOCALAPI=false/LOCALAPI=true/g" <<< "$DEPLOYMENT_DATA")
+    echo "$DEPLOYMENT_DATA" > $DEPLOYMENT_FILE
 fi
 
 #
