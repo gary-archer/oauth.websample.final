@@ -38,3 +38,5 @@ if [ $? -ne 0 ]; then
     echo 'Problem encountered building local token handler resources'
     exit
 fi
+
+echo 'All project built successfully'
