@@ -1,0 +1,9 @@
+.DS_Store
+node_modules
+dist
+!/spa/dist/loggedout.js
+!/spa/dist/unsupported.js
+resources
+.serverless
+.package
+response.txt

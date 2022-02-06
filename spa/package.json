@@ -1,0 +1,41 @@
+{
+  "name": "finalspa",
+  "version": "3.0.0",
+  "description": "The Final SPA, which implements OpenID Connect using an API driven Back End for Front End",
+  "main": "index.tsx",
+  "scripts": {
+    "lint": "npx eslint . --ext .ts,.tsx",
+    "start": "npm run clean && webpack --config webpack/webpack.config.dev.js --watch",
+    "buildRelease": "npm run clean && webpack --config webpack/webpack.config.prod.js",
+    "clean": "rimraf dist/*bundle*"
+  },
+  "keywords": [],
+  "author": "Gary Archer",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.23.0",
+    "guid-typescript": "^1.0.9",
+    "js-event-bus": "^1.1.1",
+    "moment": "^2.29.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-modal": "^3.14.3",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.13",
+    "@types/react-dom": "^17.0.8",
+    "@types/react-modal": "^3.12.0",
+    "@types/react-router-dom": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-react": "^7.26.1",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.5",
+    "webpack": "^5.58.2",
+    "webpack-cli": "^4.9.1",
+    "webpack-merge": "^5.8.0"
+  }
+}
