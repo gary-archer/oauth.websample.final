@@ -1,6 +1,6 @@
 import React, {ErrorInfo} from 'react';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {ErrorBoundaryProps} from './ErrorBoundaryProps';
+import {ErrorBoundaryProps} from './errorBoundaryProps';
 import {ErrorBoundaryState} from './errorBoundaryState';
 import {ErrorSummaryView} from './errorSummaryView';
 
