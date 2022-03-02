@@ -1,10 +1,10 @@
 ---
 exclude_paths: [
-    '*',    
+    '*',
     'spa/*',
     'spa/css/**',
     'spa/dist/**',
     'spa/webpack/**',
-    'webhost/**'
+    'webhost/**',
     'aws/**'
 ]
