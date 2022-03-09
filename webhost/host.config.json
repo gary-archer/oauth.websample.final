@@ -7,8 +7,7 @@
     },
     "securityHeaders": {
         "trustedHosts": [
-            "https://api.authsamples.com"
-        ],
-        "enabled": false
+            "https://tokenhandler.authsamples-dev.com"
+        ]
     }
 }

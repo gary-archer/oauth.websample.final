@@ -10,12 +10,12 @@ import {UrlHelper} from '../../utilities/urlHelper';
  */
 export class OAuthFetch {
 
-    private readonly _tokenHandlerApiBaseUrl: string;
+    private readonly _oauthAgentBaseUrl: string;
     private readonly _sessionId: string;
 
     public constructor(configuration: OAuthConfiguration, sessionId: string) {
 
-        this._tokenHandlerApiBaseUrl = configuration.tokenHandlerApiBaseUrl;
+        this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
         this._sessionId = sessionId;
     }
 
@@ -28,7 +28,7 @@ export class OAuthFetch {
         antiForgeryToken: string | null,
         requestData: any): Promise<any> {
 
-        const url = UrlHelper.append(this._tokenHandlerApiBaseUrl, operationPath);
+        const url = UrlHelper.append(this._oauthAgentBaseUrl, operationPath);
 
         try {
 
