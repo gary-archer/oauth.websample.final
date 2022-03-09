@@ -1,7 +1,7 @@
 {
     "host": {
         "port": 443,
-        "sslCertificateFileName": "../resources/certs/mycompany.ssl.p12",
+        "sslCertificateFileName": "./certs/webauthsamples-dev.ssl.p12",
         "sslCertificatePassword": "Password1",
         "mode": "development"
     },

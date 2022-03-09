@@ -6,6 +6,9 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+WEB_ORIGIN='https://web.authsamples-dev.com'
+OAUTH_AGENT_BASE_URL='https://localtokenhandler.authsamples-dev.com/oauth-agent'
+
 #
 # Get the platform
 #
@@ -25,16 +28,12 @@ esac
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-    # Update some local configuration
-    WEB_ORIGIN='https://web.authsamples-dev.com'
-    OAUTH_AGENT_BASE_URL='https://localtokenhandler.authsamples-dev.com/oauth-agent'
-
     # Run the Docker deployment
     echo 'Deploying a local token handler to a Docker Compose network ...'
     ./resources/deploy.sh
     
     # Wait for endpoints to come up
-    echo 'Waiting for the local token handler endpoints to become available ...'
+    echo 'Waiting for the local token handler endpoints to come up ...'
     while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$OAUTH_AGENT_BASE_URL/login/start")" != "200" ]; do
         sleep 2
     done
@@ -43,8 +42,20 @@ fi
 #
 # Run the web host to serve static content
 #
-cd webhost
-npm start
+if [ "$PLATFORM" == 'MACOS' ]; then
+    open -a Terminal ./webhost/deploy.sh
+else
+    GIT_BASH="C:\Program Files\Git\git-bash.exe"
+    "$GIT_BASH" -c ./webhost/deploy.sh &
+fi
+
+#
+# Wait for it to become available
+#
+echo "Waiting for Web Host to become available ..."
+while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/spa/index.html")" != "200" ]; do
+    sleep 2
+done
 
 #
 # Run the SPA in the default browser, then sign in with these credentials:
