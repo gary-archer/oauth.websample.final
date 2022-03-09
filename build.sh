@@ -15,7 +15,6 @@ mkdir resources
 #
 # Download SSL certificates for serving web content locally
 #
-rm -rf certs
 git clone https://github.com/gary-archer/oauth.developmentcertificates ./resources/devcerts
 if [ $? -ne 0 ]; then
     echo 'Problem encountered downloading development certificates'
