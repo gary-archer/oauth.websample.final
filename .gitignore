@@ -4,6 +4,7 @@ dist
 !/spa/dist/loggedout.js
 !/spa/dist/unsupported.js
 resources
+certs
 .serverless
 .package
 response.txt
