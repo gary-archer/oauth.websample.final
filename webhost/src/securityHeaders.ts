@@ -1,14 +1,14 @@
 import {Response} from 'express';
-import {SecurityHeaderConfiguration} from './configuration/securityHeaderConfiguration';
+import {Configuration} from './configuration';
 
 /*
  * A simple class to manage writing security headers and the Content Security Policy
  */
 export class SecurityHeaders {
 
-    private readonly _configuration: SecurityHeaderConfiguration;
+    private readonly _configuration: Configuration;
 
-    public constructor(configuration: SecurityHeaderConfiguration) {
+    public constructor(configuration: Configuration) {
         this._configuration = configuration;
     }
 

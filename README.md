@@ -29,10 +29,10 @@ Then run the following script from a macOS terminal or from Git Bash on Windows:
 ./build.sh
 ```
 
-Custom development URLs are used so you must add these entries to your hosts file:
+Custom development domains are used so you must add this entry to your hosts file:
 
 ```
-127.0.0.1 web.mycompany.com api.mycompany.com
+127.0.0.1 web.authsamples-dev.com
 ::1       localhost
 ```
 
@@ -40,10 +40,10 @@ Trust the root certificate that the build step downloads to your computer, so th
 Add this file to the system keychain on macOS or the Windows certificate trust store for the local computer:
 
 ```
-./resources/certs/mycompany.ca.pem
+./webhost/certs/web.authsamples-dev.ca.pem
 ```
 
-Then deploy components to run the SPA, Web Host and Token Handler in separate terminal windows:
+Then deploy components to run the SPA on the local computer:
 
 ```bash
 ./deploy.sh
@@ -58,10 +58,9 @@ You can then test all lifecycle operations, including token refresh, multi-tab b
 
 ## Supporting Components
 
-Although this flow results in simple SPA code, it requires some supporting components:
+Although this flow results in simple SPA code, it requires AWS deployed backend for frontend components:
 
-- [Token Handler API](https://github.com/gary-archer/oauth.tokenhandlerapi)
-- [Local Deployment Scripts](https://github.com/gary-archer/oauth.localtokenhandler.deployment)
+- [Token Handler Components](https://github.com/gary-archer/oauth.tokenhandlerapi)
 
 ## Further Information
 

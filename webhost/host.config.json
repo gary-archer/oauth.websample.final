@@ -1,13 +1,7 @@
 {
-    "host": {
-        "port": 443,
-        "sslCertificateFileName": "./certs/web.authsamples-dev.ssl.p12",
-        "sslCertificatePassword": "Password1",
-        "mode": "development"
-    },
-    "securityHeaders": {
-        "trustedHosts": [
-            "https://tokenhandler.authsamples-dev.com"
-        ]
-    }
+    "port": 443,
+    "sslCertificateFileName": "./certs/web.authsamples-dev.ssl.p12",
+    "sslCertificatePassword": "Password1",
+    "trustedHosts": ["https://tokenhandler.authsamples-dev.com"],
+    "mode": "development"
 }

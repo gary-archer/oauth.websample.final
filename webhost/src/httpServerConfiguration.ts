@@ -1,7 +1,7 @@
 import {Application} from 'express';
 import fs from 'fs-extra';
 import https from 'https';
-import {Configuration} from './configuration/configuration';
+import {Configuration} from './configuration';
 import {SecurityHeaders} from './securityHeaders';
 import {StaticContent} from './staticContent';
 
@@ -18,8 +18,8 @@ export class HttpServerConfiguration {
 
         this._expressApp = expressApp;
         this._configuration = configuration;
-        const securityHeaders = new SecurityHeaders(this._configuration.securityHeaders);
-        this._staticContent = new StaticContent(this._configuration.host.mode, securityHeaders);
+        const securityHeaders = new SecurityHeaders(this._configuration);
+        this._staticContent = new StaticContent(this._configuration.mode, securityHeaders);
     }
 
     /*
@@ -38,26 +38,26 @@ export class HttpServerConfiguration {
      */
     public async startListening(): Promise<void> {
 
-        if (this._configuration.host.sslCertificateFileName && this._configuration.host.sslCertificatePassword) {
+        if (this._configuration.sslCertificateFileName && this._configuration.sslCertificatePassword) {
 
             // Set HTTPS server options
-            const pfxFile = await fs.readFile(this._configuration.host.sslCertificateFileName);
+            const pfxFile = await fs.readFile(this._configuration.sslCertificateFileName);
             const serverOptions = {
                 pfx: pfxFile,
-                passphrase: this._configuration.host.sslCertificatePassword,
+                passphrase: this._configuration.sslCertificatePassword,
             };
 
             // Start listening
             const httpsServer = https.createServer(serverOptions, this._expressApp);
-            httpsServer.listen(this._configuration.host.port, () => {
-                console.log(`Web Host is listening on HTTPS port ${this._configuration.host.port}`);
+            httpsServer.listen(this._configuration.port, () => {
+                console.log(`Web Host is listening on HTTPS port ${this._configuration.port}`);
             });
 
         } else {
 
             // Otherwise listen over HTTP
-            this._expressApp.listen(this._configuration.host.port, () => {
-                console.log(`Web Host is listening on HTTP port ${this._configuration.host.port}`);
+            this._expressApp.listen(this._configuration.port, () => {
+                console.log(`Web Host is listening on HTTP port ${this._configuration.port}`);
             });
         }
     }

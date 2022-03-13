@@ -12,6 +12,7 @@ export class StaticContent {
     private readonly _securityHeaders: SecurityHeaders;
 
     public constructor(mode: string, securityHeaders: SecurityHeaders) {
+
         this._securityHeaders = securityHeaders;
         this._setupCallbacks();
 

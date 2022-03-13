@@ -1,1 +1,0 @@
-1. Different local cert for https://web.authsamples-dev.com

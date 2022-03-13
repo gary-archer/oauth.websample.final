@@ -7,21 +7,6 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Recreate resources
-#
-rm -rf resources
-mkdir resources
-
-#
-# Download SSL certificates for serving web content locally
-#
-git clone https://github.com/gary-archer/oauth.developmentcertificates ./resources/devcerts
-if [ $? -ne 0 ]; then
-    echo 'Problem encountered downloading development certificates'
-    exit 1
-fi
-
-#
 # Build the web host
 #
 cd webhost

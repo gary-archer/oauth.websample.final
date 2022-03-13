@@ -1,5 +1,6 @@
 import express from 'express';
-import {ConfigurationLoader} from './configuration/configurationLoader';
+import fs from 'fs-extra';
+import {Configuration} from './configuration';
 import {HttpServerConfiguration} from './httpServerConfiguration';
 
 /*
@@ -8,8 +9,8 @@ import {HttpServerConfiguration} from './httpServerConfiguration';
 (async () => {
 
     // First load configuration
-    const loader = new ConfigurationLoader();
-    const configuration = await loader.load();
+    const configurationBuffer = await fs.readFile('host.config.json');
+    const configuration =  JSON.parse(configurationBuffer.toString()) as Configuration;
 
     // Create the web host
     const expressApp = express();
