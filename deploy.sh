@@ -7,7 +7,7 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 WEB_ORIGIN='https://web.authsamples-dev.com'
-OAUTH_AGENT_BASE_URL='https://localtokenhandler.authsamples-dev.com/oauth-agent'
+TOKEN_HANDLER_BASE_URL='https://localtokenhandler.authsamples-dev.com'
 
 #
 # Get the platform
@@ -34,7 +34,7 @@ if [ "$1" == 'LOCALAPI' ]; then
     
     # Wait for endpoints to come up
     echo 'Waiting for the local token handler endpoints to come up ...'
-    while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$OAUTH_AGENT_BASE_URL/login/start")" != "200" ]; do
+    while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$TOKEN_HANDLER_BASE_URL/oauth-agent/login/start")" != "200" ]; do
         sleep 2
     done
 fi
