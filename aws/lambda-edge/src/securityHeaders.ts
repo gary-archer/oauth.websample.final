@@ -12,7 +12,7 @@ const handler: any = async (event: any, context: Context) => {
     // Only allow Ajax calls from the browser to our API domain, and code to execute from our web origin
     let policy = "default-src 'none';";
     policy += " script-src 'self';";
-    policy += " connect-src 'self' https://api.authsamples.com;";
+    policy += " connect-src 'self' https://tokenhandler.authsamples.com;";
     policy += " child-src 'self';";
     policy += " img-src 'self';";
     policy += " style-src 'self';";

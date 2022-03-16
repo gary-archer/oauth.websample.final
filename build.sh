@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#############################################################################################
-# A script to build the SPA and set up dependencies ready for deploying a token handler setup
-#############################################################################################
+#######################################################
+# A script to build the SPA resources ready for running
+#######################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
@@ -17,7 +17,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Build the SPA which will then enter watch mode
+# Build the SPA
 #
 cd ../spa
 ./build.sh
@@ -28,15 +28,16 @@ fi
 cd ..
 
 #
-# Build local token handler resources 
+# Download and build local token handler resources if running against a local API
 #
-rm -rf resources
-git clone https://github.com/gary-archer/oauth.localtokenhandler.deployment ./resources
-cd resources
-./build.sh
-if [ $? -ne 0 ]; then
-    echo 'Problem encountered building local token handler resources'
-    exit
+if [ "$1" == 'LOCALAPI' ]; then
+    
+    git clone https://github.com/gary-archer/oauth.localtokenhandler.deployment ./resources
+    cd resources
+    ./build.sh
+    if [ $? -ne 0 ]; then
+        echo 'Problem encountered building local token handler resources'
+        exit
+    fi
 fi
-
 echo 'All projects built successfully'
