@@ -16,14 +16,9 @@ The final demo SPA, which aims for a [Web Architecture](https://authguidance.com
 
 You can login to the online version by following the instructions in the [Quick Start Page](https://authguidance.com/home/code-samples-quickstart/).
 
-## Local Computer Quick Start
+## Running the SPA Code
 
-Ensure that prerequisites are installed:
-
-- Node.js
-- Docker Desktop
-
-Then run the following script from a macOS terminal or from Git Bash on Windows:
+Ensure that Node.js installed, then run the following script from a macOS terminal or from Git Bash on Windows:
 
 ```bash
 ./build.sh
@@ -40,16 +35,16 @@ Trust the root certificate that the build step downloads to your computer, so th
 Add this file to the system keychain on macOS or the Windows certificate trust store for the local computer:
 
 ```
-./webhost/certs/web.authsamples-dev.ca.pem
+./webhost/certs/authsamples-dev.ca.pem
 ```
 
-Then deploy components to run the SPA on the local computer:
+Then deploy components if required, to run the SPA on the local computer:
 
 ```bash
 ./deploy.sh
 ```
 
-The browser is then invoked at `https://web.mycompany.com/spa` and you can sign in with these credentials:
+The browser is invoked at `https://web.authsamples-dev.com/spa` and you can sign in with these credentials:
 
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
@@ -58,7 +53,7 @@ You can then test all lifecycle operations, including token refresh, multi-tab b
 
 ## Supporting Components
 
-Although this flow results in simple SPA code, it requires AWS deployed backend for frontend components:
+The secure flow uses AWS deployed `backend for frontend` components to support the SPA:
 
 - [Token Handler Components](https://github.com/gary-archer/oauth.tokenhandlerapi)
 

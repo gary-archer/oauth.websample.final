@@ -19,7 +19,7 @@ fi
 # Move web host certificates to this folder
 #
 rm -rf certs
-mv ./resources/webauthsamples-dev ./certs
+mv ./resources/authsamples-dev ./certs
 rm -rf ./resources
 
 #
