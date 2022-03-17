@@ -24,7 +24,7 @@ case "$(uname -s)" in
 esac
 
 #
-# If running against a local API, execute the local token handler in Docker
+# Run ./deploy.sh LOCALAPI to run a local token handler in Docker, to route to a locally running API
 #
 if [ "$1" == 'LOCALAPI' ]; then
 

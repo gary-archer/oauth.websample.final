@@ -28,7 +28,7 @@ fi
 cd ..
 
 #
-# Download and build local token handler resources if running against a local API
+# Run ./build.sh LOCALAPI to route to one of my blog's final APIs running locally, via a local token handler
 #
 if [ "$1" == 'LOCALAPI' ]; then
     
