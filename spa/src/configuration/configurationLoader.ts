@@ -24,7 +24,7 @@ export class ConfigurationLoader {
         } catch (xhr) {
 
             // Capture error details
-            throw ErrorFactory.fromHttpError(xhr, fileName, 'Web Server');
+            throw ErrorFactory.fromHttpError(xhr, fileName, 'Web Host');
         }
     }
 }

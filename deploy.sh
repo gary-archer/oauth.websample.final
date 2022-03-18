@@ -28,15 +28,23 @@ esac
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
+    # Point the SPA to the local token handler by using this configuration file
+    cp spa/config/config.localtokenhandler.json spa/spa.config.json
+    
     # Run the Docker deployment
     echo 'Deploying a local token handler to a Docker Compose network ...'
     ./resources/deploy.sh
-    
+
     # Wait for endpoints to come up
     echo 'Waiting for the local token handler endpoints to come up ...'
     while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$TOKEN_HANDLER_BASE_URL/oauth-agent/login/start")" != "200" ]; do
         sleep 2
     done
+
+else
+
+    # By default we instead point the SPA to the remote token handler, so that only the SPA needs to be run locally
+    cp spa/config/config.remotetokenhandler.json spa/spa.config.json
 fi
 
 #
