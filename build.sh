@@ -32,6 +32,7 @@ cd ..
 #
 if [ "$1" == 'LOCALAPI' ]; then
     
+    rm -rf resources
     git clone https://github.com/gary-archer/oauth.localtokenhandler.deployment ./resources
     cd resources
     ./build.sh
@@ -40,4 +41,3 @@ if [ "$1" == 'LOCALAPI' ]; then
         exit
     fi
 fi
-echo 'All projects built successfully'
