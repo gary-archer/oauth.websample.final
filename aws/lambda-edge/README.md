@@ -10,10 +10,25 @@ This also ensures a good secrity rating on sites such as Mozilla Observatory:
 
 - https://observatory.mozilla.org/analyze/web.authsamples.com
 
-Run these commands to deploy the lambda functions and attach them to the Cloudfront distribution:
+## Usage
+
+Run these commands to build the lambda functions:
 
 ```bash
 npm install
+npm run build
+```
+
+Run these commands to test the lambda functions:
+
+```bash
+npm run defaultDocument
+npm run securityHeaders
+```
+
+Run these commands to deploy the lambda functions and attach them to the Cloudfront distribution:
+
+```bash
 npm run package
 npm run deploy
 ```

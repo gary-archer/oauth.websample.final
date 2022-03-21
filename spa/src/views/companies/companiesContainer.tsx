@@ -82,6 +82,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         };
 
         model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
+        
         model.callApi(onSuccess, onError, causeError);
     }
 
