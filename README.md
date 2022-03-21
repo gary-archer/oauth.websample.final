@@ -16,7 +16,7 @@ The final demo SPA, which aims for a [Web Architecture](https://authguidance.com
 
 You can login to the online version by following the instructions in the [Quick Start Page](https://authguidance.com/home/code-samples-quickstart/).
 
-## Running the SPA Code
+## Quick Start
 
 Ensure that Node.js installed, then run the following script from a macOS terminal or from Git Bash on Windows:
 
