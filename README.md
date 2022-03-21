@@ -8,9 +8,9 @@
 
 The final demo SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities:
 
-- The SPA uses an API driven OpenID Connect solution via Curity's [Token Handler Pattern](https://github.com/curityio/web-oauth-via-bff)
+- The SPA uses an API driven OpenID Connect solution via **Curity's Token Handler Pattern**
 - Only client side React technology is needed to implement the SPA, for productive development
-- The SPA is deployed to 20 global locations via a Content Delivery Network
+- The SPA is deployed to many global locations via a Content Delivery Network
 
 ## Deployed System
 
@@ -51,12 +51,16 @@ The browser is invoked at `https://web.authsamples-dev.com/spa` and you can sign
 
 You can then test all lifecycle operations, including token refresh, multi-tab browsing and multi-tab logout.
 
-## Supporting Components
-
-The secure flow uses AWS deployed `backend for frontend` components to support the SPA:
-
-- [Token Handler Components](https://github.com/gary-archer/oauth.tokenhandlerapi)
-
 ## Further Information
 
 Further architecture and non-functional details are described starting in the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) blog post.
+
+## Cloud Infrastructure Used
+
+* AWS Route 53 is used for custom hosting domains
+* AWS S3 is used as the upload point for web static content
+* AWSA Cloudfront is used to deploy web static content fgor globally equal performance
+* AWS Certificate Manager is used to manage and auto renew the Web Host's SSL certificate
+* AWS Cognito is used as the default Authorization Server
+* AWS deployed [Backend for Frontend Components](https://authguidance.com/2019/09/09/spa-back-end-for-front-end) are used to perform OAuth and cookies issuing work for the SPA
+
