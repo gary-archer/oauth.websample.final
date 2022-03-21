@@ -59,7 +59,7 @@ Further architecture and non-functional details are described starting in the [F
 
 * AWS Route 53 is used for custom hosting domains
 * AWS S3 is used as the upload point for web static content
-* AWSA Cloudfront is used to distribute web static content to enable globally equal web performance
+* AWSA Cloudfront is used to distribute web static content globally, for equal web performance
 * AWS Certificate Manager is used to manage and auto renew the Web Host's SSL certificate
 * AWS Cognito is used as the default Authorization Server
 * AWS deployed [Backend for Frontend Components](https://authguidance.com/2019/09/09/spa-back-end-for-front-end) are used to perform OAuth and cookies issuing work for the SPA
