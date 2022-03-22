@@ -62,5 +62,6 @@ Further architecture and non-functional details are described starting in the [F
 * AWSA Cloudfront is used to distribute web static content globally, for equal web performance
 * AWS Certificate Manager is used to manage and auto renew the Web Host's SSL certificate
 * AWS Cognito is used as the default Authorization Server
+* AWS API Gateway is used to host remote API endpoints used by the SPA
 * AWS deployed [Backend for Frontend Components](https://authguidance.com/2019/09/09/spa-back-end-for-front-end) are used to perform OAuth and cookie work for the SPA
 
