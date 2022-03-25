@@ -1,13 +1,11 @@
-1. Basic changes to deployment working
+1. HTML webpack plugin, and aim for readability
 
-2. HTML plugin, and aim for readability
+2. Script integrity hash
 
-3. Script integrity hash
+3. Cache busting suffix based on date
 
-4. Cache busting suffix based on date
+4. Get bootstrap 5 looking right, document changes, then update all web code samples
 
-5. Update to latest bootstrap
+5. Reduce the size of bootstrap dependency
 
-6. Reduce the size of bootstrap dependency
-
-7. Add key points to SPA blog posts
+6. Add key points to Final SPA blog posts
