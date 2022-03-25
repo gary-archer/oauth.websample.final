@@ -1,11 +1,18 @@
+DELIVERABLE 1
+-------------
 1. HTML webpack plugin, and aim for readability
 
-2. Script integrity hash
+2. Script integrity hash for CSS and JS used by HTML
 
 3. Cache busting suffix based on date
 
-4. Get bootstrap 5 looking right, document changes, then update all web code samples
+4. Deploy to AWS then merge
 
-5. Reduce the size of bootstrap dependency
+5. Add key points to Final SPA blog posts
 
-6. Add key points to Final SPA blog posts
+DELIVERABLE 2
+-------------
+1. Get bootstrap 5 looking right, document changes, then update all web code samples
+
+2. Reduce the size of bootstrap dependency
+
