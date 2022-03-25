@@ -7,14 +7,12 @@
         <base href='/spa/' />
         <title>OAuth Demo App</title>
 
-        <link rel='stylesheet' href='bootstrap.min.css'>
-        <link rel='stylesheet' href='app.css'>
-    </head>
+        <link rel='stylesheet' href='bootstrap.min.css?t=BUILD_TIMESTAMP' integrity='INTEGRITY_CSS_BOOTSTRAP'>
+        <link rel='stylesheet' href='app.css?t=BUILD_TIMESTAMP' integrity='INTEGRITY_CSS_APP'>
     <body>
         <div id='root' class='container'></div>
 
-        <script type='module' src='vendor.bundle.js'></script>
-        <script type='module' src='app.bundle.js'></script>
-        <script nomodule src='unsupported.js'></script>
+        <script type='module' src='vendor.bundle.js?t=BUILD_TIMESTAMP' integrity='INTEGRITY_JS_VENDOR'></script>
+        <script type='module' src='app.bundle.js?t=BUILD_TIMESTAMP' integrity='INTEGRITY_JS_APP'></script>
     </body>
 </html>
