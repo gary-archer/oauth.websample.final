@@ -1,0 +1,13 @@
+1. Basic changes to deployment working
+
+2. HTML plugin, and aim for readability
+
+3. Script integrity hash
+
+4. Cache busting suffix based on date
+
+5. Update to latest bootstrap
+
+6. Reduce the size of bootstrap dependency
+
+7. Add key points to SPA blog posts
