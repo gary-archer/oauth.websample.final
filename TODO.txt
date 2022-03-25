@@ -1,4 +1,0 @@
-DELIVERABLE 1
--------------
-1. Deploy to AWS then look at Mozilla Observatory, then merge
-2. Add key points to Final SPA blog posts
