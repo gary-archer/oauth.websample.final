@@ -40,7 +40,7 @@ module.exports = {
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
-          rewriteIndexHtml();
+          rewriteIndexHtml(compiler.watchMode);
         });
       }
     }

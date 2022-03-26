@@ -2,23 +2,34 @@ const crypto = require('crypto');
 const fs = require('fs');
 
 /*
- * An ad-hoc plugin to update the index.html whenever Javascript code changes
+ * Update the index.html for release builds with some production level tags
  */
-module.exports = function rewriteIndexHtml() {
+module.exports = function rewriteIndexHtml(isWatchMode) {
 
-    // Get the timestamp at the time of the build, used for cache busting
-    const timestamp = new Date().getTime().toString();
+    if (!isWatchMode) {
 
-    // Make updates to the index.html file
-    replaceTextInFile('./dist/index.html', 'BUILD_TIMESTAMP', timestamp);
-    replaceTextInFile('./dist/index.html', 'INTEGRITY_CSS_BOOTSTRAP', calculateFileHash('./dist/bootstrap.min.css'));
-    replaceTextInFile('./dist/index.html', 'INTEGRITY_CSS_APP',       calculateFileHash('./dist/app.css'));
-    replaceTextInFile('./dist/index.html', 'INTEGRITY_JS_VENDOR',     calculateFileHash('./dist/vendor.bundle.js'));
-    replaceTextInFile('./dist/index.html', 'INTEGRITY_JS_APP',        calculateFileHash('./dist/app.bundle.js'));
+        // Get the timestamp at the time of the build
+        const timestamp = new Date().getTime().toString();
 
-    // Make updates to the loggedout.html file
-    replaceTextInFile('./dist/loggedout.html', 'BUILD_TIMESTAMP', timestamp);
-    replaceTextInFile('./dist/loggedout.html', 'INTEGRITY_JS_LOGGEDOUT', calculateFileHash('./dist/loggedout.js'));
+        // Update CSS resources with a cache busting timestamp and an integrity hash
+        updateResource('./dist/index.html', 'href', 'bootstrap.min.css', timestamp, calculateFileHash('./dist/bootstrap.min.css'))
+        updateResource('./dist/index.html', 'href', 'app.css',           timestamp, calculateFileHash('./dist/app.css'))
+
+        // Update Javascript resources with a cache busting timestamp and an integrity hash
+        updateResource('./dist/index.html',     'src', 'vendor.bundle.js', timestamp, calculateFileHash('./dist/vendor.bundle.js'))
+        updateResource('./dist/index.html',     'src', 'app.bundle.js',    timestamp, calculateFileHash('./dist/app.bundle.js'))
+        updateResource('./dist/loggedout.html', 'src', 'loggedout.js',     timestamp, calculateFileHash('./dist/loggedout.js'))
+    }
+}
+
+/*
+ * Update a resource with a cache busting timestamp and a script integrity value
+ */
+function updateResource(filePath, itemType, resourceName, timestamp, integrity) {
+
+    const from = `${itemType}='${resourceName}'`;
+    const to = `${itemType}='${resourceName}?t=${timestamp}' integrity='${integrity}'`;
+    replaceTextInFile(filePath, from, to);
 }
 
 /*
