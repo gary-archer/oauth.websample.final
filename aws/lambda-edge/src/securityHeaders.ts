@@ -9,17 +9,21 @@ const handler: any = async (event: any, context: Context) => {
     const response = event.Records[0].cf.response;
     const headers = response.headers;
 
-    // Only allow Ajax calls from the browser to our API domain, and code to execute from our web origin
+    // Prevent external sites being able to abuse the SPA's web origin
     let policy = "default-src 'none';";
     policy += " script-src 'self';";
     policy += " connect-src 'self' https://tokenhandler.authsamples.com;";
     policy += " child-src 'self';";
     policy += " img-src 'self';";
     policy += " style-src 'self';";
-    policy += " object-src 'none'";
+    policy += " object-src 'none';";
+    policy += " frame-ancestors 'none';";
+    policy += " base-uri 'self';";
+    policy += " form-action 'self'";
+
     headers['content-security-policy'] = [{key: 'Content-Security-Policy', value: policy}];
 
-    // Set other security headers
+    // Add standard headers, including the content security policy
     headers['strict-transport-security'] =
         [{key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubdomains; preload'}];
     headers['x-frame-options'] = [{key: 'X-Frame-Options', value: 'DENY'}];

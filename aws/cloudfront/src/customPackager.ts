@@ -18,12 +18,10 @@ class Packager {
         // HTML
         const root = '../../spa';
         await fs.copy(`${root}/dist/index.html`,     '.package/spa/index.html');
-        await fs.copy(`${root}/dist/loggedout.html`, '.package/spa/loggedout.html');
 
         // Javascript
         await fs.copy(`${root}/dist/vendor.bundle.js`, '.package/spa/vendor.bundle.js');
         await fs.copy(`${root}/dist/app.bundle.js`,    '.package/spa/app.bundle.js');
-        await fs.copy(`${root}/dist/loggedout.js`,     '.package/spa/loggedout.js');
 
         // CSS
         await fs.copy(`${root}/dist/bootstrap.min.css`, '.package/spa/bootstrap.min.css');

@@ -1,0 +1,11 @@
+1. React stuff to fix
+
+2. customPackager --> use a bash script
+
+3. Change token handler and Cognito to use /loggedout rather than /loggedout.html
+   Start by adding a second logout redirect URI path
+
+4. Test extra security headers, such as frame-ancestors
+   Re-run Mozilla Observatory once site is deployed
+
+5. Use a link in the companies view to move to the transactions view

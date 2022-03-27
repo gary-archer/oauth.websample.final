@@ -16,7 +16,7 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
             <div key={company.id}>
                 <div className='row mobileHeaderRow'>
                     <div className='col-6 h4'>
-                        <a href={`#company=${company.id}`}>
+                        <a href={`/spa/companies/${company.id}`}>
                             {company.name}
                         </a>
                     </div>

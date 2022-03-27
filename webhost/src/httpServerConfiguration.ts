@@ -27,9 +27,8 @@ export class HttpServerConfiguration {
      */
     public initializeWebStaticContentHosting(): void {
 
-        this._expressApp.get('/spa/spa.config.json', this._staticContent.getWebConfiguration);
         this._expressApp.get('/spa/*', this._staticContent.getWebResource);
-        this._expressApp.get('/spa', this._staticContent.getDefaultDocument);
+        this._expressApp.get('/spa', this._staticContent.getWebResource);
         this._expressApp.get('/favicon.ico', this._staticContent.getFavicon);
     }
 

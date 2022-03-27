@@ -21,7 +21,7 @@ export function CompaniesDesktopView(props: CompaniesViewProps): JSX.Element {
                     {company.region}
                 </div>
                 <div className='col-2 my-auto text-center'>
-                    <a href={`#company=${company.id}`}>
+                    <a href={`/spa/companies/${company.id}`}>
                         View Transactions
                     </a>
                 </div>
