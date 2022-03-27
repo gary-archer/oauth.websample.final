@@ -3,6 +3,5 @@ node_modules
 dist
 resources
 certs
-.serverless
 .package
-response.txt
+.serverless

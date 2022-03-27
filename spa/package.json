@@ -7,8 +7,8 @@
     "lint": "npx eslint . --ext .ts,.tsx",
     "start": "npm run clean && npm run copy && webpack --config webpack/webpack.config.dev.js --watch",
     "buildRelease": "npm run clean && npm run copy && webpack --config webpack/webpack.config.prod.js",
-    "copy": "cp spa.config.json *.html *.css favicon.ico dist",
-    "clean": "cd dist && rimraf spa.config.json *.html *.css favicon.ico *bundle*"
+    "copy": "cp spa.config.json index.html *.css favicon.ico dist",
+    "clean": "rm -rf dist && mkdir dist"
   },
   "keywords": [],
   "author": "Gary Archer",
