@@ -39,7 +39,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
 
             // Store the app location and other state if required
             HtmlStorageHelper.appState = {
-                hash: location.hash || '#',
+                path: location.href || '/',
             };
 
             // Then do the redirect
@@ -76,7 +76,7 @@ export class WebAuthenticator implements Authenticator, CredentialSupplier {
                 // Get the location before the redirect
                 const appState = HtmlStorageHelper.appState;
                 if (appState) {
-                    appLocation = appState.hash;
+                    appLocation = appState.path;
                 }
 
                 // Remove session storage

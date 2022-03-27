@@ -38,6 +38,7 @@ module.exports = {
   plugins: [
 
     {
+      // In release builds, write script integrity 
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
           rewriteIndexHtml(compiler.watchMode);

@@ -18,7 +18,6 @@ module.exports = function rewriteIndexHtml(isWatchMode) {
         // Update Javascript resources with a cache busting timestamp and an integrity hash
         updateResource('./dist/index.html',     'src', 'vendor.bundle.js', timestamp, calculateFileHash('./dist/vendor.bundle.js'))
         updateResource('./dist/index.html',     'src', 'app.bundle.js',    timestamp, calculateFileHash('./dist/app.bundle.js'))
-        updateResource('./dist/loggedout.html', 'src', 'loggedout.js',     timestamp, calculateFileHash('./dist/loggedout.js'))
     }
 }
 
@@ -52,6 +51,5 @@ function replaceTextInFile(filePath, from, to) {
     const oldData = fs.readFileSync(filePath, 'utf8');
     var regex = new RegExp(from, 'g');
     const newData = oldData.replace(regex, to);
-
     fs.writeFileSync(filePath, newData, 'utf8');
 }

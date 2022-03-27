@@ -10,7 +10,7 @@ const handler: any = async (event: any, context: Context) => {
     const request = event.Records[0].cf.request;
     const requestUri = request.uri.toLowerCase();
 
-    // For performance and to reduce error handling scope we hard code application root paths here
+    // Set details to match on
     const applicationRootPaths = [
         'spa',
     ];
@@ -41,7 +41,6 @@ const handler: any = async (event: any, context: Context) => {
 
         // Otherwise serve the index document for the first root path
         request.uri = `/${applicationRootPaths[0]}/index.html`;
-
     }
 
     return request;

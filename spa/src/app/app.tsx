@@ -1,6 +1,7 @@
+import {createBrowserHistory} from 'history';
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
-import {HashRouter, Route, Switch} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
@@ -18,6 +19,7 @@ import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
 import {LoginRequiredView} from '../views/loginRequired/loginRequiredView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
+import {CustomRouter} from '../views/utilities/CustomRouter';
 import {RouteHelper} from '../views/utilities/routeHelper';
 import {AppProps} from './appProps';
 import {AppState} from './appState';
@@ -39,6 +41,9 @@ export function App(props: AppProps): JSX.Element {
         startup();
         return () => cleanup();
     }, []);
+
+    // Set up React Router navigation
+    const browserHistory = createBrowserHistory();
 
     /*
      * Run the app's startup logic
@@ -110,7 +115,7 @@ export function App(props: AppProps): JSX.Element {
 
             // When running in a mobile web view we may still be in the login required view, in which case move home
             if (RouteHelper.isInLoginRequiredView()) {
-                location.hash = '#';
+                browserHistory.push('/spa');
             }
 
         } catch (e) {
@@ -118,7 +123,7 @@ export function App(props: AppProps): JSX.Element {
             // Treat cancelled logins as a non error, when running in a mobile web view
             const error = ErrorFactory.fromException(e);
             if (error.errorCode === ErrorCodes.redirectCancelled) {
-                location.hash = '#loggedout';
+                browserHistory.push('/spa/loggedout');
                 return;
             }
 
@@ -165,7 +170,7 @@ export function App(props: AppProps): JSX.Element {
             } else {
 
                 // Otherwise navigate to the home view
-                location.hash = '#';
+                browserHistory.push('/spa');
             }
         }
     }
@@ -203,8 +208,7 @@ export function App(props: AppProps): JSX.Element {
      * This also occurs when there is a logout on another tab and we receive a check session iframe notification
      */
     function moveToLoggedOutView(): void {
-
-        location.hash = '#loggedout';
+        browserHistory.push('/spa/loggedout');
     }
 
     /*
@@ -373,15 +377,9 @@ export function App(props: AppProps): JSX.Element {
             eventBus: model.eventBus,
         };
 
-        // Callbacks to prevent multi line JSX warnings
-        const renderCompaniesView = () =>
-            <CompaniesContainer {...companiesViewProps} />;
-
-        const renderTransactionsView = (routeProps: any) =>
-            <TransactionsContainer {...routeProps} {...transactionsViewProps} />;
-
-        const renderLoginRequiredView = () =>
-            <LoginRequiredView {...loginRequiredProps} />;
+        const routerProps = {
+            history: browserHistory
+        };
 
         // Render the tree view
         return (
@@ -390,14 +388,14 @@ export function App(props: AppProps): JSX.Element {
                 <HeaderButtonsView {...headerButtonProps} />
                 <ErrorSummaryView {...errorProps} />
                 <SessionView {...sessionProps} />
-                <HashRouter hashType='noslash'>
-                    <Switch>
-                        <Route exact={true} path='/'            render={renderCompaniesView} />
-                        <Route exact={true} path='/company=:id' render={renderTransactionsView} />
-                        <Route exact={true} path='/loggedout'   render={renderLoginRequiredView} />
-                        <Route path='*'                         render={renderCompaniesView} />
-                    </Switch>
-                </HashRouter>
+                <CustomRouter {...routerProps}>
+                    <Routes>
+                        <Route path='/spa'               element={<CompaniesContainer {...companiesViewProps} />} />
+                        <Route path='/spa/companies/:id' element={<TransactionsContainer {...transactionsViewProps} />} />
+                        <Route path='/spa/loggedout'     element={<LoginRequiredView {...loginRequiredProps} />} />
+                        <Route path='*'                  element={<CompaniesContainer {...companiesViewProps} />} />
+                    </Routes>
+                </CustomRouter>
             </ErrorBoundary>
         );
     }
