@@ -20,9 +20,6 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
                         <Link to={`/spa/companies/${company.id}`}>
                             {company.name}
                         </Link>
-                        <a href={`/spa/companies/${company.id}`}>
-                            {company.name}
-                        </a>
                     </div>
                     <div className='col-6 h4 font-weight-bold'>
                         {company.region}
