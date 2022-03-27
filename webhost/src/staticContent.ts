@@ -19,7 +19,7 @@ export class StaticContent {
         if (mode === 'development') {
 
             // During development we get files from the SPA folder, for convenience
-            this._webFilesRoot = '../../spa';
+            this._webFilesRoot = '../../spa/dist';
 
         } else {
 

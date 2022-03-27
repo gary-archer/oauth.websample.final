@@ -5,9 +5,10 @@
   "main": "index.tsx",
   "scripts": {
     "lint": "npx eslint . --ext .ts,.tsx",
-    "start": "npm run clean && webpack --config webpack/webpack.config.dev.js --watch",
-    "buildRelease": "npm run clean && webpack --config webpack/webpack.config.prod.js",
-    "clean": "rimraf dist/*bundle*"
+    "start": "npm run clean && npm run copy && webpack --config webpack/webpack.config.dev.js --watch",
+    "buildRelease": "npm run clean && npm run copy && webpack --config webpack/webpack.config.prod.js",
+    "copy": "cp spa.config.json *.html *.css favicon.ico dist",
+    "clean": "cd dist && rimraf spa.config.json *.html *.css favicon.ico *bundle*"
   },
   "keywords": [],
   "author": "Gary Archer",

@@ -10,16 +10,10 @@ FROM node:16.6.0-alpine
 # Set the target folder
 WORKDIR /usr/webhost
 
-# Copy SPA files into our docker image
-COPY spa/index.html              /usr/webhost/spa/
-COPY spa/loggedout.html          /usr/webhost/spa/
-COPY spa/favicon.ico             /usr/webhost/spa/
-COPY spa/css                     /usr/webhost/spa/css/
-COPY spa/dist/*.js               /usr/webhost/spa/dist/
-
-# Copy Web Host files into our docker image
-COPY webhost/dist                /usr/webhost/dist
-COPY webhost/package*.json       /usr/webhost/
+# Copy SPA and Web Host files into our docker image
+COPY spa/dist/*             /usr/webhost/spa/
+COPY webhost/dist           /usr/webhost/dist
+COPY webhost/package*.json  /usr/webhost/
 
 # Install production dependencies
 RUN npm install --production

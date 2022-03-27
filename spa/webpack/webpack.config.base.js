@@ -1,4 +1,5 @@
 const path = require('path');
+const rewriteIndexHtml = require('./rewriteIndexHtml.js');
 
 module.exports = {
   
@@ -34,6 +35,16 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name].bundle.js'
   },
+  plugins: [
+
+    {
+      apply: (compiler) => {
+        compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
+          rewriteIndexHtml(compiler.watchMode);
+        });
+      }
+    }
+  ],
   optimization: {
 
     // Indicate that third party code is built to a separate vendor bundle file
