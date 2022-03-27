@@ -14,10 +14,11 @@ export class ConfigurationLoader {
     public async download(): Promise<Configuration> {
 
         const fileName = 'spa.config.json';
+        const currentTime = new Date().getTime().toString();
         try {
 
-            // Make the remote call
-            const response = await axios.get<Configuration>(fileName);
+            // Use a cache busting parameter to ensure that we always get the latest configuration
+            const response = await axios.get<Configuration>(`${fileName}?t=${currentTime}`);
             AxiosUtils.checkJson(response.data);
             return response.data;
 
