@@ -1,11 +1,20 @@
-1. React stuff to fix
-
-2. customPackager --> use a bash script
-
-3. Change token handler and Cognito to use /loggedout rather than /loggedout.html
+SPA + MERGE
+-----------
+1. Change token handler to use /loggedout rather than /loggedout.html
+   Use a branch
    Start by adding a second logout redirect URI path
+   Remove old URL once merged
 
-4. Test extra security headers, such as frame-ancestors
-   Re-run Mozilla Observatory once site is deployed
+2. React stuff to finish testing
+   Fix or override lint warnings
 
-5. Use a link in the companies view to move to the transactions view
+3. customPackager --> use a bash script
+
+4. Deploy and test extra security headers using Mozilla Observatory
+
+5. Merge all
+   Remove old /loggedout.html URL from Cognito
+
+DESKTOP
+-------
+1. Make all equivalent changes in React desktop app

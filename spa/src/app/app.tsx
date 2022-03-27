@@ -381,16 +381,6 @@ export function App(props: AppProps): JSX.Element {
             history: browserHistory
         };
 
-        // Callbacks to prevent multi line JSX warnings
-        const renderCompaniesView = () =>
-            <CompaniesContainer {...companiesViewProps} />;
-
-        const renderTransactionsView = (routeProps: any) =>
-            <TransactionsContainer {...routeProps} {...transactionsViewProps} />;
-
-        const renderLoginRequiredView = () =>
-            <LoginRequiredView {...loginRequiredProps} />;
-
         // Render the tree view
         return (
             <ErrorBoundary {...errorBoundaryProps}>
@@ -400,10 +390,10 @@ export function App(props: AppProps): JSX.Element {
                 <SessionView {...sessionProps} />
                 <CustomRouter {...routerProps}>
                     <Routes>
-                        <Route path='/spa'               element={renderCompaniesView} />
-                        <Route path='/spa/companies/:id' element={renderTransactionsView} />
-                        <Route path='/spa/loggedout'     element={renderLoginRequiredView} />
-                        <Route path='*'                  element={renderCompaniesView} />
+                        <Route path='/spa'               element={<CompaniesContainer {...companiesViewProps} />} />
+                        <Route path='/spa/companies/:id' element={<TransactionsContainer {...transactionsViewProps} />} />
+                        <Route path='/spa/loggedout'     element={<LoginRequiredView {...loginRequiredProps} />} />
+                        <Route path='*'                  element={<CompaniesContainer {...companiesViewProps} />} />
                     </Routes>
                 </CustomRouter>
             </ErrorBoundary>

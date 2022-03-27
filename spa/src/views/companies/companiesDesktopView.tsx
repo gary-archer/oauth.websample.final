@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {Company} from '../../api/entities/company';
 import {CompaniesViewProps} from './companiesViewProps';
 
@@ -21,9 +22,9 @@ export function CompaniesDesktopView(props: CompaniesViewProps): JSX.Element {
                     {company.region}
                 </div>
                 <div className='col-2 my-auto text-center'>
-                    <a href={`/spa/companies/${company.id}`}>
+                    <Link to={`/spa/companies/${company.id}`}>
                         View Transactions
-                    </a>
+                    </Link>
                 </div>
                 <div className='col-2 my-auto highlightcolor font-weight-bold text-right'>
                     {Number(company.targetUsd).toLocaleString()}

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';

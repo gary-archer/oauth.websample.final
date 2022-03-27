@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {Company} from '../../api/entities/company';
 import {CompaniesViewProps} from './companiesViewProps';
 
@@ -16,6 +17,9 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
             <div key={company.id}>
                 <div className='row mobileHeaderRow'>
                     <div className='col-6 h4'>
+                        <Link to={`/spa/companies/${company.id}`}>
+                            {company.name}
+                        </Link>
                         <a href={`/spa/companies/${company.id}`}>
                             {company.name}
                         </a>
