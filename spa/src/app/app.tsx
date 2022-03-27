@@ -364,12 +364,12 @@ export function App(props: AppProps): JSX.Element {
             eventBus: model.eventBus,
         };
 
-        const companiesViewProps = {
+        const companiesProps = {
             viewModel: model.getCompaniesViewModel(),
             isMobileLayout: state.isMobileLayout,
         };
 
-        const transactionsViewProps = {
+        const transactionsProps = {
             viewModel: model.getTransactionsViewModel(),
         };
 
@@ -390,10 +390,10 @@ export function App(props: AppProps): JSX.Element {
                 <SessionView {...sessionProps} />
                 <CustomRouter {...routerProps}>
                     <Routes>
-                        <Route path='/spa'               element={<CompaniesContainer {...companiesViewProps} />} />
-                        <Route path='/spa/companies/:id' element={<TransactionsContainer {...transactionsViewProps} />} />
+                        <Route path='/spa'               element={<CompaniesContainer {...companiesProps} />} />
+                        <Route path='/spa/companies/:id' element={<TransactionsContainer {...transactionsProps} />} />
                         <Route path='/spa/loggedout'     element={<LoginRequiredView {...loginRequiredProps} />} />
-                        <Route path='*'                  element={<CompaniesContainer {...companiesViewProps} />} />
+                        <Route path='*'                  element={<CompaniesContainer {...companiesProps} />} />
                     </Routes>
                 </CustomRouter>
             </ErrorBoundary>
