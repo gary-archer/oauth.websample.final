@@ -18,7 +18,6 @@ module.exports = function rewriteIndexHtml(isWatchMode) {
         // Update Javascript resources with a cache busting timestamp and an integrity hash
         updateResource('./dist/index.html',     'src', 'vendor.bundle.js', timestamp, calculateFileHash('./dist/vendor.bundle.js'))
         updateResource('./dist/index.html',     'src', 'app.bundle.js',    timestamp, calculateFileHash('./dist/app.bundle.js'))
-        updateResource('./dist/loggedout.html', 'src', 'loggedout.js',     timestamp, calculateFileHash('./dist/loggedout.js'))
     }
 }
 
