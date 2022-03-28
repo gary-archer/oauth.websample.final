@@ -3,7 +3,7 @@
  */
 export class HtmlStorageHelper {
 
-    private static _prefix = 'finalspa.'
+    private static _prefix = 'finalspa.';
     private static _appState = 'appState';
     private static _apiSessionKeyName = 'apisessionid';
     private static _loggedOutKeyName = 'loggedout';
