@@ -3,11 +3,9 @@ import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {Route, Routes} from 'react-router-dom';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
-import {ErrorCodes} from '../plumbing/errors/errorCodes';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
-import {MobileLoginCompleteEvent} from '../plumbing/events/mobileLoginCompleteEvent';
 import {SetErrorEvent} from '../plumbing/events/setErrorEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
@@ -66,8 +64,6 @@ export function App(props: AppProps): JSX.Element {
 
             // Subscribe to application events
             model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
-            model.eventBus.on(EventNames.MobileLoginComplete, onMobileLoginComplete);
-            model.eventBus.on(EventNames.MobileLogoutComplete, onMobileLogoutComplete);
 
             // Subscribe to window events
             window.onresize = onResize;
@@ -93,8 +89,6 @@ export function App(props: AppProps): JSX.Element {
 
         // Unsubscribe from application events
         model.eventBus.detach(EventNames.LoginRequired, onLoginRequired);
-        model.eventBus.detach(EventNames.MobileLoginComplete, onMobileLoginComplete);
-        model.eventBus.detach(EventNames.MobileLogoutComplete, onMobileLogoutComplete);
 
         // Unsubscribe from window events
         window.onresize = null;
@@ -109,44 +103,12 @@ export function App(props: AppProps): JSX.Element {
 
         try {
 
-            // Ask the authenticator to do the login redirect
             setError(null);
             await model.authenticator.login();
 
-            // When running in a mobile web view we may still be in the login required view, in which case move home
-            if (RouteHelper.isInLoginRequiredView()) {
-                browserHistory.push('/spa');
-            }
-
         } catch (e) {
-
-            // Treat cancelled logins as a non error, when running in a mobile web view
-            const error = ErrorFactory.fromException(e);
-            if (error.errorCode === ErrorCodes.redirectCancelled) {
-                browserHistory.push('/spa/loggedout');
-                return;
-            }
-
-            setError(error);
+            setError(e);
         }
-    }
-
-    /*
-     * Called after an AppAuth login completes successfully when the SPA is running in a mobile web view
-     * In this scenario the SPA needs to be told to reload itself when the InApp browser closes
-     */
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    function onMobileLoginComplete(_event: MobileLoginCompleteEvent): void {
-        model.reloadData(false);
-    }
-
-    /*
-     * Called after an AppAuth login completes successfully when the SPA is running in a mobile web view
-     * In this scenario the SPA needs to be told to move to the logged out view when the InApp browser closes
-     */
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    function onMobileLogoutComplete(_event: MobileLoginCompleteEvent): void {
-        moveToLoggedOutView();
     }
 
     /*
@@ -187,15 +149,7 @@ export function App(props: AppProps): JSX.Element {
 
         } catch (e) {
 
-            // Treat cancelled logouts as a non error, when running in a mobile web view
-            const error = ErrorFactory.fromException(e);
-            if (error.errorCode !== ErrorCodes.redirectCancelled) {
-
-                // Write logout technical error details to the console
-                ErrorConsoleReporter.output(error);
-            }
-
-            // Move to the logged out view anyway
+            // Swallow errors and move to the logged out view
             moveToLoggedOutView();
         }
 

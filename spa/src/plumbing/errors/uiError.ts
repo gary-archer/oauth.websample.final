@@ -9,7 +9,6 @@ export class UIError extends Error {
     private _utcTime: string;
     private _statusCode: number;
     private _instanceId: number;
-    private _appAuthCode: string;
     private _details: any;
     private _url: string;
 
@@ -26,7 +25,6 @@ export class UIError extends Error {
         this._utcTime = new Date().toISOString();
         this._statusCode = 0;
         this._instanceId = 0;
-        this._appAuthCode = '';
         this._details = '';
         this._url = '';
 
@@ -73,14 +71,6 @@ export class UIError extends Error {
 
     public get instanceId(): number {
         return this._instanceId;
-    }
-
-    public get appAuthCode(): string {
-        return this._appAuthCode;
-    }
-
-    public set appAuthCode(value: string) {
-        this._appAuthCode = value;
     }
 
     public get details(): any {

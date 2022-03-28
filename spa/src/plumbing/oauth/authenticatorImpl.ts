@@ -1,19 +1,19 @@
 import {AxiosRequestConfig} from 'axios';
-import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
-import {ErrorCodes} from '../../errors/errorCodes';
-import {ErrorFactory} from '../../errors/errorFactory';
-import {UIError} from '../../errors/uiError';
-import {ConcurrentActionHandler} from '../../utilities/concurrentActionHandler';
-import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
-import {Authenticator} from '../authenticator';
-import {CredentialSupplier} from '../credentialSupplier';
+import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
+import {ErrorCodes} from '../errors/errorCodes';
+import {ErrorFactory} from '../errors/errorFactory';
+import {UIError} from '../errors/uiError';
+import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
+import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
+import {Authenticator} from './authenticator';
+import {CredentialSupplier} from './credentialSupplier';
 import {OAuthFetch} from './oauthFetch';
 import {PageLoadResponse} from './pageLoadResponse';
 
 /*
- * An authenticator class that runs on the main side of the app in a desktop browser
+ * The authenticator implementation
  */
-export class WebAuthenticator implements Authenticator, CredentialSupplier {
+export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
     private readonly _fetcher: OAuthFetch;
     private _antiForgeryToken: string | null;

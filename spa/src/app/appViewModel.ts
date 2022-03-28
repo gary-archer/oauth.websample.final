@@ -76,7 +76,7 @@ export class AppViewModel {
 
             // Create global objects for managing OAuth and API calls
             const factory = new ObjectFactory(this.configuration);
-            this._authenticator = factory.createAuthenticator(this._eventBus);
+            this._authenticator = factory.createAuthenticator();
             this._apiClient = factory.createApiClient(this._authenticator);
 
             // Update state

@@ -1,5 +1,5 @@
 /*
- * An interface to manage OAuth operations
+ * The authenticator interface
  */
 export interface Authenticator {
 

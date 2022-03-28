@@ -1,9 +1,9 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
-import {OAuthConfiguration} from '../../../configuration/oauthConfiguration';
-import {ErrorFactory} from '../../errors/errorFactory';
-import {AxiosUtils} from '../../utilities/axiosUtils';
-import {UrlHelper} from '../../utilities/urlHelper';
+import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
+import {ErrorFactory} from '../errors/errorFactory';
+import {AxiosUtils} from '../utilities/axiosUtils';
+import {UrlHelper} from '../utilities/urlHelper';
 
 /*
  * Lower level logic related to calling Token Handler API endpoints

@@ -21,9 +21,6 @@ export class ErrorCodes {
     // An error starting a logout request
     public static readonly logoutRequestFailed = 'logout_request_failed';
 
-    // Used when running in a mobile web view and the AppAuth redirect is cancelled
-    public static readonly redirectCancelled = 'redirect_cancelled';
-
     // A general exception in the UI
     public static readonly generalUIError = 'ui_error';
 

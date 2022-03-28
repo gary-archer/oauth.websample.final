@@ -44,11 +44,6 @@ export class ErrorFormatter {
             lines.push(this._createErrorLine('Error Code', error.errorCode));
         }
 
-        // Show the AppAuth error code if applicable, in mobile web scenarios
-        if (error.appAuthCode.length > 0) {
-            lines.push(this._createErrorLine('AppAuth Code', error.appAuthCode.toString()));
-        }
-
         // Link to API logs if applicable
         if (error.instanceId > 0) {
             lines.push(this._createErrorLine('Instance Id', error.instanceId.toString(), 'errorcolor'));
