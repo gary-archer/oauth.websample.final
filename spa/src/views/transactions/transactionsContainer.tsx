@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
@@ -27,8 +27,6 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
         startup();
         return () => cleanup();
     }, [companyId]);
-
-    const navigate = useNavigate();
 
     /*
      * Load data then listen for the reload event
@@ -79,7 +77,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
             if (isExpected) {
 
                 // For 'expected' errors, return to the home view
-                navigate('/spa');
+                props.history.push('/spa');
 
             } else {
 

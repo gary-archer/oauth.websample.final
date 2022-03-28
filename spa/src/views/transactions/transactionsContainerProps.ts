@@ -1,3 +1,4 @@
+import {BrowserHistory} from 'history';
 import {TransactionsContainerViewModel} from './transactionsContainerViewModel';
 
 /*
@@ -7,4 +8,7 @@ export interface TransactionsContainerProps {
 
     // The view model
     viewModel: TransactionsContainerViewModel
+
+    // The browser history
+    history: BrowserHistory;
 }

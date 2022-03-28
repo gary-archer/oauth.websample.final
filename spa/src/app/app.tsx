@@ -325,6 +325,7 @@ export function App(props: AppProps): JSX.Element {
 
         const transactionsProps = {
             viewModel: model.getTransactionsViewModel(),
+            history: browserHistory,
         };
 
         const loginRequiredProps = {
