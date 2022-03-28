@@ -6,6 +6,16 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+if [ "$1" == 'LOCALAPI' ]; then
+
+    # Point the SPA to the local token handler by using this configuration file
+    cp spa/config/config.localtokenhandler.json spa/spa.config.json
+else
+
+    # By default we instead point the SPA to the remote token handler, so that only the SPA needs to be run locally
+    cp spa/config/config.remotetokenhandler.json spa/spa.config.json
+fi
+
 #
 # Build the web host
 #
