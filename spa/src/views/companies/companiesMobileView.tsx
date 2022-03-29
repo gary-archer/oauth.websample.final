@@ -21,7 +21,7 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
                             {company.name}
                         </Link>
                     </div>
-                    <div className='col-6 h4 font-weight-bold'>
+                    <div className='col-6 h4 fw-bold'>
                         {company.region}
                     </div>
                 </div>
@@ -29,7 +29,7 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
                     <div className='col-6'>
                         Target USD
                     </div>
-                    <div className='col-6 highlightcolor font-weight-bold'>
+                    <div className='col-6 highlightcolor fw-bold'>
                         {Number(company.targetUsd).toLocaleString()}
                     </div>
                 </div>
@@ -37,7 +37,7 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
                     <div className='col-6'>
                         Investment USD
                     </div>
-                    <div className='col-6 highlightcolor font-weight-bold'>
+                    <div className='col-6 highlightcolor fw-bold'>
                         {Number(company.investmentUsd).toLocaleString()}
                     </div>
                 </div>
@@ -45,7 +45,7 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
                     <div className='col-6'>
                         # Investors
                     </div>
-                    <div className='col-6 font-weight-bold'>
+                    <div className='col-6 fw-bold'>
                         {company.noInvestors}
                     </div>
                 </div>
@@ -60,7 +60,7 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
     return  (
         <div className='card border-0'>
             <div className='card-header row'>
-                <div className='col-12 text-center mx-auto font-weight-bold'>
+                <div className='col-12 text-center mx-auto fw-bold'>
                     Company List
                 </div>
             </div>

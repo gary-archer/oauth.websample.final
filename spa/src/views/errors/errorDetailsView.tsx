@@ -18,7 +18,7 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
                 <div className='col-4'>
                     {line.label}
                 </div>
-                <div className={`col-8 ${line.valueStyle} font-weight-bold`}>
+                <div className={`col-8 ${line.valueStyle} fw-bold`}>
                     {line.value}
                 </div>
             </div>
@@ -69,7 +69,7 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
                 <div className='col-10 errorcolor largetext text-center'>
                     {props.title}
                 </div>
-                <div className='col-2 text-right'>
+                <div className='col-2 text-end'>
                     <button onClick={props.handleClose} type='button'>x</button>
                 </div>
             </div>

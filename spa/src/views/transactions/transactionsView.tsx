@@ -20,7 +20,7 @@ export function TransactionsView(props: TransactionsViewProps): JSX.Element {
                             <div className='col-6'>
                                 Transaction ID
                             </div>
-                            <div className='col-6 text-right valuecolor font-weight-bold'>
+                            <div className='col-6 text-end valuecolor fw-bold'>
                                 {transaction.id}
                             </div>
                         </div>
@@ -28,7 +28,7 @@ export function TransactionsView(props: TransactionsViewProps): JSX.Element {
                             <div className='col-6'>
                                 Investor ID
                             </div>
-                            <div className='col-6 text-right valuecolor font-weight-bold'>
+                            <div className='col-6 text-end valuecolor fw-bold'>
                                 {transaction.investorId}
                             </div>
                         </div>
@@ -36,7 +36,7 @@ export function TransactionsView(props: TransactionsViewProps): JSX.Element {
                             <div className='col-6'>
                                 Amount USD
                             </div>
-                            <div className='col-6 text-right highlightcolor font-weight-bold'>
+                            <div className='col-6 text-end highlightcolor fw-bold'>
                                 {Number(transaction.amountUsd).toLocaleString()}
                             </div>
                         </div>
@@ -52,8 +52,8 @@ export function TransactionsView(props: TransactionsViewProps): JSX.Element {
     return props.data &&
         (
             <div className='card border-0'>
-                <div className='card-header row font-weight-bold'>
-                    <div className='col-12 text-center mx-auto font-weight-bold'>
+                <div className='card-header row fw-bold'>
+                    <div className='col-12 text-center mx-auto fw-bold'>
                         Today&apos;s Transactions for {props.data.company.name}
                     </div>
                 </div>

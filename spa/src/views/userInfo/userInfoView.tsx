@@ -114,12 +114,12 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     };
     return (
         <>
-            <div className='text-right mx-auto'>
+            <div className='text-end mx-auto'>
                 <ErrorSummaryView {...errorProps}/>
             </div>
             {state.userInfo &&
-                <div className='text-right mx-auto'>
-                    <p className='font-weight-bold'>{`${state.userInfo.givenName} ${state.userInfo.familyName}`}</p>
+                <div className='text-end mx-auto'>
+                    <p className='fw-bold'>{`${state.userInfo.givenName} ${state.userInfo.familyName}`}</p>
                 </div>
             }
         </>

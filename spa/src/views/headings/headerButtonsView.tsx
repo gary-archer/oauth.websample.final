@@ -117,7 +117,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
             <div className='col col-one-fifth my-2 d-flex p-1'>
                 <button
                     onClick={props.handleHomeClick}
-                    className='btn btn-primary btn-block p-1'
+                    className='btn btn-primary w-100 p-1'
                 >
                     <small>Home</small>
                 </button>
@@ -130,7 +130,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                 onMouseUp={handleReloadRelease}
             >
                 <button
-                    className='btn btn-primary btn-block p-1'
+                    className='btn btn-primary w-100 p-1'
                     disabled={disabled}
                 >
                     <small>Reload Data</small>
@@ -139,7 +139,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
             <div className='col col-one-fifth my-2 d-flex p-1'>
                 <button
                     onClick={props.handleExpireAccessTokenClick}
-                    className='btn btn-primary btn-block p-1'
+                    className='btn btn-primary w-100 p-1'
                     disabled={disabled}
                 >
                     <small>Expire Access Token</small>
@@ -148,7 +148,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
             <div className='col col-one-fifth my-2 d-flex p-1'>
                 <button
                     onClick={props.handleExpireRefreshTokenClick}
-                    className='btn btn-primary btn-block p-1'
+                    className='btn btn-primary w-100 p-1'
                     disabled={disabled}
                 >
                     <small>Expire Refresh Token</small>
@@ -157,7 +157,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
             <div className='col col-one-fifth my-2 d-flex p-1'>
                 <button
                     onClick={props.handleLogoutClick}
-                    className='btn btn-primary btn-block p-1'
+                    className='btn btn-primary w-100 p-1'
                     disabled={disabled}
                 >
                     <small>Logout</small>

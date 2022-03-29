@@ -47,7 +47,7 @@ export function SessionView(props: SessionViewProps): JSX.Element {
     }
 
     return  (
-        <div className='sessionid text-right mx-auto'>
+        <div className='sessionid text-end mx-auto'>
             <small>{state.text}</small>
         </div>
     );
