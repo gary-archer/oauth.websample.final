@@ -159,10 +159,11 @@ export function App(props: AppProps): JSX.Element {
 
     /*
      * Called when we move to the logged out view manually, such as when there is a logout error
-     * This also occurs when there is a logout on another tab and we receive a check session iframe notification
+     * This also occurs when there is a logout on another tab and we receive a session storage notification
      */
     function moveToLoggedOutView(): void {
         browserHistory.push('/spa/loggedout');
+        browserHistory.go(0);
     }
 
     /*
