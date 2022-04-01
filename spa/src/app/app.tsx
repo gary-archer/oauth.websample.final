@@ -17,7 +17,7 @@ import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
 import {LoginRequiredView} from '../views/loginRequired/loginRequiredView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
-import {CustomRouter} from '../views/utilities/CustomRouter';
+import {CustomRouter} from '../views/utilities/customRouter';
 import {RouteHelper} from '../views/utilities/routeHelper';
 import {AppProps} from './appProps';
 import {AppState} from './appState';
