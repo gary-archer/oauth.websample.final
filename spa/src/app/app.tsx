@@ -110,7 +110,7 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * After logging in, removed OAuth response details from the browser history
+     * After logging in, remove OAuth response details from the browser history
      */
     function onPostLoginNavigate(path: string): void {
         navigate(path, { replace: true} );
