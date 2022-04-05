@@ -4,10 +4,10 @@
 export interface Authenticator {
 
     // Perform a login redirect
-    login(): Promise<void>;
+    login(currentLocation: string): Promise<void>;
 
     // Handle page loads and process login responses when required
-    handlePageLoad(): Promise<boolean>;
+    handlePageLoad(onPostLoginNavigate: (path: string) => void): Promise<boolean>;
 
     // Perform a logout redirect
     logout(): Promise<void>;

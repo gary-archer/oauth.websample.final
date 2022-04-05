@@ -1,4 +1,4 @@
-import {BrowserHistory} from 'history';
+import {NavigateFunction} from 'react-router-dom';
 import {TransactionsContainerViewModel} from './transactionsContainerViewModel';
 
 /*
@@ -9,6 +9,6 @@ export interface TransactionsContainerProps {
     // The view model
     viewModel: TransactionsContainerViewModel;
 
-    // The browser history
-    history: BrowserHistory;
+    // A navigate function
+    navigate: NavigateFunction;
 }

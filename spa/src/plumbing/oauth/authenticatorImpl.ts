@@ -30,7 +30,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
     /*
      * Trigger the login redirect to the Authorization Server
      */
-    public async login(): Promise<void> {
+    public async login(currentLocation: string): Promise<void> {
 
         try {
 
@@ -39,7 +39,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
             // Store the app location and other state if required
             HtmlStorageHelper.appState = {
-                path: location.href || '/',
+                path: currentLocation,
             };
 
             // Then do the redirect
@@ -54,9 +54,9 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
     /*
      * Check for and handle login responses when the page loads
      */
-    public async handlePageLoad(): Promise<boolean> {
+    public async handlePageLoad(onPostLoginNavigate: (path: string) => void)   : Promise<boolean> {
 
-        let appLocation = '#';
+        let appLocation = '/';
         let isLoggedIn = false;
 
         try {
@@ -79,11 +79,9 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
                     appLocation = appState.path;
                 }
 
-                // Remove session storage
+                // Clean up
                 HtmlStorageHelper.removeAppState();
-
-                // Remove OAuth details from the browser URL and back navigation
-                history.replaceState({}, document.title, appLocation);
+                onPostLoginNavigate(appLocation);
             }
 
             // Store the anti forgery token here, where it is used for OAuth requests
@@ -96,8 +94,8 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
         } catch (e: any) {
 
-            // Ensure that any OAuth details are removed from the browser URL and back navigation
-            history.replaceState({}, document.title, appLocation);
+            // Clean up
+            onPostLoginNavigate(appLocation);
 
             // Report unexpected errors
             if (!this._isTokenHandlerAccessDeniedError(e)) {

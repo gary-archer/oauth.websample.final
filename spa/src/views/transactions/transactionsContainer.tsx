@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
@@ -7,6 +7,7 @@ import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
 import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
+import {CurrentLocation} from '../utilities/currentLocation';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
 import {TransactionsView} from './transactionsView';
@@ -27,6 +28,8 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
         startup();
         return () => cleanup();
     }, [companyId]);
+
+    CurrentLocation.path = useLocation().pathname;
 
     /*
      * Load data then listen for the reload event
@@ -77,7 +80,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
             if (isExpected) {
 
                 // For 'expected' errors, return to the home view
-                props.history.push('/spa');
+                props.navigate('/spa');
 
             } else {
 

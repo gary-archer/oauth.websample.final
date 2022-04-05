@@ -118,6 +118,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                 <button
                     onClick={props.handleHomeClick}
                     className='btn btn-primary w-100 p-1'
+                    type='button'
                 >
                     <small>Home</small>
                 </button>
@@ -132,6 +133,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                 <button
                     className='btn btn-primary w-100 p-1'
                     disabled={disabled}
+                    type='button'
                 >
                     <small>Reload Data</small>
                 </button>
@@ -141,6 +143,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                     onClick={props.handleExpireAccessTokenClick}
                     className='btn btn-primary w-100 p-1'
                     disabled={disabled}
+                    type='button'
                 >
                     <small>Expire Access Token</small>
                 </button>
@@ -150,6 +153,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                     onClick={props.handleExpireRefreshTokenClick}
                     className='btn btn-primary w-100 p-1'
                     disabled={disabled}
+                    type='button'
                 >
                     <small>Expire Refresh Token</small>
                 </button>
@@ -159,6 +163,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                     onClick={props.handleLogoutClick}
                     className='btn btn-primary w-100 p-1'
                     disabled={disabled}
+                    type='button'
                 >
                     <small>Logout</small>
                 </button>

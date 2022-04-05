@@ -1,7 +1,6 @@
-import {createBrowserHistory} from 'history';
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, useNavigate} from 'react-router-dom';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {EventNames} from '../plumbing/events/eventNames';
@@ -17,8 +16,7 @@ import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
 import {LoginRequiredView} from '../views/loginRequired/loginRequiredView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
-import {CustomRouter} from '../views/utilities/customRouter';
-import {RouteHelper} from '../views/utilities/routeHelper';
+import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
 import {AppState} from './appState';
 
@@ -41,7 +39,7 @@ export function App(props: AppProps): JSX.Element {
     }, []);
 
     // Set up React Router navigation
-    const browserHistory = createBrowserHistory();
+    const navigate = useNavigate();
 
     /*
      * Run the app's startup logic
@@ -57,7 +55,7 @@ export function App(props: AppProps): JSX.Element {
             setError(null);
 
             // Ask the authenticator to handle the page load, to return logged in state the UI needs
-            const isLoggedIn = await model.authenticator.handlePageLoad();
+            const isLoggedIn = await model.authenticator.handlePageLoad(onPostLoginNavigate);
             if (isLoggedIn) {
                 HtmlStorageHelper.loggedOut = false;
             }
@@ -104,11 +102,18 @@ export function App(props: AppProps): JSX.Element {
         try {
 
             setError(null);
-            await model.authenticator.login();
+            await model.authenticator.login(CurrentLocation.path);
 
         } catch (e) {
             setError(e);
         }
+    }
+
+    /*
+     * After logging in, removed OAuth response details from the browser history
+     */
+    function onPostLoginNavigate(path: string): void {
+        navigate(path, { replace: true} );
     }
 
     /*
@@ -124,7 +129,7 @@ export function App(props: AppProps): JSX.Element {
 
         if (state.isInitialised) {
 
-            if (RouteHelper.isInHomeView()) {
+            if (CurrentLocation.path === '/spa') {
 
                 // Force a reload of the main view if we are already in the home view
                 model.reloadMainView();
@@ -132,7 +137,7 @@ export function App(props: AppProps): JSX.Element {
             } else {
 
                 // Otherwise navigate to the home view
-                browserHistory.push('/spa');
+                navigate('/spa');
             }
         }
     }
@@ -162,8 +167,7 @@ export function App(props: AppProps): JSX.Element {
      * This also occurs when there is a logout on another tab and we receive a session storage notification
      */
     function moveToLoggedOutView(): void {
-        browserHistory.push('/spa/loggedout');
-        browserHistory.go(0);
+        navigate('/spa/loggedout');
     }
 
     /*
@@ -326,15 +330,11 @@ export function App(props: AppProps): JSX.Element {
 
         const transactionsProps = {
             viewModel: model.getTransactionsViewModel(),
-            history: browserHistory,
+            navigate,
         };
 
         const loginRequiredProps = {
             eventBus: model.eventBus,
-        };
-
-        const routerProps = {
-            history: browserHistory
         };
 
         // Render the tree view
@@ -344,14 +344,12 @@ export function App(props: AppProps): JSX.Element {
                 <HeaderButtonsView {...headerButtonProps} />
                 <ErrorSummaryView {...errorProps} />
                 <SessionView {...sessionProps} />
-                <CustomRouter {...routerProps}>
-                    <Routes>
-                        <Route path='/spa'               element={<CompaniesContainer {...companiesProps} />} />
-                        <Route path='/spa/companies/:id' element={<TransactionsContainer {...transactionsProps} />} />
-                        <Route path='/spa/loggedout'     element={<LoginRequiredView {...loginRequiredProps} />} />
-                        <Route path='*'                  element={<CompaniesContainer {...companiesProps} />} />
-                    </Routes>
-                </CustomRouter>
+                <Routes>
+                    <Route path='/spa'               element={<CompaniesContainer {...companiesProps} />} />
+                    <Route path='/spa/companies/:id' element={<TransactionsContainer {...transactionsProps} />} />
+                    <Route path='/spa/loggedout'     element={<LoginRequiredView {...loginRequiredProps} />} />
+                    <Route path='*'                  element={<CompaniesContainer {...companiesProps} />} />
+                </Routes>
             </ErrorBoundary>
         );
     }
