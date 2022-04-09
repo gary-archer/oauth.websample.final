@@ -63,16 +63,16 @@ export class AppViewModel {
     }
 
     /*
-     * Some global objects are created after downloading configuration, which is only done once
+     * Some global objects are created after initializing configuration, which is only done once
      * The app view can be created many times and will get the same instance of the model
      */
     public async initialise(): Promise<void> {
 
         if (!this._isInitialised) {
 
-            // Load configuration the first time
+            // Get the application configuration
             const loader = new ConfigurationLoader();
-            this._configuration = await loader.download();
+            this._configuration = await loader.get();
 
             // Create global objects for managing OAuth and API calls
             const factory = new ObjectFactory(this.configuration);

@@ -2,16 +2,28 @@ import axios from 'axios';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {AxiosUtils} from '../plumbing/utilities/axiosUtils';
 import {Configuration} from './configuration';
+import {productionConfiguration} from './productionConfiguration';
 
 /*
- * A class to download configuration from the server
+ * A class to manage environment specific configuration
  */
 export class ConfigurationLoader {
+
+    public async get(): Promise<Configuration> {
+
+        // Return the production configuration when running in the production origin
+        if (location.origin.toLowerCase() === productionConfiguration.app.webOrigin.toLowerCase()) {
+            return productionConfiguration;
+        }
+
+        // Otherwise download the configuration, which enables us to spin up new environments without rebuilding code
+        return this._download();
+    }
 
     /*
      * Download JSON data from the app config file
      */
-    public async download(): Promise<Configuration> {
+    private async _download(): Promise<Configuration> {
 
         const fileName = 'spa.config.json';
         const currentTime = new Date().getTime().toString();

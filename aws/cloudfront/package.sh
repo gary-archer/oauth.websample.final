@@ -15,9 +15,9 @@ mkdir .package
 mkdir .package/spa
 
 #
-# Copy the production configuration
+# The production configuration is hard coded into the app and not deployed
 #
-cp ./spa.config.json .package/spa
+# cp ./spa.config.json .package/spa
 
 #
 # Copy HTML files

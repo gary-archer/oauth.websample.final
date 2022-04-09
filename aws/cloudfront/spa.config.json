@@ -1,8 +1,0 @@
-{
-    "app": {
-        "apiBaseUrl": "https://tokenhandler.authsamples.com/api"
-    },
-    "oauth": {
-        "oauthAgentBaseUrl": "https://tokenhandler.authsamples.com/oauth-agent"
-    }
-}
