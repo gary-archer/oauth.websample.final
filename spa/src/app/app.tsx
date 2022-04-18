@@ -9,7 +9,6 @@ import {SetErrorEvent} from '../plumbing/events/setErrorEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
-import {ErrorBoundary} from '../views/errors/errorBoundary';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {HeaderButtonsView} from '../views/headings/headerButtonsView';
 import {SessionView} from '../views/headings/sessionView';
@@ -50,6 +49,7 @@ export function App(props: AppProps): JSX.Element {
         Modal.setAppElement('#root');
 
         try {
+
             // Initialise view models
             await model.initialise();
             setError(null);
@@ -265,10 +265,6 @@ export function App(props: AppProps): JSX.Element {
             handleLogoutClick: onLogout,
         };
 
-        const errorBoundaryProps = {
-            eventBus: model.eventBus,
-        };
-
         const errorProps = {
             eventBus: model.eventBus,
             containingViewName: 'main',
@@ -278,11 +274,11 @@ export function App(props: AppProps): JSX.Element {
         };
 
         return (
-            <ErrorBoundary {...errorBoundaryProps}>
+            <>
                 <TitleView {...titleProps} />
                 <HeaderButtonsView {...headerButtonProps} />
                 <ErrorSummaryView {...errorProps} />
-            </ErrorBoundary>
+            </>
         );
     }
 
@@ -304,10 +300,6 @@ export function App(props: AppProps): JSX.Element {
             handleExpireRefreshTokenClick: onExpireRefreshToken,
             handleReloadDataClick: model.reloadData,
             handleLogoutClick: onLogout,
-        };
-
-        const errorBoundaryProps = {
-            eventBus: model.eventBus,
         };
 
         const errorProps = {
@@ -339,7 +331,7 @@ export function App(props: AppProps): JSX.Element {
 
         // Render the tree view
         return (
-            <ErrorBoundary {...errorBoundaryProps}>
+            <>
                 <TitleView {...titleProps} />
                 <HeaderButtonsView {...headerButtonProps} />
                 <ErrorSummaryView {...errorProps} />
@@ -350,7 +342,7 @@ export function App(props: AppProps): JSX.Element {
                     <Route path='/spa/loggedout'     element={<LoginRequiredView {...loginRequiredProps} />} />
                     <Route path='*'                  element={<CompaniesContainer {...companiesProps} />} />
                 </Routes>
-            </ErrorBoundary>
+            </>
         );
     }
 

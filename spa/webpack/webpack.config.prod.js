@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const {merge} = require('webpack-merge');
 const baseConfig = require('./webpack.config.base.js');
+const rewriteIndexHtml = require('./rewriteIndexHtml.js');
 
 module.exports = merge(baseConfig, {
 
@@ -12,7 +13,19 @@ module.exports = merge(baseConfig, {
     hints: false
   },
 
+  // Output source maps to enable debugging of browser code
+  devtool: 'source-map',
+
   plugins:[
+
+    {
+      // In release builds, write the final index.html
+      apply: (compiler) => {
+        compiler.hooks.afterEmit.tap('AfterEmitPlugin', () => {
+          rewriteIndexHtml();
+        });
+      }
+    },
     
     // Pass a variable through to our Web UI to tell it to not display stack traces
     new webpack.DefinePlugin({

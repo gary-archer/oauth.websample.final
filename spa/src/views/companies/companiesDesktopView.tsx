@@ -27,7 +27,7 @@ export function CompaniesDesktopView(props: CompaniesViewProps): JSX.Element {
                     </Link>
                 </div>
                 <div className='col-2 my-auto highlightcolor fw-bold text-end'>
-                    {Number(company.targetUsd).toLocaleString()}
+                    {(company.targetUsd).toLocaleString()}
                 </div>
                 <div className='col-2 my-auto highlightcolor fw-bold text-end'>
                     {Number(company.investmentUsd).toLocaleString()}

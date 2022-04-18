@@ -1,5 +1,6 @@
 {
     "app": {
+        "webOrigin": "https://web.authsamples-dev.com",
         "apiBaseUrl": "https://localtokenhandler.authsamples-dev.com:444/api"
     },
     "oauth": {

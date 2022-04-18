@@ -1,5 +1,7 @@
 import React, {ErrorInfo} from 'react';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {EventNames} from '../../plumbing/events/eventNames';
+import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorBoundaryProps} from './errorBoundaryProps';
 import {ErrorBoundaryState} from './errorBoundaryState';
 import {ErrorSummaryView} from './errorSummaryView';
@@ -52,6 +54,8 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
      * Catch errors and translate for display
      */
     public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+        
+        this.props.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
         const details = ErrorFactory.fromRenderError(error, errorInfo.componentStack);
         this.setState({error: details});
     }

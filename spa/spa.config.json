@@ -1,5 +1,6 @@
 {
     "app": {
+        "webOrigin": "https://web.authsamples-dev.com",
         "apiBaseUrl": "https://tokenhandler.authsamples-dev.com/api"
     },
     "oauth": {

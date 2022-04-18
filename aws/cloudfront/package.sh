@@ -5,11 +5,29 @@
 ###################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
-ROOT_FOLDER='../../spa'
 
 #
-# Ensure a clean folder
+# Build release bundles
 #
+ROOT_FOLDER='../../spa'
+cd $ROOT_FOLDER
+
+#
+# Install dependencies if required
+#
+if [ ! -d ./node_modules ]; then
+  npm install
+fi
+
+#
+# Do a release build
+#
+npm run buildRelease
+
+#
+# Create the package folder
+#
+cd ../aws/cloudfront
 rm -rf .package
 mkdir .package
 mkdir .package/spa

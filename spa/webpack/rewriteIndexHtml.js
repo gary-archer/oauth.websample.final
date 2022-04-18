@@ -4,21 +4,18 @@ const fs = require('fs');
 /*
  * Update the index.html for release builds with some production level tags
  */
-module.exports = function rewriteIndexHtml(isWatchMode) {
+module.exports = function rewriteIndexHtml() {
 
-    if (!isWatchMode) {
+    // Get the timestamp at the time of the build
+    const timestamp = new Date().getTime().toString();
 
-        // Get the timestamp at the time of the build
-        const timestamp = new Date().getTime().toString();
+    // Update CSS resources with a cache busting timestamp and an integrity hash
+    updateResource('./dist/index.html', 'href', 'bootstrap.min.css', timestamp, calculateFileHash('./dist/bootstrap.min.css'))
+    updateResource('./dist/index.html', 'href', 'app.css',           timestamp, calculateFileHash('./dist/app.css'))
 
-        // Update CSS resources with a cache busting timestamp and an integrity hash
-        updateResource('./dist/index.html', 'href', 'bootstrap.min.css', timestamp, calculateFileHash('./dist/bootstrap.min.css'))
-        updateResource('./dist/index.html', 'href', 'app.css',           timestamp, calculateFileHash('./dist/app.css'))
-
-        // Update Javascript resources with a cache busting timestamp and an integrity hash
-        updateResource('./dist/index.html',     'src', 'vendor.bundle.js', timestamp, calculateFileHash('./dist/vendor.bundle.js'))
-        updateResource('./dist/index.html',     'src', 'app.bundle.js',    timestamp, calculateFileHash('./dist/app.bundle.js'))
-    }
+    // Update Javascript resources with a cache busting timestamp and an integrity hash
+    updateResource('./dist/index.html',     'src', 'vendor.bundle.js', timestamp, calculateFileHash('./dist/vendor.bundle.js'))
+    updateResource('./dist/index.html',     'src', 'app.bundle.js',    timestamp, calculateFileHash('./dist/app.bundle.js'))
 }
 
 /*
