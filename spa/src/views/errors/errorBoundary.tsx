@@ -34,20 +34,21 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
      */
     public render(): React.ReactNode {
 
-        if (!this.state.error) {
-            return this.props.children;
-        }
-
         const errorProps = {
             eventBus: this.props.eventBus,
-            containingViewName: 'boundary',
+            containingViewName: 'fallback',
             hyperlinkMessage: 'Problem Encountered Rendering Views',
             dialogTitle: 'Rendering Error',
             centred: true,
         };
-        return (
-            <ErrorSummaryView {...errorProps}/>
-        );
+
+        // Render children when there are no errors
+        if (!this.state.error) {
+            return this.props.children;
+        }
+        
+        // Otherwise render a child error summary view
+        return <ErrorSummaryView {...errorProps}/>;
     }
 
     /*
@@ -55,8 +56,13 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
      */
     public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
         
-        this.props.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
+        // Update state to force a rerender
         const details = ErrorFactory.fromRenderError(error, errorInfo.componentStack);
         this.setState({error: details});
+        
+        // Wait for a render so that the error summary view is created, then send it an event
+        setTimeout(() => {
+            this.props.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('fallback', details));
+        }, 1000);
     }
 }

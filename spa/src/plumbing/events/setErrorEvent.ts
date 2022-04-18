@@ -6,8 +6,8 @@ export class SetErrorEvent {
     private readonly _containingViewName: string;
     private readonly _error: any;
 
-    public constructor(containingViewNameP: string, e: any) {
-        this._containingViewName = containingViewNameP;
+    public constructor(containingViewName: string, e: any) {
+        this._containingViewName = containingViewName;
         this._error = e;
     }
 
