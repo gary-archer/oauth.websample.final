@@ -3,20 +3,17 @@ import {render} from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 import {App} from './app/app';
 import {AppViewModel} from './app/appViewModel';
-import { ErrorBoundary } from './views/errors/errorBoundary';
+import {ErrorBoundary} from './views/errors/errorBoundary';
 
-var viewModel = new AppViewModel();
-const appProps = {
+const viewModel = new AppViewModel();
+const props = {
     viewModel,
-};
-const errorProps = {
-    eventBus: viewModel.eventBus,
 };
 
 render (
-    <ErrorBoundary {...errorProps}>
+    <ErrorBoundary>
         <BrowserRouter>
-            <App {...appProps} />
+            <App {...props} />
         </BrowserRouter>
     </ErrorBoundary>,
     document.getElementById('root'),

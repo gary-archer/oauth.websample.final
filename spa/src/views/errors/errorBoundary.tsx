@@ -1,15 +1,12 @@
 import React, {ErrorInfo} from 'react';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {EventNames} from '../../plumbing/events/eventNames';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
-import {ErrorBoundaryProps} from './errorBoundaryProps';
 import {ErrorBoundaryState} from './errorBoundaryState';
-import {ErrorSummaryView} from './errorSummaryView';
+import {ErrorDetailsView} from './errorDetailsView';
 
 /*
  * Manages catching of rendering errors anywhere in the tree view during development
  */
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<any, ErrorBoundaryState> {
 
     /*
      * Update state so the next render will show the fallback UI
@@ -34,35 +31,25 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
      */
     public render(): React.ReactNode {
 
-        const errorProps = {
-            eventBus: this.props.eventBus,
-            containingViewName: 'fallback',
-            hyperlinkMessage: 'Problem Encountered Rendering Views',
-            dialogTitle: 'Rendering Error',
-            centred: true,
-        };
-
-        // Render children when there are no errors
+        // Render children by default
         if (!this.state.error) {
             return this.props.children;
         }
-        
-        // Otherwise render a child error summary view
-        return <ErrorSummaryView {...errorProps}/>;
+
+        // Otherwise render a worst case fallback error view
+        const errorDetailsProps = {
+            title: 'Problem Encountered Rendering Views',
+            error: this.state.error,
+        };
+        return <ErrorDetailsView {...errorDetailsProps}/>;
     }
 
     /*
-     * Catch errors and translate for display
+     * Catch errors and update state ready for display
      */
     public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-        
-        // Update state to force a rerender
+
         const details = ErrorFactory.fromRenderError(error, errorInfo.componentStack);
         this.setState({error: details});
-        
-        // Wait for a render so that the error summary view is created, then send it an event
-        setTimeout(() => {
-            this.props.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('fallback', details));
-        }, 1000);
     }
 }

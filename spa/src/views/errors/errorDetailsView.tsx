@@ -59,6 +59,7 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
         );
     }
 
+    // Do the main rendering
     const formatter = new ErrorFormatter();
     const lines = formatter.getErrorLines(props.error);
     const stack = formatter.getErrorStack(props.error);
@@ -69,9 +70,9 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
                 <div className='col-10 errorcolor largetext text-center'>
                     {props.title}
                 </div>
-                <div className='col-2 text-end'>
+                {props.handleClose && <div className='col-2 text-end'>
                     <button onClick={props.handleClose} type='button'>x</button>
-                </div>
+                </div>}
             </div>
             <div className='row card-body'>
                 <div className='col-12'>
