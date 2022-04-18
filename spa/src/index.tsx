@@ -5,9 +5,8 @@ import {App} from './app/app';
 import {AppViewModel} from './app/appViewModel';
 import {ErrorBoundary} from './views/errors/errorBoundary';
 
-const viewModel = new AppViewModel();
 const props = {
-    viewModel,
+    viewModel: new AppViewModel(),
 };
 
 render (

@@ -12,5 +12,5 @@ export interface ErrorDetailsViewProps {
     error: UIError;
 
     // Supplied when the view is running in a modal
-    handleClose?: (() => void);
+    handleClose?: () => void;
 }
