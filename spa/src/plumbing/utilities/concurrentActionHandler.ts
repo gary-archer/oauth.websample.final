@@ -20,10 +20,10 @@ export class ConcurrentActionHandler {
     public async execute(action: () => Promise<void>): Promise<void> {
 
         // Create a promise through which to return the result
-        const promise = new Promise<any>((resolve, reject) => {
+        const promise = new Promise<void>((resolve, reject) => {
 
             const onSuccess = () => {
-                resolve(null);
+                resolve();
             };
 
             const onError = (error: any) => {
