@@ -21,6 +21,9 @@ case "$(uname -s)" in
   MINGW64*)
     PLATFORM="WINDOWS"
 	;;
+  Linux)
+    PLATFORM="LINUX"
+	;;
 esac
 
 #
@@ -44,9 +47,11 @@ fi
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
     open -a Terminal ./webhost/deploy.sh
-else
+elif [ "$PLATFORM" == 'WINDOWS' ]; then
     GIT_BASH="C:\Program Files\Git\git-bash.exe"
     "$GIT_BASH" -c ./webhost/deploy.sh &
+elif [ "$PLATFORM" == 'LINUX' ]; then
+    ./webhost/deploy.sh &
 fi
 
 #
@@ -65,6 +70,11 @@ done
 if [ "$PLATFORM" == 'MACOS' ]; then
     open "$WEB_ORIGIN/spa"
 fi
+
 if [ "$PLATFORM" == 'WINDOWS' ]; then
     start "$WEB_ORIGIN/spa"
+fi
+
+if [ "$PLATFORM" == 'LINUX' ]; then
+    xdg-open "$WEB_ORIGIN/spa"
 fi
