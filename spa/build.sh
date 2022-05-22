@@ -12,8 +12,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 rm -rf node_modules
 npm install
 if [ $? -ne 0 ]; then
-    echo 'Problem encountered installing SPA dependencies'
-    exit 1
+  echo 'Problem encountered installing SPA dependencies'
+  exit 1
 fi
 
 #
@@ -21,6 +21,6 @@ fi
 #
 npm run buildRelease
 if [ $? -ne 0 ]; then
-    echo 'Problem encountered building the SPA'
-    exit 1
+  echo 'Problem encountered building the SPA'
+  exit 1
 fi

@@ -31,27 +31,32 @@ esac
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-    # Run the Docker deployment
-    echo 'Deploying a local token handler to a Docker Compose network ...'
-    ./resources/deploy.sh
+  # Run the Docker deployment
+  echo 'Deploying a local token handler to a Docker Compose network ...'
+  ./resources/deploy.sh
 
-    # Wait for endpoints to come up
-    echo 'Waiting for the local token handler endpoints to come up ...'
-    while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$TOKEN_HANDLER_BASE_URL/oauth-agent/login/start")" != '200' ]; do
-        sleep 2
-    done
+  # Wait for endpoints to come up
+  echo 'Waiting for the local token handler endpoints to come up ...'
+  while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$TOKEN_HANDLER_BASE_URL/oauth-agent/login/start")" != '200' ]; do
+    sleep 2
+  done
 fi
 
 #
 # Run the web host to serve static content
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
-    open -a Terminal ./webhost/deploy.sh
+
+  open -a Terminal ./webhost/deploy.sh
+
 elif [ "$PLATFORM" == 'WINDOWS' ]; then
-    GIT_BASH="C:\Program Files\Git\git-bash.exe"
-    "$GIT_BASH" -c ./webhost/deploy.sh &
+  
+  GIT_BASH="C:\Program Files\Git\git-bash.exe"
+  "$GIT_BASH" -c ./webhost/deploy.sh &
+
 elif [ "$PLATFORM" == 'LINUX' ]; then
-    ./webhost/deploy.sh &
+
+  gnome-terminal -- ./webhost/deploy.sh
 fi
 
 #
@@ -59,22 +64,18 @@ fi
 #
 echo 'Waiting for Web Host to become available ...'
 while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/spa/index.html")" != '200' ]; do
-    sleep 2
+  sleep 2
 done
 
 #
 # Run the SPA in the default browser, then sign in with these credentials:
-#  guestuser@mycompany.com
-#  GuestPassword1
+# - guestuser@mycompany.com
+# - Password1
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
-    open "$WEB_ORIGIN/spa"
-fi
-
-if [ "$PLATFORM" == 'WINDOWS' ]; then
-    start "$WEB_ORIGIN/spa"
-fi
-
-if [ "$PLATFORM" == 'LINUX' ]; then
-    xdg-open "$WEB_ORIGIN/spa"
+  open "$WEB_ORIGIN/spa"
+elif [ "$PLATFORM" == 'WINDOWS' ]; then
+  start "$WEB_ORIGIN/spa"
+elif [ "$PLATFORM" == 'LINUX' ]; then
+  xdg-open "$WEB_ORIGIN/spa"
 fi
