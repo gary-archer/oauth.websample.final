@@ -1,0 +1,7 @@
+1. Use luarocks install
+
+2. Latest Kong
+
+3. Focus on readability
+
+4. Delete localtokenhandler.deployment repo
