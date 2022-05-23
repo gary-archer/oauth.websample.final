@@ -35,7 +35,7 @@ Trust the root certificate that the build step downloads to your computer, so th
 Add this file to the system keychain on macOS or the Windows certificate trust store for the local computer:
 
 ```
-./webhost/certs/authsamples-dev.ca.pem
+./certs/authsamples-dev.ca.pem
 ```
 
 Then deploy components if required, to run the SPA on the local computer:
