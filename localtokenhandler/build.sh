@@ -7,29 +7,7 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Download SSL certificates used by the OAuth Agent and OAuth Proxy
-#
-rm -rf tmp
-git clone https://github.com/gary-archer/oauth.developmentcertificates ./tmp
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered downloading API certificates'
-  exit 1
-fi
-rm -rf certs
-mv ./tmp/authsamples-dev ./certs
-
-#
-# Download the Curity OAuth proxy plugin
-#
-rm -rf oauth-proxy-plugin
-git clone https://github.com/curityio/nginx-lua-oauth-proxy-plugin ./oauth-proxy-plugin
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered downloading the Curity OAuth proxy plugin'
-  exit 1
-fi
-
-#
-# Download the OAuth Agent API
+# Download the OAuth Agent API and copy in required files
 #
 rm -rf oauth-agent
 git clone https://github.com/gary-archer/oauth.tokenhandler.docker oauth-agent
@@ -37,22 +15,12 @@ if [ $? -ne 0 ]; then
   echo 'Problem encountered downloading the OAuth Agent'
   exit 1
 fi
+cp oauth-agent.config.json oauth-agent/api.config.json
+cp ../certs/authsamples-dev.ca.pem oauth-agent/trusted.ca.pem
 cd oauth-agent
 
 #
-# When the OAuth Proxy calls an API on the host computer, this ensures that SSL trust works
-# If also running a proxy tool such as Charles on the host, the proxy root CA may cause SSL trust problems
-# To resolve this, set an environment variable that includes both the below CA and the proxy root CA
-#
-echo $TOKEN_HANDLER_CA_CERTS
-if [[ -z "$TOKEN_HANDLER_CA_CERTS" ]]; then
-  cp ../tmp/mycompany.ca.pem ./trusted.ca.pem
-else
-  cp $TOKEN_HANDLER_CA_CERTS ./trusted.ca.pem
-fi
-
-#
-# Install OAuth Agent dependencies
+# Build the OAuth Agent into a Docker container
 #
 rm -rf node_modules
 npm install
@@ -61,20 +29,24 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-#
-# Build the OAuth Agent's API's code
-#
 npm run buildRelease
 if [ $? -ne 0 ]; then
   echo "Problem encountered building the Token Handler API code"
   exit 1
 fi
 
-#
-# Build the OAuth Agent's Docker container
-#
 docker build -f ./Dockerfile -t oauthagent:v1 .
 if [ $? -ne 0 ]; then
   echo "Problem encountered building the OAuth Agent Docker container"
+  exit 1
+fi
+cd ..
+
+#
+# Build the custom Docker image for the reverse proxy and OAuth plugin
+#
+docker build -f ./Kong-Dockerfile -t custom_kong:2.8.1-alpine .
+if [ $? -ne 0 ]; then
+  echo "Problem encountered building the Reverse Proxy Docker container"
   exit 1
 fi

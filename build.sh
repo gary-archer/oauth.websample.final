@@ -6,6 +6,22 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+#
+# Download SSL certificates if required and move the ones of interest to a certs folder
+#
+if [ ! -d 'certs' ]; then
+  
+  git clone https://github.com/gary-archer/oauth.developmentcertificates ./resources
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered downloading development certificates'
+    exit 1
+  fi
+
+  rm -rf certs
+  mv ./resources/authsamples-dev ./certs
+  rm -rf ./resources
+fi    
+
 if [ "$1" == 'LOCALAPI' ]; then
 
   # Point the SPA to the local token handler by using this configuration file
@@ -38,14 +54,11 @@ fi
 cd ..
 
 #
-# Run ./build.sh LOCALAPI to route to one of my blog's final APIs running locally, via a local token handler
+# When connecting the SPA to a local API, build a token handler to run on the local development computer
 #
 if [ "$1" == 'LOCALAPI' ]; then
     
-  rm -rf resources
-  git clone https://github.com/gary-archer/oauth.localtokenhandler.deployment ./resources
-  cd resources
-  ./build.sh
+  ./localtokenhandler/build.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building local token handler resources'
     exit

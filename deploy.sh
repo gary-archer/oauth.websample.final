@@ -5,9 +5,7 @@
 #################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
-
 WEB_ORIGIN='https://web.authsamples-dev.com'
-TOKEN_HANDLER_BASE_URL='https://localtokenhandler.authsamples-dev.com:444'
 
 #
 # Get the platform
@@ -27,19 +25,15 @@ case "$(uname -s)" in
 esac
 
 #
-# Run ./deploy.sh LOCALAPI to run a local token handler in Docker, to route to a locally running API
+# When connecting the SPA to a local API, deploy a token handler to run in Docker on the local development computer
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-  # Run the Docker deployment
-  echo 'Deploying a local token handler to a Docker Compose network ...'
-  ./resources/deploy.sh
-
-  # Wait for endpoints to come up
-  echo 'Waiting for the local token handler endpoints to come up ...'
-  while [ "$(curl -k -s -X POST -H "origin:$WEB_ORIGIN" -o /dev/null -w ''%{http_code}'' "$TOKEN_HANDLER_BASE_URL/oauth-agent/login/start")" != '200' ]; do
-    sleep 2
-  done
+  ./localtokenhandler/deploy.sh
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered depoying the local token handler'
+    exit
+  fi
 fi
 
 #
@@ -72,10 +66,17 @@ done
 # - guestuser@mycompany.com
 # - Password1
 #
+
 if [ "$PLATFORM" == 'MACOS' ]; then
+
   open "$WEB_ORIGIN/spa"
+
 elif [ "$PLATFORM" == 'WINDOWS' ]; then
+
   start "$WEB_ORIGIN/spa"
+
 elif [ "$PLATFORM" == 'LINUX' ]; then
+
   xdg-open "$WEB_ORIGIN/spa"
+
 fi
