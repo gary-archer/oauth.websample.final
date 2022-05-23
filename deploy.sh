@@ -66,7 +66,6 @@ done
 # - guestuser@mycompany.com
 # - Password1
 #
-
 if [ "$PLATFORM" == 'MACOS' ]; then
 
   open "$WEB_ORIGIN/spa"
