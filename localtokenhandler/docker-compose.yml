@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+
+  #
+  # OAuth and API calls from the SPA are routed via the reverse proxy
+  #
+  reverseproxy:
+    image: custom_kong:2.8.1-alpine
+    hostname: reverseproxy-internal.authsamples-dev.com
+    extra_hosts:
+     - api.authsamples-dev.com:host-gateway
+    ports:
+      - 444:8000
+    volumes:
+      - ./kong.yml:/usr/local/kong/declarative/kong.yml
+      - ../certs/authsamples-dev.ssl.pem:/usr/local/share/certs/authsamples-dev.ssl.pem
+      - ../certs/authsamples-dev.ssl.key:/usr/local/share/certs/authsamples-dev.ssl.key
+      - ../certs/authsamples-dev.ca.pem:/usr/local/share/certs/authsamples-dev.ca.pem
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: '/usr/local/kong/declarative/kong.yml'
+      KONG_PROXY_LISTEN: '0.0.0.0:8000 ssl'
+      KONG_SSL_CERT: '/usr/local/share/certs/authsamples-dev.ssl.pem'
+      KONG_SSL_CERT_KEY: './usr/local/share/certs/authsamples-dev.ssl.key'
+      KONG_LUA_SSL_TRUSTED_CERTIFICATE: './usr/local/share/certs/authsamples-dev.ca.pem'
+      KONG_LOG_LEVEL: 'info'
+      KONG_PLUGINS: 'bundled,oauth-proxy'
+      KONG_NGINX_PROXY_PROXY_BUFFERS: '16 64k'
+      KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: '64k'
+      KONG_NGINX_PROXY_LARGE_CLIENT_HEADER_BUFFERS: '16 64k'
+
+  #
+  # OAuth calls and issuing of secure cookies for the SPA are handled by the OAuth Agent
+  #
+  oauthagent:
+    image: oauthagent:v1
+    hostname: oauthagent-internal.authsamples-dev.com
+    volumes:
+      - ./oauth-agent/api.config.json:/usr/api/api.config.json
+      - ../certs/authsamples-dev.ssl.p12:/usr/api/certs/authsamples-dev.ssl.p12
+
+  #
+  # Also deploy a container that contains tools such as curl for troubleshooting inside the cluster
+  #
+  util:
+    image: wbitt/network-multitool
+    hostname: util-internal.authsamples-dev.com
