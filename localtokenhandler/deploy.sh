@@ -20,8 +20,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Wait for token handler endpoints to come up
-#
+# Wait for the OAuth Agent
 echo 'Waiting for Token Handler endpoints to become available ...'
 WEB_ORIGIN='https://web.authsamples-dev.com'
 TOKEN_HANDLER_BASE_URL='https://localtokenhandler.authsamples-dev.com:444'

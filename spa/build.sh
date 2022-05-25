@@ -9,11 +9,13 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 #
 # Install dependencies
 #
-rm -rf node_modules
-npm install
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered installing SPA dependencies'
-  exit 1
+if [ ! -d 'node_modules' ]; then
+  
+  npm install
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered installing SPA dependencies'
+    exit 1
+  fi
 fi
 
 #
