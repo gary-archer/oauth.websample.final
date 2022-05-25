@@ -37,7 +37,10 @@ services:
     hostname: oauthagent-internal.authsamples-dev.com
     volumes:
       - ./oauth-agent/api.config.json:/usr/api/api.config.json
+      - ./oauth-agent/trusted.ca.pem:/usr/local/share/ca-certificates/trusted.ca.crt
       - ../certs/authsamples-dev.ssl.p12:/usr/api/certs/authsamples-dev.ssl.p12
+    environment:
+      NODE_EXTRA_CA_CERTS: '/usr/local/share/ca-certificates/trusted.ca.crt'
 
   #
   # Also deploy a container that contains tools such as curl for troubleshooting inside the cluster
