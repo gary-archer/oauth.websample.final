@@ -23,7 +23,7 @@ services:
   # The gateway then uses a plugin to decrypt secure cookies, then calls the API with the access token
   #
 - name: sample-api
-  url: https://api.authsamples-dev.com:445/api
+  url: https://api.authsamples-dev.com:446/api
   routes:
   - name: sample-api-route
     paths:
