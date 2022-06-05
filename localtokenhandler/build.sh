@@ -39,6 +39,30 @@ fi
 cp ../../certs/authsamples-dev.ca.pem ./trusted.ca.pem
 
 #
+# Get the platform
+#
+case "$(uname -s)" in
+
+  Darwin)
+    PLATFORM="MACOS"
+ 	;;
+
+  MINGW64*)
+    PLATFORM="WINDOWS"
+	;;
+  Linux)
+    PLATFORM="LINUX"
+	;;
+esac
+
+#
+# On Windows, fix problems with trailing newline characters in Docker scripts
+#
+if [ "$PLATFORM" == 'WINDOWS' ]; then
+  sed -i 's/\r$//' docker/docker-init.sh
+fi
+
+#
 # Build the OAuth Agent docker image
 #
 docker build -f ./docker/Dockerfile --build-arg TRUSTED_CA_CERTS='./trusted.ca.pem' -t oauthagent:v1 .
