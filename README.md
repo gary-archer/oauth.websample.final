@@ -63,7 +63,7 @@ Then run this script to run a simple web host that serves static content:
 ./deploy.sh
 ```
 
-The browser is invoked at https://web.authsamples-dev.com/spa, then sign in with the test account.\
+When the browser is invoked at https://web.authsamples-dev.com/spa, sign in with the test account.\
 You can then test all lifecycle operations, including expiry events, multi-tab browsing and multi-tab logout.
 
 ## Further Information
