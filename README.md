@@ -29,7 +29,7 @@ The data is returned from an API that authorizes access to resources using domai
 ## Online System
 
 The online version use the AWS Cloudfront CDN to deliver static content to the browser.\
-Login at https://web.authsamples.com/spa with these credentials:
+Login at https://web.authsamples.com/spa with this AWS Cognito test account:
 
 ```text
 - User: guestuser@mycompany.com
@@ -63,14 +63,8 @@ Then run this script to run a simple web host that serves static content:
 ./deploy.sh
 ```
 
-The browser is then invoked at https://web.authsamples-dev.com/spa and you can sign in with these credentials:
-
-```text
-- User: guestuser@mycompany.com
-- Password: GuestPassword1
-```
-
-You can then test all lifecycle operations, including token refresh, multi-tab browsing and multi-tab logout.
+The browser is then invoked at https://web.authsamples-dev.com/spa and you can sign in with the same test account.\
+You can then test all lifecycle operations, including token refresh, expiry events, multi-tab browsing and multi-tab logout.
 
 ## Further Information
 
