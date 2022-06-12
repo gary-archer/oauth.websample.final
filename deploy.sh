@@ -19,6 +19,7 @@ case "$(uname -s)" in
   MINGW64*)
     PLATFORM="WINDOWS"
 	;;
+
   Linux)
     PLATFORM="LINUX"
 	;;
