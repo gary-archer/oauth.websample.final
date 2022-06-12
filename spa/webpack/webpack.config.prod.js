@@ -13,7 +13,7 @@ module.exports = merge(baseConfig, {
     hints: false
   },
 
-  // Output source maps to enable debugging of browser code
+  // Output source maps to enable production debugging of browser code
   devtool: 'source-map',
 
   plugins:[

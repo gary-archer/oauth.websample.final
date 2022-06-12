@@ -7,6 +7,24 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
+# Get the platform
+#
+case "$(uname -s)" in
+
+  Darwin)
+    PLATFORM="MACOS"
+ 	;;
+
+  MINGW64*)
+    PLATFORM="WINDOWS"
+	;;
+
+  Linux)
+    PLATFORM="LINUX"
+	;;
+esac
+
+#
 # Download the OAuth Agent API
 #
 rm -rf oauth-agent
@@ -37,23 +55,6 @@ fi
 # Prepare root CA certificates that the OAuth Agent will trust
 #
 cp ../../certs/authsamples-dev.ca.pem ./trusted.ca.pem
-
-#
-# Get the platform
-#
-case "$(uname -s)" in
-
-  Darwin)
-    PLATFORM="MACOS"
- 	;;
-
-  MINGW64*)
-    PLATFORM="WINDOWS"
-	;;
-  Linux)
-    PLATFORM="LINUX"
-	;;
-esac
 
 #
 # On Windows, fix problems with trailing newline characters in Docker scripts

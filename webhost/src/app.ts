@@ -9,7 +9,7 @@ import {HttpServerConfiguration} from './httpServerConfiguration';
 (async () => {
 
     // First load configuration
-    const configurationBuffer = await fs.readFile('host.config.json');
+    const configurationBuffer = await fs.readFile('webhost.config.json');
     const configuration =  JSON.parse(configurationBuffer.toString()) as Configuration;
 
     // Create the web host

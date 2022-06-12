@@ -22,7 +22,7 @@ export class StaticContent {
 
         } else {
 
-            // In Kubernetes the files are packaged to a subfolder of the web host
+            // In Docker the files are packaged to a subfolder of the web host
             this._webFilesRoot = '../spa';
         }
     }

@@ -38,6 +38,20 @@ if [ "$1" == 'LOCALAPI' ]; then
 fi
 
 #
+# Ensure that the webhost is using the correct web configurations
+#
+if [ "$1" == 'LOCALAPI' ]; then
+
+  cp spa/environments/localapi.config.json spa/dist/spa.config.json
+  cp webhost/environments/dev.config.json webhost/webhost.config.json
+
+else 
+
+  cp spa/environments/dev.config.json spa/dist/spa.config.json
+  cp webhost/environments/dev.config.json webhost/webhost.config.json
+fi
+
+#
 # Run the web host to serve static content
 #
 if [ "$PLATFORM" == 'MACOS' ]; then

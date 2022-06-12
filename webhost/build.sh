@@ -7,7 +7,7 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Build the webhost code
+# Install the web host dependencies
 #
 if [ ! -d 'node_modules' ]; then
   
@@ -16,4 +16,13 @@ if [ ! -d 'node_modules' ]; then
     echo 'Problem encountered installing webhost dependencies'
     exit 1
   fi
+fi
+
+#
+# Build its code
+#
+npm run buildRelease
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered building the webhost code'
+  exit 1
 fi
