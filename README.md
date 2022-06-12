@@ -22,7 +22,7 @@ This ensures that local web development is focused only on the React UI:
 The online AWS deployed version of the SPA can be run using these details:
 
 ```text
-- URL: https://web.authsamples.com/spa
+- URL: [https://web.authsamples.com/spa](https://web.authsamples.com/spa)
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
 ```
@@ -57,7 +57,7 @@ Then run this script to run a simple web host that serves static content:
 The browser is then invoked and you can sign in with these details:
 
 ```text
-- URL: https://web.authsamples-dev.com/spa
+- URL: [https://web.authsamples-dev.com/spa](https://web.authsamples-dev.com/spa)
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
 ```
