@@ -19,10 +19,9 @@ This ensures that local web development is focused only on the React UI:
 
 ![SPA Architecture](./doc/spa-architecture.png)
 
-The online AWS deployed version of the SPA can be run using these details:
+The online AWS deployed version of the SPA can at https://web.authsamples.com/spa with these credentials:
 
 ```text
-- URL: [https://web.authsamples.com/spa](https://web.authsamples.com/spa)
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
 ```
@@ -54,10 +53,9 @@ Then run this script to run a simple web host that serves static content:
 ./deploy.sh
 ```
 
-The browser is then invoked and you can sign in with these details:
+The browser is then invoked at https://web.authsamples-dev.com/spa and you can sign in with these credentials:
 
 ```text
-- URL: [https://web.authsamples-dev.com/spa](https://web.authsamples-dev.com/spa)
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
 ```
