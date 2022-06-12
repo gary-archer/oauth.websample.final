@@ -76,6 +76,10 @@ You can then test all lifecycle operations, including token refresh, multi-tab b
 
 Further architecture and non-functional details are described starting in the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) blog post.
 
+## Programming Languages
+
+* TypeScript and React are used to implement the SPA
+
 ## Cloud Infrastructure Used
 
 * AWS Route 53 is used for custom hosting domains
