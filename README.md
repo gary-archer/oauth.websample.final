@@ -74,7 +74,7 @@ Further architecture and non-functional details are described starting in the [F
 
 * TypeScript and React are used to implement the SPA
 
-## Cloud Infrastructure Used
+## Infrastructure
 
 * AWS Route 53 is used for custom hosting domains
 * AWS S3 is used as the upload point for web static content
