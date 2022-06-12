@@ -10,7 +10,7 @@ The final demo SPA, which aims for a [Web Architecture](https://authguidance.com
 
 - The SPA uses an API driven OpenID Connect solution via **Curity's Token Handler Pattern**
 - Only client side React technology is needed to implement the SPA, for productive development
-- The SPA is deployed to many global locations via a Content Delivery Network
+- The SPA is deployed to many global locations via a Content Delivery Network (CDN)
 
 ## Components
 
@@ -19,7 +19,17 @@ This ensures that local web development is focused only on the React UI:
 
 ![SPA Architecture](./doc/spa-architecture.png)
 
-The online AWS deployed version of the SPA can at https://web.authsamples.com/spa with these credentials:
+## Views
+
+The SPA is a simple UI with some basic navigation between views, to render fictional resources.\
+The data returned from APIs is authorized using domain specific claims.\
+
+![SPA Views](./doc/spa-views.png)
+
+## Online System
+
+The online version use the AWS Cloudfront CDN to deliver static content to the browser.\
+Login at https://web.authsamples.com/spa with these credentials:
 
 ```text
 - User: `guestuser@mycompany.com`
