@@ -28,7 +28,7 @@ The data is returned from an API that authorizes access to resources using domai
 
 ## Online System
 
-The online version use the AWS Cloudfront CDN to deliver static content to the browser.\
+The online version uses the AWS Cloudfront CDN to deliver static content to the browser.\
 Login at https://web.authsamples.com/spa with this AWS Cognito test account:
 
 ```text
@@ -38,7 +38,7 @@ Login at https://web.authsamples.com/spa with this AWS Cognito test account:
 
 ## Local Development Quick Start
 
-Build code locally via this command, which essentially just runs `npm install` and `npm start`:
+Build code locally via this command, which runs `npm install` and `npm start`:
 
 ```bash
 ./build.sh
