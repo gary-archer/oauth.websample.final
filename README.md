@@ -12,42 +12,55 @@ The final demo SPA, which aims for a [Web Architecture](https://authguidance.com
 - Only client side React technology is needed to implement the SPA, for productive development
 - The SPA is deployed to many global locations via a Content Delivery Network
 
-## Deployed System
+## Components
 
-You can login to the online version by following the instructions in the [Quick Start Page](https://authguidance.com/home/code-samples-quickstart/).
+The SPA architecture looks like this, where OAuth related components are hosted in the AWS cloud.\
+This ensures that local web development is focused only on the React UI:
 
-## Quick Start
+![SPA Architecture](./doc/spa-architecture.png)
 
-Ensure that Node.js installed, then run the following script from a macOS terminal or from Git Bash on Windows:
+The online AWS deployed version of the SPA can be run using these details:
+
+```text
+- URL: https://web.authsamples.com/spa
+- User: `guestuser@mycompany.com`
+- Password: `GuestPassword1`
+```
+
+## Local Development Quick Start
+
+Build code locally via this command, which essentially just runs `npm install` and `npm start`:
 
 ```bash
 ./build.sh
 ```
 
-Custom development domains are used so you must add this entry to your hosts file:
+Custom development domains are used so you must add this DNS entry to your hosts file:
 
-```
+```bash
 127.0.0.1 web.authsamples-dev.com
 ::1       localhost
 ```
 
-Trust the root certificate that the build step downloads to your computer, so that SSL works in the browser.\
-Add this file to the system keychain on macOS or the Windows certificate trust store for the local computer:
+Next configure [Browser SSL Trust](https://authguidance.com/2017/11/11/developer-ssl-setup#browser) for the SSL root certificate:
 
 ```
 ./certs/authsamples-dev.ca.pem
 ```
 
-Then deploy components if required, to run the SPA on the local computer:
+Then run this script to run a simple web host that serves static content:
 
 ```bash
 ./deploy.sh
 ```
 
-The browser is invoked at `https://web.authsamples-dev.com/spa` and you can sign in with these credentials:
+The browser is then invoked and you can sign in with these details:
 
+```text
+- URL: https://web.authsamples-dev.com/spa
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
+```
 
 You can then test all lifecycle operations, including token refresh, multi-tab browsing and multi-tab logout.
 
