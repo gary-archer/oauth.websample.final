@@ -22,7 +22,7 @@ This ensures that local web development is focused only on the React UI:
 ## Views
 
 The SPA is a simple UI with some basic navigation between views, to render fictional resources.\
-The data returned from APIs is authorized using domain specific claims.\
+The data is returned from an API that authorizes access to resources using domain specific claims.
 
 ![SPA Views](./doc/spa-views.png)
 
