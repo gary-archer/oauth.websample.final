@@ -32,8 +32,8 @@ The online version use the AWS Cloudfront CDN to deliver static content to the b
 Login at https://web.authsamples.com/spa with these credentials:
 
 ```text
-- User: `guestuser@mycompany.com`
-- Password: `GuestPassword1`
+- User: guestuser@mycompany.com
+- Password: GuestPassword1
 ```
 
 ## Local Development Quick Start
@@ -66,8 +66,8 @@ Then run this script to run a simple web host that serves static content:
 The browser is then invoked at https://web.authsamples-dev.com/spa and you can sign in with these credentials:
 
 ```text
-- User: `guestuser@mycompany.com`
-- Password: `GuestPassword1`
+- User: guestuser@mycompany.com
+- Password: GuestPassword1
 ```
 
 You can then test all lifecycle operations, including token refresh, multi-tab browsing and multi-tab logout.
