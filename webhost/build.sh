@@ -19,6 +19,15 @@ if [ ! -d 'node_modules' ]; then
 fi
 
 #
+# Check code quality
+#
+npm run lint
+if [ $? -ne 0 ]; then
+  echo 'Code quality checks failed'
+  exit 1
+fi
+
+#
 # Build its code
 #
 npm run buildRelease
