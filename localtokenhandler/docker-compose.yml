@@ -36,7 +36,7 @@ services:
     image: oauthagent:v1
     hostname: oauthagent-internal.authsamples-dev.com
     volumes:
-      - ./oauth-agent/docker/api.config.json:/usr/api/api.config.json
+      - ./oauth-agent/environments/dockercompose.config.json:/usr/api/api.config.json
       - ./oauth-agent/trusted.ca.pem:/usr/local/share/ca-certificates/trusted.ca.crt
       - ../certs/authsamples-dev.ssl.p12:/usr/api/certs/authsamples-dev.ssl.p12
     environment:
