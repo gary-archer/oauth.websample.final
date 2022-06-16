@@ -47,8 +47,7 @@ Build code locally via this command, which runs `npm install` and `npm start`:
 Custom development domains are used so you must add this DNS entry to your hosts file:
 
 ```bash
-127.0.0.1 web.authsamples-dev.com
-::1       localhost
+127.0.0.1 localhost web.authsamples-dev.com
 ```
 
 Next configure [Browser SSL Trust](https://authguidance.com/2017/11/11/developer-ssl-setup#browser) for the SSL root certificate:
