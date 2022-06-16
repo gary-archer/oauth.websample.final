@@ -9,7 +9,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 #
 # Download SSL certificates if required
 #
-./downloadCerts.sh
+./downloadcerts.sh
 if [ $? -ne 0 ]; then
   exit
 fi
