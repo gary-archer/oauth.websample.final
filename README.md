@@ -6,7 +6,7 @@
 
 ## Overview
 
-The final demo SPA, which aims for a [Web Architecture](https://authguidance.com/2017/09/08/goal-1-spas/) with best capabilities:
+The final demo SPA, which aims for a [Web Architecture](https://authguidance.com/web-architecture-goals/) with best capabilities:
 
 - The SPA uses an API driven OpenID Connect solution via **Curity's Token Handler Pattern**
 - Only client side React technology is needed to implement the SPA, for productive development
