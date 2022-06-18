@@ -67,7 +67,9 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 
 ## Further Information
 
-Further architecture and non-functional details are described starting in the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) blog post.
+* Further architecture details are described starting in the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) blog post
+* See the [Non Functional Behaviour](https://authguidance.com/2017/10/08/corporate-code-sample-core-behavior/) page for a summary of overall qualities
+
 
 ## Programming Languages
 
