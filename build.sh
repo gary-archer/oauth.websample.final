@@ -41,12 +41,11 @@ cd ..
 if [ "$1" == 'LOCALAPI' ]; then
 
   git clone https://github.com/gary-archer/oauth.tokenhandler.docker localtokenhandler
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered downloading token handler resources'
+    exit
+  fi
   
-  # TODO: delete after merge
-  cd localtokenhandler
-  git checkout feature/deployment
-  cd ..
-
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building local token handler resources'
