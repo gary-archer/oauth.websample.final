@@ -4,6 +4,5 @@ dist
 resources
 certs
 trusted.ca.pem
-oauth-agent
 .package
 .serverless

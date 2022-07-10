@@ -30,7 +30,7 @@ esac
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-  ./localtokenhandler/deploy.sh
+  ./localtokenhandler/deployment/docker-local/deploy.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered depoying the local token handler'
     exit
@@ -38,12 +38,12 @@ if [ "$1" == 'LOCALAPI' ]; then
 fi
 
 #
-# Ensure that the webhost is using the correct web configurations
+# Ensure that the webhost is pointing to the correct API
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-  cp spa/environments/localapi.config.json spa/dist/spa.config.json
-  cp webhost/environments/dev.config.json webhost/webhost.config.json
+  cp deployment/environments/spa/dev.localapi.config.json spa/dist/spa.config.json
+  cp deployment/environments/webhost/dev.config.json webhost/webhost.config.json
 
 else 
 
