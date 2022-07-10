@@ -47,8 +47,8 @@ if [ "$1" == 'LOCALAPI' ]; then
 
 else 
 
-  cp spa/environments/dev.config.json spa/dist/spa.config.json
-  cp webhost/environments/dev.config.json webhost/webhost.config.json
+  cp deployment/environments/spa/dev.config.json spa/dist/spa.config.json
+  cp deployment/environments/webhost/dev.config.json webhost/webhost.config.json
 fi
 
 #
