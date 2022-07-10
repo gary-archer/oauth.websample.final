@@ -1,0 +1,101 @@
+#
+# The Kubernetes resources for the Web Host, which delivers static web content
+#
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: webhost-cert
+spec:
+  secretName: webhost-pkcs12
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+  commonName: webhost-svc.default.svc
+  dnsNames:
+  - webhost-svc
+  - webhost-svc.default.svc
+  - webhost-svc.default.svc.cluster.local
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: webhost-pkcs12-password
+        key: password
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: webhost
+  labels:
+    app: webhost
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webhost
+  template:
+    metadata:
+      labels:
+        app: webhost
+    spec:
+      containers:
+      - name: webhost
+        image: webhost:v1
+        volumeMounts:
+          - name: webhost-config
+            mountPath: /usr/webhost/webhost.config.json
+            subPath: webhost.config.json
+            readOnly: true
+          - name: spa-config
+            mountPath: /usr/webhost/spa/spa.config.json
+            subPath: spa.config.json
+            readOnly: true
+          - name: webhost-ssl-cert
+            mountPath: /usr/webhost/certs
+            readOnly: true
+      volumes:
+        - name: webhost-config
+          configMap:
+            name: webhost-config
+        - name: spa-config
+          configMap:
+            name: spa-config
+        - name: webhost-ssl-cert
+          secret:
+            secretName: webhost-pkcs12
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: webhost-svc
+spec:
+  selector:
+    app: webhost
+  ports:
+  - protocol: "TCP"
+    port: 8101
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: webhost-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/secure-backends: 'true'
+    nginx.ingress.kubernetes.io/backend-protocol: 'HTTPS'
+spec:
+  tls:
+    - hosts:
+        - web.mycompany.com
+      secretName: mycompany-com-tls
+  rules:
+    - host: web.mycompany.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: webhost-svc
+                port:
+                  number: 8101

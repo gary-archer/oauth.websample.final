@@ -59,7 +59,7 @@ Next configure [Browser SSL Trust](https://authguidance.com/2017/11/11/developer
 Then run this script to run a simple web host that serves static content:
 
 ```bash
-./deploy.sh
+./run.sh
 ```
 
 When the browser is invoked at https://web.authsamples-dev.com/spa, sign in with the test account.\

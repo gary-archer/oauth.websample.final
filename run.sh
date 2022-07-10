@@ -30,20 +30,20 @@ esac
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-  ./localtokenhandler/deploy.sh
+  ./localtokenhandler/deployment/docker-local/deploy.sh
   if [ $? -ne 0 ]; then
-    echo 'Problem encountered depoying the local token handler'
+    echo 'Problem encountered deploying the local token handler'
     exit
   fi
 fi
 
 #
-# Ensure that the webhost is using the correct web configurations
+# Ensure that the webhost is pointing to the correct API
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-  cp spa/environments/localapi.config.json spa/dist/spa.config.json
-  cp webhost/environments/dev.config.json webhost/webhost.config.json
+  cp deployment/environments/spa/dev.localapi.config.json spa/dist/spa.config.json
+  cp deployment/environments/webhost/dev.config.json webhost/webhost.config.json
 
 else 
 
@@ -56,16 +56,16 @@ fi
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
 
-  open -a Terminal ./webhost/deploy.sh
+  open -a Terminal ./webhost/run.sh
 
 elif [ "$PLATFORM" == 'WINDOWS' ]; then
   
   GIT_BASH="C:\Program Files\Git\git-bash.exe"
-  "$GIT_BASH" -c ./webhost/deploy.sh &
+  "$GIT_BASH" -c ./webhost/run.sh &
 
 elif [ "$PLATFORM" == 'LINUX' ]; then
 
-  gnome-terminal -- ./webhost/deploy.sh
+  gnome-terminal -- ./webhost/run.sh
 fi
 
 #

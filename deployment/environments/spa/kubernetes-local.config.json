@@ -1,0 +1,9 @@
+{
+    "app": {
+        "webOrigin": "https://web.mycompany.com",
+        "apiBaseUrl": "https://tokenhandler.mycompany.com/api"
+    },
+    "oauth": {
+        "oauthAgentBaseUrl": "https://tokenhandler.mycompany.com/oauth-agent"
+    }
+}
