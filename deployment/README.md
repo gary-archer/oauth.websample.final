@@ -4,15 +4,10 @@ Deployment resources are organized into the following folders:
 
 ## cloudfront
 
-First run this script to build the SPA into a folder structure that can be copied to S3:
+These scripts deploy the SPA's web static content to S3 and run a Cloudfront invalidation:
 
 ```bash
 ./package.sh
-```
-
-Next deploy the SPA's web static content to S3 and run a Cloudfront invalidation:
-
-```bash
 ./deploy.sh
 ```
 
@@ -20,7 +15,7 @@ See the [Cloud Web Content Delivery](https://authguidance.com/2018/12/02/spa-con
 
 ## docker
 
-The main Dockerfile used in local development setups that use Docker or Kubernetes.
+The main webhost Dockerfile used in local development setups that use Docker or Kubernetes.
 
 ## docker-local
 
@@ -35,14 +30,14 @@ cd deployment/docker-local
 
 ## environments
 
-A number of copies of the SPA and Web Host configuration file exist for different setups:
+A number of environments exist for various setups, with different configuration files:
 
-| Filename | Usage |
-| -------- | ----- |
-| dev.config.json | Used for local React focused development of the SPA |
-| dev.localapi.config.json | Used for running the SPA and an API locally, along with a local token handler |
-| docker-local.config.json | Used when getting web static content from a local Docker Compose network |
-| kubernetes-local.config.json | Used when getting web static content from local Kubernetes pods |
+| Environment | Description |
+| ----------- | ----------- |
+| dev | Local development of the OAuth Agent component |
+| dev-localapi | Used to also run an API locally, where a Docker token handler handles receiving cookies |
+| docker-local | A deployment of the OAuth Agent and OAuth Proxy to support local SPA to API routing |
+| kubernetes-local | A deployment of the OAuth Agent and OAuth Proxy for an end-to-end KIND setup |
 
 ## kubernetes
 
