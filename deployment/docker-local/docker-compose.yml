@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+
+  webhost:
+    image: webhost:v1
+    hostname: web.authsamples-dev.com
+    ports:
+      - 443:8000
+    volumes:
+      - ../environments/webhost/docker-local.config.json:/usr/webhost/webhost.config.json
+      - ../environments/spa/docker-local.config.json:/usr/webhost/spa/spa.config.json
+      - ../../certs/authsamples-dev.ssl.p12:/usr/webhost/certs/authsamples-dev.ssl.p12

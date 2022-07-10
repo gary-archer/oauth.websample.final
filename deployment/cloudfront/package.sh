@@ -1,41 +1,42 @@
 #!/bin/bash
 
-###################################################
-# A script to package the SPA files ready to upload
-###################################################
+#####################################################################
+# A script to package the SPA files ready to upload to AWS Cloudfront
+# Note that the web host is not needed and we simple upload files
+#####################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Build release bundles
+# Move to the SPA folder
 #
 ROOT_FOLDER='../../spa'
 cd $ROOT_FOLDER
 
 #
-# Install dependencies if required
+# Install SPA dependencies if required
 #
 if [ ! -d ./node_modules ]; then
   npm install
 fi
 
 #
-# Do a release build
+# Do a release build of the SPA code
 #
 npm run buildRelease
 
 #
 # Create the package folder
 #
-cd ../aws/cloudfront
+cd ../deployment/cloudfront
 rm -rf .package
 mkdir .package
 mkdir .package/spa
 
 #
 # The production configuration is hard coded into the app and not deployed
-#
-# cp ./spa.config.json .package/spa
+# In some environments we could deploy a configuration file like this:
+# - cp ./spa.config.json .package/spa
 
 #
 # Copy HTML files

@@ -6,7 +6,7 @@
 #####################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
-cd ../../..
+cd ../..
 
 #
 # Download certificates if required
@@ -41,7 +41,7 @@ cd ..
 #
 # Build the web host into a docker image
 #
-docker build -f ./webhost/deployment/docker/Dockerfile -t webhost:v1 .
+docker build -f ./deployment/docker/Dockerfile -t webhost:v1 .
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the Web Host docker container'
   exit 1
