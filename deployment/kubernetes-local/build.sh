@@ -8,22 +8,12 @@
 # Ensure that we are in the root folder
 #
 cd "$(dirname "${BASH_SOURCE[0]}")"
-cd ..
-
-#
-# Get the final SPA
-#
-rm -rf finalspa
-git clone https://github.com/gary-archer/oauth.websample.final finalspa
-if [ $? -ne 0 ]; then
-  echo '*** Web sample download problem encountered'
-  exit 1
-fi
+cd ../..
 
 #
 # Build Javascript bundles
 #
-cd finalspa/spa
+cd spa
 npm install
 npm run buildRelease
 if [ $? -ne 0 ]; then
@@ -46,7 +36,7 @@ fi
 # Build the Docker image
 #
 cd ..
-docker build --no-cache -f webhost/docker/Dockerfile -t webhost:v1 .
+docker build --no-cache -f deployment/docker/Dockerfile -t webhost:v1 .
 if [ $? -ne 0 ]; then
   echo '*** Web Host docker build problem encountered'
   exit 1
