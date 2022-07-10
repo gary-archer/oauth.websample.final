@@ -32,7 +32,7 @@ if [ "$1" == 'LOCALAPI' ]; then
 
   ./localtokenhandler/deployment/docker-local/deploy.sh
   if [ $? -ne 0 ]; then
-    echo 'Problem encountered depoying the local token handler'
+    echo 'Problem encountered deploying the local token handler'
     exit
   fi
 fi
@@ -56,16 +56,16 @@ fi
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
 
-  open -a Terminal ./webhost/deploy.sh
+  open -a Terminal ./webhost/run.sh
 
 elif [ "$PLATFORM" == 'WINDOWS' ]; then
   
   GIT_BASH="C:\Program Files\Git\git-bash.exe"
-  "$GIT_BASH" -c ./webhost/deploy.sh &
+  "$GIT_BASH" -c ./webhost/run.sh &
 
 elif [ "$PLATFORM" == 'LINUX' ]; then
 
-  gnome-terminal -- ./webhost/deploy.sh
+  gnome-terminal -- ./webhost/run.sh
 fi
 
 #

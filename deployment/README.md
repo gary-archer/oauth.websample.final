@@ -19,7 +19,7 @@ The main webhost Dockerfile used in local development setups that use Docker or 
 
 ## docker-local
 
-Scripts for local standalone Docker deployment of the web host and static content:
+Scripts to test local standalone Docker deployment of the web host and static content:
 
 ```bash
 cd deployment/docker-local
