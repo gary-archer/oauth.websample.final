@@ -24,7 +24,7 @@ The main Dockerfile used in local development setups that use Docker or Kubernet
 
 ## docker-local
 
-Scripts for local standalone Docker deployment of thwe web host and static content:
+Scripts for local standalone Docker deployment of the web host and static content:
 
 ```bash
 cd deployment/docker-local
