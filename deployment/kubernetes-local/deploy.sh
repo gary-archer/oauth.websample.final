@@ -14,9 +14,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 #
 kubectl -n deployed delete configmap spa-config 2>/dev/null
 kubectl -n deployed create configmap spa-config --from-file=../environments/spa/kubernetes-local.config.json
-
-
-spa.config.json
 if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the SPA configmap'
   exit 1
