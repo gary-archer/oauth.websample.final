@@ -48,8 +48,8 @@ fi
 #
 # Trigger deployment of the web host to the Kubernetes cluster
 #
-kubectl -n deployed delete -f ../kubernetes-local/webhost.yaml 2>/dev/null
-kubectl -n deployed apply  -f ../kubernetes-local/webhost.yaml
+kubectl -n deployed delete -f webhost.yaml 2>/dev/null
+kubectl -n deployed apply  -f webhost.yaml
 if [ $? -ne 0 ]; then
   echo '*** Web Host Kubernetes deployment problem encountered'
   exit 1
