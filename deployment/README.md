@@ -7,9 +7,9 @@ A number of environments exist for various setups, with different configuration 
 | Environment | Description |
 | ----------- | ----------- |
 | dev | Local development of the SPA and running the web host on a development domain |
-| dev-localapi | Used to point the SPA to a local API, where cookies are routed via a [Docker Token Handler](https://github.com/gary-archer/oauth.tokenhandler.docker) |
-| docker-local | A deployment of the Web Host and SPA to support local SPA to API routing |
-| kubernetes-local | A deployment of the Web Host and SPA to run in an end-to-end KIND setup |
+| dev-localapi | Used to point the SPA to a local API, via a [Docker Token Handler](https://github.com/gary-archer/oauth.tokenhandler.docker) |
+| docker-local | Used to test Docker deployment of the Web Host and SPA |
+| kubernetes-local | An end-to-end deployment of the Web Host and SPA, that runs in a KIND cluster |
 
 ## cloudfront
 
