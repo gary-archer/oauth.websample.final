@@ -2,14 +2,14 @@
 
 ## environments
 
-A number of environments exist for various setups, with different configuration files:
+A number of configuration files exist for various development setups:
 
 | Environment | Description |
 | ----------- | ----------- |
 | dev | Local development of the SPA and running the web host on a development domain |
 | dev-localapi | Used to point the SPA to a local API, via a [Docker Token Handler](https://github.com/gary-archer/oauth.tokenhandler.docker) |
 | docker-local | Used to test Docker deployment of the Web Host and SPA |
-| kubernetes-local | An end-to-end deployment of the Web Host and SPA, that runs in a KIND cluster |
+| kubernetes-local | An end-to-end deployment of SPA, API and token handler components that runs in a KIND cluster |
 
 ## cloudfront
 
