@@ -68,6 +68,8 @@ kind: Service
 apiVersion: v1
 metadata:
   name: webhost-svc
+  annotations:
+    konghq.com/protocol: https
 spec:
   selector:
     app: webhost
@@ -79,10 +81,8 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: webhost-ingress
-  annotations:
-    kubernetes.io/ingress.class: 'kong'
-    konghq.com/protocols: 'https'
 spec:
+  ingressClassName: kong
   tls:
     - hosts:
         - web.mycluster.com
