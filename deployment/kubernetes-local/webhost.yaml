@@ -86,7 +86,6 @@ spec:
   tls:
     - hosts:
         - web.mycluster.com
-      secretName: mycluster-com-tls
   rules:
     - host: web.mycluster.com
       http:
