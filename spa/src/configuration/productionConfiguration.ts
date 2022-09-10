@@ -1,9 +1,9 @@
 import {Configuration} from './configuration';
 
 /*
- * This is the only environment hard coded into the app
+ * This deployment points to Serverless APIs
  */
-export const productionConfiguration = {
+export const productionServerlessConfiguration = {
 
     app: {
         webOrigin: 'https://web.authsamples.com',
@@ -11,5 +11,19 @@ export const productionConfiguration = {
     },
     oauth: {
         oauthAgentBaseUrl: 'https://tokenhandler.authsamples.com/oauth-agent',
+    }
+} as Configuration;
+
+/*
+ * This deployment points to APIs running a Kubernetes cluster
+ */
+export const productionCloudNativeConfiguration = {
+
+    app: {
+        webOrigin: 'https://web.authsamples-k8s.com',
+        apiBaseUrl: 'https://tokenhandler.authsamples-k8s.com/api'
+    },
+    oauth: {
+        oauthAgentBaseUrl: 'https://tokenhandler.authsamples-k8s.com/oauth-agent',
     }
 } as Configuration;

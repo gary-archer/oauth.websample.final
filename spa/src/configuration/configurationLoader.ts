@@ -2,7 +2,7 @@ import axios from 'axios';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {AxiosUtils} from '../plumbing/utilities/axiosUtils';
 import {Configuration} from './configuration';
-import {productionConfiguration} from './productionConfiguration';
+import {productionCloudNativeConfiguration, productionServerlessConfiguration} from './productionConfiguration';
 
 /*
  * A class to manage environment specific configuration
@@ -11,9 +11,13 @@ export class ConfigurationLoader {
 
     public async get(): Promise<Configuration> {
 
-        // Return the production configuration when running in the production origin
-        if (location.origin.toLowerCase() === productionConfiguration.app.webOrigin.toLowerCase()) {
-            return productionConfiguration;
+        // Production configurations are coded into the app
+        if (location.origin.toLowerCase() === productionServerlessConfiguration.app.webOrigin.toLowerCase()) {
+            return productionServerlessConfiguration;
+        }
+
+        if (location.origin.toLowerCase() === productionCloudNativeConfiguration.app.webOrigin.toLowerCase()) {
+            return productionCloudNativeConfiguration;
         }
 
         // Otherwise download the configuration, which enables us to spin up new environments without rebuilding code
