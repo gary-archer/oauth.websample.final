@@ -1,8 +1,8 @@
 #!/bin/bash
 
-###############################################
-# Build the Web Host's code into a Docker image
-###############################################
+#######################################################################
+# Build the Web Host's code into a Docker image when using KIND locally
+#######################################################################
 
 #
 # Ensure that we are in the root folder

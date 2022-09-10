@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#######################################################
-# Deploy the web host and expose it outside the cluster
-#######################################################
+###################################################################################################
+# Deploy the web host when using KIND locally, and expose static content endpoints from the cluster
+###################################################################################################
 
 #
 # Ensure that we are in the folder containing this script

@@ -4,7 +4,7 @@ Resources to manage builds and deployment for this component.
 
 ## Local Environments
 
-A number of configuration files exist for various local development setups:
+A number of local development configurations are used when running on the local machine:
 
 | Environment | Description |
 | ----------- | ----------- |
@@ -12,11 +12,10 @@ A number of configuration files exist for various local development setups:
 | dev-localapi | Used to point the SPA to a local API, via a [Docker Token Handler](https://github.com/gary-archer/oauth.tokenhandler.docker) |
 | docker-local | Used to test Docker deployment of the Web Host and SPA |
 | kubernetes-local | An end-to-end deployment of SPA, API and token handler components that runs in a KIND cluster |
-| kubernetes-aws | An end-to-end deployment of SPA, API and token handler components that runs in an AWS cluster |
 
 ## Cloud Environments
 
-Two different deployed environments exist for the Final SPA:
+The real deployments instead use a content delivery network, and two separate CDN environments are used:
 
 | Environment | Description |
 | ----------- | ----------- |
@@ -48,7 +47,7 @@ cd deployment/docker-local
 ./teardown.sh
 ```
 
-## kubernetes-local
+## Kubernetes Local
 
 Scripts invoked using parent scripts from the [Cloud Native Local](https://github.com/gary-archer/oauth.cloudnative.local) project.\
 This runs an end-to-end SPA and API setup in a local Kubernetes in Docker (KIND) cluster.
