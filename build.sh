@@ -15,12 +15,12 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Build the web host's code
+# Build the development web host's code
 #
 cd webhost
 ./build.sh
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the web host'
+  echo 'Problem encountered building the development web host'
   exit
 fi
 

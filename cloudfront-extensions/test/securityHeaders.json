@@ -1,0 +1,25 @@
+{
+    "Records": [
+      {
+        "cf": {
+          "request": {
+            "headers": {
+                "x-tokenhandler-domain": [
+                  {
+                    "key": "x-tokenhandler-domain",
+                    "value": "https://tokenhandler.authsamples.com"
+                  }
+                ]
+            }
+          },
+          "response": {
+            "status": 200,
+            "body": "HTML DATA",
+            "headers": {
+            }
+          }
+        }
+      }
+    ]
+  }
+  

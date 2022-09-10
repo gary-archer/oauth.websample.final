@@ -3,10 +3,13 @@ service: weblambdas
 # Cloudfront edge lambdas must be deployed to the us-east-1 region
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   region: us-east-1
   profile: default
-  stage: deployed
+  stage: ${self:custom.config.settings.stage}
+
+custom:
+  config: ${file(environments/${opt:stage, 'serverless'}.yml)}
 
 functions:
 
@@ -17,7 +20,7 @@ functions:
     timeout: 5
     events:
       - preExistingCloudFront:
-          distributionId: E1P4XPOL1PNE6Z
+          distributionId: ${self:custom.config.settings.distributionId}
           eventType: origin-request
           pathPattern: '*'
 
@@ -28,7 +31,7 @@ functions:
     timeout: 5
     events:
       - preExistingCloudFront:
-          distributionId: E1P4XPOL1PNE6Z
+          distributionId: ${self:custom.config.settings.distributionId}
           eventType: origin-response
           pathPattern: '*'
 

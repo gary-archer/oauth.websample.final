@@ -1,15 +1,18 @@
 {
   "name": "edgelambdas",
   "version": "1.0.0",
-  "description": "Minimal back end code for the Cloud SPA",
+  "description": "Extensions deployed to the cloudfront content delivery network",
   "scripts": {
     "build": "rimraf dist && tsc --sourceMap true",
     "defaultDocument": "sls invoke local -f defaultDocument -p test/defaultDocument.json",
     "securityHeaders": "sls invoke local -f securityHeaders -p test/securityHeaders.json",
-    "package": "npm run buildRelease && sls package",
     "buildRelease": "rimraf dist && tsc",
-    "deploy": "sls deploy --package .serverless",
-    "remove": "sls remove"
+    "packageServerless": "npm run buildRelease && sls package --stage serverless",
+    "packageCloudnative": "npm run buildRelease && sls package --stage cloudnative",
+    "deployServerless": "sls deploy --package .serverless --stage serverless",
+    "removeServerless": "sls remove --stage serverless",
+    "deployCloudnative": "sls deploy --package .serverless --stage cloudnative",
+    "removeCloudnative": "sls remove --stage cloudnative"
   },
   "author": "Gary Archer",
   "license": "MIT",

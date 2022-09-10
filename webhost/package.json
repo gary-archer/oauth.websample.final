@@ -1,7 +1,7 @@
 {
   "name": "webhost",
   "version": "1.0.0",
-  "description": "Static web content hosting for a Developer PC or Kubernetes",
+  "description": "A web host for local development setups, whereas a content delivery network is used in real deployments",
   "scripts": {
     "lint": "npx eslint . --ext .ts",
     "start": "ts-node --files src/app.ts",
