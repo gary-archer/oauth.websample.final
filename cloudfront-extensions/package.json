@@ -10,8 +10,8 @@
     "packageServerless": "npm run buildRelease && sls package --stage serverless",
     "packageCloudnative": "npm run buildRelease && sls package --stage cloudnative",
     "deployServerless": "sls deploy --package .serverless --stage serverless",
-    "removeServerless": "sls remove --stage serverless",
     "deployCloudnative": "sls deploy --package .serverless --stage cloudnative",
+    "removeServerless": "sls remove --stage serverless",
     "removeCloudnative": "sls remove --stage cloudnative"
   },
   "author": "Gary Archer",

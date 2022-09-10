@@ -42,11 +42,11 @@ cd deployment/docker-local
 Scripts invoked using parent scripts from the [Cloud Native Local](https://github.com/gary-archer/oauth.cloudnative.local) project.\
 This runs an end-to-end SPA and API setup in a local Kubernetes in Docker (KIND) cluster.
 
-## CDN Deployment
+## Cloudfront Deployment
 
 See the [Cloud Web Content Delivery](https://authguidance.com/2018/12/02/spa-content-deployment/) blog post for details on the final web deployment.\
-The following commands deploy resources to S3 and Cloudfront for the SPA that runs at https://web.authsamples.com/spa. \
-This SPA interacts with APIs running in AWS using Serverless hosting:
+The following commands deploy resources to AWS S3 and Cloudfront for the SPA that runs at https://web.authsamples.com/spa. \
+This SPA then calls from the browser to APIs running in AWS using Serverless hosting:
 
 ```bash
 cd deployment/cloudfront
@@ -55,7 +55,7 @@ cd deployment/cloudfront
 ```
 
 The following commands deploy resources to S3 and Cloudfront for the SPA that runs at https://web.authsamples-k8s.com/spa. \
-This SPA interacts with APIs running in an AWS Kubernetes cluster:
+This SPA then calls from the browser to APIs running in an AWS Kubernetes cluster:
 
 ```bash
 cd deployment/cloudfront
