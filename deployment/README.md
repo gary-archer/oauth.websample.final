@@ -9,8 +9,8 @@ A number of local development configurations are used when running on the local 
 | Environment | Description |
 | ----------- | ----------- |
 | dev | Local development of the SPA and running the web host on a development domain |
-| dev-localapi | Used to point the SPA to a local API, via a [Docker Token Handler](https://github.com/gary-archer/oauth.tokenhandler.docker) |
-| docker-local | Used to test Docker deployment of the Web Host and SPA |
+| dev-localapi | Used to point the SPA to a local API, via a [Local Token Handler](https://github.com/gary-archer/oauth.tokenhandler.docker) |
+| docker-local | Used to test standalone Docker deployment of the Web Host and SPA |
 | kubernetes-local | An end-to-end deployment of SPA, API and token handler components that runs in a KIND cluster |
 
 ## Cloud Environments

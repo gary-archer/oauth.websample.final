@@ -74,7 +74,8 @@ spec:
   selector:
     app: webhost
   ports:
-  - protocol: "TCP"
+  - name: https
+    protocol: "TCP"
     port: 8101
 ---
 kind: Ingress
@@ -96,4 +97,4 @@ spec:
               service:
                 name: webhost-svc
                 port:
-                  number: 8101
+                  name: https

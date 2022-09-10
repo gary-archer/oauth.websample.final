@@ -10,16 +10,10 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Give configuration files the correct name
-#
-cp ../environments/spa/kubernetes-local.config.json     spa.config.json
-cp ../environments/webhost/kubernetes-local.config.json webhost.config.json
-
-#
 # Create a configmap for the SPA's JSON configuration file
 #
 kubectl -n applications delete configmap spa-config 2>/dev/null
-kubectl -n applications create configmap spa-config --from-file=spa.config.json
+kubectl -n applications create configmap spa-config --from-file=../environments/kubernetes-local/spa.config.json
 if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the SPA configmap'
   exit 1
@@ -29,7 +23,7 @@ fi
 # Create a configmap for the Web Host's JSON configuration file
 #
 kubectl -n applications delete configmap webhost-config 2>/dev/null
-kubectl -n applications create configmap webhost-config --from-file=webhost.config.json
+kubectl -n applications create configmap webhost-config --from-file=../environments/kubernetes-local/webhost.config.json
 if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the Web Host configmap'
   exit 1
