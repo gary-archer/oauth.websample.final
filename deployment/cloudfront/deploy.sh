@@ -25,11 +25,11 @@ fi
 #
 # Upload the SPA's packaged files to S3
 #
-#if [ "$ENVIRONMENT" == 'serverless' ]; then
-#  aws s3 cp .package s3://web.authsamples.com --recursive
-#else
-#  aws s3 cp .package s3://web.authsamples-k8s.com --recursive
-#fi
+if [ "$ENVIRONMENT" == 'serverless' ]; then
+  aws s3 cp .package s3://web.authsamples.com --recursive
+else
+  aws s3 cp .package s3://web.authsamples-k8s.com --recursive
+fi
 if [ $? -ne 0 ]; then
   echo 'Problem encountered uploading web static content to S3'
   exit
