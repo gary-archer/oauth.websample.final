@@ -6,7 +6,8 @@ import {EventNames} from '../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../plumbing/events/reloadMainViewEvent';
 import {ReloadUserInfoEvent} from '../plumbing/events/reloadUserInfoEvent';
 import {Authenticator} from '../plumbing/oauth/authenticator';
-import {ObjectFactory} from '../plumbing/utilities/objectFactory';
+import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
+import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainerViewModel} from '../views/companies/companiesContainerViewModel';
 import {TransactionsContainerViewModel} from '../views/transactions/transactionsContainerViewModel';
 import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
@@ -75,9 +76,10 @@ export class AppViewModel {
             this._configuration = await loader.get();
 
             // Create global objects for managing OAuth and API calls
-            const factory = new ObjectFactory(this.configuration);
-            this._authenticator = factory.createAuthenticator();
-            this._apiClient = factory.createApiClient(this._authenticator);
+            const sessionId = SessionManager.get();
+            const authenticator = new AuthenticatorImpl(this._configuration.oauth, sessionId);
+            this._authenticator = authenticator;
+            this._apiClient = new ApiClient(this.configuration.app, sessionId, authenticator);
 
             // Update state
             this._isInitialised = true;

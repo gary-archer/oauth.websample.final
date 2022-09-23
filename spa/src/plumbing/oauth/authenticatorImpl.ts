@@ -1,13 +1,15 @@
-import {AxiosRequestConfig} from 'axios';
+import axios, {AxiosRequestConfig, Method} from 'axios';
+import {Guid} from 'guid-typescript';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
 import {UIError} from '../errors/uiError';
+import {AxiosUtils} from '../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
+import {UrlHelper} from '../utilities/urlHelper';
 import {Authenticator} from './authenticator';
 import {CredentialSupplier} from './credentialSupplier';
-import {OAuthFetch} from './oauthFetch';
 import {PageLoadResponse} from './pageLoadResponse';
 
 /*
@@ -15,15 +17,17 @@ import {PageLoadResponse} from './pageLoadResponse';
  */
 export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
-    private readonly _fetcher: OAuthFetch;
-    private _antiForgeryToken: string | null;
+    private readonly _oauthAgentBaseUrl: string;
+    private readonly _sessionId: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
+    private _antiForgeryToken: string | null;
 
     public constructor(configuration: OAuthConfiguration, sessionId: string) {
 
-        this._fetcher = new OAuthFetch(configuration, sessionId);
-        this._antiForgeryToken = null;
+        this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
+        this._sessionId = sessionId;
         this._concurrencyHandler = new ConcurrentActionHandler();
+        this._antiForgeryToken = null;
         this._setupCallbacks();
     }
 
@@ -35,7 +39,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
         try {
 
             // Call the API to set up the login
-            const response = await this._fetcher.execute('POST', '/login/start', this._antiForgeryToken, null);
+            const response = await this._callOAuthAgent('POST', '/login/start', this._antiForgeryToken, null);
 
             // Store the app location and other state if required
             HtmlStorageHelper.appState = {
@@ -65,7 +69,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             const request = {
                 url: location.href,
             };
-            const pageLoadResponse = await this._fetcher.execute(
+            const pageLoadResponse = await this._callOAuthAgent(
                 'POST',
                 '/login/end',
                 this._antiForgeryToken, request) as PageLoadResponse;
@@ -115,7 +119,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
         try {
 
-            const response = await this._fetcher.execute('POST', '/logout', this._antiForgeryToken, null);
+            const response = await this._callOAuthAgent('POST', '/logout', this._antiForgeryToken, null);
             location.href = response.endSessionRequestUri;
 
         } catch (e) {
@@ -139,18 +143,18 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
      * This method is for testing only, so that the SPA can receive expired access token responses
      */
     public async expireAccessToken(): Promise<void> {
-        await this._fetcher.execute('POST', '/expire', this._antiForgeryToken, {type: 'access'});
+        await this._callOAuthAgent('POST', '/expire', this._antiForgeryToken, {type: 'access'});
     }
 
     /*
      * This method is for testing only, so that the SPA can receive expired refresh token responses
      */
     public async expireRefreshToken(): Promise<void> {
-        await this._fetcher.execute('POST', '/expire', this._antiForgeryToken, {type: 'refresh'});
+        await this._callOAuthAgent('POST', '/expire', this._antiForgeryToken, {type: 'refresh'});
     }
 
     /*
-     * Deal with supplying or renewing credentials when calling an API
+     * Deal with supplying or renewing credentials when calling an API, since the authenticator owns the CSRF token
      */
     public async onCallApi(options: AxiosRequestConfig, isRetry: boolean): Promise<void> {
 
@@ -159,9 +163,17 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             throw ErrorFactory.fromLoginRequired();
         }
 
-        // Send the secure cookie and also the anti forgery token, which is used on data changing commands
+        // Send the secure cookie
         options.withCredentials = true;
-        options.headers!['x-mycompany-csrf'] = this._antiForgeryToken;
+
+        // Send the anti forgery token on data changing commands
+        if (options.method === 'POST'  ||
+            options.method === 'PUT'   ||
+            options.method === 'PATCH' ||
+            options.method === 'DELETE') {
+
+                options.headers!['x-mycompany-csrf'] = this._antiForgeryToken;
+        }
 
         // If retrying an API call, ask the back end for front end API to rewrite the cookie
         if (isRetry) {
@@ -176,7 +188,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
         try {
 
-            await this._fetcher.execute('POST', '/refresh', this._antiForgeryToken, null);
+            await this._callOAuthAgent('POST', '/refresh', this._antiForgeryToken, null);
 
         } catch (e: any) {
 
@@ -185,6 +197,61 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             }
 
             throw ErrorFactory.fromTokenRefreshError(e);
+        }
+    }
+
+    /*
+     * A parameterized method for calling the OAuth agent
+     */
+    private async _callOAuthAgent(
+        method: Method,
+        operationPath: string,
+        antiForgeryToken: string | null,
+        requestData: any): Promise<any> {
+
+        const url = UrlHelper.append(this._oauthAgentBaseUrl, operationPath);
+
+        try {
+
+            // Same site cookies are also cross origin so the withCredentials flag is needed
+            const options: any = {
+                url,
+                method,
+                headers: {
+                    accept: 'application/json',
+                },
+                withCredentials: true,
+            };
+
+            // Post data unless the payload is empty
+            if (requestData) {
+                options.data = requestData;
+                options.headers['content-type'] = 'application/json';
+            }
+
+            // Add the anti forgery token when we have one
+            if (antiForgeryToken) {
+                options.headers['x-mycompany-csrf'] = antiForgeryToken;
+            }
+
+            // Supply headers for the Token Handler API to write to logs
+            options.headers['x-mycompany-api-client'] = 'FinalSPA';
+            options.headers['x-mycompany-session-id'] = this._sessionId;
+            options.headers['x-mycompany-correlation-id'] = Guid.create().toString();
+
+            // Make the request and return the response
+            const response = await axios.request(options as AxiosRequestConfig);
+            if (response.data) {
+
+                AxiosUtils.checkJson(response.data);
+                return response.data;
+            }
+
+            return null;
+
+        } catch (e) {
+
+            throw ErrorFactory.fromHttpError(e, url, 'Token Handler API');
         }
     }
 
