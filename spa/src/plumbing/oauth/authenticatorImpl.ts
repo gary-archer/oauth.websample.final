@@ -101,12 +101,10 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             // Clean up
             onPostLoginNavigate(appLocation);
 
-            // Report unexpected errors
-            if (!this._isTokenHandlerAccessDeniedError(e)) {
+            // Session expired errors are silently ignored
+            if (!this._isSessionExpiredError(e)) {
                 throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
             }
-
-            // Access denied errors are expected occasionally, and result in a new user login
         }
 
         return isLoggedIn;
@@ -143,14 +141,38 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
      * This method is for testing only, so that the SPA can receive expired access token responses
      */
     public async expireAccessToken(): Promise<void> {
-        await this._callOAuthAgent('POST', '/expire', this._antiForgeryToken, {type: 'access'});
+
+        try {
+
+            // Try to rewrite the refresh token within the cookie, using existing cookies as the request credential
+            await this._callOAuthAgent('POST', '/expire', this._antiForgeryToken, {type: 'access'});
+
+        } catch (e: any) {
+
+            // Session expired errors are silently ignored
+            if (!this._isSessionExpiredError(e)) {
+                throw ErrorFactory.fromExpiryText(e, 'access');
+            }
+        }
     }
 
     /*
      * This method is for testing only, so that the SPA can receive expired refresh token responses
      */
     public async expireRefreshToken(): Promise<void> {
-        await this._callOAuthAgent('POST', '/expire', this._antiForgeryToken, {type: 'refresh'});
+
+        try {
+
+            // Try to rewrite the access token within the cookie, using the existing cookies as the request credential
+            await this._callOAuthAgent('POST', '/expire', this._antiForgeryToken, {type: 'refresh'});
+
+        } catch (e: any) {
+
+            // Session expired errors are silently ignored
+            if (!this._isSessionExpiredError(e)) {
+                throw ErrorFactory.fromExpiryText(e, 'refresh');
+            }
+        }
     }
 
     /*
@@ -256,10 +278,10 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
     }
 
     /*
-     * When page load requests fail due to invalid cookies, the OAuth proxy will return a 401 during API calls
+     * When operations fail due to invalid cookies, the OAuth proxy will return a 401 during API calls
      * This could also be caused by a new cookie encryption key or a redeployment of the Authorization Server
      */
-    private _isTokenHandlerAccessDeniedError(e: any): boolean {
+    private _isSessionExpiredError(e: any): boolean {
 
         const uiError = e as UIError;
         return uiError.statusCode === 401;

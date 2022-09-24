@@ -21,6 +21,9 @@ export class ErrorCodes {
     // An error starting a logout request
     public static readonly logoutRequestFailed = 'logout_request_failed';
 
+    // An error when testing token expiry
+    public static readonly expiryTestError = 'expiry_test';
+
     // A general exception in the UI
     public static readonly generalUIError = 'ui_error';
 

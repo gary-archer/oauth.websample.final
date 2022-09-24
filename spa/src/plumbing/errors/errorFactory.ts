@@ -106,6 +106,19 @@ export class ErrorFactory {
     }
 
     /*
+     * Handle errors expiring tokens in cookies for test purposes
+     */
+    public static fromExpiryText(exception: any, type: string): UIError {
+
+        return new UIError(
+            'Expiry',
+            ErrorCodes.expiryTestError,
+            `A technical problem occurred during expiry testing of the ${type} token`,
+            exception.stack);
+
+    }
+
+    /*
      * Return an object for Ajax errors
      */
     public static fromJsonParseError(): UIError {
