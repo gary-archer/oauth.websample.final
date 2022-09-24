@@ -12,11 +12,11 @@ export class ErrorCodes {
     // A technical error processing the login response and calling the Token Handler API
     public static readonly loginResponseFailed = 'login_response_failed';
 
-    // A generic 401 error returned to clients who send incorrect data
-    public static readonly accessDeniedError = 'access_denied';
-
     // A technical problem during token refresh
     public static readonly tokenRefreshError = 'token_refresh_error';
+
+    // An error returned when the  generic 401 error returned to clients who send incorrect data
+    public static readonly sessionExpiredError = 'session_expired';
 
     // An error starting a logout request
     public static readonly logoutRequestFailed = 'logout_request_failed';

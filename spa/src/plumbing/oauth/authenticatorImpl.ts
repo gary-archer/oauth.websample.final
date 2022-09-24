@@ -256,13 +256,13 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
     }
 
     /*
-     * When page load requests fail due to invalid cookies the token handler returns a generic 401 error
-     * This could be caused by a new cookie encryption key or a redeployment of the Authorization Server
+     * When page load requests fail due to invalid cookies, the OAuth proxy will return a 401 during API calls
+     * This could also be caused by a new cookie encryption key or a redeployment of the Authorization Server
      */
     private _isTokenHandlerAccessDeniedError(e: any): boolean {
 
         const uiError = e as UIError;
-        return uiError.statusCode === 401 && uiError.errorCode === ErrorCodes.accessDeniedError;
+        return uiError.statusCode === 401;
     }
 
     /*
