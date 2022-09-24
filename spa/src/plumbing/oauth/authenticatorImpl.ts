@@ -10,7 +10,8 @@ import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {UrlHelper} from '../utilities/urlHelper';
 import {Authenticator} from './authenticator';
 import {CredentialSupplier} from './credentialSupplier';
-import {PageLoadResponse} from './pageLoadResponse';
+import {EndLoginResponse} from './endLoginResponse';
+import {PageLoadResult} from './pageLoadResult';
 
 /*
  * The authenticator implementation
@@ -58,10 +59,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
     /*
      * Check for and handle login responses when the page loads
      */
-    public async handlePageLoad(onPostLoginNavigate: (path: string) => void)   : Promise<boolean> {
-
-        let appLocation = '/';
-        let isLoggedIn = false;
+    public async handlePageLoad(): Promise<PageLoadResult> {
 
         try {
 
@@ -69,45 +67,47 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             const request = {
                 url: location.href,
             };
-            const pageLoadResponse = await this._callOAuthAgent(
+            const endLoginResponse = await this._callOAuthAgent(
                 'POST',
                 '/login/end',
-                this._antiForgeryToken, request) as PageLoadResponse;
+                this._antiForgeryToken, request) as EndLoginResponse;
 
-            // If it was handled it was an Authorization response and the SPA may need to perform actions
-            if (pageLoadResponse.handled) {
+            // Store the anti forgery token here, used for data changing API requests
+            if (endLoginResponse.antiForgeryToken) {
+                this._antiForgeryToken = endLoginResponse.antiForgeryToken;
+            }
 
-                // Get the location before the redirect
+            // If a login was handled then the SPA may need to return to its pre-login location
+            let appLocation = '/';
+            if (endLoginResponse.handled) {
+
                 const appState = HtmlStorageHelper.appState;
-                if (appState) {
-                    appLocation = appState.path;
-                }
-
-                // Clean up
+                appLocation = appState.path;
                 HtmlStorageHelper.removeAppState();
-                onPostLoginNavigate(appLocation);
             }
 
-            // Store the anti forgery token here, where it is used for OAuth requests
-            if (pageLoadResponse.antiForgeryToken) {
-                this._antiForgeryToken = pageLoadResponse.antiForgeryToken;
-            }
-
-            // Return the logged in state to the rest of the app
-            isLoggedIn = pageLoadResponse.isLoggedIn;
+            // Return a result to the rest of the app
+            return {
+                isLoggedIn: endLoginResponse.isLoggedIn,
+                handled: endLoginResponse.handled,
+                appLocation,
+            };
 
         } catch (e: any) {
 
-            // Clean up
-            onPostLoginNavigate(appLocation);
+            // Session expired errors are handled by returning a default result
+            if (this._isSessionExpiredError(e)) {
 
-            // Session expired errors are silently ignored
-            if (!this._isSessionExpiredError(e)) {
-                throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
+                return {
+                    isLoggedIn: false,
+                    handled: false,
+                    appLocation: '/',
+                };
             }
-        }
 
-        return isLoggedIn;
+            // Rethrow other errors
+            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
+        }
     }
 
     /*

@@ -54,16 +54,21 @@ export function App(props: AppProps): JSX.Element {
             await model.initialise();
             setError(null);
 
-            // Ask the authenticator to handle the page load, to return logged in state the UI needs
-            const isLoggedIn = await model.authenticator.handlePageLoad(onPostLoginNavigate);
-            if (isLoggedIn) {
+            // Ask the authenticator to oerforn a the page load
+            const pageLoadResult = await model.authenticator.handlePageLoad();
+
+            // Restore the pre-login location and ensure that OAuth details are removed from the browser history
+            if (pageLoadResult.handled) {
+                navigate(pageLoadResult.appLocation, { replace: true});
+            }
+
+            // Ensure that no other part of the app thinks it is logged out
+            if (pageLoadResult.isLoggedIn) {
                 HtmlStorageHelper.loggedOut = false;
             }
 
-            // Subscribe to application events
+            // Subscribe to application and window events
             model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
-
-            // Subscribe to window events
             window.onresize = onResize;
             window.onstorage = onStorage;
 
@@ -107,13 +112,6 @@ export function App(props: AppProps): JSX.Element {
         } catch (e) {
             setError(e);
         }
-    }
-
-    /*
-     * After logging in, remove OAuth response details from the browser history
-     */
-    function onPostLoginNavigate(path: string): void {
-        navigate(path, { replace: true} );
     }
 
     /*

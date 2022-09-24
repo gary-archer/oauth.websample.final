@@ -1,7 +1,7 @@
 /*
  * Data returned from the Token Handler API to the SPA, to inform it of the logged in state
  */
-export interface PageLoadResponse {
+export interface EndLoginResponse {
 
     // True if there are valid cookies
     isLoggedIn: boolean;

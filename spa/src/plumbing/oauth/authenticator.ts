@@ -1,3 +1,5 @@
+import {PageLoadResult} from './pageLoadResult';
+
 /*
  * The authenticator interface
  */
@@ -7,7 +9,7 @@ export interface Authenticator {
     login(currentLocation: string): Promise<void>;
 
     // Handle page loads and process login responses when required
-    handlePageLoad(onPostLoginNavigate: (path: string) => void): Promise<boolean>;
+    handlePageLoad(): Promise<PageLoadResult>;
 
     // Perform a logout redirect
     logout(): Promise<void>;
