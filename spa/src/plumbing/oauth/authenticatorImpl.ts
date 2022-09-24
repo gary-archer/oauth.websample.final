@@ -1,5 +1,6 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
+import urlparse from 'url-parse';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
@@ -59,7 +60,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
     /*
      * Check for and handle login responses when the page loads
      */
-    public async handlePageLoad(): Promise<PageLoadResult> {
+    public async handlePageLoad(navigateAction: (path: string) => void): Promise<PageLoadResult> {
 
         try {
 
@@ -78,35 +79,39 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             }
 
             // If a login was handled then the SPA may need to return to its pre-login location
-            let appLocation = '/';
             if (endLoginResponse.handled) {
 
                 const appState = HtmlStorageHelper.appState;
-                appLocation = appState.path;
+                navigateAction(appState ? appState.path : '/');
                 HtmlStorageHelper.removeAppState();
             }
 
             // Return a result to the rest of the app
             return {
                 isLoggedIn: endLoginResponse.isLoggedIn,
-                handled: endLoginResponse.handled,
-                appLocation,
+                handled: endLoginResponse.handled
             };
 
         } catch (e: any) {
 
-            // Session expired errors are handled by returning a default result
+            // When this is an OAuth response, ensure that there are no leftover details in the browser
+            const urlData = urlparse(location.href, true);
+            if (urlData.query && urlData.query.state) {
+                navigateAction('/');
+            }
+
+            // Session expired errors are handled by returning a default result and will lead to re-authentication
             if (this._isSessionExpiredError(e)) {
 
                 return {
                     isLoggedIn: false,
                     handled: false,
-                    appLocation: '/',
                 };
             }
 
             // Rethrow other errors
             throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
+
         }
     }
 
@@ -151,7 +156,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
             // Session expired errors are silently ignored
             if (!this._isSessionExpiredError(e)) {
-                throw ErrorFactory.fromExpiryText(e, 'access');
+                throw ErrorFactory.fromTestExpiryError(e, 'access');
             }
         }
     }
@@ -170,7 +175,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
             // Session expired errors are silently ignored
             if (!this._isSessionExpiredError(e)) {
-                throw ErrorFactory.fromExpiryText(e, 'refresh');
+                throw ErrorFactory.fromTestExpiryError(e, 'refresh');
             }
         }
     }
@@ -273,7 +278,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
         } catch (e) {
 
-            throw ErrorFactory.fromHttpError(e, url, 'Token Handler API');
+            throw ErrorFactory.fromHttpError(e, url, 'OAuth Agent');
         }
     }
 

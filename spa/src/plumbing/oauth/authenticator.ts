@@ -9,7 +9,7 @@ export interface Authenticator {
     login(currentLocation: string): Promise<void>;
 
     // Handle page loads and process login responses when required
-    handlePageLoad(): Promise<PageLoadResult>;
+    handlePageLoad(navigateAction: (path: string) => void): Promise<PageLoadResult>;
 
     // Perform a logout redirect
     logout(): Promise<void>;

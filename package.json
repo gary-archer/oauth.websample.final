@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "url-parse": "^1.5.10"
+  },
+  "devDependencies": {
+    "@types/url-parse": "^1.4.8"
+  }
+}

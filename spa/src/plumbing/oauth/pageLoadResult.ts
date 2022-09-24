@@ -8,7 +8,4 @@ export interface PageLoadResult {
 
     // True if an Authorization response has just been handled
     handled: boolean;
-
-    // The pre login location to navigate to
-    appLocation: string;
 }
