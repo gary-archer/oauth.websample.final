@@ -82,7 +82,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             if (endLoginResponse.handled) {
 
                 const appState = HtmlStorageHelper.appState;
-                navigateAction(appState ? appState.path : '/');
+                navigateAction(appState ? appState.path : '/spa');
                 HtmlStorageHelper.removeAppState();
             }
 
@@ -97,7 +97,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             // When this is an OAuth response, ensure that there are no leftover details in the browser
             const urlData = urlparse(location.href, true);
             if (urlData.query && urlData.query.state) {
-                navigateAction('/');
+                navigateAction('/spa');
             }
 
             // Session expired errors are handled by returning a default result and will lead to re-authentication

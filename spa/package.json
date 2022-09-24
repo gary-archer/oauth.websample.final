@@ -21,12 +21,14 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-modal": "^3.14.4",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "url-parse": "^1.5.10"
   },
   "devDependencies": {
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.5",
     "@types/react-modal": "^3.13.1",
+    "@types/url-parse": "^1.4.8",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "eslint": "^8.16.0",
