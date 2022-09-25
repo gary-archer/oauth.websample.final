@@ -7,4 +7,4 @@ trusted.ca.pem
 localtokenhandler
 .package
 .serverless
-*.log
+logs
