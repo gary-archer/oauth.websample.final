@@ -25,16 +25,22 @@ case "$(uname -s)" in
 	;;
 esac
 
-#
-# When connecting the SPA to a local API, deploy a token handler to run in Docker on the local development computer
-#
 if [ "$1" == 'LOCALAPI' ]; then
 
+  #
+  # When connecting the SPA to a local API, deploy a token handler to run in Docker on the local development computer
+  #
   ./localtokenhandler/deployment/docker-local/deploy.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered deploying the local token handler'
     exit
   fi
+
+  #
+  # Get logs to the local computer, to enable token handler troubleshooting and log shipping
+  #
+  docker compose --project-name localtokenhandler logs -f --no-log-prefix apigateway > apigateway.log &
+  docker compose --project-name localtokenhandler logs -f --no-log-prefix oauthagent > oauthagent.log &
 fi
 
 #
