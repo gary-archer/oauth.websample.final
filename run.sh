@@ -45,7 +45,7 @@ if [ "$1" == 'LOCALAPI' ]; then
   if [ ! -d '../oauth.logs/oauthagent' ]; then
     mkdir '../oauth.logs/oauthagent'
   fi
-  docker compose --project-name localtokenhandler logs -f --no-log-prefix oauthagent > ../oauth.logs/oauthagent/oauthagent.log &
+  docker compose --project-name localtokenhandler logs -f --no-log-prefix oauthagent >> ../oauth.logs/oauthagent/oauthagent.log &
 fi
 
 #
