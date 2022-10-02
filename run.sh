@@ -37,11 +37,15 @@ if [ "$1" == 'LOCALAPI' ]; then
   fi
 
   #
-  # Get logs to the local computer, to enable token handler troubleshooting and log shipping
+  # Get OAuth agent logs to the local computer, which enables token handler log shipping when required
   #
-  mkdir ./localtokenhandler/logs 2>/dev/null
-  docker compose --project-name localtokenhandler logs -f --no-log-prefix apigateway > ./localtokenhandler/logs/apigateway.log &
-  docker compose --project-name localtokenhandler logs -f --no-log-prefix oauthagent > ./localtokenhandler/logs/oauthagent.log &
+  if [ ! -d '../oauth.logs' ]; then
+    mkdir '../oauth.logs'
+  fi
+  if [ ! -d '../oauth.logs/oauth-agent' ]; then
+    mkdir '../oauth.logs/oauth-agent'
+  fi
+  docker compose --project-name localtokenhandler logs -f --no-log-prefix oauthagent > ../oauth.logs/oauth-agent/oauthagent.log &
 fi
 
 #
