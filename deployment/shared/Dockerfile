@@ -1,4 +1,4 @@
-FROM node:16.15.0-alpine
+FROM node:16.17.0-bullseye
 
 # Copy web host files into our docker image and install dependencies
 WORKDIR /usr/webhost
@@ -13,7 +13,6 @@ COPY spa/dist/*.html        /usr/webhost/spa/
 COPY spa/dist/*.ico         /usr/webhost/spa/
 
 #  Run the Express app as a low privilege user
-RUN addgroup -g 1001 webgroup
-RUN adduser -u 1001 -G webgroup -h /home/webuser -D webuser
+RUN adduser --disabled-password --home /home/webuser --gecos '' webuser
 USER webuser
 CMD ["npm", "run", "startRelease"]

@@ -13,8 +13,8 @@ spec:
   commonName: webhost-svc.default.svc
   dnsNames:
   - webhost-svc
-  - webhost-svc.default.svc
-  - webhost-svc.default.svc.cluster.local
+  - webhost-svc.applications.svc
+  - webhost-svc.applications.svc.cluster.local
   keystores:
     pkcs12:
       create: true
