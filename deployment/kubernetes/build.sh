@@ -33,6 +33,11 @@ if [ $? -ne 0 ]; then
 fi
 
 #
+# Copy in the internal cluster root CA from the parent project, to be trusted within the container
+#
+cp ../../certs/cluster.local.ca.pem deployment/shared/trusted.ca.pem
+
+#
 # Build the Docker image
 #
 cd ..

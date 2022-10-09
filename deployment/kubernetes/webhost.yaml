@@ -10,7 +10,7 @@ spec:
   issuerRef:
     name: ca-issuer
     kind: Issuer
-  commonName: webhost-svc.default.svc
+  commonName: webhost-svc
   dnsNames:
   - webhost-svc
   - webhost-svc.applications.svc
