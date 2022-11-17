@@ -37,6 +37,5 @@ export class SecurityHeaders {
         response.setHeader('x-xss-protection', '1; mode=block');
         response.setHeader('x-content-type-options', 'nosniff');
         response.setHeader('referrer-policy', 'same-origin');
-        response.setHeader('referrer-policy', 'same-origin');
     }
 }
