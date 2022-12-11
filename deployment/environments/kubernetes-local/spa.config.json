@@ -1,0 +1,9 @@
+{
+    "app": {
+        "webOrigin": "https://web.mycluster.com",
+        "apiBaseUrl": "https://tokenhandler.mycluster.com/api"
+    },
+    "oauth": {
+        "oauthAgentBaseUrl": "https://tokenhandler.mycluster.com/oauth-agent"
+    }
+}
