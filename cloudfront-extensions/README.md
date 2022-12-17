@@ -28,7 +28,12 @@ npm run defaultDocument
 npm run securityHeaders
 ```
 
-## Deployment
+## Web Host Deployment
 
-Deployment to AWS is managed by the scripts in the `deployment/cloudfront` folder.\
-These call commands from this repository's package.json file.
+Deployment to AWS is done by scripts in the parent project's `deployment/cloudfront` folder.\
+These deploy both the SPA's static content and the lambda edge extensions:
+
+```bash
+./build.sh  serverless
+./deploy.sh serverless
+```

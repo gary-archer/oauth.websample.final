@@ -3,7 +3,7 @@ service: weblambdas
 # Cloudfront edge lambdas must be deployed to the us-east-1 region
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs18.x
   region: us-east-1
   profile: default
   stage: ${self:custom.config.settings.stage}
