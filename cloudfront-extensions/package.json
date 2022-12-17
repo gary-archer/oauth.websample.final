@@ -1,7 +1,7 @@
 {
-  "name": "edgelambdas",
+  "name": "cloudfront-extensions",
   "version": "1.0.0",
-  "description": "Extensions deployed to the cloudfront content delivery network",
+  "description": "Web host extensions deployed to the AWS cloudfront content delivery network",
   "scripts": {
     "build": "rimraf dist && tsc --sourceMap true",
     "defaultDocument": "sls invoke local -f defaultDocument -p test/defaultDocument.json",
