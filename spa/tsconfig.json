@@ -6,6 +6,7 @@
     "jsx": "react",
     "module":"Node16",
     "moduleResolution": "Node16",
+    "outDir": "dist",
     "sourceMap": true
   },
   "include": [
