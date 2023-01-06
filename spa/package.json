@@ -13,6 +13,9 @@
   "keywords": [],
   "author": "Gary Archer",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "axios": "^1.2.1",
     "guid-typescript": "^1.0.9",

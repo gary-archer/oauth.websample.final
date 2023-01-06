@@ -199,7 +199,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             options.method === 'PATCH' ||
             options.method === 'DELETE') {
 
-                options.headers!['x-mycompany-csrf'] = this._antiForgeryToken;
+            (options.headers as any)['x-mycompany-csrf'] = this._antiForgeryToken;
         }
 
         // If retrying an API call, ask the back end for front end API to rewrite the cookie

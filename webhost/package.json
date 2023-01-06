@@ -10,6 +10,9 @@
   },
   "author": "Gary Archer",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "fs-extra": "^9.1.0"

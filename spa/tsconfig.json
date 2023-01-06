@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2017",
     "strict": true,
+    "target": "es2017",
     "lib": ["es2017", "dom"],
     "jsx": "react",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
+    "module":"Node16",
+    "moduleResolution": "Node16",
     "sourceMap": true
   },
   "include": [

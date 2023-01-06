@@ -3,10 +3,10 @@
     "strict": true,
     "target": "es2017",
     "lib": ["es2017"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "outDir": "dist"
+    "module":"Node16",
+    "moduleResolution": "Node16",
+    "outDir": "dist",
+    "sourceMap": true
   },
   "include": [
     "src/**/*.ts"
