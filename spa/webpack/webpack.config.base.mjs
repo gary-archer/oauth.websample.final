@@ -7,7 +7,7 @@ export default {
   context: path.resolve(dirname, './src'),
 
   // The sample runs in the big four modern desktop browsers and the two main mobile browsers
-  target: ['web', 'es2017'],
+  target: ['web'],
 
   entry: {
 
