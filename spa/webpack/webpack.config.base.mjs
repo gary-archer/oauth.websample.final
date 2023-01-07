@@ -3,10 +3,8 @@ import path from 'path';
 const dirname = process.cwd();
 export default {
   
-  // Set the working folder
+  // Set the working folder and build bundles for the browser
   context: path.resolve(dirname, './src'),
-
-  // The sample runs in the big four modern desktop browsers and the two main mobile browsers
   target: ['web'],
 
   entry: {
