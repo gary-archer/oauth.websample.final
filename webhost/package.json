@@ -2,17 +2,17 @@
   "name": "webhost",
   "version": "1.0.0",
   "description": "A web host used for local development setups",
-  "scripts": {
-    "lint": "npx eslint . --ext .ts",
-    "start": "ts-node --files src/app.ts",
-    "buildRelease": "rimraf dist && tsc --sourceMap false",
-    "startRelease": "node dist/app.js"
-  },
   "author": "Gary Archer",
   "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=18"
+  },
+  "scripts": {
+    "lint": "npx eslint . --ext .ts",
+    "start": "ts-node --files src/app.ts",
+    "buildRelease": "rimraf dist && tsc --sourceMap false",
+    "startRelease": "node dist/app.js"
   },
   "dependencies": {
     "express": "^4.18.2",
