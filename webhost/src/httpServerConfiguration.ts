@@ -1,9 +1,9 @@
 import {Application} from 'express';
 import fs from 'fs-extra';
 import https from 'https';
-import {Configuration} from './configuration';
-import {SecurityHeaders} from './securityHeaders';
-import {StaticContent} from './staticContent';
+import {Configuration} from './configuration.js';
+import {SecurityHeaders} from './securityHeaders.js';
+import {StaticContent} from './staticContent.js';
 
 /*
  * Configure web host behaviour at application startup

@@ -43,7 +43,7 @@ package:
   - '!node_modules/**'
   - '!test/**'
   - '!ts*.json'
-  - '!package*.json'
+  - '!package-lock.json'
   - '!README.md'
 
 plugins:

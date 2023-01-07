@@ -5,11 +5,12 @@
   "scripts": {
     "lint": "npx eslint . --ext .ts",
     "start": "ts-node --files src/app.ts",
-    "buildRelease": "rimraf dist && tsc",
+    "buildRelease": "rimraf dist && tsc --sourceMap false",
     "startRelease": "node dist/app.js"
   },
   "author": "Gary Archer",
   "license": "MIT",
+  "type": "module",
   "engines": {
     "node": ">=18"
   },

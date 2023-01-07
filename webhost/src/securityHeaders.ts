@@ -1,5 +1,5 @@
 import {Response} from 'express';
-import {Configuration} from './configuration';
+import {Configuration} from './configuration.js';
 
 /*
  * A simple class to manage writing security headers and the Content Security Policy

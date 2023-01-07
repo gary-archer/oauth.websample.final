@@ -1,7 +1,7 @@
 import express from 'express';
 import fs from 'fs-extra';
-import {Configuration} from './configuration';
-import {HttpServerConfiguration} from './httpServerConfiguration';
+import {Configuration} from './configuration.js';
+import {HttpServerConfiguration} from './httpServerConfiguration.js';
 
 /*
  * The web host entry point

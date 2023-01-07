@@ -46,6 +46,13 @@ if [ "$1" == 'LOCALAPI' ]; then
     echo 'Problem encountered downloading local token handler resources'
     exit
   fi
+
+  #
+  # TEMP
+  #
+  cd localtokenhandler
+  git checkout feature/node16
+  cd ..
   
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then

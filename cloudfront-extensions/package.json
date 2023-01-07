@@ -16,6 +16,7 @@
   },
   "author": "Gary Archer",
   "license": "MIT",
+  "type": "module",
   "engines": {
     "node": ">=18"
   },
