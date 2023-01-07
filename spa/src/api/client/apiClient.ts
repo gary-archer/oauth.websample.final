@@ -1,8 +1,8 @@
+import axios, {AxiosRequestConfig} from 'axios';
+import {Guid} from 'guid-typescript';
 import {Company} from '../entities/company';
 import {CompanyTransactions} from '../entities/companyTransactions';
 import {UserInfo} from '../entities/userInfo';
-import axios, {AxiosRequestConfig} from 'axios';
-import {Guid} from 'guid-typescript';
 import {AppConfiguration} from '../../configuration/appConfiguration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {CredentialSupplier} from '../../plumbing/oauth/credentialSupplier';

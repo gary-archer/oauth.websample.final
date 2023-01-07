@@ -1,9 +1,9 @@
-const webpack = require('webpack');
-const {merge} = require('webpack-merge');
-const baseConfig = require('./webpack.config.base.js');
-const rewriteIndexHtml = require('./rewriteIndexHtml.js');
+import webpack from 'webpack';
+import {merge} from 'webpack-merge';
+import baseConfig from './webpack.config.base.mjs';
+import {rewriteIndexHtml} from './rewriteIndexHtml.mjs'
 
-module.exports = merge(baseConfig, {
+export default merge(baseConfig, {
 
   // Let webpack know this is a production build
   mode: 'production',

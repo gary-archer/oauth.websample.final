@@ -4,7 +4,7 @@ import {Context} from 'aws-lambda';
  * This lambda runs during requests to the origin, to set the default document
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-const handler: any = async (event: any, context: Context) => {
+const handler = async (event: any, context: Context) => {
 
     // Get the request path
     const request = event.Records[0].cf.request;

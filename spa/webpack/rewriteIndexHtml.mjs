@@ -1,10 +1,10 @@
-const crypto = require('crypto');
-const fs = require('fs');
+import crypto from 'crypto';
+import fs from 'fs';
 
 /*
  * Update the index.html for release builds with some production level tags
  */
-module.exports = function rewriteIndexHtml() {
+export function rewriteIndexHtml() {
 
     // Get the timestamp at the time of the build
     const timestamp = new Date().getTime().toString();

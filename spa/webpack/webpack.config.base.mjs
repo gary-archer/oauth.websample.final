@@ -1,9 +1,10 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = {
+const dirname = process.cwd();
+export default {
   
   // Set the working folder
-  context: path.resolve(__dirname, '../src'),
+  context: path.resolve(dirname, './src'),
 
   // The sample runs in the big four modern desktop browsers and the two main mobile browsers
   target: ['web', 'es2017'],
@@ -31,7 +32,7 @@ module.exports = {
   output: {
 
     // Output our Javascript bundles to a dist folder
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(dirname, './dist'),
     filename: '[name].bundle.js'
   },
   optimization: {

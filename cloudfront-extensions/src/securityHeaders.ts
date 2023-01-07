@@ -4,7 +4,7 @@ import {Context} from 'aws-lambda';
  * This lambda runs during responses from the origin, to set security headers
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-const handler: any = async (event: any, context: Context) => {
+const handler = async (event: any, context: Context) => {
 
     const request = event.Records[0].cf.request;
     const response = event.Records[0].cf.response;

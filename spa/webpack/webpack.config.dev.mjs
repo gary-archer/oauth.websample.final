@@ -1,9 +1,9 @@
 
-const webpack = require('webpack');
-const {merge} = require('webpack-merge');
-const baseConfig = require('./webpack.config.base.js');
+import webpack from 'webpack';
+import {merge} from 'webpack-merge';
+import baseConfig from './webpack.config.base.mjs';
 
-module.exports = merge(baseConfig, {
+export default merge(baseConfig, {
 
   // Let webpack know this is a development build
   mode: 'development',

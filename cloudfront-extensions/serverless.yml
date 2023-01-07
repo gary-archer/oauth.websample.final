@@ -39,6 +39,7 @@ functions:
 package:
   patterns:
   - '!.vscode/**'
+  - '!environments/**'
   - '!src/**'
   - '!node_modules/**'
   - '!test/**'

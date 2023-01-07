@@ -5,14 +5,15 @@
   "main": "index.tsx",
   "scripts": {
     "lint": "npx eslint . --ext .ts,.tsx",
-    "start": "npm run clean && npm run copy && webpack --config webpack/webpack.config.dev.js --watch",
-    "buildRelease": "npm run clean && npm run copy && webpack --config webpack/webpack.config.prod.js",
+    "start": "npm run clean && npm run copy && webpack --config webpack/webpack.config.dev.mjs --watch",
+    "buildRelease": "npm run clean && npm run copy && webpack --config webpack/webpack.config.prod.mjs",
     "copy": "cp spa.config.json index.html *.css favicon.ico dist",
     "clean": "rm -rf dist && mkdir dist"
   },
   "keywords": [],
   "author": "Gary Archer",
   "license": "MIT",
+  "type": "module",
   "engines": {
     "node": ">=18"
   },
@@ -32,6 +33,7 @@
     "@types/react-dom": "^18.0.9",
     "@types/react-modal": "^3.13.1",
     "@types/url-parse": "^1.4.8",
+    "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "eslint": "^8.30.0",
