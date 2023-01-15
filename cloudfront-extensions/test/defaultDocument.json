@@ -4,11 +4,7 @@
         "cf": {
           "request": {
             "method": "GET",
-            "uri": "/spa/"
-          },
-          "response": {
-            "headers": {
-            }
+            "uri": "/spa"
           }
         }
       }
