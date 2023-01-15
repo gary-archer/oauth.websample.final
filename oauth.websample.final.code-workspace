@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "spa"
+		},
+		{
+			"path": "webhost"
+		},
+		{
+			"path": "cloudfront-extensions"
+		}
+	]
+}

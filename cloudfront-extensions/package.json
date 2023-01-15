@@ -1,0 +1,31 @@
+{
+  "name": "cloudfront-extensions",
+  "version": "1.0.0",
+  "description": "Web host extensions deployed to the AWS cloudfront content delivery network",
+  "author": "Gary Archer",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc --sourceMap true",
+    "defaultDocument": "sls invoke local -f defaultDocument -p test/defaultDocument.json",
+    "securityHeaders": "sls invoke local -f securityHeaders -p test/securityHeaders.json",
+    "buildRelease": "rimraf dist && tsc",
+    "packageServerless": "npm run buildRelease && sls package --stage serverless",
+    "packageCloudnative": "npm run buildRelease && sls package --stage cloudnative",
+    "deployServerless": "sls deploy --package .serverless --stage serverless",
+    "deployCloudnative": "sls deploy --package .serverless --stage cloudnative",
+    "removeServerless": "sls remove --stage serverless",
+    "removeCloudnative": "sls remove --stage cloudnative"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.109",
+    "@types/node": "^14.18.35",
+    "rimraf": "^3.0.2",
+    "serverless": "^3.25.1",
+    "serverless-lambda-edge-pre-existing-cloudfront": "^1.2.0",
+    "typescript": "^4.7.2"
+  }
+}
