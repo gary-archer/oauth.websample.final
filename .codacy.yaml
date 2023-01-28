@@ -1,10 +1,12 @@
 ---
 exclude_paths: [
     '*',
+    'doc/**'
+    'deployment/**'
     'spa/*',
     'spa/css/**',
     'spa/dist/**',
     'spa/webpack/**',
-    'webhost/**',
-    'aws/**'
+    'webhost/*',
+    'cloudfront-extensions/*'
 ]
