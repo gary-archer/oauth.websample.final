@@ -1,8 +1,8 @@
 ---
 exclude_paths: [
     '*',
-    'doc/**'
-    'deployment/**'
+    'doc/**',
+    'deployment/**',
     'spa/*',
     'spa/css/**',
     'spa/dist/**',
