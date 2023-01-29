@@ -15,7 +15,6 @@ const prodConfig: webpack.Configuration = {
 
     plugins:[
         {
-
             // In release builds, write the final index.html
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('AfterEmitPlugin', () => {
