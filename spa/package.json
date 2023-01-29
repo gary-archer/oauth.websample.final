@@ -12,11 +12,14 @@
   },
   "scripts": {
     "lint": "npx eslint . --ext .ts,.tsx",
-    "build": "npm run clean && npm run copy && webpack --config webpack/webpack.config.dev.mjs",
-    "start": "npm run clean && npm run copy && webpack --config webpack/webpack.config.dev.mjs --watch",
-    "buildRelease": "npm run clean && npm run copy && webpack --config webpack/webpack.config.prod.mjs",
+    "build": "npm run clean && npm run copy && npm run webpackDebug",
+    "start": "npm run clean && npm run copy && npm run webpackWatch",
+    "buildRelease": "npm run clean && npm run copy && npm run webpackRelease",
+    "clean": "rm -rf dist && mkdir dist",
     "copy": "cp spa.config.json index.html *.css favicon.ico dist",
-    "clean": "rm -rf dist && mkdir dist"
+    "webpackDebug": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts",
+    "webpackWatch": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts --watch",
+    "webpackRelease": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.prod.ts"
   },
   "dependencies": {
     "axios": "^1.2.1",
@@ -30,6 +33,7 @@
     "url-parse": "^1.5.10"
   },
   "devDependencies": {
+    "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@types/react-modal": "^3.13.1",
@@ -41,6 +45,7 @@
     "eslint-plugin-react": "^7.31.11",
     "rimraf": "^3.0.2",
     "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
     "webpack": "^5.75.0",
     "webpack-cli": "^4.10.0",

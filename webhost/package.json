@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/express": "^4.17.15",
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^14.18.35",
+    "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "eslint": "^8.30.0",

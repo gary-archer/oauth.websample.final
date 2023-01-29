@@ -4,7 +4,7 @@ import fs from 'fs';
 /*
  * Update the index.html for release builds with some production level tags
  */
-export function rewriteIndexHtml() {
+export function rewriteIndexHtml(): void {
 
     // Get the timestamp at the time of the build
     const timestamp = new Date().getTime().toString();
@@ -14,12 +14,34 @@ export function rewriteIndexHtml() {
     removeSourcemapReference('dist/vendor.bundle.js');
 
     // Update CSS resources with a cache busting timestamp and an integrity hash
-    updateResource('./dist/index.html', 'href', 'bootstrap.min.css', timestamp, calculateFileHash('./dist/bootstrap.min.css'))
-    updateResource('./dist/index.html', 'href', 'app.css',           timestamp, calculateFileHash('./dist/app.css'))
+    updateResource(
+        './dist/index.html',
+        'href',
+        'bootstrap.min.css',
+        timestamp,
+        calculateFileHash('./dist/bootstrap.min.css'));
+
+    updateResource(
+        './dist/index.html',
+        'href',
+        'app.css',
+        timestamp,
+        calculateFileHash('./dist/app.css'));
 
     // Update Javascript resources with a cache busting timestamp and an integrity hash
-    updateResource('./dist/index.html',     'src', 'vendor.bundle.js', timestamp, calculateFileHash('./dist/vendor.bundle.js'))
-    updateResource('./dist/index.html',     'src', 'app.bundle.js',    timestamp, calculateFileHash('./dist/app.bundle.js'))
+    updateResource(
+        './dist/index.html',
+        'src',
+        'vendor.bundle.js',
+        timestamp,
+        calculateFileHash('./dist/vendor.bundle.js'));
+
+    updateResource(
+        './dist/index.html',
+        'src',
+        'app.bundle.js',
+        timestamp,
+        calculateFileHash('./dist/app.bundle.js'));
 }
 
 /*
@@ -27,7 +49,7 @@ export function rewriteIndexHtml() {
  * We do not deploy them to Cloudfront though, and end users should not know about them
  * This removes 'missing sourcemap' warning lines from the browser developer console
  */
-function removeSourcemapReference(filePath) {
+function removeSourcemapReference(filePath: string): void {
 
     const textData = fs.readFileSync(filePath, 'utf8');
     const correctedTextData = textData.split('\n').filter((line) => line.indexOf('sourceMappingURL') === -1).join('\n');
@@ -37,7 +59,12 @@ function removeSourcemapReference(filePath) {
 /*
  * Update a resource with a cache busting timestamp and a script integrity value
  */
-function updateResource(filePath, itemType, resourceName, timestamp, integrity) {
+function updateResource(
+    filePath: string,
+    itemType: string,
+    resourceName: string,
+    timestamp: string,
+    integrity: string): void {
 
     const from = `${itemType}='${resourceName}'`;
     const to = `${itemType}='${resourceName}?t=${timestamp}' integrity='${integrity}'`;
@@ -47,7 +74,7 @@ function updateResource(filePath, itemType, resourceName, timestamp, integrity) 
 /*
  * Calculate the hash of a file, used for subresource integrity in the index.html file
  */
-function calculateFileHash(filePath) {
+function calculateFileHash(filePath: string): string {
 
     const fileBuffer = fs.readFileSync(filePath);
     const hashSum = crypto.createHash('sha256');
@@ -59,10 +86,10 @@ function calculateFileHash(filePath) {
 /*
  * Update a text file, replacing all occurrences of the from text with the to text
  */
-function replaceTextInFile(filePath, from, to) {
+function replaceTextInFile(filePath: string, from: string, to: string): void {
 
     const oldData = fs.readFileSync(filePath, 'utf8');
-    var regex = new RegExp(from, 'g');
+    const regex = new RegExp(from, 'g');
     const newData = oldData.replace(regex, to);
     fs.writeFileSync(filePath, newData, 'utf8');
 }
