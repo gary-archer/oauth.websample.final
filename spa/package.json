@@ -17,9 +17,9 @@
     "buildRelease": "npm run clean && npm run copy && npm run webpackRelease",
     "clean": "rm -rf dist && mkdir dist",
     "copy": "cp spa.config.json index.html *.css favicon.ico dist",
-    "webpackDebug": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts",
-    "webpackWatch": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts --watch",
-    "webpackRelease": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.prod.ts"
+    "webpackDebug": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts\"",
+    "webpackWatch": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts --watch\"",
+    "webpackRelease": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.prod.ts\""
   },
   "dependencies": {
     "axios": "^1.2.1",
