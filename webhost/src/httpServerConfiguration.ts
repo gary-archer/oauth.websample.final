@@ -24,7 +24,7 @@ export class HttpServerConfiguration {
      */
     public initializeWebStaticContentHosting(): void {
 
-        const basePath = '/spa/';
+        const basePath = '/demoapp/';
         const root = this._getWebFilesRoot();
 
         // Serve static files and also include recommended security headers in the response

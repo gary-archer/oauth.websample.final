@@ -7,10 +7,10 @@ export const productionServerlessConfiguration = {
 
     app: {
         webOrigin: 'https://web.authsamples.com',
-        apiBaseUrl: 'https://api.authsamples.com/web/investments'
+        apiBaseUrl: 'https://api.authsamples.com/demobrand/investments'
     },
     oauth: {
-        oauthAgentBaseUrl: 'https://api.authsamples.com/web/oauth-agent',
+        oauthAgentBaseUrl: 'https://api.authsamples.com/demobrand/oauth-agent',
     }
 } as Configuration;
 
@@ -21,9 +21,9 @@ export const productionCloudNativeConfiguration = {
 
     app: {
         webOrigin: 'https://web.authsamples-k8s.com',
-        apiBaseUrl: 'https://api.authsamples-k8s.com/web/investments'
+        apiBaseUrl: 'https://api.authsamples-k8s.com/demobrand/investments'
     },
     oauth: {
-        oauthAgentBaseUrl: 'https://api.authsamples-k8s.com/web/oauth-agent',
+        oauthAgentBaseUrl: 'https://api.authsamples-k8s.com/demobrand/oauth-agent',
     }
 } as Configuration;

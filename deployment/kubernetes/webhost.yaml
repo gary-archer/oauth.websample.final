@@ -47,7 +47,7 @@ spec:
             subPath: webhost.config.json
             readOnly: true
           - name: spa-config
-            mountPath: /usr/webhost/spa/spa.config.json
+            mountPath: /usr/webhost/demoapp/spa.config.json
             subPath: spa.config.json
             readOnly: true
           - name: webhost-ssl-cert

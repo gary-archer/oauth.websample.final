@@ -86,7 +86,7 @@ fi
 # Wait for it to become available
 #
 echo 'Waiting for Web Host to become available ...'
-while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/spa/index.html")" != '200' ]; do
+while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/demoapp/index.html")" != '200' ]; do
   sleep 2
 done
 

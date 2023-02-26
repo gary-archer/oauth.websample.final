@@ -13,10 +13,10 @@ COPY webhost/package*.json  /usr/webhost/
 RUN npm install --production
 
 # Copy SPA static content files onto the web host
-COPY spa/dist/*.bundle.js   /usr/webhost/spa/
-COPY spa/dist/*.css         /usr/webhost/spa/
-COPY spa/dist/*.html        /usr/webhost/spa/
-COPY spa/dist/*.ico         /usr/webhost/spa/
+COPY spa/dist/*.bundle.js   /usr/webhost/demoapp/
+COPY spa/dist/*.css         /usr/webhost/demoapp/
+COPY spa/dist/*.html        /usr/webhost/demoapp/
+COPY spa/dist/*.ico         /usr/webhost/demoapp/
 
 #  Run the Express app as a low privilege user
 RUN adduser --disabled-password --home /home/webuser --gecos '' webuser
