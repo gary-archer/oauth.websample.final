@@ -1,9 +1,9 @@
 {
     "app": {
         "webOrigin": "https://web.authsamples-dev.com",
-        "apiBaseUrl": "https://localtokenhandler.authsamples-dev.com:444/api"
+        "apiBaseUrl": "https://tokenhandler.authsamples-dev.com:444/web/investments"
     },
     "oauth": {
-        "oauthAgentBaseUrl": "https://localtokenhandler.authsamples-dev.com:444/oauth-agent"
+        "oauthAgentBaseUrl": "https://tokenhandler.authsamples-dev.com:444/web/oauth-agent"
     }
 }

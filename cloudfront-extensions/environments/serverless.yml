@@ -4,4 +4,3 @@
 settings:
   stage: 'serverless'
   distributionId: 'E1P4XPOL1PNE6Z'
-  tokenHandlerDomain: 'tokenhandler.authsamples.com'

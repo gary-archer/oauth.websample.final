@@ -1,9 +1,9 @@
 {
     "app": {
         "webOrigin": "https://web.mycluster.com",
-        "apiBaseUrl": "https://tokenhandler.mycluster.com/api"
+        "apiBaseUrl": "https://api.mycluster.com/web/investments"
     },
     "oauth": {
-        "oauthAgentBaseUrl": "https://tokenhandler.mycluster.com/oauth-agent"
+        "oauthAgentBaseUrl": "https://api.mycluster.com/web/oauth-agent"
     }
 }

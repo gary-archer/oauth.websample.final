@@ -21,8 +21,4 @@ COPY spa/dist/*.ico         /usr/webhost/spa/
 #  Run the Express app as a low privilege user
 RUN adduser --disabled-password --home /home/webuser --gecos '' webuser
 USER webuser
-
-# The openssl option works around a cert-manager and node.js incompatibility with P12 files
-# https://github.com/nodejs/node/issues/40672
-# https://github.com/cert-manager/cert-manager/issues/5047
-CMD ["node", "--openssl-legacy-provider", "dist/app.js"]
+CMD ["node", "dist/app.js"]

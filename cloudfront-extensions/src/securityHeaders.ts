@@ -10,13 +10,13 @@ const handler = async (event: any, context: Context) => {
     const response = event.Records[0].cf.response;
     const responseHeaders = response.headers;
 
-    // The token handler domain is configured in Cloudfront as an origin custom header, so is known to exist
-    const tokenHandlerDomain = request.headers['x-tokenhandler-domain'][0].value;
+    // The API domain is configured in Cloudfront as an origin custom header
+    const apiDomain = request.headers['x-api-domain'][0].value;
 
     // Prevent external sites being able to abuse the SPA's web origin
     let policy = "default-src 'none';";
     policy += " script-src 'self';";
-    policy += ` connect-src 'self' ${tokenHandlerDomain};`;
+    policy += ` connect-src 'self' ${apiDomain};`;
     policy += " child-src 'self';";
     policy += " img-src 'self';";
     policy += " style-src 'self';";
