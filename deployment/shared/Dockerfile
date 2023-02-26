@@ -21,4 +21,7 @@ COPY spa/dist/*.ico         /usr/webhost/demoapp/
 #  Run the Express app as a low privilege user
 RUN adduser --disabled-password --home /home/webuser --gecos '' webuser
 USER webuser
-CMD ["node", "dist/app.js"]
+
+# Work around openssl and node.js compatibility in some setups
+# https://github.com/nodejs/node/issues/40672
+CMD ["node", "--openssl-legacy-provider", "dist/app.js"]
