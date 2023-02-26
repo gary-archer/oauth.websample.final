@@ -2,6 +2,6 @@
     "port": 443,
     "sslCertificateFileName": "../certs/authsamples-dev.ssl.p12",
     "sslCertificatePassword": "Password1",
-    "trustedHosts": ["https://tokenhandler.authsamples-dev.com:444"],
+    "trustedHosts": ["https://api.authsamples-dev.com:444"],
     "mode": "development"
 }
