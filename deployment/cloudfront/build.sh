@@ -51,11 +51,11 @@ mkdir .package/spa
 #
 # Copy HTML assets and note that the production configuration is hard coded into the app and not deployed
 #
-cp "$SPA_FOLDER/dist/index.html"        .package/spa
-cp "$SPA_FOLDER/dist/vendor.bundle.js"  .package/spa
-cp "$SPA_FOLDER/dist/app.bundle.js"     .package/spa
-cp "$SPA_FOLDER/dist/bootstrap.min.css" .package/spa
-cp "$SPA_FOLDER/dist/app.css"           .package/spa
+cp "$SPA_FOLDER/dist/index.html"        .package/demoapp
+cp "$SPA_FOLDER/dist/vendor.bundle.js"  .package/demoapp
+cp "$SPA_FOLDER/dist/app.bundle.js"     .package/demoapp
+cp "$SPA_FOLDER/dist/bootstrap.min.css" .package/demoapp
+cp "$SPA_FOLDER/dist/app.css"           .package/demoapp
 cp "$SPA_FOLDER/dist/favicon.ico"       .package
 
 #

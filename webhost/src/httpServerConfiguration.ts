@@ -89,12 +89,12 @@ export class HttpServerConfiguration {
         if (this._configuration.mode === 'development') {
 
             // During development, point to built SPA files
-            return '../spa/dist';
+            return '../demoapp/dist';
 
         } else {
 
             // In Docker development setups, the files are packaged to a subfolder of the web host
-            return './spa';
+            return './demoapp';
         }
     }
 
