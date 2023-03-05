@@ -2,7 +2,7 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f2c5ede8739440599096fc25010ab6f6)](https://www.codacy.com/gh/gary-archer/oauth.websample.final/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gary-archer/oauth.websample.final&amp;utm_campaign=Badge_Grade)
  
-[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=spa/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=spa/package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=demoapp/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=demoapp/package.json)
 
 ## Overview
 
@@ -30,7 +30,7 @@ The data is returned from an API that authorizes access to resources using domai
 ## Online System
 
 The online version uses the AWS Cloudfront CDN to deliver static content to the browser.\
-Login at https://web.authsamples.com/spa with this AWS Cognito test account:
+Login at https://web.authsamples.com/demoapp with this AWS Cognito test account:
 
 ```text
 - User: guestuser@mycompany.com
@@ -63,7 +63,7 @@ Then run this script to run a simple web host that serves static content:
 ./run.sh
 ```
 
-When the browser is invoked at https://web.authsamples-dev.com/spa, sign in with the test account.\
+When the browser is invoked at https://web.authsamples-dev.com/demoapp, sign in with the test account.\
 You can then test all lifecycle operations, including expiry events, multi-tab browsing and multi-tab logout.
 
 ## Further Information

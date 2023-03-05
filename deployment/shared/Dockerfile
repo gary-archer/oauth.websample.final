@@ -13,16 +13,15 @@ COPY webhost/package*.json  /usr/webhost/
 RUN npm install --production
 
 # Copy SPA static content files onto the web host
-COPY spa/dist/*.bundle.js   /usr/webhost/spa/
-COPY spa/dist/*.css         /usr/webhost/spa/
-COPY spa/dist/*.html        /usr/webhost/spa/
-COPY spa/dist/*.ico         /usr/webhost/spa/
+COPY demoapp/dist/*.bundle.js   /usr/webhost/demoapp/
+COPY demoapp/dist/*.css         /usr/webhost/demoapp/
+COPY demoapp/dist/*.html        /usr/webhost/demoapp/
+COPY demoapp/dist/*.ico         /usr/webhost/demoapp/
 
 #  Run the Express app as a low privilege user
 RUN adduser --disabled-password --home /home/webuser --gecos '' webuser
 USER webuser
 
-# The openssl option works around a cert-manager and node.js incompatibility with P12 files
+# Work around openssl and node.js compatibility in some setups
 # https://github.com/nodejs/node/issues/40672
-# https://github.com/cert-manager/cert-manager/issues/5047
 CMD ["node", "--openssl-legacy-provider", "dist/app.js"]

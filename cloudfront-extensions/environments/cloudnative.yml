@@ -4,4 +4,3 @@
 settings:
   stage: 'cloudnative'
   distributionId: 'E3ADD9C1K3LQWL'
-  tokenHandlerDomain: 'tokenhandler.authsamples-k8s.com'

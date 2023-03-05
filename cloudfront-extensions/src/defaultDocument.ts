@@ -11,7 +11,7 @@ const handler = async (event: any, context: Context) => {
     const requestUri = request.uri.toLowerCase();
 
     // If we are in a path where the React app will fail, return a redirect to a valid path
-    const basePath = '/spa/';
+    const basePath = '/demoapp/';
     if (!requestUri.startsWith(basePath)) {
 
         return {

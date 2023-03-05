@@ -20,7 +20,7 @@ fi
 # Wait for it to become available
 #
 echo 'Waiting for web content to become available ...'
-INDEX_HTML_URL='https://web.authsamples-dev.com/spa/index.html'
+INDEX_HTML_URL='https://web.authsamples-dev.com/demoapp/index.html'
 while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$INDEX_HTML_URL")" != '200' ]; do
   sleep 2
 done

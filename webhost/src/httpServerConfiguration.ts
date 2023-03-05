@@ -24,7 +24,7 @@ export class HttpServerConfiguration {
      */
     public initializeWebStaticContentHosting(): void {
 
-        const basePath = '/spa/';
+        const basePath = '/demoapp/';
         const root = this._getWebFilesRoot();
 
         // Serve static files and also include recommended security headers in the response
@@ -89,12 +89,12 @@ export class HttpServerConfiguration {
         if (this._configuration.mode === 'development') {
 
             // During development, point to built SPA files
-            return '../spa/dist';
+            return '../demoapp/dist';
 
         } else {
 
             // In Docker development setups, the files are packaged to a subfolder of the web host
-            return './spa';
+            return './demoapp';
         }
     }
 

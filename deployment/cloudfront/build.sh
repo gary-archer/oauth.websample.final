@@ -17,7 +17,7 @@ fi
 #
 # Move to the SPA folder
 #
-SPA_FOLDER='../../spa'
+SPA_FOLDER='../../demoapp'
 cd $SPA_FOLDER
 
 #
@@ -46,16 +46,16 @@ fi
 cd ../deployment/cloudfront
 rm -rf .package
 mkdir .package
-mkdir .package/spa
+mkdir .package/demoapp
 
 #
 # Copy HTML assets and note that the production configuration is hard coded into the app and not deployed
 #
-cp "$SPA_FOLDER/dist/index.html"        .package/spa
-cp "$SPA_FOLDER/dist/vendor.bundle.js"  .package/spa
-cp "$SPA_FOLDER/dist/app.bundle.js"     .package/spa
-cp "$SPA_FOLDER/dist/bootstrap.min.css" .package/spa
-cp "$SPA_FOLDER/dist/app.css"           .package/spa
+cp "$SPA_FOLDER/dist/index.html"        .package/demoapp
+cp "$SPA_FOLDER/dist/vendor.bundle.js"  .package/demoapp
+cp "$SPA_FOLDER/dist/app.bundle.js"     .package/demoapp
+cp "$SPA_FOLDER/dist/bootstrap.min.css" .package/demoapp
+cp "$SPA_FOLDER/dist/app.css"           .package/demoapp
 cp "$SPA_FOLDER/dist/favicon.ico"       .package
 
 #

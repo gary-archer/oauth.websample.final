@@ -27,7 +27,7 @@ fi
 #
 # Build the SPA's code
 #
-cd ../spa
+cd ../demoapp
 ./build.sh 'DEBUG'
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
@@ -47,13 +47,6 @@ if [ "$1" == 'LOCALAPI' ]; then
     exit
   fi
 
-  #
-  # TEMP
-  #
-  cd localtokenhandler
-  git checkout feature/node16
-  cd ..
-  
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building local token handler resources'

@@ -4,10 +4,10 @@
         "cf": {
           "request": {
             "headers": {
-                "x-tokenhandler-domain": [
+                "x-api-domain": [
                   {
-                    "key": "x-tokenhandler-domain",
-                    "value": "https://tokenhandler.authsamples.com"
+                    "key": "x-api-domain",
+                    "value": "https://api.authsamples.com"
                   }
                 ]
             }

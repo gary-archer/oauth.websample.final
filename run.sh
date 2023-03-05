@@ -53,12 +53,12 @@ fi
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-  cp deployment/environments/dev-localapi/spa.config.json spa/dist/spa.config.json
+  cp deployment/environments/dev-localapi/spa.config.json demoapp/dist/spa.config.json
   cp deployment/environments/dev-localapi/webhost.config.json webhost/webhost.config.json
 
 else 
 
-  cp deployment/environments/dev/spa.config.json spa/dist/spa.config.json
+  cp deployment/environments/dev/spa.config.json demoapp/dist/spa.config.json
   cp deployment/environments/dev/webhost.config.json webhost/webhost.config.json
 fi
 
@@ -86,7 +86,7 @@ fi
 # Wait for it to become available
 #
 echo 'Waiting for Web Host to become available ...'
-while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/spa/index.html")" != '200' ]; do
+while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/demoapp/index.html")" != '200' ]; do
   sleep 2
 done
 
@@ -97,14 +97,14 @@ done
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
 
-  open "$WEB_ORIGIN/spa"
+  open "$WEB_ORIGIN/demoapp"
 
 elif [ "$PLATFORM" == 'WINDOWS' ]; then
 
-  start "$WEB_ORIGIN/spa"
+  start "$WEB_ORIGIN/demoapp"
 
 elif [ "$PLATFORM" == 'LINUX' ]; then
 
-  xdg-open "$WEB_ORIGIN/spa"
+  xdg-open "$WEB_ORIGIN/demoapp"
 
 fi
