@@ -47,13 +47,6 @@ if [ "$1" == 'LOCALAPI' ]; then
     exit
   fi
 
-  #
-  # GJA: temp
-  #
-  cd localtokenhandler
-  git checkout feature/urls
-  cd ..
-
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building local token handler resources'
