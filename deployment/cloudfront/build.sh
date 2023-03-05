@@ -17,7 +17,7 @@ fi
 #
 # Move to the SPA folder
 #
-SPA_FOLDER='../../spa'
+SPA_FOLDER='../../demoapp'
 cd $SPA_FOLDER
 
 #
@@ -46,7 +46,7 @@ fi
 cd ../deployment/cloudfront
 rm -rf .package
 mkdir .package
-mkdir .package/spa
+mkdir .package/demoapp
 
 #
 # Copy HTML assets and note that the production configuration is hard coded into the app and not deployed

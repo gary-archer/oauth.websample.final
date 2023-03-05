@@ -89,7 +89,7 @@ export class HttpServerConfiguration {
         if (this._configuration.mode === 'development') {
 
             // During development, point to built SPA files
-            return '../spa/dist';
+            return '../demoapp/dist';
 
         } else {
 

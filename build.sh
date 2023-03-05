@@ -27,7 +27,7 @@ fi
 #
 # Build the SPA's code
 #
-cd ../spa
+cd ../demoapp
 ./build.sh 'DEBUG'
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'

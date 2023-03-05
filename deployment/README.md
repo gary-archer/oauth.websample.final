@@ -45,7 +45,7 @@ This runs an end-to-end SPA and API setup in a local Kubernetes in Docker (KIND)
 ## Cloudfront Deployment
 
 See the [Cloud Web Content Delivery](https://authguidance.com/2018/12/02/spa-content-deployment/) blog post for details on the final web deployment.\
-The following commands deploy resources to AWS S3 and Cloudfront for the SPA that runs at https://web.authsamples.com/spa. \
+The following commands deploy resources to AWS S3 and Cloudfront for the SPA that runs at https://web.authsamples.com/demoapp. \
 This SPA then calls from the browser to APIs running in AWS using Serverless hosting:
 
 ```bash
@@ -54,7 +54,7 @@ cd deployment/cloudfront
 ./deploy.sh serverless
 ```
 
-The following commands deploy resources to S3 and Cloudfront for the SPA that runs at https://web.authsamples-k8s.com/spa. \
+The following commands deploy resources to S3 and Cloudfront for the SPA that runs at https://web.authsamples-k8s.com/demoapp. \
 This SPA then calls from the browser to APIs running in an AWS Kubernetes cluster:
 
 ```bash

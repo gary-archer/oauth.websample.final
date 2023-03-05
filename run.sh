@@ -53,12 +53,12 @@ fi
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-  cp deployment/environments/dev-localapi/spa.config.json spa/dist/spa.config.json
+  cp deployment/environments/dev-localapi/spa.config.json demoapp/dist/spa.config.json
   cp deployment/environments/dev-localapi/webhost.config.json webhost/webhost.config.json
 
 else 
 
-  cp deployment/environments/dev/spa.config.json spa/dist/spa.config.json
+  cp deployment/environments/dev/spa.config.json demoapp/dist/spa.config.json
   cp deployment/environments/dev/webhost.config.json webhost/webhost.config.json
 fi
 
@@ -97,14 +97,14 @@ done
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
 
-  open "$WEB_ORIGIN/spa"
+  open "$WEB_ORIGIN/demoapp"
 
 elif [ "$PLATFORM" == 'WINDOWS' ]; then
 
-  start "$WEB_ORIGIN/spa"
+  start "$WEB_ORIGIN/demoapp"
 
 elif [ "$PLATFORM" == 'LINUX' ]; then
 
-  xdg-open "$WEB_ORIGIN/spa"
+  xdg-open "$WEB_ORIGIN/demoapp"
 
 fi

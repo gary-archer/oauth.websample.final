@@ -13,7 +13,7 @@ cd ../..
 #
 # Build Javascript bundles
 #
-cd spa
+cd demoapp
 npm install
 npm run buildRelease
 if [ $? -ne 0 ]; then
