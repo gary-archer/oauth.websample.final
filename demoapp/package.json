@@ -13,7 +13,7 @@
   "scripts": {
     "lint": "npx eslint . --ext .ts,.tsx",
     "build": "npm run clean && npm run copy && npm run webpackDebug",
-    "start": "npm run clean && npm run copy && npm run webpackWatch",
+    "start": "npm run webpackWatch",
     "buildRelease": "npm run clean && npm run copy && npm run webpackRelease",
     "clean": "rm -rf dist && mkdir dist",
     "copy": "cp spa.config.json index.html *.css favicon.ico dist",

@@ -18,7 +18,7 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
                 <div className='row mobileHeaderRow'>
                     <div className='col-6 h4'>
                         <Link to={`/companies/${company.id}`}>
-                            View Transactions
+                            {`Company ${company.id}`}
                         </Link>
                     </div>
                     <div className='col-6 h4 fw-bold'>
