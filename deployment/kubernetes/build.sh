@@ -42,7 +42,6 @@ cp ../certs/cluster.internal.ca.pem deployment/shared/trusted.ca.pem
 #
 # Build the Docker image
 #
-cd ..
 docker build --no-cache -f deployment/shared/Dockerfile -t webhost:v1 .
 if [ $? -ne 0 ]; then
   echo '*** Web Host docker build problem encountered'
