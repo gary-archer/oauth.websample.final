@@ -20,22 +20,24 @@ if [ $? -ne 0 ]; then
   echo '*** SPA build problem encountered'
   exit 1
 fi
+cd ..
 
 #
 # Build the web host
 #
-cd ../webhost
+cd webhost
 npm install
 npm run buildRelease
 if [ $? -ne 0 ]; then
   echo '*** Web Host build problem encountered'
   exit 1
 fi
+cd ..
 
 #
 # Copy in the internal cluster root CA from the parent project, to be trusted within the container
 #
-cp ../../certs/cluster.internal.ca.pem deployment/shared/trusted.ca.pem
+cp ./certs/cluster.internal.ca.pem deployment/shared/trusted.ca.pem
 
 #
 # Build the Docker image
