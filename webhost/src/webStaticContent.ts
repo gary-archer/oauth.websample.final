@@ -72,12 +72,14 @@ export class WebStaticContent {
 
             // If within the demoapp micro-UI, return its index.html
             const demoAppRoot = this._getDemoAppFilesBasePath();
+            this._securityHeaders.add(response);
             response.sendFile('index.html', {root: demoAppRoot});
 
         } else if (requestPath === '/loggedout' || requestPath === '/callback') {
 
             // For these special routes, return the index.html for the shell app
             const shellAppRoot = this._getShellAppFilesBasePath();
+            this._securityHeaders.add(response);
             response.sendFile('index.html', {root: shellAppRoot});
 
         } else {

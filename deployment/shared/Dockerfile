@@ -12,11 +12,15 @@ COPY webhost/dist           /usr/webhost/dist
 COPY webhost/package*.json  /usr/webhost/
 RUN npm install --production
 
-# Copy SPA static content files onto the web host
-COPY demoapp/dist/*.bundle.js   /usr/webhost/demoapp/
-COPY demoapp/dist/*.css         /usr/webhost/demoapp/
-COPY demoapp/dist/*.html        /usr/webhost/demoapp/
-COPY demoapp/dist/*.ico         /usr/webhost/demoapp/
+# Copy the shell app's static content files onto the web host
+COPY dist/shellapp/*.html       /usr/webhost/shellapp/
+COPY dist/shellapp/*.js         /usr/webhost/shellapp/
+COPY dist/shellapp/*.ico        /usr/webhost/shellapp/
+
+# Copy the demo app's static content files onto the web host
+COPY dist/demoapp/*.html        /usr/webhost/demoapp/
+COPY dist/demoapp/*.bundle.js   /usr/webhost/demoapp/
+COPY dist/demoapp/*.css         /usr/webhost/demoapp/
 
 #  Run the Express app as a low privilege user
 RUN adduser --disabled-password --home /home/webuser --gecos '' webuser

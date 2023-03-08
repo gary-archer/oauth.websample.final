@@ -17,17 +17,6 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Build the SPA release Javascript bundles
-#
-cd spa
-./build.sh 'RELEASE'
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the SPA'
-  exit
-fi
-cd ..
-
-#
 # Build the web host's Javascript code
 #
 cd webhost
@@ -37,6 +26,29 @@ if [ $? -ne 0 ]; then
   exit
 fi
 cd ..
+
+#
+# Build the shell app, which handles the redirect URI and logged out page
+#
+cd shellapp
+./build.sh 'RELEASE'
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered building the shell application'
+  exit
+fi
+cd ..
+
+#
+# Build the React SPA's Javascript bundles
+#
+cd demoapp
+./build.sh 'RELEASE'
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered building the demo application'
+  exit
+fi
+cd ..
+
 
 #
 # Prepare root CA certificates that the Docker container will trust

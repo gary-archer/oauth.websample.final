@@ -37,7 +37,7 @@ fi
 cd ..
 
 #
-# Build the React SPA
+# Build the React SPA's Javascript bundles
 #
 cd demoapp
 ./build.sh 'DEBUG'
