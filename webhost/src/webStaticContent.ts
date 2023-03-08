@@ -61,13 +61,11 @@ export class WebStaticContent {
      */
     private _handleNotFoundMicroUIRequest(request: Request, response: Response): boolean {
 
-        console.log('*** NOT FOUND MICRO UI');
         const demoAppBasePath = '/demoapp/';
         if (request.path.toLowerCase().startsWith(demoAppBasePath)) {
 
             const demoAppRoot = this._getDemoAppFilesBasePath();
-            console.log('*** RETURN MICRO UI HTML');
-            response.sendFile('index.html', {demoAppRoot});
+            response.sendFile('index.html', {root: demoAppRoot});
             return true;
         }
 
