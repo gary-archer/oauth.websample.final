@@ -1,6 +1,7 @@
 import express, {Application, Request, Response} from 'express';
 import serveStatic from 'serve-static';
 import {Configuration} from './configuration.js';
+import {SecurityHeaders} from './securityHeaders.js';
 
 /*
  * Serve the web static content for a brand composed of multiple micro-UIs
@@ -9,16 +10,13 @@ export class WebStaticContent {
 
     private readonly _express: Application;
     private readonly _configuration: Configuration;
-    private readonly _addSecurityHeaders: (response: Response) => any;
+    private readonly _securityHeaders: SecurityHeaders;
 
-    public constructor(
-        expressApp: Application,
-        configuration: Configuration,
-        addSecurityHeaders: (response: Response) => any) {
+    public constructor(expressApp: Application, configuration: Configuration) {
 
         this._express = expressApp;
         this._configuration = configuration;
-        this._addSecurityHeaders = addSecurityHeaders;
+        this._securityHeaders = new SecurityHeaders(this._configuration);
     }
 
     public initialize(): void {
@@ -50,7 +48,7 @@ export class WebStaticContent {
     private _handleMicroUIRequests(): void {
 
         const options: serveStatic.ServeStaticOptions<Response> = {
-            setHeaders: this._addSecurityHeaders,
+            setHeaders: this._securityHeaders.add,
         };
 
         const demoAppBasePath = '/demoapp/';
