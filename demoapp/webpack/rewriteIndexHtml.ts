@@ -8,40 +8,41 @@ export function rewriteIndexHtml(): void {
 
     // Get the timestamp at the time of the build
     const timestamp = new Date().getTime().toString();
+    const outFolder = '../dist/demoapp';
 
     // First remove sourceMappingURL references
-    removeSourcemapReference('dist/app.bundle.js');
-    removeSourcemapReference('dist/vendor.bundle.js');
+    removeSourcemapReference(`${outFolder}/app.bundle.js`);
+    removeSourcemapReference(`${outFolder}/vendor.bundle.js`);
 
     // Update CSS resources with a cache busting timestamp and an integrity hash
     updateResource(
-        './dist/index.html',
+        `${outFolder}/index.html`,
         'href',
         'bootstrap.min.css',
         timestamp,
-        calculateFileHash('./dist/bootstrap.min.css'));
+        calculateFileHash(`${outFolder}/bootstrap.min.css`));
 
     updateResource(
-        './dist/index.html',
+        `${outFolder}/index.html`,
         'href',
         'app.css',
         timestamp,
-        calculateFileHash('./dist/app.css'));
+        calculateFileHash(`${outFolder}/app.css`));
 
     // Update Javascript resources with a cache busting timestamp and an integrity hash
     updateResource(
-        './dist/index.html',
+        `${outFolder}/index.html`,
         'src',
         'vendor.bundle.js',
         timestamp,
-        calculateFileHash('./dist/vendor.bundle.js'));
+        calculateFileHash(`${outFolder}/vendor.bundle.js`));
 
     updateResource(
-        './dist/index.html',
+        `${outFolder}/index.html`,
         'src',
         'app.bundle.js',
         timestamp,
-        calculateFileHash('./dist/app.bundle.js'));
+        calculateFileHash(`${outFolder}/app.bundle.js`));
 }
 
 /*

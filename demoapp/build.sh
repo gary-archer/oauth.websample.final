@@ -29,12 +29,24 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Build Javascript bundles
+# Clean the output folder
+#
+DIST_FOLDER='../dist/demoapp'
+rm -rf "$DIST_FOLDER" 2>/dev/null
+mkdir "$DIST_FOLDER"
+
+#
+# Copy HTML assets to the output folder
+#
+cp spa.config.json index.html *.css "$DIST_FOLDER"
+
+#
+# Now do the main webpack build
 #
 if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
-  npm run buildRelease
+  npm run webpackRelease
 else
-  npm run build
+  npm run webpackDebug
 fi
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'

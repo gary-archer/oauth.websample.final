@@ -1,8 +1,8 @@
-import express, {Application, Response} from 'express';
+import {Application, Response} from 'express';
 import fs from 'fs-extra';
 import https from 'https';
-import serveStatic from 'serve-static';
 import {Configuration} from './configuration.js';
+import {WebStaticContent} from './webStaticContent.js';
 
 /*
  * Configure web host behaviour at application startup
@@ -11,11 +11,13 @@ export class HttpServerConfiguration {
 
     private readonly _express: Application;
     private readonly _configuration: Configuration;
+    private readonly _webStaticContent: WebStaticContent;
 
     public constructor(expressApp: Application, configuration: Configuration) {
 
         this._express = expressApp;
         this._configuration = configuration;
+        this._webStaticContent = new WebStaticContent(this._express, this._configuration, this._addSecurityHeaders);
         this._setupCallbacks();
     }
 
@@ -23,33 +25,7 @@ export class HttpServerConfiguration {
      * Set up routes for web static content
      */
     public initializeWebStaticContentHosting(): void {
-
-        const basePath = '/demoapp/';
-        const root = this._getWebFilesRoot();
-
-        // Serve static files and also include recommended security headers in the response
-        const options: serveStatic.ServeStaticOptions<Response> = {
-            setHeaders: this._addSecurityHeaders,
-        };
-        this._express.use(basePath, express.static(root, options));
-
-        // Serve a favicon
-        this._express.use('/favicon.ico', express.static(`${root}/favicon.ico`));
-
-        // Handle invalid paths
-        this._express.get('*', (request, response) => {
-
-            if (!request.path.toLowerCase().startsWith(basePath)) {
-
-                // If we are in a path where the React app will fail, return a redirect to a valid path
-                response.redirect(basePath);
-
-            } else {
-
-                // Default to index.html otherwise
-                response.sendFile('index.html', {root});
-            }
-        });
+        this._webStaticContent.initialize();
     }
 
     /*
@@ -78,23 +54,6 @@ export class HttpServerConfiguration {
             this._express.listen(this._configuration.port, () => {
                 console.log(`Web Host is listening on HTTP port ${this._configuration.port}`);
             });
-        }
-    }
-
-    /*
-     * Return the relative path to web files
-     */
-    private _getWebFilesRoot(): string {
-
-        if (this._configuration.mode === 'development') {
-
-            // During development, point to built SPA files
-            return '../demoapp/dist';
-
-        } else {
-
-            // In Docker development setups, the files are packaged to a subfolder of the web host
-            return './demoapp';
         }
     }
 

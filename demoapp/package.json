@@ -12,11 +12,9 @@
   },
   "scripts": {
     "lint": "npx eslint . --ext .ts,.tsx",
-    "build": "npm run clean && npm run copy && npm run webpackDebug",
     "start": "npm run webpackWatch",
-    "buildRelease": "npm run clean && npm run copy && npm run webpackRelease",
-    "clean": "rm -rf dist && mkdir dist",
-    "copy": "cp spa.config.json index.html *.css favicon.ico dist",
+    "build": "bash ./build.sh",
+    "buildRelease": "bash ./build.sh RELEASE",
     "webpackDebug": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts\"",
     "webpackWatch": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts --watch\"",
     "webpackRelease": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.prod.ts\""

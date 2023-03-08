@@ -53,12 +53,12 @@ fi
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-  cp deployment/environments/dev-localapi/spa.config.json demoapp/dist/spa.config.json
+  cp deployment/environments/dev-localapi/spa.config.json dist/demoapp/spa.config.json
   cp deployment/environments/dev-localapi/webhost.config.json webhost/webhost.config.json
 
 else 
 
-  cp deployment/environments/dev/spa.config.json demoapp/dist/spa.config.json
+  cp deployment/environments/dev/spa.config.json dist/demoapp/spa.config.json
   cp deployment/environments/dev/webhost.config.json webhost/webhost.config.json
 fi
 
