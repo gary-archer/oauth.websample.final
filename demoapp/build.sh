@@ -31,6 +31,7 @@ fi
 #
 # Clean the output folder
 #
+mkdir '../dist' 2>/dev/null
 DIST_FOLDER='../dist/demoapp'
 rm -rf "$DIST_FOLDER" 2>/dev/null
 mkdir "$DIST_FOLDER"
