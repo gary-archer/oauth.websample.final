@@ -1,8 +1,8 @@
 #!/bin/bash
 
-##################################################################
-# A script to build all web resources in a local development setup
-##################################################################
+###########################################################
+# A script to build all web resources for local development
+###########################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 

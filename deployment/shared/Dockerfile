@@ -6,7 +6,7 @@ COPY $TRUSTED_CA_CERTS /usr/local/share/certificates/trusted.ca.crt
 RUN update-ca-certificates
 ENV NODE_EXTRA_CA_CERTS='/usr/local/share/certificates/trusted.ca.crt'
 
-# Copy web host files into our docker image and install dependencies
+# Copy web host files and install dependencies
 WORKDIR /usr/webhost
 COPY webhost/dist           /usr/webhost/dist
 COPY webhost/package*.json  /usr/webhost/
