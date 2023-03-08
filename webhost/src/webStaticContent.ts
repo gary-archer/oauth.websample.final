@@ -19,33 +19,23 @@ export class WebStaticContent {
         this._securityHeaders = new SecurityHeaders(this._configuration);
     }
 
+    /*
+     * Handle physical resources in each micro UI, then serve index.html for not found requests
+     */
     public initialize(): void {
 
-        // Handle micro UI requests
-        this._handleMicroUIRequests();
+        this._handleDemoAppRequests();
+        this._handleShellAppRequests();
 
-        // Handle not found requests
         this._express.get('*', (request, response) => {
-
-            // Not found requests within a micro UI path return its index.html file
-            const isMicroUIRequest = this._handleNotFoundMicroUIRequest(request, response);
-            if (!isMicroUIRequest) {
-
-                // Requests to the minimal shell app return specific files
-                const isValidRootRequest = this._handleRootRequest(request);
-                if (!isValidRootRequest) {
-
-                    // Otherwise return the index.html for the default micro UI
-                    this._handleDefaultRequest(response);
-                }
-            }
+            this._handleNotFoundRequest(request, response);
         });
     }
 
     /*
-     * Serve static files for micro UIs
+     * Serve static files for the demo app
      */
-    private _handleMicroUIRequests(): void {
+    private _handleDemoAppRequests(): void {
 
         const options: serveStatic.ServeStaticOptions<Response> = {
             setHeaders: this._securityHeaders.add,
@@ -57,51 +47,44 @@ export class WebStaticContent {
     }
 
     /*
-     * Handle not found requests within a micro UI path by returning its index.html
+     * Serve static files for the shell app
      */
-    private _handleNotFoundMicroUIRequest(request: Request, response: Response): boolean {
+    private _handleShellAppRequests(): void {
 
-        const demoAppBasePath = '/demoapp/';
-        if (request.path.toLowerCase().startsWith(demoAppBasePath)) {
+        const options: serveStatic.ServeStaticOptions<Response> = {
+            setHeaders: this._securityHeaders.add,
+        };
 
-            const demoAppRoot = this._getDemoAppFilesBasePath();
-            response.sendFile('index.html', {root: demoAppRoot});
-            return true;
-        }
-
-        return false;
+        const shellAppBasePath = '/';
+        const shellAppRoot = this._getShellAppFilesBasePath();
+        this._express.use(shellAppBasePath, express.static(shellAppRoot, options));
     }
 
     /*
-     * The shell app only manages requests for the callback and loggedout paths
+     * Handle not found requests by returning its index.html for the micro UI
      */
-    private _handleRootRequest(request: Request): boolean {
+    private _handleNotFoundRequest(request: Request, response: Response): void {
 
         const requestPath = request.path.toLowerCase();
-        if (requestPath === '/loggedout' || requestPath === '/callback') {
+        const demoAppBasePath = '/demoapp/';
 
-            const shellRoot = this._getRootFilesBasePath();
-            this._express.use(request.path.toLowerCase(), express.static(`${shellRoot}/index.html`));
-            return true;
+        if (requestPath.startsWith(demoAppBasePath)) {
+
+            // If within the demoapp micro-UI, return its index.html
+            const demoAppRoot = this._getDemoAppFilesBasePath();
+            response.sendFile('index.html', {root: demoAppRoot});
+
+        } else if (requestPath === '/loggedout' || requestPath === '/callback') {
+
+            // For these special routes, return the index.html for the shell app
+            const shellAppRoot = this._getShellAppFilesBasePath();
+            response.sendFile('index.html', {root: shellAppRoot});
+
+        } else {
+
+            // For any other invalid path, redirect to the default micro-UI
+            response.redirect(demoAppBasePath);
         }
-
-        if (requestPath === '/favicon.ico') {
-
-            const shellRoot = this._getRootFilesBasePath();
-            this._express.use(request.path.toLowerCase(), express.static(`${shellRoot}${requestPath}`));
-            return true;
-        }
-
-        return false;
-    }
-
-    /*
-     * If we are in a path that is outside valid React paths for all micro UIs, redirect to the default app
-     */
-    private _handleDefaultRequest(response: Response) {
-
-        const defaultAppBasePath = '/demoapp/';
-        response.redirect(defaultAppBasePath);
     }
 
     /*
@@ -124,7 +107,7 @@ export class WebStaticContent {
     /*
      * Return the relative path to root web files, for the shell app
      */
-    private _getRootFilesBasePath(): string {
+    private _getShellAppFilesBasePath(): string {
 
         if (this._configuration.mode === 'development') {
 

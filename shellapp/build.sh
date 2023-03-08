@@ -17,4 +17,4 @@ mkdir "$DIST_FOLDER"
 #
 # Copy HTML assets to the output folder
 #
-cp index.html favicon.ico "$DIST_FOLDER"
+cp index.html shell.js favicon.ico "$DIST_FOLDER"
