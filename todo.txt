@@ -1,3 +1,0 @@
-1. Consider reusing the root build script across all builds
-
-2. Shell app requests are hanging

@@ -14,7 +14,7 @@ if [ ! -d 'node_modules' ]; then
   
   npm install
   if [ $? -ne 0 ]; then
-    echo 'Problem encountered installing SPA dependencies'
+    echo 'Problem encountered installing demo app dependencies'
     exit 1
   fi
 fi
@@ -50,6 +50,6 @@ else
   npm run webpackDebug
 fi
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the SPA'
+  echo 'Problem encountered building the demo app'
   exit 1
 fi

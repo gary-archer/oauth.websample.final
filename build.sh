@@ -42,7 +42,7 @@ cd ..
 cd demoapp
 ./build.sh 'DEBUG'
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the SPA'
+  echo 'Problem encountered building the demo application'
   exit
 fi
 cd ..
