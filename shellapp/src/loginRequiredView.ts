@@ -19,25 +19,19 @@ export class LoginRequiredView {
     public render(): void {
 
         const html =
-            `<div class='container'>
-                <div class='row'>
-                    <div class='col-8 my-auto'>
-                        <h2>OAuth Demo App</h2>
-                    </div>
+            `<div class='row'>
+                <div class='col-12 my-auto'>
+                    <h2>OAuth Demo App</h2>
+               </div>
+            </div>
+            <div class='row'>
+                <div class='col-12 text-center mx-auto'>
+                    <h5>You have been successfully logged out</h5>
                 </div>
-                <div class='row'>
-                    <div class='col-12 text-center mx-auto'>
-                        <h5>You have been successfully logged out</h5>
-                    </div>
-                </div>
-                <div class='row'>
-                    <div class='col col-one-fifth'></div>
-                    <div class='col col-one-fifth'></div>
-                    <div class='col col-one-fifth my-2 d-flex p-1'>
-                        <button id='btnLogin' type='button' class='btn btn-primary w-100 p-1'>Login</button>
-                    </div>
-                    <div class='col col-one-fifth'></div>
-                    <div class='col col-one-fifth'></div>
+            </div>
+            <div class='row'>
+                <div class='col col-12 text-center my-2 p-1'>
+                    <button id='btnLogin' type='button' class='btn btn-primary w-25 p-1'>Login</button>
                 </div>
             </div>`;
 
