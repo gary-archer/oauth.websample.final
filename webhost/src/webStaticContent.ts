@@ -1,7 +1,5 @@
 import express, {Application, Request, Response} from 'express';
-import serveStatic from 'serve-static';
 import {Configuration} from './configuration.js';
-import {SecurityHeaders} from './securityHeaders.js';
 
 /*
  * Serve the web static content for a brand composed of multiple micro-UIs
@@ -10,13 +8,11 @@ export class WebStaticContent {
 
     private readonly _express: Application;
     private readonly _configuration: Configuration;
-    private readonly _securityHeaders: SecurityHeaders;
 
     public constructor(expressApp: Application, configuration: Configuration) {
 
         this._express = expressApp;
         this._configuration = configuration;
-        this._securityHeaders = new SecurityHeaders(this._configuration);
     }
 
     /*
@@ -37,13 +33,9 @@ export class WebStaticContent {
      */
     private _handleDemoAppRequests(): void {
 
-        const options: serveStatic.ServeStaticOptions<Response> = {
-            setHeaders: this._securityHeaders.add,
-        };
-
         const demoAppBasePath = '/demoapp/';
         const demoAppRoot = this._getDemoAppFilesBasePath();
-        this._express.use(demoAppBasePath, express.static(demoAppRoot, options));
+        this._express.use(demoAppBasePath, express.static(demoAppRoot));
     }
 
     /*
@@ -51,13 +43,9 @@ export class WebStaticContent {
      */
     private _handleShellAppRequests(): void {
 
-        const options: serveStatic.ServeStaticOptions<Response> = {
-            setHeaders: this._securityHeaders.add,
-        };
-
         const shellAppBasePath = '/';
         const shellAppRoot = this._getShellAppFilesBasePath();
-        this._express.use(shellAppBasePath, express.static(shellAppRoot, options));
+        this._express.use(shellAppBasePath, express.static(shellAppRoot));
     }
 
     /*
@@ -72,14 +60,12 @@ export class WebStaticContent {
 
             // If within the demoapp micro-UI, return its index.html
             const demoAppRoot = this._getDemoAppFilesBasePath();
-            this._securityHeaders.add(response);
             response.sendFile('index.html', {root: demoAppRoot});
 
         } else if (requestPath === '/loggedout' || requestPath === '/callback') {
 
             // For these special routes, return the index.html for the shell app
             const shellAppRoot = this._getShellAppFilesBasePath();
-            this._securityHeaders.add(response);
             response.sendFile('index.html', {root: shellAppRoot});
 
         } else {

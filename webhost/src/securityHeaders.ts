@@ -1,4 +1,4 @@
-import {Response} from 'express';
+import {NextFunction, Request, Response} from 'express';
 import {Configuration} from './configuration.js';
 
 /*
@@ -17,7 +17,7 @@ export class SecurityHeaders {
     /*
      * Add the headers including a content security policy
      */
-    public add(response: Response): any {
+    public add(request: Request, response: Response, next: NextFunction): any {
 
         // Prevent external sites being able to abuse the SPA's web origin
         const trustedHosts = this._configuration.trustedHosts.join(' ');
@@ -39,6 +39,7 @@ export class SecurityHeaders {
         response.setHeader('x-xss-protection', '1; mode=block');
         response.setHeader('x-content-type-options', 'nosniff');
         response.setHeader('referrer-policy', 'same-origin');
+        next();
     }
 
     private _setupCallbacks(): void {
