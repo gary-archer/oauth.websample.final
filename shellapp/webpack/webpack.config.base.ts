@@ -31,7 +31,7 @@ const config: webpack.Configuration = {
     output: {
 
         // Output our Javascript bundles to a dist folder
-        path: path.resolve(dirname, '../dist/shellapp'),
+        path: path.resolve(dirname, './dist'),
         filename: '[name].bundle.js'
     }
 };

@@ -22,15 +22,13 @@ fi
 #
 # Clean the output folder
 #
-mkdir '../dist' 2>/dev/null
-DIST_FOLDER='../dist/shellapp'
-rm -rf "$DIST_FOLDER" 2>/dev/null
-mkdir "$DIST_FOLDER"
+rm -rf ./dist 2>/dev/null
+mkdir ./dist
 
 #
 # Copy HTML assets to the output folder
 #
-cp index.html favicon.ico *.css "$DIST_FOLDER"
+cp index.html favicon.ico *.css ./dist
 
 #
 # Now do the main webpack build

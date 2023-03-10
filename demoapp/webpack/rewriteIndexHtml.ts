@@ -8,7 +8,7 @@ export function rewriteIndexHtml(): void {
 
     // Get the timestamp at the time of the build
     const timestamp = new Date().getTime().toString();
-    const outFolder = '../dist/demoapp';
+    const outFolder = './demoapp/dist';
 
     // First remove sourceMappingURL references
     removeSourcemapReference(`${outFolder}/app.bundle.js`);

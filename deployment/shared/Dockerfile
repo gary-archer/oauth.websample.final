@@ -13,14 +13,14 @@ COPY webhost/package*.json      /usr/webhost/
 RUN npm install --production
 
 # Copy the shell app's static content files
-COPY dist/shellapp/*.html       /usr/webhost/shellapp/
-COPY dist/shellapp/*.js         /usr/webhost/shellapp/
-COPY dist/shellapp/*.ico        /usr/webhost/shellapp/
+COPY shellapp/dist/*.html       /usr/webhost/shellapp/
+COPY shellapp/dist/*.js         /usr/webhost/shellapp/
+COPY shellapp/dist/*.ico        /usr/webhost/shellapp/
 
 # Copy the demo app's static content files
-COPY dist/demoapp/*.html        /usr/webhost/demoapp/
-COPY dist/demoapp/*.bundle.js   /usr/webhost/demoapp/
-COPY dist/demoapp/*.css         /usr/webhost/demoapp/
+COPY demoapp/dist/*.html        /usr/webhost/demoapp/
+COPY demoapp/dist/*.bundle.js   /usr/webhost/demoapp/
+COPY demoapp/dist/*.css         /usr/webhost/demoapp/
 
 #  Run the web host as a low privilege user
 RUN adduser --disabled-password --home /home/webuser --gecos '' webuser

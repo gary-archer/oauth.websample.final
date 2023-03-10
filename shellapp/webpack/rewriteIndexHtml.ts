@@ -8,7 +8,7 @@ export function rewriteIndexHtml(): void {
 
     // Get the timestamp at the time of the build
     const timestamp = new Date().getTime().toString();
-    const outFolder = '../dist/shellapp';
+    const outFolder = './dist';
 
     // Update Javascript resources with a cache busting timestamp and an integrity hash
     updateResource(
