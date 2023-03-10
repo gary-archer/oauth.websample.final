@@ -3,7 +3,6 @@ import {useLocation} from 'react-router-dom';
 import {Company} from '../../api/entities/company';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
 import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
@@ -34,9 +33,6 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
      * Load data then listen for the reload event
      */
     async function startup(): Promise<void> {
-
-        // Inform other parts of the app which view is active
-        model.eventBus.emit(EventNames.Navigate, null, new NavigateEvent(true));
 
         // Subscribe for reload events
         model.eventBus.on(EventNames.ReloadMainView, onReload);

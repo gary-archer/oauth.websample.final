@@ -3,5 +3,4 @@
  */
 export interface HeaderButtonsViewState {
     hasData: boolean;
-    isMainView: boolean;
 }

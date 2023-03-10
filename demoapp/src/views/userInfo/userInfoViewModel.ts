@@ -15,7 +15,6 @@ export class UserInfoViewModel {
     private readonly _apiClient: ApiClient;
     private readonly _eventBus: EventBus;
     private readonly _apiViewEvents: ApiViewEvents;
-    private _isLoaded: boolean;
 
     public constructor(
         apiClient: ApiClient,
@@ -25,7 +24,6 @@ export class UserInfoViewModel {
         this._apiClient = apiClient;
         this._eventBus = eventBus;
         this._apiViewEvents = apiViewEvents;
-        this._isLoaded = false;
     }
 
     /*
@@ -43,12 +41,6 @@ export class UserInfoViewModel {
         onError: (error: UIError) => void,
         options: UserInfoLoadOptions): Promise<void> {
 
-        // Return early if no load is needed
-        if (this._isLoaded && !options.reload) {
-            this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
-            return;
-        }
-
         try {
 
             this._apiViewEvents.onViewLoading(ApiViewNames.UserInfo);
@@ -57,22 +49,13 @@ export class UserInfoViewModel {
             const userInfo = await this._apiClient.getUserInfo(requestOptions);
 
             this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
-            this._isLoaded = true;
             onSuccess(userInfo);
 
         } catch (e) {
 
-            this._isLoaded = false;
             const error = ErrorFactory.fromException(e);
             this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);
             onError(error);
         }
-    }
-
-    /*
-     * Reset state when logging out
-     */
-    public unload(): void {
-        this._isLoaded = false;
     }
 }

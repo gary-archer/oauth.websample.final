@@ -13,7 +13,6 @@ import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {HeaderButtonsView} from '../views/headings/headerButtonsView';
 import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
-import {LoginRequiredView} from '../views/loginRequired/loginRequiredView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
 import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
@@ -143,9 +142,12 @@ export function App(props: AppProps): JSX.Element {
      */
     async function onLogout(): Promise<void> {
 
+        // Update local storage to inform other tabs to also logout
+        HtmlStorageHelper.loggedOut = true;
+
         try {
 
-            // Start the logout redirect
+            // Start the logout redirect, which will return to the shell app's post logout redirect URI
             await model.authenticator.logout();
 
         } catch (e) {
@@ -153,17 +155,13 @@ export function App(props: AppProps): JSX.Element {
             // Swallow errors and move to the logged out view
             moveToLoggedOutView();
         }
-
-        // Update local storage to inform other tabs to logout
-        HtmlStorageHelper.loggedOut = true;
     }
 
     /*
-     * Called when we move to the logged out view manually, such as when there is a logout error
-     * This also occurs when there is a logout on another tab and we receive a session storage notification
+     * Navigate outside of this React micro UI to the shell micro UI's logged out view
      */
     function moveToLoggedOutView(): void {
-        navigate('/loggedout');
+        location.href = `${location.origin}/loggedout`;
     }
 
     /*
@@ -321,10 +319,6 @@ export function App(props: AppProps): JSX.Element {
             navigate,
         };
 
-        const loginRequiredProps = {
-            eventBus: model.eventBus,
-        };
-
         // Render the tree view
         return (
             <>
@@ -334,7 +328,6 @@ export function App(props: AppProps): JSX.Element {
                 <SessionView {...sessionProps} />
                 <Routes>
                     <Route path='/companies/:id' element={<TransactionsContainer {...transactionsProps} />} />
-                    <Route path='/loggedout'     element={<LoginRequiredView {...loginRequiredProps} />} />
                     <Route path='/*'             element={<CompaniesContainer {...companiesProps} />} />
                 </Routes>
             </>

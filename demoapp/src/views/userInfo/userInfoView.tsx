@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {UserInfo} from '../../api/entities/userInfo';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
 import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
@@ -28,39 +27,19 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Subscribe to events and then do the initial load of data
      */
     async function startup(): Promise<void> {
-        model.eventBus.on(EventNames.Navigate, onNavigate);
+
+        // Subscribe for reload events
         model.eventBus.on(EventNames.ReloadUserInfo, onReload);
+
+        // Do the initial load of data
+        await loadData(false);
     }
 
     /*
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        model.eventBus.detach(EventNames.Navigate, onNavigate);
         model.eventBus.detach(EventNames.ReloadUserInfo, onReload);
-    }
-
-    /*
-     * Load data when in a main view
-     */
-    async function onNavigate(event: NavigateEvent): Promise<void> {
-
-        if (event.isMainView) {
-
-            // Load user data the first time
-            await loadData();
-
-        } else {
-
-            // If in the login required view we clear user data
-            model.unload();
-            setState((s) => {
-                return {
-                    ...s,
-                    userInfo: null,
-                };
-            });
-        }
     }
 
     /*
@@ -75,6 +54,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     async function loadData(reload = false, causeError = false): Promise<void> {
 
+        console.log('*** load user info');
         const onSuccess = (userInfo: UserInfo) => {
 
             setState((s) => {
