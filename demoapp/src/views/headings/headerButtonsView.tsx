@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {DataStatusEvent} from '../../plumbing/events/dataStatusEvent';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {NavigateEvent} from '../../plumbing/events/navigateEvent';
 import {HeaderButtonsViewProps} from './headerButtonsViewProps';
 import {HeaderButtonsViewState} from './headerButtonsViewState';
 
@@ -12,7 +11,6 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
 
     const [state, setState] = useState<HeaderButtonsViewState>({
         hasData: false,
-        isMainView: false,
     });
 
     useEffect(() => {
@@ -22,12 +20,10 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
 
     function startup() {
         props.eventBus.on(EventNames.DataStatus, onDataStatusUpdate);
-        props.eventBus.on(EventNames.Navigate, onNavigate);
     }
 
     function cleanup() {
         props.eventBus.detach(EventNames.DataStatus, onDataStatusUpdate);
-        props.eventBus.detach(EventNames.Navigate, onNavigate);
     }
 
     // Settings related to button long clicks
@@ -48,23 +44,11 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
     }
 
     /*
-     * The session button state becomes disabled when the login required view is active
-     */
-    function onNavigate(event: NavigateEvent) {
-        setState((s) => {
-            return {
-                ...s,
-                isMainView: event.isMainView,
-            };
-        });
-    }
-
-    /*
      * When refresh is clicked, measure the start time
      */
     function handleReloadPress(): void {
 
-        if (!state.hasData || !state.isMainView) {
+        if (!state.hasData) {
             return;
         }
 
@@ -77,7 +61,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
      */
     function handleReloadRelease(): void {
 
-        if (!state.hasData || !state.isMainView) {
+        if (!state.hasData) {
             return;
         }
 
@@ -111,7 +95,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
     /*
      * Render buttons and callback the parent when clicked
      */
-    const disabled = state.hasData && state.isMainView ? false : true;
+    const disabled = state.hasData ? false : true;
     return  (
         <div className='row'>
             <div className='col col-one-fifth my-2 d-flex p-1'>

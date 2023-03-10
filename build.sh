@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#######################################################
-# A script to build the SPA resources ready for running
-#######################################################
+###########################################################
+# A script to build all web resources for local development
+###########################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Download SSL certificates if required
+# Download development SSL certificates
 #
 ./downloadcerts.sh
 if [ $? -ne 0 ]; then
@@ -23,14 +23,26 @@ if [ $? -ne 0 ]; then
   echo 'Problem encountered building the development web host'
   exit
 fi
+cd ..
 
 #
-# Build the SPA's code
+# Build the shell app, which handles the redirect URI and logged out page
 #
-cd ../demoapp
+cd shellapp
 ./build.sh 'DEBUG'
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the SPA'
+  echo 'Problem encountered building the shell application'
+  exit
+fi
+cd ..
+
+#
+# Build the React SPA's Javascript bundles
+#
+cd demoapp
+./build.sh 'DEBUG'
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered building the demo application'
   exit
 fi
 cd ..

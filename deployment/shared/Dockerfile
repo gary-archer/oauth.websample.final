@@ -6,19 +6,23 @@ COPY $TRUSTED_CA_CERTS /usr/local/share/certificates/trusted.ca.crt
 RUN update-ca-certificates
 ENV NODE_EXTRA_CA_CERTS='/usr/local/share/certificates/trusted.ca.crt'
 
-# Copy web host files into our docker image and install dependencies
+# Copy the web host application and install its dependencies
 WORKDIR /usr/webhost
-COPY webhost/dist           /usr/webhost/dist
-COPY webhost/package*.json  /usr/webhost/
+COPY webhost/dist               /usr/webhost/dist
+COPY webhost/package*.json      /usr/webhost/
 RUN npm install --production
 
-# Copy SPA static content files onto the web host
+# Copy the shell app's static content files
+COPY shellapp/dist/*.html       /usr/webhost/shellapp/
+COPY shellapp/dist/*.js         /usr/webhost/shellapp/
+COPY shellapp/dist/*.ico        /usr/webhost/shellapp/
+
+# Copy the demo app's static content files
+COPY demoapp/dist/*.html        /usr/webhost/demoapp/
 COPY demoapp/dist/*.bundle.js   /usr/webhost/demoapp/
 COPY demoapp/dist/*.css         /usr/webhost/demoapp/
-COPY demoapp/dist/*.html        /usr/webhost/demoapp/
-COPY demoapp/dist/*.ico         /usr/webhost/demoapp/
 
-#  Run the Express app as a low privilege user
+#  Run the web host as a low privilege user
 RUN adduser --disabled-password --home /home/webuser --gecos '' webuser
 USER webuser
 

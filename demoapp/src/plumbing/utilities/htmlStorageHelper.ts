@@ -3,7 +3,8 @@
  */
 export class HtmlStorageHelper {
 
-    private static _prefix = 'finalspa.';
+    private static _loginPrefix = 'login.';
+    private static _appPrefix = 'demoapp.';
     private static _appState = 'appState';
     private static _apiSessionKeyName = 'apisessionid';
     private static _loggedOutKeyName = 'loggedout';
@@ -13,7 +14,7 @@ export class HtmlStorageHelper {
      */
     public static get appState(): any {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._appState}`;
+        const key = `${HtmlStorageHelper._loginPrefix}.${HtmlStorageHelper._appState}`;
         const data = sessionStorage.getItem(key);
         if (data) {
             return JSON.parse(data);
@@ -27,7 +28,7 @@ export class HtmlStorageHelper {
      */
     public static set appState(data: any) {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._appState}`;
+        const key = `${HtmlStorageHelper._loginPrefix}${HtmlStorageHelper._appState}`;
         sessionStorage.setItem(key, JSON.stringify(data));
     }
 
@@ -36,7 +37,7 @@ export class HtmlStorageHelper {
      */
     public static removeAppState(): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._appState}`;
+        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._appState}`;
         sessionStorage.removeItem(key);
     }
 
@@ -45,7 +46,7 @@ export class HtmlStorageHelper {
      */
     public static get apiSessionId(): string {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
+        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._apiSessionKeyName}`;
         return sessionStorage.getItem(key) || '';
     }
 
@@ -54,7 +55,7 @@ export class HtmlStorageHelper {
      */
     public static set apiSessionId(value: string) {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
+        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._apiSessionKeyName}`;
         sessionStorage.setItem(key, value);
     }
 
@@ -63,7 +64,7 @@ export class HtmlStorageHelper {
      */
     public static get loggedOut(): boolean {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutKeyName}`;
+        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._loggedOutKeyName}`;
         return localStorage.getItem(key) === 'true';
     }
 
@@ -72,7 +73,7 @@ export class HtmlStorageHelper {
      */
     public static set loggedOut(value: boolean) {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutKeyName}`;
+        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._loggedOutKeyName}`;
         localStorage.setItem(key, String(value));
     }
 
@@ -83,7 +84,7 @@ export class HtmlStorageHelper {
 
         if (event.storageArea === localStorage) {
 
-            const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutKeyName}`;
+            const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._loggedOutKeyName}`;
             return event.key === key && event.newValue === 'true';
         }
 

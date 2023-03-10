@@ -1,8 +1,8 @@
 #!/bin/bash
 
-###############################################
-# Install and build the SPA ready for deploying
-###############################################
+#################################################################
+# A script to build the shell app resources under the dist folder
+#################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 BUILD_CONFIGURATION="$1"
@@ -14,7 +14,7 @@ if [ ! -d 'node_modules' ]; then
   
   npm install
   if [ $? -ne 0 ]; then
-    echo 'Problem encountered installing demo app dependencies'
+    echo 'Problem encountered installing shell dependencies'
     exit 1
   fi
 fi
@@ -37,7 +37,7 @@ mkdir ./dist
 #
 # Copy HTML assets to the output folder
 #
-cp spa.config.json index.html *.css ./dist
+cp index.html favicon.ico *.css ./dist
 
 #
 # Now do the main webpack build
@@ -48,6 +48,6 @@ else
   npm run webpackDebug
 fi
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the demo app'
+  echo 'Problem encountered building the shell app'
   exit 1
 fi

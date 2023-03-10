@@ -11,25 +11,34 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 cd ../..
 
 #
-# Build Javascript bundles
+# Build the web host's Javascript code
 #
-cd demoapp
-npm install
-npm run buildRelease
+cd webhost
+./build.sh
 if [ $? -ne 0 ]; then
-  echo '*** SPA build problem encountered'
+  echo '*** Web Host build problem encountered'
   exit 1
 fi
 cd ..
 
 #
-# Build the web host
+# Build the shell app, which handles the redirect URI and logged out page
 #
-cd webhost
-npm install
-npm run buildRelease
+cd shellapp
+./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
-  echo '*** Web Host build problem encountered'
+  echo 'Problem encountered building the shell application'
+  exit 1
+fi
+cd ..
+
+#
+# Build the SPA
+#
+cd demoapp
+./build.sh 'RELEASE'
+if [ $? -ne 0 ]; then
+  echo '*** SPA build problem encountered'
   exit 1
 fi
 cd ..

@@ -10,51 +10,13 @@ export function rewriteIndexHtml(): void {
     const timestamp = new Date().getTime().toString();
     const outFolder = './dist';
 
-    // First remove sourceMappingURL references
-    removeSourcemapReference(`${outFolder}/app.bundle.js`);
-    removeSourcemapReference(`${outFolder}/vendor.bundle.js`);
-
-    // Update CSS resources with a cache busting timestamp and an integrity hash
-    updateResource(
-        `${outFolder}/index.html`,
-        'href',
-        'bootstrap.min.css',
-        timestamp,
-        calculateFileHash(`${outFolder}/bootstrap.min.css`));
-
-    updateResource(
-        `${outFolder}/index.html`,
-        'href',
-        'app.css',
-        timestamp,
-        calculateFileHash(`${outFolder}/app.css`));
-
     // Update Javascript resources with a cache busting timestamp and an integrity hash
-    updateResource(
-        `${outFolder}/index.html`,
-        'src',
-        'vendor.bundle.js',
-        timestamp,
-        calculateFileHash(`${outFolder}/vendor.bundle.js`));
-
     updateResource(
         `${outFolder}/index.html`,
         'src',
         'app.bundle.js',
         timestamp,
         calculateFileHash(`${outFolder}/app.bundle.js`));
-}
-
-/*
- * We build source map files and use them to look up exception stack traces if ever needed
- * We do not deploy them to Cloudfront though, and end users should not know about them
- * This removes 'missing sourcemap' warning lines from the browser developer console
- */
-function removeSourcemapReference(filePath: string): void {
-
-    const textData = fs.readFileSync(filePath, 'utf8');
-    const correctedTextData = textData.split('\n').filter((line) => line.indexOf('sourceMappingURL') === -1).join('\n');
-    fs.writeFileSync(filePath, correctedTextData);
 }
 
 /*
