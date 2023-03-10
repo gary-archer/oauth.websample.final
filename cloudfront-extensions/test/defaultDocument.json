@@ -4,7 +4,7 @@
         "cf": {
           "request": {
             "method": "GET",
-            "uri": "/demoapp"
+            "uri": "/demoapp/companies/2"
           }
         }
       }

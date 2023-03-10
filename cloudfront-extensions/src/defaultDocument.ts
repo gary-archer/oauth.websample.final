@@ -10,39 +10,48 @@ const handler = async (event: any, context: Context) => {
     const request = event.Records[0].cf.request;
     const requestUri = request.uri.toLowerCase();
 
-    // If we are in a path where the React app will fail, return a redirect to a valid path
-    const basePath = '/demoapp/';
-    if (!requestUri.startsWith(basePath)) {
-
-        return {
-            status: 302,
-            statusDescription: 'Found',
-            headers: {
-                'location': [{
-                    key: 'Location',
-                    value: basePath,
-                }],
-            },  
-        };
-    }
-
-    // See if this is a known extension
+    // First serve files for known extensions
     const extensions = [
         '.html',
         '.js',
         '.css',
+        '.ico',
     ];
+
     const knownExtension = extensions.find((ext) => {
         return requestUri.endsWith(`${ext}`);
     });
-    
-    // If not, serve the index.html file
-    if (!knownExtension) {
-        request.uri = `${basePath}index.html`;
+
+    if (knownExtension) {
+        return request;
     }
 
-    // Otherwise serve the resource requested
-    return request;
+    // If within the demoapp micro-UI, return its index.html
+    const demoAppBasePath = '/demoapp/';
+    if (requestUri.startsWith(demoAppBasePath)) {
+        
+        request.uri = `${demoAppBasePath}index.html`;
+        return request;
+    }
+
+    // For these special routes, return the index.html for the shell app
+    if (requestUri == '/loggedout' || requestUri === '/callback') {
+
+        request.uri = '/index.html';
+        return request;
+    }
+
+    // For any other invalid path, redirect to the default micro-UI
+    return {
+        status: 302,
+        statusDescription: 'Found',
+        headers: {
+            'location': [{
+                key: 'Location',
+                value: demoAppBasePath,
+            }],
+        },  
+    };
 };
 
 // Export the handler to serverless.yml
