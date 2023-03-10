@@ -14,8 +14,8 @@ export class CallbackHandler {
     /*
      * When an OpenID Connect authorization response is received, forward it to the current micro UI
      */
-    public execute() {
-        
+    public execute(): void {
+
         // Get the micro UI that started the login
         const basePath = this._getStoredApplicationPath();
 
@@ -24,10 +24,10 @@ export class CallbackHandler {
         if (location.pathname) {
             returnUrl += location.search;
         }
-        
+
         // Remove this landing page from the browser history
         history.replaceState({}, document.title, '/');
-        
+
         // Forward the authorization response to the micro UI
         location.href = returnUrl;
     }

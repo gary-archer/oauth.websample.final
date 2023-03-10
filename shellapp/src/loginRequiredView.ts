@@ -16,7 +16,7 @@ export class LoginRequiredView {
     /*
      * Render a user message and login button
      */
-    public render() {
+    public render(): void {
 
         const html =
             `<div class='container'>
@@ -41,7 +41,7 @@ export class LoginRequiredView {
                 </div>
             </div>`;
 
-        DomUtils.createDiv('#root', 'loginRequired')
+        DomUtils.createDiv('#root', 'loginRequired');
         DomUtils.html('#loginRequired', html);
         DomUtils.onClick('#btnLogin', this._onLogin);
     }

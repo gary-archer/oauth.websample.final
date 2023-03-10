@@ -20,6 +20,15 @@ if [ ! -d 'node_modules' ]; then
 fi
 
 #
+# Check code quality
+#
+npm run lint
+if [ $? -ne 0 ]; then
+  echo 'Code quality checks failed'
+  exit 1
+fi
+
+#
 # Clean the output folder
 #
 rm -rf ./dist 2>/dev/null
