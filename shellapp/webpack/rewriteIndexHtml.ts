@@ -10,6 +10,21 @@ export function rewriteIndexHtml(): void {
     const timestamp = new Date().getTime().toString();
     const outFolder = './dist';
 
+    // Update CSS resources with a cache busting timestamp and an integrity hash
+    updateResource(
+        `${outFolder}/index.html`,
+        'href',
+        'bootstrap.min.css',
+        timestamp,
+        calculateFileHash(`${outFolder}/bootstrap.min.css`));
+
+    updateResource(
+        `${outFolder}/index.html`,
+        'href',
+        'app.css',
+        timestamp,
+        calculateFileHash(`${outFolder}/app.css`));
+
     // Update Javascript resources with a cache busting timestamp and an integrity hash
     updateResource(
         `${outFolder}/index.html`,

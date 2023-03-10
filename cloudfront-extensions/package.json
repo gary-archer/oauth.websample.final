@@ -9,12 +9,12 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "rimraf dist && tsc --sourceMap true",
+    "build": "tsc --sourceMap true",
+    "buildRelease": "tsc",
     "defaultDocument": "sls invoke local -f defaultDocument -p test/defaultDocument.json",
     "securityHeaders": "sls invoke local -f securityHeaders -p test/securityHeaders.json",
-    "buildRelease": "rimraf dist && tsc",
-    "packageServerless": "npm run buildRelease && sls package --stage serverless",
-    "packageCloudnative": "npm run buildRelease && sls package --stage cloudnative",
+    "packageServerless": "sls package --stage serverless",
+    "packageCloudnative": "sls package --stage cloudnative",
     "deployServerless": "sls deploy --package .serverless --stage serverless",
     "deployCloudnative": "sls deploy --package .serverless --stage cloudnative",
     "removeServerless": "sls remove --stage serverless",

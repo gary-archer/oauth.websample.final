@@ -1,84 +1,67 @@
 #!/bin/bash
 
-######################################################################
-# A script to build resources ready to upload to AWS S3 and Cloudfront
-######################################################################
+##########################################################################
+# A script to build all resources ready to upload to AWS S3 and Cloudfront
+##########################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
+cd ../..
 
 #
-# The Serverless resources are built to support two scenarios, where the SPA connects to APIs that use either Serverless or Kubernetes hosting
+# Two scenarios are supported, where the SPA connects to APIs that use either Serverless or Kubernetes hosting
 #
-ENVIRONMENT='serverless'
-if [ "$1" == 'cloudnative' ]; then
-  ENVIRONMENT='cloudnative'
-fi
+ENVIRONMENT="$1"
 
 #
-# Move to the SPA folder
+# Build the shell app, which handles the redirect URI and logged out page
 #
-SPA_FOLDER='../../demoapp'
-cd $SPA_FOLDER
-
-#
-# Install SPA dependencies if required
-#
-if [ ! -d ./node_modules ]; then
-  npm install
-fi
+cd shellapp
+./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered installing SPA dependencies'
+  echo 'Problem encountered building the shell application'
   exit
 fi
+cd ..
 
 #
-# Do a release build of the SPA code
+# Build the main demo app's Javascript bundles
 #
-npm run buildRelease
+cd demoapp
+./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building SPA release bundles'
+  echo 'Problem encountered building the demo application'
+  exit
+fi
+cd ..
+
+#
+# Build extensions to the Cloudfront web host
+#
+cd cloudfront-extensions
+./build.sh "$ENVIRONMENT"
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered building Cloudfront extensions'
   exit
 fi
 
 #
 # Create the package folder
 #
-cd ../deployment/cloudfront
-rm -rf .package
+rm -rf .package 2> /dev/null
 mkdir .package
 mkdir .package/demoapp
 
 #
-# Copy HTML assets and note that the production configuration is hard coded into the app and not deployed
+# Copy HTML assets
 #
-cp "$SPA_FOLDER/dist/index.html"        .package/demoapp
-cp "$SPA_FOLDER/dist/vendor.bundle.js"  .package/demoapp
-cp "$SPA_FOLDER/dist/app.bundle.js"     .package/demoapp
-cp "$SPA_FOLDER/dist/bootstrap.min.css" .package/demoapp
-cp "$SPA_FOLDER/dist/app.css"           .package/demoapp
-cp "$SPA_FOLDER/dist/favicon.ico"       .package
+cp '../shellapp/dist/index.html'           .package
+cp '../shellapp/dist/app.bundle.js'        .package
+cp '../shellapp/dist/bootstrap.min.css'    .package
+cp '../shellapp/dist/app.css'              .package
+cp '../shellapp/dist/favicon.ico'          .package
 
-#
-# Next build lambda extensions
-#
-cd ../../cloudfront-extensions
-if [ ! -d ./node_modules ]; then
-  npm install
-fi
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered installing dependencies for cloudfront extensions'
-  exit
-fi
-
-#
-# Do a release build of the extensions and package them ready for deploying
-#
-if [ "$ENVIRONMENT" == 'serverless' ]; then
-  npm run packageServerless
-else
-  npm run packageCloudnative
-fi
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building Cloudfront extensions'
-  exit
-fi
+cp '../demoapp/dist/index.html'            .package/demoapp
+cp '../demoapp/dist/vendor.bundle.js'      .package/demoapp
+cp '../demoapp/dist/app.bundle.js'         .package/demoapp
+cp '../demoapp/dist/bootstrap.min.css'     .package/demoapp
+cp '../demoapp/dist/app.css'               .package/demoapp

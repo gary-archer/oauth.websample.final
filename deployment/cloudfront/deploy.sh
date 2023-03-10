@@ -5,12 +5,13 @@
 #########################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
+cd ../../cloudfront-extensions
 
 #
 # Check that packaging has been run first
 #
 if [ ! -d '.package' ]; then
-  echo '*** Please run the package.sh script before the deploy.sh script'
+  echo '*** Please run the build.sh script before the deploy.sh script'
   exit
 fi
 
@@ -38,7 +39,6 @@ fi
 #
 # Upload the serverless functions used for lambda extensions
 #
-cd ../../cloudfront-extensions
 if [ "$ENVIRONMENT" == 'serverless' ]; then
   npm run deployServerless
 else
