@@ -4,9 +4,9 @@ exclude_paths: [
     'doc/**',
     'deployment/**',
     'demoapp/*',
-    'demoapp/css/**',
-    'demoapp/dist/**',
     'demoapp/webpack/**',
+    'shellapp/*',
+    'shellapp/webpack/**',
     'webhost/*',
     'cloudfront-extensions/*'
 ]
