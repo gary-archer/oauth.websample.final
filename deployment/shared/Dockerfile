@@ -14,7 +14,7 @@ RUN npm install --production
 
 # Copy the shell app's static content files
 COPY shellapp/dist/*.html       /usr/webhost/shellapp/
-COPY shellapp/dist/*.js         /usr/webhost/shellapp/
+COPY shellapp/dist/*.bundle.js  /usr/webhost/shellapp/
 COPY shellapp/dist/*.css        /usr/webhost/shellapp/
 COPY shellapp/dist/*.ico        /usr/webhost/shellapp/
 
