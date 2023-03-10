@@ -34,7 +34,7 @@ export class LoginRequiredView {
                     <div class='col col-one-fifth'></div>
                     <div class='col col-one-fifth'></div>
                     <div class='col col-one-fifth my-2 d-flex p-1'>
-                        <button id='btnLogin' type='button' class='btn btn-primary w-100 p-1'>Sign In</button>
+                        <button id='btnLogin' type='button' class='btn btn-primary w-100 p-1'>Login</button>
                     </div>
                     <div class='col col-one-fifth'></div>
                     <div class='col col-one-fifth'></div>
