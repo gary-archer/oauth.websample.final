@@ -4,7 +4,7 @@
         "cf": {
           "request": {
             "method": "GET",
-            "uri": "/demoapp/companies/2"
+            "uri": "/demoapp/callback?code=xxx&state=yyy"
           }
         }
       }

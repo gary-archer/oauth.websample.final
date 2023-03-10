@@ -50,7 +50,7 @@ export class LoginRequiredView {
      * Handle the login click by navigating back to the default micro-UI within the overall web domain
      */
     private _onLogin(): void {
-        location.href = `${location.origin}${this._configuration.defaultAppBasePath}/`;
+        location.href = `${location.origin}${this._configuration.defaultAppBasePath}`;
     }
 
     /*
