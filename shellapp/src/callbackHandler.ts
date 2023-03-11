@@ -1,7 +1,7 @@
 import {Configuration} from './configuration';
 
 /*
- * Handle requests to the /callback URL
+ * Handle OpenID Connect login responses
  */
 export class CallbackHandler {
 
@@ -16,33 +16,30 @@ export class CallbackHandler {
      */
     public execute(): void {
 
-        // Get the micro UI that started the login
-        const basePath = this._getStoredApplicationPath();
+        // Get the stored path in the micro UI that started the login
+        const applicationPath = this._getStoredApplicationPath();
 
-        // Get the authorization response query parameters for the micro UI path
-        let returnUrl = `${location.origin}${basePath}`;
-        if (location.pathname) {
+        // Add the OpenID connect response query parameters with the authorization code
+        let returnUrl = `${location.origin}${applicationPath}`;
+        if (location.search) {
             returnUrl += location.search;
         }
-
-        // Remove this landing page from the browser history
-        history.replaceState({}, document.title, '/');
 
         // Forward the authorization response to the micro UI
         location.href = returnUrl;
     }
 
     /*
-     * Micro UIs store their base path before triggering a login redirect
+     * Micro UIs store their current path before triggering a login redirect
      */
     private _getStoredApplicationPath(): string {
 
-        const item = sessionStorage.getItem('login.appState');
+        const item = sessionStorage.getItem('login.state');
         if (item) {
 
             const data = JSON.parse(item);
-            if (data && data.basePath) {
-                return data.basePath;
+            if (data && data.path) {
+                return data.path;
             }
         }
 

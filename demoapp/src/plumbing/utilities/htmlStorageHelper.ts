@@ -3,60 +3,40 @@
  */
 export class HtmlStorageHelper {
 
-    private static _loginPrefix = 'login.';
-    private static _appPrefix = 'demoapp.';
-    private static _appState = 'appState';
-    private static _apiSessionKeyName = 'apisessionid';
-    private static _loggedOutKeyName = 'loggedout';
+    private static _loginState = 'login.state';
+    private static _loggedOutState = 'logout.state';
+    private static _apiSessionKeyName = 'session.id';
+
+    /*
+     * Store app state before triggering a login redirect
+     */
+    public static set loginState(data: any) {
+
+        const key = HtmlStorageHelper._loginState;
+        sessionStorage.setItem(key, JSON.stringify(data));
+    }
 
     /*
      * Get any stored app state when handling login responses
      */
-    public static get appState(): any {
+    public static get loginState(): any {
 
-        const key = `${HtmlStorageHelper._loginPrefix}.${HtmlStorageHelper._appState}`;
+        const key = HtmlStorageHelper._loginState;
         const data = sessionStorage.getItem(key);
         if (data) {
             return JSON.parse(data);
         }
 
-        return null;
+        return {};
     }
 
     /*
-     * Set app state before triggering a login redirect
+     * Clean up login state
      */
-    public static set appState(data: any) {
+    public static removeLoginState(): void {
 
-        const key = `${HtmlStorageHelper._loginPrefix}${HtmlStorageHelper._appState}`;
-        sessionStorage.setItem(key, JSON.stringify(data));
-    }
-
-    /*
-     * Clean up app state
-     */
-    public static removeAppState(): void {
-
-        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._appState}`;
+        const key = HtmlStorageHelper._loginState;
         sessionStorage.removeItem(key);
-    }
-
-    /*
-     * Get the session id for API requests from this browser tab
-     */
-    public static get apiSessionId(): string {
-
-        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._apiSessionKeyName}`;
-        return sessionStorage.getItem(key) || '';
-    }
-
-    /*
-     * Record a session id to be sent to the API for requests from this browser tab
-     */
-    public static set apiSessionId(value: string) {
-
-        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._apiSessionKeyName}`;
-        sessionStorage.setItem(key, value);
     }
 
     /*
@@ -64,7 +44,7 @@ export class HtmlStorageHelper {
      */
     public static get loggedOut(): boolean {
 
-        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._loggedOutKeyName}`;
+        const key = HtmlStorageHelper._loggedOutState;
         return localStorage.getItem(key) === 'true';
     }
 
@@ -73,7 +53,7 @@ export class HtmlStorageHelper {
      */
     public static set loggedOut(value: boolean) {
 
-        const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._loggedOutKeyName}`;
+        const key = HtmlStorageHelper._loggedOutState;
         localStorage.setItem(key, String(value));
     }
 
@@ -84,10 +64,28 @@ export class HtmlStorageHelper {
 
         if (event.storageArea === localStorage) {
 
-            const key = `${HtmlStorageHelper._appPrefix}${HtmlStorageHelper._loggedOutKeyName}`;
+            const key = HtmlStorageHelper._apiSessionKeyName;
             return event.key === key && event.newValue === 'true';
         }
 
         return false;
+    }
+
+    /*
+     * Get the session id for API requests from this browser tab
+     */
+    public static get apiSessionId(): string {
+
+        const key = HtmlStorageHelper._apiSessionKeyName;
+        return sessionStorage.getItem(key) || '';
+    }
+
+    /*
+     * Record a session id to be sent to the API for requests from this browser tab
+     */
+    public static set apiSessionId(value: string) {
+
+        const key = HtmlStorageHelper._apiSessionKeyName;
+        sessionStorage.setItem(key, value);
     }
 }

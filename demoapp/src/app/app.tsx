@@ -56,7 +56,7 @@ export function App(props: AppProps): JSX.Element {
             // Create an action to testore the pre-login location and remove OAuth details from the browser history
             const navigateAction = (appLocation: string) => navigate(appLocation, { replace: true});
 
-            // Ask the authenticator to oerforn a the page load
+            // Ask the authenticator to perforn a the page load
             const pageLoadResult = await model.authenticator.handlePageLoad(navigateAction);
 
             // Ensure that no other part of the app thinks it is logged out
@@ -104,7 +104,7 @@ export function App(props: AppProps): JSX.Element {
         try {
 
             setError(null);
-            await model.authenticator.login(CurrentLocation.path);
+            await model.authenticator.login();
 
         } catch (e) {
             setError(e);

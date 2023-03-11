@@ -6,6 +6,7 @@ import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
 import {UIError} from '../errors/uiError';
 import {AxiosUtils} from '../utilities/axiosUtils';
+import {BasePath} from '../utilities/basePath';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {Authenticator} from './authenticator';
@@ -39,7 +40,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
     /*
      * Trigger the login redirect to the Authorization Server
      */
-    public async login(currentLocation: string): Promise<void> {
+    public async login(): Promise<void> {
 
         try {
 
@@ -47,8 +48,8 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             const response = await this._callOAuthAgent('POST', 'login/start', this._antiForgeryToken, null);
 
             // Store the app location and other state if required
-            HtmlStorageHelper.appState = {
-                path: currentLocation,
+            HtmlStorageHelper.loginState = {
+                path: location.pathname,
             };
 
             // Then do the redirect
@@ -84,9 +85,10 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             // If a login was handled then the SPA may need to return to its pre-login location
             if (endLoginResponse.handled) {
 
-                const appState = HtmlStorageHelper.appState;
-                navigateAction(appState ? appState.path : '/');
-                HtmlStorageHelper.removeAppState();
+                const preLoginLocation = HtmlStorageHelper.loginState.path;
+                const returnPath = preLoginLocation ? preLoginLocation.toLowerCase().replace(BasePath.get(), '') : '/';
+                HtmlStorageHelper.removeLoginState();
+                navigateAction(returnPath);
             }
 
             // Return a result to the rest of the app

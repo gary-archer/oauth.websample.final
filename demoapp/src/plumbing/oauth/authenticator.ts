@@ -6,7 +6,7 @@ import {PageLoadResult} from './pageLoadResult';
 export interface Authenticator {
 
     // Perform a login redirect
-    login(currentLocation: string): Promise<void>;
+    login(): Promise<void>;
 
     // Handle page loads and process login responses when required
     handlePageLoad(navigateAction: (path: string) => void): Promise<PageLoadResult>;
