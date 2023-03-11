@@ -45,7 +45,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
         try {
 
             // Call the API to set up the login
-            const response = await this._callOAuthAgent('POST', 'login/start', this._antiForgeryToken, null);
+            const response = await this._callOAuthAgent('POST', 'login/start', null);
 
             // Store the app location and other state if required
             HtmlStorageHelper.loginState = {
@@ -75,7 +75,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
             const endLoginResponse = await this._callOAuthAgent(
                 'POST',
                 'login/end',
-                this._antiForgeryToken, request) as EndLoginResponse;
+                request) as EndLoginResponse;
 
             // Store the anti forgery token here, used for data changing API requests
             if (endLoginResponse.antiForgeryToken) {
@@ -127,7 +127,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
         try {
 
-            const response = await this._callOAuthAgent('POST', 'logout', this._antiForgeryToken, null);
+            const response = await this._callOAuthAgent('POST', 'logout', null);
             location.href = response.endSessionRequestUri;
 
         } catch (e) {
@@ -155,7 +155,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
         try {
 
             // Try to rewrite the refresh token within the cookie, using existing cookies as the request credential
-            await this._callOAuthAgent('POST', 'expire', this._antiForgeryToken, {type: 'access'});
+            await this._callOAuthAgent('POST', 'expire', {type: 'access'});
 
         } catch (e: any) {
 
@@ -174,7 +174,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
         try {
 
             // Try to rewrite the access token within the cookie, using the existing cookies as the request credential
-            await this._callOAuthAgent('POST', 'expire', this._antiForgeryToken, {type: 'refresh'});
+            await this._callOAuthAgent('POST', 'expire', {type: 'refresh'});
 
         } catch (e: any) {
 
@@ -198,14 +198,8 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
         // Send the secure cookie
         options.withCredentials = true;
 
-        // Send the anti forgery token on data changing commands
-        if (options.method === 'POST'  ||
-            options.method === 'PUT'   ||
-            options.method === 'PATCH' ||
-            options.method === 'DELETE') {
-
-            (options.headers as any)['x-mycompany-csrf'] = this._antiForgeryToken;
-        }
+        // Add the anti forgery token
+        this._addAntiForgeryToken(options);
 
         // If retrying an API call, ask the back end for front end API to rewrite the cookie
         if (isRetry) {
@@ -220,7 +214,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
         try {
 
-            await this._callOAuthAgent('POST', 'refresh', this._antiForgeryToken, null);
+            await this._callOAuthAgent('POST', 'refresh', null);
 
         } catch (e: any) {
 
@@ -235,11 +229,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
     /*
      * A parameterized method for calling the OAuth agent
      */
-    private async _callOAuthAgent(
-        method: Method,
-        operationPath: string,
-        antiForgeryToken: string | null,
-        requestData: any): Promise<any> {
+    private async _callOAuthAgent(method: Method, operationPath: string, requestData: any): Promise<any> {
 
         const url = `${this._oauthAgentBaseUrl}${operationPath}`;
         try {
@@ -260,10 +250,8 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
                 options.headers['content-type'] = 'application/json';
             }
 
-            // Add the anti forgery token when we have one
-            if (antiForgeryToken) {
-                options.headers['x-mycompany-csrf'] = antiForgeryToken;
-            }
+            // Add the anti forgery token
+            this._addAntiForgeryToken(options);
 
             // Supply headers for the Token Handler API to write to logs
             options.headers['x-mycompany-api-client'] = 'FinalSPA';
@@ -283,6 +271,20 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
         } catch (e) {
 
             throw ErrorFactory.fromHttpError(e, url, 'OAuth Agent');
+        }
+    }
+
+    /*
+     * Add an anti forgery token when sending data changing commands
+     */
+    private _addAntiForgeryToken(options: AxiosRequestConfig): void {
+
+        if (options.method === 'POST'  ||
+            options.method === 'PUT'   ||
+            options.method === 'PATCH' ||
+            options.method === 'DELETE') {
+
+            (options.headers as any)['x-mycompany-csrf'] = this._antiForgeryToken;
         }
     }
 
