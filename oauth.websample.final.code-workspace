@@ -4,6 +4,9 @@
 			"path": "demoapp"
 		},
 		{
+			"path": "shellapp"
+		},
+		{
 			"path": "webhost"
 		},
 		{

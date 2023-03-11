@@ -3,7 +3,6 @@
     "strict": true,
     "target": "ES2017",
     "lib": ["ES2022", "DOM"],
-    "jsx": "react",
     "module": "ES2015",
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
