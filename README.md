@@ -11,18 +11,22 @@ The final demo SPA, which aims for a [Web Architecture](https://authguidance.com
 - The SPA uses an API driven OpenID Connect solution via **Curity's Token Handler Pattern**
 - Only the most secure cookies are used, with no tokens in the browser
 - Only client side React technology is needed to implement the SPA, for productive development
+- The SPA is split into micro-UIs via paths, and those for the same business area share the same API cookies
 - The SPA is deployed to many global locations via a Content Delivery Network (CDN)
 
 ## Components
 
 The SPA architecture looks like this, where OAuth related components are hosted in the AWS cloud.\
-This ensures that local web development is focused only on the React UI:
+This ensures that local web development is focused only on the React SPA:
 
 ![SPA Architecture](./doc/spa-architecture.png)
 
+The shell application is used to manage login and logout to the whole web domain.\
+The cookies issued are then used by the main React app, to call APIs.
+
 ## Views
 
-The SPA is a simple UI with some basic navigation between views, to render fictional resources.\
+The SPA is a simple UI with some basic navigation between views, which have a fictional investments theme.\
 The data is returned from an API that authorizes access to resources using domain specific claims.
 
 ![SPA Views](./doc/spa-views.png)
@@ -68,9 +72,8 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 
 ## Further Information
 
-* Further architecture details are described starting in the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup) blog post
-* See the [Non Functional Behaviour](https://authguidance.com/2017/10/08/corporate-code-sample-core-behavior/) page for a summary of overall qualities
-
+* Further architecture details are described starting in the [Final SPA Overview](https://authguidance.com/2019/04/07/local-ui-setup)
+* See the [Backend for Frontend Design](https://authguidance.com/spa-back-end-for-front-end/) for details on the security design for URLs and cookies.
 
 ## Programming Languages
 
