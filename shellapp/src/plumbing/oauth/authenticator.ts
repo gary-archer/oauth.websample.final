@@ -85,7 +85,8 @@ export class Authenticator {
             // If a login response was handled, then return to the micro UI that started the login
             if (endLoginResponse.handled) {
                 const appBasePath = HtmlStorageHelper.loginAppBasePath || this._configuration.defaultAppBasePath;
-                location.href = `${location.origin}${appBasePath}callback`;
+                console.log('*** REDIRECTING AFTER LOGIN');
+                // location.href = `${location.origin}${appBasePath}callback`;
             }
 
             // Return a result to the rest of the app

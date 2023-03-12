@@ -29,7 +29,7 @@ export class ConfigurationLoader {
      */
     private async _download(): Promise<Configuration> {
 
-        const fileName = 'spa.config.json';
+        const fileName = 'demoapp.config.json';
         const currentTime = new Date().getTime().toString();
         try {
 
