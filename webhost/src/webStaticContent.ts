@@ -62,8 +62,12 @@ export class WebStaticContent {
             const demoAppRoot = this._getDemoAppFilesBasePath();
             response.sendFile('index.html', {root: demoAppRoot});
 
-        } else if (requestPath === '/loggedout' || requestPath === '/callback') {
+        } else if (requestPath === '/login'    ||
+                   requestPath === '/logout'   ||
+                   requestPath === '/callback' ||
+                   requestPath === '/loggedout') {
 
+            // GJA: improve these paths
             // For these special routes, return the index.html for the shell app
             const shellAppRoot = this._getShellAppFilesBasePath();
             response.sendFile('index.html', {root: shellAppRoot});

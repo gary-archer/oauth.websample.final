@@ -22,6 +22,7 @@ export class Authenticator {
         this._configuration = configuration;
         this._sessionId = sessionId;
         this._antiForgeryToken = null;
+        this._setupCallbacks();
     }
 
     /*
@@ -49,6 +50,7 @@ export class Authenticator {
         try {
 
             const response = await this._callOAuthAgent('POST', 'logout', null);
+            HtmlStorageHelper.loggedOut = true;
             location.href = response.endSessionRequestUri;
 
         } catch (e) {
@@ -82,11 +84,13 @@ export class Authenticator {
                 this._antiForgeryToken = endLoginResponse.antiForgeryToken;
             }
 
-            // If a login response was handled, then return to the micro UI that started the login
+            // If a login response was handled, then return to the micro UI that started the login and restore the path
             if (endLoginResponse.handled) {
-                const appBasePath = HtmlStorageHelper.loginAppBasePath || this._configuration.defaultAppBasePath;
-                console.log('*** REDIRECTING AFTER LOGIN');
-                // location.href = `${location.origin}${appBasePath}callback`;
+
+                HtmlStorageHelper.loggedOut = false;
+                const appPath = HtmlStorageHelper.getAndRemoveLoginAppCurrentPath() ||
+                                this._configuration.defaultAppBasePath;
+                location.href = `${location.origin}${appPath}`;
             }
 
             // Return a result to the rest of the app
@@ -181,5 +185,12 @@ export class Authenticator {
 
         const uiError = e as UIError;
         return uiError.statusCode === 401;
+    }
+
+    /*
+     * Plumbing to ensure that the this parameter is available in callbacks
+     */
+    private _setupCallbacks(): void {
+        this.login = this.login.bind(this);
     }
 }

@@ -3,35 +3,19 @@
  */
 export class HtmlStorageHelper {
 
-    private static _loginAppBasePath = 'login.appbasepath';
+    private static _loginAppCurrentPath = 'login.appcurrentpath';
     private static _loggedOutState = 'loggedout.state';
     private static _apiSessionKeyName = 'session.id';
 
     /*
-     * Get the path of the micro UI that began the login redirect
+     * When processing the login response, get and remove the stored current path
      */
-    public static get loginAppBasePath(): any {
+    public static getAndRemoveLoginAppCurrentPath(): string {
 
-        const key = HtmlStorageHelper._loginAppBasePath;
-        return sessionStorage.getItem(key);
-    }
-
-    /*
-     * Clean up the login app path
-     */
-    public static removeLoginAppBasePath(): void {
-
-        const key = HtmlStorageHelper._loginAppBasePath;
+        const key = HtmlStorageHelper._loginAppCurrentPath;
+        const result = sessionStorage.getItem(key) || '';
         sessionStorage.removeItem(key);
-    }
-
-    /*
-     * Get the logged out value from session storage
-     */
-    public static get loggedOut(): boolean {
-
-        const key = HtmlStorageHelper._loggedOutState;
-        return localStorage.getItem(key) === 'true';
+        return result;
     }
 
     /*

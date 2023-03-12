@@ -1,12 +1,10 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
 import {Configuration} from '../../configuration/configuration';
-import {CurrentLocation} from '../../views/utilities/currentLocation';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
 import {UIError} from '../errors/uiError';
 import {AxiosUtils} from '../utilities/axiosUtils';
-import {BasePath} from '../utilities/basePath';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {Authenticator} from './authenticator';
@@ -65,10 +63,6 @@ export class AuthenticatorImpl implements Authenticator {
                 this._antiForgeryToken = endLoginResponse.antiForgeryToken;
             }
 
-            if (CurrentLocation.path.toLowerCase() === '/callback') {
-                result.pathToRestore = HtmlStorageHelper.getAndRemoveLoginAppCurrentPath() || '/';
-            }
-
             return result;
 
         } catch (e: any) {
@@ -91,8 +85,7 @@ export class AuthenticatorImpl implements Authenticator {
      */
     public login(): void {
 
-        HtmlStorageHelper.loginAppBasePath = BasePath.get();
-        HtmlStorageHelper.loginAppCurrentPath = CurrentLocation.path;
+        HtmlStorageHelper.loginAppCurrentPath = location.pathname;
         location.href = `${location.origin}/login`;
     }
 
@@ -100,7 +93,6 @@ export class AuthenticatorImpl implements Authenticator {
      * Logout is delegated to the shell application
      */
     public async logout(): Promise<void> {
-
         location.href = `${location.origin}/logout`;
     }
 

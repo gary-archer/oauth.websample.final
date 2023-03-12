@@ -26,35 +26,27 @@ export class App {
             if (this._router!.isLoginRequest()) {
 
                 // Handle login requests from other micro UIs
-                console.log('*** LOGIN REQUEST');
                 this._router?.renderLoginRequiredView();
 
             } else if (this._router!.isLogoutRequest()) {
 
                 // Handle logout requests from other micro UIs
-                console.log('*** LOGOUT REQUEST');
-                // this._authenticator?.logout();
+                await this._authenticator!.handlePageLoad();
+                await this._authenticator?.logout();
 
             } else {
 
                 // Run the page load handler, which may handle a login response and return to a micro UI
-                console.log('*** CALL PAGE LOAD');
                 const pageLoadResult = await this._authenticator!.handlePageLoad();
                 if (!pageLoadResult.handled) {
-
-                    console.log('*** NOT HANDLED');
 
                     // Handle other paths that can be navigated to, including the / route
                     if (pageLoadResult.isLoggedIn) {
 
-                        console.log('*** IS LOGGED IN');
-
                         // If already logged in then return to the default application
-                        // this._router!.redirectToDefaultApplication();
+                        this._router!.redirectToDefaultApplication();
 
                     } else {
-
-                        console.log('*** IS NOT LOGGED IN');
 
                         // Otherwise render the login required view
                         this._router?.renderLoginRequiredView();

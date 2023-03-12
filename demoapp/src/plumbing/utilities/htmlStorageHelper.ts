@@ -3,19 +3,9 @@
  */
 export class HtmlStorageHelper {
 
-    private static _loginAppBasePath = 'login.appbasepath';
     private static _loginAppCurrentPath = 'login.appcurrentpath';
     private static _loggedOutState = 'loggedout.state';
     private static _apiSessionKeyName = 'session.id';
-
-    /*
-     * Store the app's base path, which the shell app will redirect back to
-     */
-    public static set loginAppBasePath(basePath: string) {
-
-        const key = HtmlStorageHelper._loginAppBasePath;
-        sessionStorage.setItem(key, basePath);
-    }
 
     /*
      * Store the app's current path, to enable deep linking after login
@@ -27,18 +17,7 @@ export class HtmlStorageHelper {
     }
 
     /*
-     * When processing the login response, get and remove the stored current path
-     */
-    public static getAndRemoveLoginAppCurrentPath(): string {
-
-        const key = HtmlStorageHelper._loginAppCurrentPath;
-        const result = sessionStorage.getItem(key) || '';
-        sessionStorage.removeItem(key);
-        return result;
-    }
-
-    /*
-     * Get the logged out value from session storage
+     * Get the logged out value from local storage, which is shared across all browser tabs
      */
     public static get loggedOut(): boolean {
 
