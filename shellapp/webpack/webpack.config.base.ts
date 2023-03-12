@@ -33,6 +33,20 @@ const config: webpack.Configuration = {
         // Output our Javascript bundles to a dist folder
         path: path.resolve(dirname, './dist'),
         filename: '[name].bundle.js'
+    },
+    optimization: {
+
+        // Build third party code to a separate vendor bundle file
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    chunks: 'initial',
+                    name: 'vendor',
+                    test: /node_modules/,
+                    enforce: true
+                },
+            }
+        }
     }
 };
 
