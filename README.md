@@ -87,5 +87,5 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 * AWS Certificate Manager is used to manage and auto renew the Web Host's SSL certificate
 * AWS Cognito is used as the default Authorization Server
 * AWS Serverless or Kubernetes API Hosting is used to host remote API endpoints used by the SPA
-* AWS deployed [Backend for Frontend Components](https://authguidance.com/2019/09/09/spa-back-end-for-front-end) are used to perform OAuth and cookie work for the SPA
+* Token handler components are used to implement API driven cookie issuing on behalf of the SPA
 
