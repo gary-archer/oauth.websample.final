@@ -49,9 +49,12 @@ export class Authenticator {
 
         try {
 
-            const response = await this._callOAuthAgent('POST', 'logout', null);
-            HtmlStorageHelper.loggedOut = true;
-            location.href = response.endSessionRequestUri;
+            if (!HtmlStorageHelper.loggedOut) {
+
+                const response = await this._callOAuthAgent('POST', 'logout', null);
+                HtmlStorageHelper.loggedOut = true;
+                location.href = response.endSessionRequestUri;
+            }
 
         } catch (e) {
 

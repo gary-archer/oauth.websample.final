@@ -25,22 +25,32 @@ export class App {
 
             if (this._router!.isLoginRequest()) {
 
-                // Handle login requests from other micro UIs
+                // Handle login requests
                 this._router?.renderLoginRequiredView();
 
             } else if (this._router!.isLogoutRequest()) {
 
-                // Handle logout requests from other micro UIs
-                await this._authenticator!.handlePageLoad();
-                await this._authenticator?.logout();
+                try {
+
+                    // Get the anti forgery token and do the logout
+                    await this._authenticator!.handlePageLoad();
+                    await this._authenticator?.logout();
+
+                } catch (e: any) {
+
+                    // Logouts from multiple browser tabs will fail, so handle that by redirecting to login required
+                    console.log('*** LOGOUT ERROR');
+                    console.log(e);
+                    this._router?.renderLoginRequiredView();
+                }
 
             } else {
 
-                // Run the page load handler, which may handle a login response and return to a micro UI
+                // If required, run the page load handler, handle login responses and return to the calling app
                 const pageLoadResult = await this._authenticator!.handlePageLoad();
                 if (!pageLoadResult.handled) {
 
-                    // Handle other paths that can be navigated to, including the / route
+                    // Handle other paths that can be navigated to
                     if (pageLoadResult.isLoggedIn) {
 
                         // If already logged in then return to the default application

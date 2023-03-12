@@ -32,7 +32,7 @@ export class HtmlStorageHelper {
 
         if (event.storageArea === localStorage) {
 
-            const key = HtmlStorageHelper._apiSessionKeyName;
+            const key = HtmlStorageHelper._loggedOutState;
             return event.key === key && event.newValue === 'true';
         }
 
