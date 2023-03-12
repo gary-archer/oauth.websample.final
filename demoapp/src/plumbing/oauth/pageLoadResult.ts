@@ -1,11 +1,11 @@
 /*
- * The result of a page load, to provide the login state
+ * The result of calling handle page load
  */
 export interface PageLoadResult {
 
-    // True if there are valid cookies
-    isLoggedIn: boolean;
+    // Whether the authenticator redirected this micro UI
+    redirected: boolean;
 
-    // True if an Authorization response has just been handled
-    handled: boolean;
+    // Otherwise, the current path to restore, when processing a login response
+    pathToRestore?: string;
 }

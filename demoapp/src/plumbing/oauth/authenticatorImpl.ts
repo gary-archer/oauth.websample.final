@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
-import urlparse from 'url-parse';
-import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
+import {Configuration} from '../../configuration/configuration';
+import {CurrentLocation} from '../../views/utilities/currentLocation';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
 import {UIError} from '../errors/uiError';
@@ -10,27 +10,22 @@ import {BasePath} from '../utilities/basePath';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {Authenticator} from './authenticator';
-import {CredentialSupplier} from './credentialSupplier';
 import {EndLoginResponse} from './endLoginResponse';
 import {PageLoadResult} from './pageLoadResult';
 
 /*
  * The authenticator implementation
  */
-export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
+export class AuthenticatorImpl implements Authenticator {
 
     private readonly _oauthAgentBaseUrl: string;
     private readonly _sessionId: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
     private _antiForgeryToken: string | null;
 
-    public constructor(configuration: OAuthConfiguration, sessionId: string) {
+    public constructor(configuration: Configuration, sessionId: string) {
 
         this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
-        if (!this._oauthAgentBaseUrl.endsWith('/')) {
-            this._oauthAgentBaseUrl += '/';
-        }
-
         this._sessionId = sessionId;
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._antiForgeryToken = null;
@@ -38,113 +33,82 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
     }
 
     /*
-     * Trigger the login redirect to the Authorization Server
+     * Call the OAuth agent whenever the SPA loads
      */
-    public async login(): Promise<void> {
+    public async handlePageLoad(): Promise<PageLoadResult> {
+
+        const result: PageLoadResult = {
+            redirected: false,
+        };
 
         try {
 
-            // Call the API to set up the login
-            const response = await this._callOAuthAgent('POST', 'login/start', null);
-
-            // Store the app location and other state if required
-            HtmlStorageHelper.loginState = {
-                path: location.pathname,
-            };
-
-            // Then do the redirect
-            location.href = response.authorizationRequestUri;
-
-        } catch (e) {
-
-            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginRequestFailed);
-        }
-    }
-
-    /*
-     * Check for and handle login responses when the page loads
-     */
-    public async handlePageLoad(navigateAction: (path: string) => void): Promise<PageLoadResult> {
-
-        try {
-
-            // Send the full URL to the Token Handler API
+            // Send the page URL to the OAuth Agent to get the authentication state
             const request = {
                 url: location.href,
             };
             const endLoginResponse = await this._callOAuthAgent(
                 'POST',
-                'login/end',
+                '/login/end',
                 request) as EndLoginResponse;
 
-            // Store the anti forgery token here, used for data changing API requests
+            // Trigger a login if required
+            if (!endLoginResponse.isLoggedIn) {
+
+                this.login();
+                result.redirected = true;
+                return result;
+            }
+
+            // Store the anti forgery token here, to send during data changing API requests
             if (endLoginResponse.antiForgeryToken) {
                 this._antiForgeryToken = endLoginResponse.antiForgeryToken;
             }
 
-            // If a login was handled then the SPA may need to return to its pre-login location
-            if (endLoginResponse.handled) {
-
-                const preLoginLocation = HtmlStorageHelper.loginState.path;
-                const returnPath = preLoginLocation ? preLoginLocation.toLowerCase().replace(BasePath.get(), '') : '/';
-                HtmlStorageHelper.removeLoginState();
-                navigateAction(returnPath);
+            if (CurrentLocation.path.toLowerCase() === '/callback') {
+                result.pathToRestore = HtmlStorageHelper.getAndRemoveLoginAppCurrentPath() || '/';
             }
 
-            // Return a result to the rest of the app
-            return {
-                isLoggedIn: endLoginResponse.isLoggedIn,
-                handled: endLoginResponse.handled
-            };
+            return result;
 
         } catch (e: any) {
 
-            // When this is an OAuth response error, remove leftover details in the browser
-            const urlData = urlparse(location.href, true);
-            if (urlData.query && urlData.query.state) {
-                navigateAction('/');
-            }
-
-            // Session expired errors are handled by returning a default result and will lead to re-authentication
+            // Session expired errors, where the cookie is rejected, also trigger a login
             if (this._isSessionExpiredError(e)) {
 
-                return {
-                    isLoggedIn: false,
-                    handled: false,
-                };
+                this.login();
+                result.redirected = true;
+                return result;
             }
 
             // Rethrow other errors
             throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
-
         }
     }
 
     /*
-     * Do the logout redirect to clear all cookie and token details
+     * Login is delegated to the shell application, and the app saves its state first
+     */
+    public login(): void {
+
+        HtmlStorageHelper.loginAppBasePath = BasePath.get();
+        HtmlStorageHelper.loginAppCurrentPath = CurrentLocation.path;
+        location.href = `${location.origin}/login`;
+    }
+
+    /*
+     * Logout is delegated to the shell application
      */
     public async logout(): Promise<void> {
 
-        try {
-
-            const response = await this._callOAuthAgent('POST', 'logout', null);
-            location.href = response.endSessionRequestUri;
-
-        } catch (e) {
-
-            throw ErrorFactory.fromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
-
-        } finally {
-
-            this._antiForgeryToken = null;
-        }
+        location.href = `${location.origin}/logout`;
     }
 
     /*
-     * When a logout occurs on another browser tab, move this tab to a logged out state
+     * When a logout occurs on another browser tab, or for another micro UI, redirect to the shell app
      */
-    public async onLoggedOut(): Promise<void> {
-        this._antiForgeryToken = null;
+    public onLoggedOut(): void {
+        this.logout();
     }
 
     /*
@@ -155,7 +119,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
         try {
 
             // Try to rewrite the refresh token within the cookie, using existing cookies as the request credential
-            await this._callOAuthAgent('POST', 'expire', {type: 'access'});
+            await this._callOAuthAgent('POST', '/expire', {type: 'access'});
 
         } catch (e: any) {
 
@@ -174,7 +138,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
         try {
 
             // Try to rewrite the access token within the cookie, using the existing cookies as the request credential
-            await this._callOAuthAgent('POST', 'expire', {type: 'refresh'});
+            await this._callOAuthAgent('POST', '/expire', {type: 'refresh'});
 
         } catch (e: any) {
 
@@ -214,7 +178,7 @@ export class AuthenticatorImpl implements Authenticator, CredentialSupplier {
 
         try {
 
-            await this._callOAuthAgent('POST', 'refresh', null);
+            await this._callOAuthAgent('POST', '/refresh', null);
 
         } catch (e: any) {
 

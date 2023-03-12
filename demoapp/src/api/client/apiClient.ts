@@ -3,9 +3,9 @@ import {Guid} from 'guid-typescript';
 import {Company} from '../entities/company';
 import {CompanyTransactions} from '../entities/companyTransactions';
 import {UserInfo} from '../entities/userInfo';
-import {AppConfiguration} from '../../configuration/appConfiguration';
+import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {CredentialSupplier} from '../../plumbing/oauth/credentialSupplier';
+import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {ApiClientOptions} from './apiClientOptions';
 
@@ -16,9 +16,9 @@ export class ApiClient {
 
     private readonly _apiBaseUrl: string;
     private readonly _sessionId: string;
-    private readonly _credentialSupplier: CredentialSupplier;
+    private readonly _authenticator: Authenticator;
 
-    public constructor(configuration: AppConfiguration, sessionId: string, credentialSupplier: CredentialSupplier) {
+    public constructor(configuration: Configuration, sessionId: string, authenticator: Authenticator) {
 
         this._apiBaseUrl = configuration.apiBaseUrl;
         if (!this._apiBaseUrl.endsWith('/')) {
@@ -26,7 +26,7 @@ export class ApiClient {
         }
 
         this._sessionId = sessionId;
-        this._credentialSupplier = credentialSupplier;
+        this._authenticator = authenticator;
     }
 
     /*
@@ -120,7 +120,7 @@ export class ApiClient {
         } as AxiosRequestConfig;
 
         // Manage sending credentials from the SPA to the API
-        await this._credentialSupplier.onCallApi(options, isRetry);
+        await this._authenticator.onCallApi(options, isRetry);
 
         // Make the API request
         const response = await axios.request(options);

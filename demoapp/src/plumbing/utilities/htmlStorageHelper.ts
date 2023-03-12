@@ -3,40 +3,38 @@
  */
 export class HtmlStorageHelper {
 
-    private static _loginState = 'login.state';
-    private static _loggedOutState = 'logout.state';
+    private static _loginAppBasePath = 'login.appbasepath';
+    private static _loginAppCurrentPath = 'login.appcurrentpath';
+    private static _loggedOutState = 'loggedout.state';
     private static _apiSessionKeyName = 'session.id';
 
     /*
-     * Store app state before triggering a login redirect
+     * Store the app's base path, which the shell app will redirect back to
      */
-    public static set loginState(data: any) {
+    public static set loginAppBasePath(basePath: string) {
 
-        const key = HtmlStorageHelper._loginState;
-        sessionStorage.setItem(key, JSON.stringify(data));
+        const key = HtmlStorageHelper._loginAppBasePath;
+        sessionStorage.setItem(key, basePath);
     }
 
     /*
-     * Get any stored app state when handling login responses
+     * Store the app's current path, to enable deep linking after login
      */
-    public static get loginState(): any {
+    public static set loginAppCurrentPath(currentPath: string) {
 
-        const key = HtmlStorageHelper._loginState;
-        const data = sessionStorage.getItem(key);
-        if (data) {
-            return JSON.parse(data);
-        }
-
-        return {};
+        const key = HtmlStorageHelper._loginAppCurrentPath;
+        sessionStorage.setItem(key, currentPath);
     }
 
     /*
-     * Clean up login state
+     * When processing the login response, get and remove the stored current path
      */
-    public static removeLoginState(): void {
+    public static getAndRemoveLoginAppCurrentPath(): string {
 
-        const key = HtmlStorageHelper._loginState;
+        const key = HtmlStorageHelper._loginAppCurrentPath;
+        const result = sessionStorage.getItem(key) || '';
         sessionStorage.removeItem(key);
+        return result;
     }
 
     /*
@@ -46,15 +44,6 @@ export class HtmlStorageHelper {
 
         const key = HtmlStorageHelper._loggedOutState;
         return localStorage.getItem(key) === 'true';
-    }
-
-    /*
-     * Set the logged out value in session storage, used to achieve multi tab logout
-     */
-    public static set loggedOut(value: boolean) {
-
-        const key = HtmlStorageHelper._loggedOutState;
-        localStorage.setItem(key, String(value));
     }
 
     /*

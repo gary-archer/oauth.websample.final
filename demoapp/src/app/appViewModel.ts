@@ -77,9 +77,9 @@ export class AppViewModel {
 
             // Create global objects for managing OAuth and API calls
             const sessionId = SessionManager.get();
-            const authenticator = new AuthenticatorImpl(this._configuration.oauth, sessionId);
+            const authenticator = new AuthenticatorImpl(this._configuration, sessionId);
             this._authenticator = authenticator;
-            this._apiClient = new ApiClient(this.configuration.app, sessionId, authenticator);
+            this._apiClient = new ApiClient(this.configuration, sessionId, authenticator);
 
             // Update state
             this._isInitialised = true;

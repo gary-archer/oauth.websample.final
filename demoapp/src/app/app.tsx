@@ -53,31 +53,32 @@ export function App(props: AppProps): JSX.Element {
             await model.initialise();
             setError(null);
 
-            // Create an action to testore the pre-login location and remove OAuth details from the browser history
-            const navigateAction = (appLocation: string) => navigate(appLocation, { replace: true});
+            // Get the page load state, which will redirect to the shell if not logged in
+            const pageLoadResult = await model.authenticator.handlePageLoad();
+            if (!pageLoadResult.redirected) {
 
-            // Ask the authenticator to perforn a the page load
-            const pageLoadResult = await model.authenticator.handlePageLoad(navigateAction);
+                // If returning after login, restore the pre-login path
+                if (pageLoadResult.pathToRestore) {
+                    navigate(pageLoadResult.pathToRestore!);
+                }
 
-            // Ensure that no other part of the app thinks it is logged out
-            if (pageLoadResult.isLoggedIn) {
-                HtmlStorageHelper.loggedOut = false;
+                // Subscribe to application and window events
+                model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
+                window.onresize = onResize;
+                window.onstorage = onStorage;
+
+                // Update state
+                setState((s) => {
+                    return {
+                        ...s,
+                        isInitialised: true,
+                    };
+                });
             }
 
-            // Subscribe to application and window events
-            model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
-            window.onresize = onResize;
-            window.onstorage = onStorage;
-
-            // Update state
-            setState((s) => {
-                return {
-                    ...s,
-                    isInitialised: true,
-                };
-            });
-
         } catch (e) {
+
+            // Render startup errors
             setError(e);
         }
     }
@@ -96,19 +97,11 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * Trigger a login redirect when all views have finished calling the API and there has been a login_required error
+     * Trigger a login redirect when refresh tokens have expired and all API calls fail
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
-    async function onLoginRequired(_event: LoginRequiredEvent): Promise<void> {
-
-        try {
-
-            setError(null);
-            await model.authenticator.login();
-
-        } catch (e) {
-            setError(e);
-        }
+    function onLoginRequired(_event: LoginRequiredEvent): void {
+        model.authenticator.login(CurrentLocation.path);
     }
 
     /*
@@ -138,30 +131,10 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * Trigger a logout redirect
+     * Whenb logout is selected, redirect to the shell app, which will implement the logout details
      */
-    async function onLogout(): Promise<void> {
-
-        // Update local storage to inform other tabs to also logout
-        HtmlStorageHelper.loggedOut = true;
-
-        try {
-
-            // Start the logout redirect, which will return to the shell app's post logout redirect URI
-            await model.authenticator.logout();
-
-        } catch (e) {
-
-            // Swallow errors and move to the logged out view
-            moveToLoggedOutView();
-        }
-    }
-
-    /*
-     * Navigate outside of this React micro UI to the shell micro UI's logged out view
-     */
-    function moveToLoggedOutView(): void {
-        location.href = `${location.origin}/loggedout`;
+    function onLogout(): void {
+        model.authenticator.logout();
     }
 
     /*
@@ -228,9 +201,7 @@ export function App(props: AppProps): JSX.Element {
     async function onStorage(event: StorageEvent): Promise<void> {
 
         if (HtmlStorageHelper.isLoggedOutEvent(event)) {
-
             await model.authenticator.onLoggedOut();
-            moveToLoggedOutView();
         }
     }
 

@@ -1,15 +1,15 @@
-import {Configuration} from './configuration';
-import {DomUtils} from './domUtils';
+import {DomUtils} from '../utils/domUtils';
 
 /*
  * Handle requests to the /loggedout URL
  */
 export class LoginRequiredView {
 
-    private readonly _configuration: Configuration;
+    private readonly _loginAction: () => void;
 
-    public constructor(configuration: Configuration) {
-        this._configuration = configuration;
+    public constructor(loginAction: () => void) {
+
+        this._loginAction = loginAction;
         this._setupCallbacks();
     }
 
@@ -26,7 +26,7 @@ export class LoginRequiredView {
             </div>
             <div class='row'>
                 <div class='col-12 text-center mx-auto'>
-                    <h5>You have been successfully logged out</h5>
+                    <h5>You are logged out, click Login to begin</h5>
                 </div>
             </div>
             <div class='row'>
@@ -41,10 +41,10 @@ export class LoginRequiredView {
     }
 
     /*
-     * Handle the login click by navigating back to the default micro-UI within the overall web domain
+     * Run the login action when the button is clicked
      */
     private _onLogin(): void {
-        location.href = `${location.origin}${this._configuration.defaultAppBasePath}`;
+        this._loginAction();
     }
 
     /*

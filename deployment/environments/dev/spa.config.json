@@ -1,9 +1,4 @@
 {
-    "app": {
-        "webOrigin": "https://web.authsamples-dev.com",
-        "apiBaseUrl": "https://api.authsamples-dev.com/demobrand/investments"
-    },
-    "oauth": {
-        "oauthAgentBaseUrl": "https://api.authsamples-dev.com/demobrand/oauth-agent"
-    }
+    "apiBaseUrl": "https://api.authsamples-dev.com/demobrand/investments",
+    "oauthAgentBaseUrl": "https://api.authsamples-dev.com/demobrand/oauth-agent"
 }
