@@ -127,6 +127,11 @@ export function App(props: AppProps): JSX.Element {
                 // Otherwise navigate home
                 navigate('/');
             }
+
+            // Also reload user info if we are recovering from an error
+            if (model.apiViewEvents.hasLoadError()) {
+                model.reloadUserInfo();
+            }
         }
     }
 

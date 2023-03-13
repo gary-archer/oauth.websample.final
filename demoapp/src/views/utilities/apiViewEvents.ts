@@ -4,6 +4,7 @@ import {UIError} from '../../plumbing/errors/uiError';
 import {DataStatusEvent} from '../../plumbing/events/dataStatusEvent';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
+import {ApiViewLoadState} from './apiViewLoadState';
 import {ApiViewNames} from './apiViewNames';
 
 /*
@@ -12,7 +13,7 @@ import {ApiViewNames} from './apiViewNames';
 export class ApiViewEvents {
 
     private readonly _eventBus: EventBus;
-    private _views: [string, boolean][];
+    private _viewsState: ApiViewLoadState[];
     private _loginRequired: boolean;
 
     /*
@@ -21,7 +22,7 @@ export class ApiViewEvents {
     public constructor(eventBus: EventBus) {
 
         this._eventBus = eventBus;
-        this._views = [];
+        this._viewsState = [];
         this._loginRequired = false;
         this._setupCallbacks();
     }
@@ -30,7 +31,13 @@ export class ApiViewEvents {
      * Each view is added along with an initial unloaded state
      */
     public addView(name: string): void {
-        this._views.push([name, false]);
+
+        const viewState = {
+            name,
+            loaded: false,
+            failed: false,
+        };
+        this._viewsState.push(viewState);
     }
 
     /*
@@ -38,7 +45,7 @@ export class ApiViewEvents {
      */
     public onViewLoading(name: string): void {
 
-        this._updateLoadState(name, false);
+        this._updateLoadState(name, false, false);
 
         if (name === ApiViewNames.Main) {
             this._eventBus.emit(EventNames.DataStatus, null, new DataStatusEvent(false));
@@ -50,7 +57,7 @@ export class ApiViewEvents {
      */
     public onViewLoaded(name: string): void {
 
-        this._updateLoadState(name, true);
+        this._updateLoadState(name, true, false);
 
         if (name === ApiViewNames.Main) {
             this._eventBus.emit(EventNames.DataStatus, null, new DataStatusEvent(true));
@@ -64,7 +71,7 @@ export class ApiViewEvents {
      */
     public onViewLoadFailed(name: string, error: UIError): void {
 
-        this._updateLoadState(name, true);
+        this._updateLoadState(name, true, true);
 
         if (error.errorCode === ErrorCodes.loginRequired) {
             this._loginRequired = true;
@@ -74,21 +81,35 @@ export class ApiViewEvents {
     }
 
     /*
+     * Indicate if any view failed to load
+     */
+    public hasLoadError(): boolean {
+        const found = this._viewsState.find((v) => v.failed === true);
+        return !!found;
+    }
+
+    /*
      * Reset state when the Reload Data button is clicked
      */
     public clearState(): void {
-        this._views.forEach((i) => i[1] = false);
+
+        this._viewsState.forEach((v) => {
+            v.loaded = false;
+            v.failed = false;
+        });
+
         this._loginRequired = false;
     }
 
     /*
      * Update whether a view has finished trying to load
      */
-    private _updateLoadState(name: string, value: boolean) {
+    private _updateLoadState(name: string, loaded: boolean, failed: boolean) {
 
-        const found = this._views.find(i => i[0] === name);
+        const found = this._viewsState.find((v) => v.name === name);
         if (found) {
-            found[1] = value;
+            found.loaded = loaded;
+            found.failed = failed;
         }
     }
 
@@ -97,7 +118,7 @@ export class ApiViewEvents {
      */
     private _triggerLoginIfRequired(): void {
 
-        const allViewsLoaded = this._views.filter(i => i[1] === true).length === this._views.length;
+        const allViewsLoaded = this._viewsState.filter((v) => v.loaded === true).length === this._viewsState.length;
         if (allViewsLoaded && this._loginRequired) {
             this._eventBus.emit(EventNames.LoginRequired, null, new LoginRequiredEvent());
         }

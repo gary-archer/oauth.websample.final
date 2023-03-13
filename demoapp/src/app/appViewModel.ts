@@ -177,6 +177,13 @@ export class AppViewModel {
     }
 
     /*
+     * Reload only user info
+     */
+    public reloadUserInfo(): void {
+        this._eventBus.emit(EventNames.ReloadUserInfo, null, new ReloadUserInfoEvent(false));
+    }
+
+    /*
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
     private _setupCallbacks() {
