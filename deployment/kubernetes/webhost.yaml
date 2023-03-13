@@ -47,7 +47,7 @@ spec:
             subPath: webhost.config.json
             readOnly: true
           - name: shellapp-config
-            mountPath: /usr/webhost/demoapp/shellapp.config.json
+            mountPath: /usr/webhost/shellapp/shellapp.config.json
             subPath: shellapp.config.json
             readOnly: true
           - name: demoapp-config
