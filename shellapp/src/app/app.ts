@@ -23,51 +23,42 @@ export class App {
             // Set up classes
             await this._initialiseApp();
 
+            // Requests to move to the login screen
             if (this._router!.isLoginRequest()) {
+                this._router?.renderLoginRequiredView(false);
+                return;
+            }
 
-                // Handle login requests
-                this._router?.renderLoginRequiredView();
+            // Requests to move to the logged out screen
+            if (this._router!.isLoggedOutRequest()) {
+                this._router?.renderLoginRequiredView(true);
+                return;
+            }
 
-            } else if (this._router!.isLogoutRequest()) {
+            // Run the page load handler, which may handle a login response and return to the calling app
+            const pageLoadResult = await this._authenticator!.handlePageLoad();
+            if (pageLoadResult.handled) {
+                return;
+            }
 
-                try {
+            // Execute a logout if requested
+            if (this._router!.isLogoutRequest()) {
+                await this._authenticator?.logout();
+                return;
+            }
 
-                    // Get the anti forgery token and do the logout
-                    await this._authenticator!.handlePageLoad();
-                    await this._authenticator?.logout();
-
-                } catch (e: any) {
-
-                    // Logouts from multiple browser tabs will fail, so handle that by redirecting to login required
-                    console.log('*** LOGOUT ERROR');
-                    console.log(e);
-                    this._router?.renderLoginRequiredView();
-                }
+            // Handle other paths navigated to
+            if (pageLoadResult.isLoggedIn) {
+                this._router!.redirectToDefaultApplication();
 
             } else {
-
-                // If required, run the page load handler, handle login responses and return to the calling app
-                const pageLoadResult = await this._authenticator!.handlePageLoad();
-                if (!pageLoadResult.handled) {
-
-                    // Handle other paths that can be navigated to
-                    if (pageLoadResult.isLoggedIn) {
-
-                        // If already logged in then return to the default application
-                        this._router!.redirectToDefaultApplication();
-
-                    } else {
-
-                        // Otherwise render the login required view
-                        this._router?.renderLoginRequiredView();
-                    }
-                }
+                this._router?.renderLoginRequiredView(false);
             }
 
         } catch (e) {
 
             // Report failures
-            console.log('*** ERROR ***');
+            console.log('*** MAIN ERROR ***');
             console.log(e);
         }
     }
@@ -87,5 +78,21 @@ export class App {
 
         // Create the router
         this._router = new Router(this._configuration, this._authenticator);
+    }
+
+    /*
+     * Try a logout and swallow errors, since the user cannot recover
+     */
+    private async _runLogout(): Promise<void> {
+
+        try {
+            await this._authenticator?.logout();
+
+        } catch(e: any) {
+
+            console.log('*** LOGOUT ERROR ***');
+            console.log(e);
+            this._router?.renderLoginRequiredView(true);
+        }
     }
 }

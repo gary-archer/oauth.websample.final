@@ -196,7 +196,7 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * When there is a logout on another tab, a local storage update is made and we remove tokens stored here
+     * When there is a logout on another tab, a local storage update is made and we move to the login screen
      */
     async function onStorage(event: StorageEvent): Promise<void> {
 

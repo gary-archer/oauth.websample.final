@@ -5,10 +5,12 @@ import {DomUtils} from '../utils/domUtils';
  */
 export class LoginRequiredView {
 
+    private readonly _isAfterLogout: boolean;
     private readonly _loginAction: () => void;
 
-    public constructor(loginAction: () => void) {
+    public constructor(isAfterLogout: boolean, loginAction: () => void) {
 
+        this._isAfterLogout = isAfterLogout;
         this._loginAction = loginAction;
         this._setupCallbacks();
     }
@@ -18,6 +20,10 @@ export class LoginRequiredView {
      */
     public render(): void {
 
+        const userMessage = this._isAfterLogout ?
+            'You have succesfully logged out' :
+            'Welcome back, click Login to begin';
+
         const html =
             `<div class='row'>
                 <div class='col-12 my-auto'>
@@ -26,7 +32,7 @@ export class LoginRequiredView {
             </div>
             <div class='row'>
                 <div class='col-12 text-center mx-auto'>
-                    <h5>You are logged out, click Login to begin</h5>
+                    <h5>Welcome back, click Login to begin</h5>
                 </div>
             </div>
             <div class='row'>

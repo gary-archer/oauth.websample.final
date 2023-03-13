@@ -16,10 +16,26 @@ export class Router {
     }
 
     /*
-     * Return true if this path has been requested by a micro UI
+     * Return true if a micro UI has asked to move to the login view
      */
     public isLoginRequest(): boolean {
         return (location.pathname.toLowerCase() === '/login');
+    }
+
+    /*
+     * Return true if a micro UI has asked to move to the logged out view
+     */
+    public isLoggedOutRequest(): boolean {
+        return (location.pathname.toLowerCase() === '/loggedout');
+    }
+
+    /*
+     * If at this location, render a simple logged out view
+     */
+    public renderLoginRequiredView(isAfterLogout: boolean): void {
+
+        const view = new LoginRequiredView(isAfterLogout, this._authenticator.login);
+        view.render();
     }
 
     /*
@@ -27,15 +43,6 @@ export class Router {
      */
     public isLogoutRequest(): boolean {
         return (location.pathname.toLowerCase() === '/logout');
-    }
-
-    /*
-     * If at this location, render a simple logged out view
-     */
-    public renderLoginRequiredView(): void {
-
-        const view = new LoginRequiredView(this._authenticator.login);
-        view.render();
     }
 
     /*

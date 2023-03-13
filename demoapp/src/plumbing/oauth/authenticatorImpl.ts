@@ -76,7 +76,7 @@ export class AuthenticatorImpl implements Authenticator {
             }
 
             // Rethrow other errors
-            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
+            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginStateError);
         }
     }
 
@@ -100,7 +100,7 @@ export class AuthenticatorImpl implements Authenticator {
      * When a logout occurs on another browser tab, or for another micro UI, redirect to the shell app
      */
     public onLoggedOut(): void {
-        this.logout();
+        location.href = `${location.origin}/loggedout`;
     }
 
     /*
