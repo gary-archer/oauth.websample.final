@@ -145,7 +145,7 @@ export class Authenticator {
      */
     public async onCallApi(options: AxiosRequestConfig, isRetry: boolean): Promise<void> {
 
-        // If there is no anti forgery token then the user must sign in
+        // If there is no anti forgery token then the user is not logged in
         if (!this._antiForgeryToken) {
             throw ErrorFactory.fromLoginRequired();
         }

@@ -23,7 +23,7 @@ export class LoginRequiredView {
 
         const viewModel = {
             userMessage: this._isAfterLogout ?
-                'You have successfully logged out' :
+                'You have been logged out' :
                 'Welcome back',
         };
 
