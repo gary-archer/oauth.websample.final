@@ -6,20 +6,14 @@ export class ErrorCodes {
     // Used to indicate that the API cannot be called until the user logs in
     public static readonly loginRequired = 'login_required';
 
-    // A technical error starting a login request via the Token Handler API
-    public static readonly loginRequestFailed = 'login_request_failed';
-
-    // A technical error processing the login response and calling the Token Handler API
-    public static readonly loginResponseFailed = 'login_response_failed';
+    // An error getting the login state
+    public static readonly loginStateError = 'login_state_error';
 
     // A technical problem during token refresh
     public static readonly tokenRefreshError = 'token_refresh_error';
 
     // An error returned when the  generic 401 error returned to clients who send incorrect data
     public static readonly sessionExpiredError = 'session_expired';
-
-    // An error starting a logout request
-    public static readonly logoutRequestFailed = 'logout_request_failed';
 
     // An error when testing token expiry
     public static readonly expiryTestError = 'expiry_test';

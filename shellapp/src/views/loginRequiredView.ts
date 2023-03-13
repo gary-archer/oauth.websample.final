@@ -1,4 +1,4 @@
-import {Configuration} from './configuration';
+import mustache from 'mustache';
 import {DomUtils} from './domUtils';
 
 /*
@@ -6,10 +6,13 @@ import {DomUtils} from './domUtils';
  */
 export class LoginRequiredView {
 
-    private readonly _configuration: Configuration;
+    private readonly _isAfterLogout: boolean;
+    private readonly _loginAction: () => void;
 
-    public constructor(configuration: Configuration) {
-        this._configuration = configuration;
+    public constructor(isAfterLogout: boolean, loginAction: () => void) {
+
+        this._isAfterLogout = isAfterLogout;
+        this._loginAction = loginAction;
         this._setupCallbacks();
     }
 
@@ -18,7 +21,13 @@ export class LoginRequiredView {
      */
     public render(): void {
 
-        const html =
+        const viewModel = {
+            userMessage: this._isAfterLogout ?
+                'You have successfully logged out' :
+                'Welcome back',
+        };
+
+        const htmlTemplate =
             `<div class='row'>
                 <div class='col-12 my-auto'>
                     <h2>OAuth Demo App</h2>
@@ -26,7 +35,7 @@ export class LoginRequiredView {
             </div>
             <div class='row'>
                 <div class='col-12 text-center mx-auto'>
-                    <h5>You have been successfully logged out</h5>
+                    <h5>{{userMessage}}</h5>
                 </div>
             </div>
             <div class='row'>
@@ -35,16 +44,18 @@ export class LoginRequiredView {
                 </div>
             </div>`;
 
+        const html = mustache.render(htmlTemplate, viewModel);
+
         DomUtils.createDiv('#root', 'loginRequired');
         DomUtils.html('#loginRequired', html);
         DomUtils.onClick('#btnLogin', this._onLogin);
     }
 
     /*
-     * Handle the login click by navigating back to the default micro-UI within the overall web domain
+     * Run the login action when the button is clicked
      */
     private _onLogin(): void {
-        location.href = `${location.origin}${this._configuration.defaultAppBasePath}`;
+        this._loginAction();
     }
 
     /*

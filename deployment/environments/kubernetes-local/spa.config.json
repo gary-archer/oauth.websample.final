@@ -1,9 +1,0 @@
-{
-    "app": {
-        "webOrigin": "https://web.mycluster.com",
-        "apiBaseUrl": "https://api.mycluster.com/demobrand/investments"
-    },
-    "oauth": {
-        "oauthAgentBaseUrl": "https://api.mycluster.com/demobrand/oauth-agent"
-    }
-}

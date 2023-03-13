@@ -1,7 +1,7 @@
 /*
- * Configuration settings for this micro UI
+ * A holder for configuration settings
  */
 export interface Configuration {
-    apiBaseUrl: string;
+    defaultAppBasePath: string;
     oauthAgentBaseUrl: string;
 }

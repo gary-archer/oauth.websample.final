@@ -8,35 +8,23 @@ export class HtmlStorageHelper {
     private static _apiSessionKeyName = 'session.id';
 
     /*
-     * Store the app's current path, to enable deep linking after login
+     * When processing the login response, get and remove the stored current path
      */
-    public static set loginAppCurrentPath(currentPath: string) {
+    public static getAndRemoveLoginAppCurrentPath(): string {
 
         const key = HtmlStorageHelper._loginAppCurrentPath;
-        sessionStorage.setItem(key, currentPath);
+        const result = sessionStorage.getItem(key) || '';
+        sessionStorage.removeItem(key);
+        return result;
     }
 
     /*
-     * Get the logged out value from local storage, which is shared across all browser tabs
+     * Set the logged out value in session storage, used to achieve multi tab logout
      */
-    public static get loggedOut(): boolean {
+    public static set loggedOut(value: boolean) {
 
         const key = HtmlStorageHelper._loggedOutState;
-        return localStorage.getItem(key) === 'true';
-    }
-
-    /*
-     * This determines if a local storage update to logged out occurred on another browser tab
-     */
-    public static isLoggedOutEvent(event: StorageEvent): boolean {
-
-        if (event.storageArea === localStorage) {
-
-            const key = HtmlStorageHelper._loggedOutState;
-            return event.key === key && event.newValue === 'true';
-        }
-
-        return false;
+        localStorage.setItem(key, String(value));
     }
 
     /*

@@ -16,7 +16,12 @@ const prodConfig: webpack.Configuration = {
                     rewriteIndexHtml();
                 });
             }
-        }
+        },
+
+        // Pass a variable through to our Web UI to tell it to display stack traces
+        new webpack.DefinePlugin({
+            SHOW_STACK_TRACE: 'true',
+        })
     ]
 };
 

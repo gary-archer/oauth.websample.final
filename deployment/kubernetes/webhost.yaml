@@ -46,9 +46,13 @@ spec:
             mountPath: /usr/webhost/webhost.config.json
             subPath: webhost.config.json
             readOnly: true
-          - name: spa-config
-            mountPath: /usr/webhost/demoapp/spa.config.json
-            subPath: spa.config.json
+          - name: shellapp-config
+            mountPath: /usr/webhost/demoapp/shellapp.config.json
+            subPath: shellapp.config.json
+            readOnly: true
+          - name: demoapp-config
+            mountPath: /usr/webhost/demoapp/demoapp.config.json
+            subPath: demoapp.config.json
             readOnly: true
           - name: webhost-ssl-cert
             mountPath: /usr/webhost/certs
@@ -57,9 +61,12 @@ spec:
         - name: webhost-config
           configMap:
             name: webhost-config
-        - name: spa-config
+        - name: shellapp-config
           configMap:
-            name: spa-config
+            name: shellapp-config
+        - name: demoapp-config
+          configMap:
+            name: demoapp-config
         - name: webhost-ssl-cert
           secret:
             secretName: webhost-pkcs12

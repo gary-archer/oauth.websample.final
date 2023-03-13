@@ -1,8 +1,8 @@
 #!/bin/bash
 
-###############################################
-# Install and build the SPA ready for deploying
-###############################################
+#########################################################
+# Install and build the main demo app ready for deploying
+#########################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 BUILD_CONFIGURATION="$1"
@@ -37,7 +37,7 @@ mkdir ./dist
 #
 # Copy HTML assets to the output folder
 #
-cp spa.config.json index.html *.css ./dist
+cp demoapp.config.json index.html *.css ./dist
 
 #
 # Now do the main webpack build

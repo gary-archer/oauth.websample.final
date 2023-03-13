@@ -6,7 +6,6 @@ import {EventNames} from '../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../plumbing/events/reloadMainViewEvent';
 import {ReloadUserInfoEvent} from '../plumbing/events/reloadUserInfoEvent';
 import {Authenticator} from '../plumbing/oauth/authenticator';
-import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainerViewModel} from '../views/companies/companiesContainerViewModel';
 import {TransactionsContainerViewModel} from '../views/transactions/transactionsContainerViewModel';
@@ -77,9 +76,9 @@ export class AppViewModel {
 
             // Create global objects for managing OAuth and API calls
             const sessionId = SessionManager.get();
-            const authenticator = new AuthenticatorImpl(this._configuration.oauth, sessionId);
+            const authenticator = new Authenticator(this._configuration, sessionId);
             this._authenticator = authenticator;
-            this._apiClient = new ApiClient(this.configuration.app, sessionId, authenticator);
+            this._apiClient = new ApiClient(this.configuration, sessionId, authenticator);
 
             // Update state
             this._isInitialised = true;
@@ -174,6 +173,13 @@ export class AppViewModel {
      */
     public reloadMainView(): void {
         this._eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(false));
+    }
+
+    /*
+     * Reload only user info
+     */
+    public reloadUserInfo(): void {
+        this._eventBus.emit(EventNames.ReloadUserInfo, null, new ReloadUserInfoEvent(false));
     }
 
     /*

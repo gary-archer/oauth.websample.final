@@ -1,0 +1,4 @@
+{
+    "apiBaseUrl": "https://api.authsamples-dev.com/demobrand/investments",
+    "oauthAgentBaseUrl": "https://api.authsamples-dev.com/demobrand/oauth-agent"
+}

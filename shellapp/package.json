@@ -1,7 +1,7 @@
 {
   "name": "shellspa",
   "version": "1.0.0",
-  "description": "A minimal SPA to act as a micro-UI shell application",
+  "description": "A plain Javascript SPA as the micro-UI shell application",
   "main": "index.tsx",
   "keywords": [],
   "author": "Gary Archer",
@@ -19,8 +19,17 @@
     "webpackWatch": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts --watch\"",
     "webpackRelease": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.prod.ts\""
   },
+  "dependencies": {
+    "axios": "^1.2.1",
+    "guid-typescript": "^1.0.9",
+    "moment": "^2.29.4",
+    "mustache": "^4.2.0",
+    "url-parse": "^1.5.10"
+  },
   "devDependencies": {
+    "@types/mustache": "^4.2.2",
     "@types/node": "^18.11.18",
+    "@types/url-parse": "^1.4.8",
     "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",

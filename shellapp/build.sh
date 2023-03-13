@@ -37,7 +37,7 @@ mkdir ./dist
 #
 # Copy HTML assets to the output folder
 #
-cp index.html favicon.ico *.css ./dist
+cp shellapp.config.json index.html favicon.ico *.css ./dist
 
 #
 # Now do the main webpack build

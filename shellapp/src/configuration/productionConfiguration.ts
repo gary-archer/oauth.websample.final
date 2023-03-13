@@ -4,7 +4,7 @@ import {Configuration} from './configuration';
  * This deployment points to Serverless APIs
  */
 export const productionServerlessConfiguration = {
-    apiBaseUrl: 'https://api.authsamples.com/demobrand/investments',
+    defaultAppBasePath: '/demoapp/',
     oauthAgentBaseUrl: 'https://api.authsamples.com/demobrand/oauth-agent',
 } as Configuration;
 
@@ -12,6 +12,6 @@ export const productionServerlessConfiguration = {
  * This deployment points to APIs running a Kubernetes cluster
  */
 export const productionCloudNativeConfiguration = {
-    apiBaseUrl: 'https://api.authsamples-k8s.com/demobrand/investments',
+    defaultAppBasePath: '/demoapp/',
     oauthAgentBaseUrl: 'https://api.authsamples-k8s.com/demobrand/oauth-agent',
 } as Configuration;
