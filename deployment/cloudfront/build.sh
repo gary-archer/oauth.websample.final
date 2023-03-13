@@ -55,6 +55,7 @@ mkdir .package/demoapp
 # Copy HTML assets
 #
 cp '../shellapp/dist/index.html'           .package
+cp '../shellapp/dist/vendor.bundle.js'     .package
 cp '../shellapp/dist/app.bundle.js'        .package
 cp '../shellapp/dist/bootstrap.min.css'    .package
 cp '../shellapp/dist/app.css'              .package

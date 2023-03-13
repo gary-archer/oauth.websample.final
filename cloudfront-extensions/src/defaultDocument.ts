@@ -26,33 +26,18 @@ const handler = async (event: any, context: Context) => {
         return request;
     }
 
-    // If within the demoapp micro-UI, return its index.html
     const demoAppBasePath = '/demoapp/';
     if (requestUri.startsWith(demoAppBasePath)) {
         
+        // Serve the demoapp index.html for other requests within that path
         request.uri = `${demoAppBasePath}index.html`;
         return request;
-    }
 
-    // For these special routes, return the index.html for the shell app
-    if (requestUri === '/login' ||
-        requestUri === '/login' ||
-        requestUri === '/loggedout') {
+    } else {
 
+        // Serve the shellapp index.html for any other requests
         request.uri = '/index.html';
         return request;
-    }
-
-    // For any other invalid path, redirect to the default micro-UI
-    return {
-        status: 302,
-        statusDescription: 'Found',
-        headers: {
-            'location': [{
-                key: 'Location',
-                value: demoAppBasePath,
-            }],
-        },  
     };
 };
 

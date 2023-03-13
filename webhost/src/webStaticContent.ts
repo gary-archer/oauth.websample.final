@@ -58,22 +58,15 @@ export class WebStaticContent {
 
         if (requestPath.startsWith(demoAppBasePath)) {
 
-            // If within the demoapp micro-UI, return its index.html
+                    // Serve the demoapp index.html for other requests within that path
             const demoAppRoot = this._getDemoAppFilesBasePath();
             response.sendFile('index.html', {root: demoAppRoot});
 
-        } else if (requestPath === '/login'     ||
-                   requestPath === '/logout'    ||
-                   requestPath === '/loggedout') {
-
-            // For these special routes, return the index.html for the shell app
-            const shellAppRoot = this._getShellAppFilesBasePath();
-            response.sendFile('index.html', {root: shellAppRoot});
-
         } else {
 
-            // For any other invalid path, redirect to the default micro-UI
-            response.redirect(demoAppBasePath);
+            // Serve the shellapp index.html for any other requests
+            const shellAppRoot = this._getShellAppFilesBasePath();
+            response.sendFile('index.html', {root: shellAppRoot});
         }
     }
 
