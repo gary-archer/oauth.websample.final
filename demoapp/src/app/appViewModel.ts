@@ -6,7 +6,6 @@ import {EventNames} from '../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../plumbing/events/reloadMainViewEvent';
 import {ReloadUserInfoEvent} from '../plumbing/events/reloadUserInfoEvent';
 import {Authenticator} from '../plumbing/oauth/authenticator';
-import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainerViewModel} from '../views/companies/companiesContainerViewModel';
 import {TransactionsContainerViewModel} from '../views/transactions/transactionsContainerViewModel';
@@ -77,7 +76,7 @@ export class AppViewModel {
 
             // Create global objects for managing OAuth and API calls
             const sessionId = SessionManager.get();
-            const authenticator = new AuthenticatorImpl(this._configuration, sessionId);
+            const authenticator = new Authenticator(this._configuration, sessionId);
             this._authenticator = authenticator;
             this._apiClient = new ApiClient(this.configuration, sessionId, authenticator);
 

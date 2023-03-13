@@ -1,3 +1,4 @@
+import mustache from 'mustache';
 import {DomUtils} from '../utils/domUtils';
 
 /*
@@ -20,11 +21,13 @@ export class LoginRequiredView {
      */
     public render(): void {
 
-        const userMessage = this._isAfterLogout ?
-            'You have succesfully logged out' :
-            'Welcome back, click Login to begin';
+        const viewModel = {
+            userMessage: this._isAfterLogout ?
+                'You have successfully logged out' :
+                'Welcome back',
+        };
 
-        const html =
+        const htmlTemplate =
             `<div class='row'>
                 <div class='col-12 my-auto'>
                     <h2>OAuth Demo App</h2>
@@ -32,7 +35,7 @@ export class LoginRequiredView {
             </div>
             <div class='row'>
                 <div class='col-12 text-center mx-auto'>
-                    <h5>Welcome back, click Login to begin</h5>
+                    <h5>{{userMessage}}</h5>
                 </div>
             </div>
             <div class='row'>
@@ -40,6 +43,8 @@ export class LoginRequiredView {
                     <button id='btnLogin' type='button' class='btn btn-primary w-25 p-1'>Login</button>
                 </div>
             </div>`;
+
+        const html = mustache.render(htmlTemplate, viewModel);
 
         DomUtils.createDiv('#root', 'loginRequired');
         DomUtils.html('#loginRequired', html);

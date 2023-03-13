@@ -23,9 +23,11 @@
     "axios": "^1.2.1",
     "guid-typescript": "^1.0.9",
     "moment": "^2.29.4",
+    "mustache": "^4.2.0",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {
+    "@types/mustache": "^4.2.2",
     "@types/node": "^18.11.18",
     "@types/url-parse": "^1.4.8",
     "@types/webpack": "^5.28.0",
