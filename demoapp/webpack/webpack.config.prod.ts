@@ -8,7 +8,7 @@ const prodConfig: webpack.Configuration = {
     // Let webpack know this is a production build
     mode: 'production',
 
-    // Turn off performance warnings for our sample
+    // Turn off performance warnings about bundle sizes
     performance: {
         hints: false
     },

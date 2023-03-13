@@ -58,7 +58,7 @@ export class WebStaticContent {
 
         if (requestPath.startsWith(demoAppBasePath)) {
 
-                    // Serve the demoapp index.html for other requests within that path
+            // Serve the demoapp index.html for other requests within that path
             const demoAppRoot = this._getDemoAppFilesBasePath();
             response.sendFile('index.html', {root: demoAppRoot});
 

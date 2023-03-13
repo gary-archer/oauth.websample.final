@@ -8,6 +8,11 @@ const prodConfig: webpack.Configuration = {
     // Let webpack know this is a production build
     mode: 'production',
 
+    // Turn off performance warnings about bundle sizes
+    performance: {
+        hints: false
+    },
+
     plugins:[
         {
             // In release builds, write the final index.html
@@ -20,7 +25,7 @@ const prodConfig: webpack.Configuration = {
 
         // Pass a variable through to our Web UI to tell it to display stack traces
         new webpack.DefinePlugin({
-            SHOW_STACK_TRACE: 'true',
+            SHOW_STACK_TRACE: 'false',
         })
     ]
 };
