@@ -35,7 +35,9 @@ const handler = async (event: any, context: Context) => {
     }
 
     // For these special routes, return the index.html for the shell app
-    if (requestUri == '/loggedout' || requestUri === '/callback') {
+    if (requestUri === '/login' ||
+        requestUri === '/login' ||
+        requestUri === '/loggedout') {
 
         request.uri = '/index.html';
         return request;
