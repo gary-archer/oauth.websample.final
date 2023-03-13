@@ -6,3 +6,15 @@
 {
     width: 20%;
 }
+.largetext
+{
+    font-size: larger;
+}
+.valuecolor
+{
+    color: blue;
+}
+.errorcolor
+{
+    color:red;
+}

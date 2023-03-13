@@ -101,7 +101,7 @@ export function App(props: AppProps): JSX.Element {
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
     function onLoginRequired(_event: LoginRequiredEvent): void {
-        model.authenticator.login(CurrentLocation.path);
+        model.authenticator.login();
     }
 
     /*

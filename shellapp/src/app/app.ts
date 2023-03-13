@@ -1,5 +1,7 @@
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
+import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
+import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {Router} from '../views/router';
@@ -23,13 +25,13 @@ export class App {
             // Set up classes
             await this._initialiseApp();
 
-            // Requests to move to the login screen
+            // Handle requests to move to the login screen
             if (this._router!.isLoginRequest()) {
                 this._router?.renderLoginRequiredView(false);
                 return;
             }
 
-            // Requests to move to the logged out screen
+            // Handle requests to move to the logged out screen
             if (this._router!.isLoggedOutRequest()) {
                 this._router?.renderLoginRequiredView(true);
                 return;
@@ -43,7 +45,7 @@ export class App {
 
             // Execute a logout if requested
             if (this._router!.isLogoutRequest()) {
-                await this._authenticator?.logout();
+                await this._runLogout();
                 return;
             }
 
@@ -55,11 +57,10 @@ export class App {
                 this._router?.renderLoginRequiredView(false);
             }
 
-        } catch (e) {
+        } catch (e: any) {
 
             // Report failures
-            console.log('*** MAIN ERROR ***');
-            console.log(e);
+            this._router!.renderError(e);
         }
     }
 
@@ -78,20 +79,23 @@ export class App {
 
         // Create the router
         this._router = new Router(this._configuration, this._authenticator);
+
     }
 
     /*
-     * Try a logout and swallow errors, since the user cannot recover
+     * Implement a logout redirect, swallow any errors, and ensure that we end up in the logged out view
      */
     private async _runLogout(): Promise<void> {
 
         try {
+
             await this._authenticator?.logout();
 
         } catch(e: any) {
 
-            console.log('*** LOGOUT ERROR ***');
-            console.log(e);
+            const error = ErrorFactory.fromException(e);
+            ErrorConsoleReporter.output(error);
+
             this._router?.renderLoginRequiredView(true);
         }
     }

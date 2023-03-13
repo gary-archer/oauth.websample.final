@@ -1,5 +1,5 @@
 import mustache from 'mustache';
-import {DomUtils} from '../utils/domUtils';
+import {DomUtils} from './domUtils';
 
 /*
  * Handle requests to the /loggedout URL

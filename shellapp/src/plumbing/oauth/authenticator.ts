@@ -35,7 +35,7 @@ export class Authenticator {
             const response = await this._callOAuthAgent('POST', 'login/start', null);
             location.href = response.authorizationRequestUri;
 
-        } catch (e) {
+        } catch (e: any) {
 
             throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginRequestFailed);
         }
@@ -56,7 +56,7 @@ export class Authenticator {
                 location.href = response.endSessionRequestUri;
             }
 
-        } catch (e) {
+        } catch (e: any) {
 
             throw ErrorFactory.fromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
 
@@ -103,6 +103,9 @@ export class Authenticator {
             };
 
         } catch (e: any) {
+
+            console.log('*** ERROR');
+            console.log(e);
 
             // Session expired errors require re-authentication
             if (this._isSessionExpiredError(e)) {
@@ -160,7 +163,7 @@ export class Authenticator {
 
             return null;
 
-        } catch (e) {
+        } catch (e: any) {
 
             throw ErrorFactory.fromHttpError(e, url, 'OAuth Agent');
         }
