@@ -29,6 +29,13 @@ export function rewriteIndexHtml(): void {
     updateResource(
         `${outFolder}/index.html`,
         'src',
+        'vendor.bundle.js',
+        timestamp,
+        calculateFileHash(`${outFolder}/vendor.bundle.js`));
+
+    updateResource(
+        `${outFolder}/index.html`,
+        'src',
         'app.bundle.js',
         timestamp,
         calculateFileHash(`${outFolder}/app.bundle.js`));
