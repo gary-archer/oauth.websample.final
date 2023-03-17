@@ -24,7 +24,7 @@ fi
 #
 npm run lint
 if [ $? -ne 0 ]; then
-  echo 'Code quality checks failed'
+  echo 'Shell app code quality checks failed'
   exit 1
 fi
 
@@ -33,11 +33,6 @@ fi
 #
 rm -rf ./dist 2>/dev/null
 mkdir ./dist
-
-#
-# Copy HTML assets to the output folder
-#
-cp shellapp.config.json index.html favicon.ico *.css ./dist
 
 #
 # Now do the main webpack build
@@ -51,3 +46,17 @@ if [ $? -ne 0 ]; then
   echo 'Problem encountered building the shell app'
   exit 1
 fi
+
+#
+# Reduce the CSS size
+#
+npm run purgecss
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered reducing CSS for the shell app'
+  exit 1
+fi
+
+#
+# Copy HTML assets to the output folder
+#
+cp shellapp.config.json index.html favicon.ico app.css ./dist
