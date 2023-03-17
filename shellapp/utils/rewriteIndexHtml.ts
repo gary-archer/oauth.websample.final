@@ -9,6 +9,7 @@ export function rewriteIndexHtml(): void {
     // Get the timestamp at the time of the build
     const timestamp = new Date().getTime().toString();
     const outFolder = './dist';
+    console.log('here');
 
     // Update CSS resources with a cache busting timestamp and an integrity hash
     updateResource(
@@ -78,3 +79,8 @@ function replaceTextInFile(filePath: string, from: string, to: string): void {
     const newData = oldData.replace(regex, to);
     fs.writeFileSync(filePath, newData, 'utf8');
 }
+
+/*
+ * Do the work
+ */
+rewriteIndexHtml();

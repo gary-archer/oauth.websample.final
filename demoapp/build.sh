@@ -35,7 +35,7 @@ rm -rf ./dist 2>/dev/null
 mkdir ./dist
 
 #
-# Now do the main webpack build
+# Do the main webpack build
 #
 if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
   npm run webpackRelease
@@ -60,3 +60,15 @@ fi
 # Copy HTML assets to the output folder
 #
 cp demoapp.config.json index.html app.css ./dist
+
+#
+# Finally, rewrite the index.html in release builds
+#
+if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
+
+  node --loader ts-node/esm --no-warnings ./utils/rewriteIndexHtml.ts
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered rewriting the shell app index.html'
+    exit 1
+  fi
+fi
