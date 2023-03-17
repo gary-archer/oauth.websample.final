@@ -21,12 +21,7 @@ export class ErrorView {
 
         DomUtils.createDiv('#root', 'errorcontainer');
         const html =
-            `<div class='row'>
-                <div class='col-12 my-auto'>
-                    <h2>OAuth Demo App</h2>
-                </div>
-            </div>
-            <div class='card border-0'>
+            `<div class='card border-0'>
                 <div class='row'>
                     <div id='errortitle' class='col-10 errorcolor largetext fw-bold text-center'>
                     </div>

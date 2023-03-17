@@ -29,11 +29,6 @@ export class LoginRequiredView {
 
         const htmlTemplate =
             `<div class='row'>
-                <div class='col-12 my-auto'>
-                    <h2>OAuth Demo App</h2>
-               </div>
-            </div>
-            <div class='row'>
                 <div class='col-12 text-center mx-auto'>
                     <h5>{{userMessage}}</h5>
                 </div>

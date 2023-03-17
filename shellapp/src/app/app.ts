@@ -5,6 +5,7 @@ import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {Router} from '../views/router';
+import { TitleView } from '../views/titleView';
 
 /*
  * The main application class
@@ -69,6 +70,10 @@ export class App {
      */
     private async _initialiseApp(): Promise<void> {
 
+        // Render the title view
+        const titleView = new TitleView();
+        titleView.load();
+
         // Get the application configuration
         const loader = new ConfigurationLoader();
         this._configuration = await loader.get();
@@ -79,7 +84,6 @@ export class App {
 
         // Create the router
         this._router = new Router(this._configuration, this._authenticator);
-
     }
 
     /*
