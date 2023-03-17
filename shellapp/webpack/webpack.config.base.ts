@@ -34,6 +34,14 @@ const config: webpack.Configuration = {
         path: path.resolve(dirname, './dist'),
         filename: '[name].bundle.js'
     },
+    plugins:[
+
+        // Reduce the size of the moment library
+        new webpack.IgnorePlugin({
+            contextRegExp: /moment$/,
+            resourceRegExp: /^\.\/locale$/,
+        }),
+    ],
     optimization: {
 
         // Build third party code to a separate vendor bundle file
