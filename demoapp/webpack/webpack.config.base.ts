@@ -49,7 +49,14 @@ const config: webpack.Configuration = {
                 },
             }
         }
-    }
+    },
+    plugins:[
+        // Reduce the size of the moment library
+        new webpack.IgnorePlugin({
+            contextRegExp: /moment$/,
+            resourceRegExp: /^\.\/locale$/,
+        }),
+    ]
 };
 
 export default config;
