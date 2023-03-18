@@ -104,9 +104,6 @@ export class Authenticator {
 
         } catch (e: any) {
 
-            console.log('*** ERROR');
-            console.log(e);
-
             // Session expired errors require re-authentication
             if (this._isSessionExpiredError(e)) {
 
