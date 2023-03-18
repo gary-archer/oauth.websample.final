@@ -18,7 +18,7 @@
     "webpackDebug": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts\"",
     "webpackWatch": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts --watch\"",
     "webpackRelease": "bash -c \"NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.prod.ts\"",
-    "purgecss": "purgecss --css bootstrap.min.css --content dist/app.bundle.js --safelist * -o dist"
+    "purgecss": "purgecss -c purgecss.config.cjs -o dist"
   },
   "dependencies": {
     "axios": "^1.2.1",
