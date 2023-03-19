@@ -1,5 +1,14 @@
 ---
 #
+# Duplication across demoapp and shellapp is intentional
+#
+engines:
+  duplication:
+    exclude_paths:
+      - 'shellapp/**'
+      - 'demoapp/**'
+
+#
 # Only use codacy for the src folders of the webhost, shellapp and demoapp
 #
 exclude_paths:
@@ -12,13 +21,5 @@ exclude_paths:
   - 'shellapp/build/**',
   - 'webhost/*',
   - 'cloudfront-extensions/*'
-
-#
-# Duplication across demoapp and shellapp is intentional
-#
-engines:
-  duplication:
-    enabled: true
-    exclude_paths:
-      - 'shellapp/**'
-      - 'demoapp/**'
+  - 'cloudfront-extensions/environments/**'
+  - 'cloudfront-extensions/test/**'
