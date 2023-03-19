@@ -8,6 +8,7 @@ import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {SetErrorEvent} from '../plumbing/events/setErrorEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
+import {CallbackView} from '../views/callback/callbackView';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {HeaderButtonsView} from '../views/headings/headerButtonsView';
@@ -38,6 +39,7 @@ export function App(props: AppProps): JSX.Element {
 
     // Set up React Router navigation
     const navigate = useNavigate();
+    console.log('using navigate');
 
     /*
      * Run the app's startup logic
@@ -53,28 +55,18 @@ export function App(props: AppProps): JSX.Element {
             await model.initialise();
             setError(null);
 
-            // Get the page load state, which will redirect to the shell if not logged in
-            const pageLoadResult = await model.authenticator.handlePageLoad();
-            if (!pageLoadResult.redirected) {
+            // Subscribe to application and window events
+            model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
+            window.onresize = onResize;
+            window.onstorage = onStorage;
 
-                // If returning after login, restore the pre-login path
-                if (pageLoadResult.pathToRestore) {
-                    navigate(pageLoadResult.pathToRestore!);
-                }
-
-                // Subscribe to application and window events
-                model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
-                window.onresize = onResize;
-                window.onstorage = onStorage;
-
-                // Update state
-                setState((s) => {
-                    return {
-                        ...s,
-                        isInitialised: true,
-                    };
-                });
-            }
+            // Update state
+            setState((s) => {
+                return {
+                    ...s,
+                    isInitialised: true,
+                };
+            });
 
         } catch (e) {
 
@@ -285,6 +277,10 @@ export function App(props: AppProps): JSX.Element {
             eventBus: model.eventBus,
         };
 
+        const callbackProps = {
+            navigate,
+        };
+
         const companiesProps = {
             viewModel: model.getCompaniesViewModel(),
             isMobileLayout: state.isMobileLayout,
@@ -303,6 +299,7 @@ export function App(props: AppProps): JSX.Element {
                 <ErrorSummaryView {...errorProps} />
                 <SessionView {...sessionProps} />
                 <Routes>
+                    <Route path='/callback'      element={<CallbackView {...callbackProps} />} />
                     <Route path='/companies/:id' element={<TransactionsContainer {...transactionsProps} />} />
                     <Route path='/*'             element={<CompaniesContainer {...companiesProps} />} />
                 </Routes>

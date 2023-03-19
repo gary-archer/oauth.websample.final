@@ -1,14 +1,12 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
 import {Configuration} from '../../configuration/configuration';
-import {ErrorCodes} from '../errors/errorCodes';
+import {CurrentLocation} from '../../views/utilities/currentLocation';
 import {ErrorFactory} from '../errors/errorFactory';
 import {UIError} from '../errors/uiError';
 import {AxiosUtils} from '../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
-import {EndLoginResponse} from './endLoginResponse';
-import {PageLoadResult} from './pageLoadResult';
 
 /*
  * The authenticator implementation
@@ -18,73 +16,24 @@ export class Authenticator {
     private readonly _oauthAgentBaseUrl: string;
     private readonly _sessionId: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
-    private _antiForgeryToken: string | null;
+    private readonly _antiForgeryToken: string;
 
     public constructor(configuration: Configuration, sessionId: string) {
 
         this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
         this._sessionId = sessionId;
         this._concurrencyHandler = new ConcurrentActionHandler();
-        this._antiForgeryToken = null;
+        this._antiForgeryToken = HtmlStorageHelper.antiForgeryToken;
         this._setupCallbacks();
     }
 
     /*
-     * Call the OAuth agent whenever the SPA loads
-     */
-    public async handlePageLoad(): Promise<PageLoadResult> {
-
-        const result: PageLoadResult = {
-            redirected: false,
-        };
-
-        try {
-
-            // Send the page URL to the OAuth Agent to get the authentication state
-            const request = {
-                url: location.href,
-            };
-            const endLoginResponse = await this._callOAuthAgent(
-                'POST',
-                '/login/end',
-                request) as EndLoginResponse;
-
-            // Trigger a login if required
-            if (!endLoginResponse.isLoggedIn) {
-
-                this.login();
-                result.redirected = true;
-                return result;
-            }
-
-            // Store the anti forgery token here, to send during data changing API requests
-            if (endLoginResponse.antiForgeryToken) {
-                this._antiForgeryToken = endLoginResponse.antiForgeryToken;
-            }
-
-            return result;
-
-        } catch (e: any) {
-
-            // Session expired errors, where the cookie is rejected, also trigger a login
-            if (this._isSessionExpiredError(e)) {
-
-                this.login();
-                result.redirected = true;
-                return result;
-            }
-
-            // Rethrow other errors
-            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginStateError);
-        }
-    }
-
-    /*
      * Login is delegated to the shell application, and the app saves its state first
+     * The callback view then receives login responses and can restore state
      */
     public login(): void {
 
-        HtmlStorageHelper.loginAppCurrentPath = location.pathname;
+        HtmlStorageHelper.preLoginStore(CurrentLocation.path);
         location.href = `${location.origin}/login`;
     }
 

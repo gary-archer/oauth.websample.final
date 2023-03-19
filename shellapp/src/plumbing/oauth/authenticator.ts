@@ -16,12 +16,10 @@ export class Authenticator {
 
     private readonly _configuration: Configuration;
     private readonly _sessionId: string;
-    private _antiForgeryToken: string | null;
 
     public constructor(configuration: Configuration, sessionId: string) {
         this._configuration = configuration;
         this._sessionId = sessionId;
-        this._antiForgeryToken = null;
         this._setupCallbacks();
     }
 
@@ -49,7 +47,7 @@ export class Authenticator {
 
         try {
 
-            if (!HtmlStorageHelper.loggedOut) {
+            if (HtmlStorageHelper.antiForgeryToken) {
 
                 const response = await this._callOAuthAgent('POST', 'logout', null);
                 HtmlStorageHelper.loggedOut = true;
@@ -62,7 +60,7 @@ export class Authenticator {
 
         } finally {
 
-            this._antiForgeryToken = null;
+            HtmlStorageHelper.clearAntiForgeryToken();
         }
     }
 
@@ -82,18 +80,17 @@ export class Authenticator {
                 'login/end',
                 request) as EndLoginResponse;
 
-            // Store the anti forgery token here, used for data changing API requests
+            // Store the anti forgery token, where it can be picked up by the target micro UI
             if (endLoginResponse.antiForgeryToken) {
-                this._antiForgeryToken = endLoginResponse.antiForgeryToken;
+                HtmlStorageHelper.antiForgeryToken = endLoginResponse.antiForgeryToken;
             }
 
-            // If a login response was handled, then return to the micro UI that started the login and restore the path
+            // Teturn to the callback path of the micro UI that started the login
             if (endLoginResponse.handled) {
 
                 HtmlStorageHelper.loggedOut = false;
-                const appPath = HtmlStorageHelper.getAndRemoveLoginAppCurrentPath() ||
-                                this._configuration.defaultAppBasePath;
-                location.href = `${location.origin}${appPath}`;
+                const appBasePath = HtmlStorageHelper.postLoginRestore() || this._configuration.defaultAppBasePath;
+                location.href = `${location.origin}${appBasePath}callback`;
             }
 
             // Return a result to the rest of the app
@@ -107,6 +104,7 @@ export class Authenticator {
             // Session expired errors require re-authentication
             if (this._isSessionExpiredError(e)) {
 
+                HtmlStorageHelper.clearAntiForgeryToken();
                 return {
                     isLoggedIn: false,
                     handled: false,
@@ -176,7 +174,7 @@ export class Authenticator {
             options.method === 'PATCH' ||
             options.method === 'DELETE') {
 
-            (options.headers as any)['x-mycompany-csrf'] = this._antiForgeryToken;
+            (options.headers as any)['x-mycompany-csrf'] = HtmlStorageHelper.antiForgeryToken;
         }
     }
 

@@ -76,7 +76,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
             if (isExpected) {
 
                 // For 'expected' errors, return to the home view
-                props.navigate('');
+                props.navigate('/');
 
             } else {
 

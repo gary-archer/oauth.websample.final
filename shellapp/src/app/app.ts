@@ -5,7 +5,7 @@ import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {Router} from '../views/router';
-import { TitleView } from '../views/titleView';
+import {TitleView} from '../views/titleView';
 
 /*
  * The main application class
@@ -32,30 +32,29 @@ export class App {
                 return;
             }
 
-            // Handle requests to move to the logged out screen
-            if (this._router!.isLoggedOutRequest()) {
-                this._router?.renderLoginRequiredView(true);
-                return;
-            }
-
-            // Run the page load handler, which may handle a login response and return to the calling app
-            const pageLoadResult = await this._authenticator!.handlePageLoad();
-            if (pageLoadResult.handled) {
-                return;
-            }
-
-            // Execute a logout if requested
+            // Execute a logout redirect if requested
             if (this._router!.isLogoutRequest()) {
                 await this._runLogout();
                 return;
             }
 
-            // Handle other paths navigated to
-            if (pageLoadResult.isLoggedIn) {
-                this._router!.redirectToDefaultApplication();
+            // Handle requests to move to the post logout screen
+            if (this._router!.isLoggedOutRequest()) {
+                this._router?.renderLoginRequiredView(true);
+                return;
+            }
 
-            } else {
-                this._router?.renderLoginRequiredView(false);
+            // Run the page load handler, which may handle a login response and redirect back to the calling app
+            const pageLoadResult = await this._authenticator!.handlePageLoad();
+            if (!pageLoadResult.handled) {
+
+                // Handle other paths navigated to
+                if (pageLoadResult.isLoggedIn) {
+                    this._router!.redirectToDefaultApplication();
+
+                } else {
+                    this._router?.renderLoginRequiredView(false);
+                }
             }
 
         } catch (e: any) {

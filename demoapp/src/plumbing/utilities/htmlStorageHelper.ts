@@ -1,19 +1,33 @@
+import {BasePath} from './basePath';
+
 /*
  * A utility class to keep HTML storage organised
  */
 export class HtmlStorageHelper {
 
-    private static _loginAppCurrentPath = 'login.appcurrentpath';
+    private static _loginCurrentApp = 'login.currentapp';
+    private static _loginCurrentPath = 'login.currentpath';
     private static _loggedOutState = 'loggedout.state';
+    private static _antiForgeryToken = 'csrf.token';
     private static _apiSessionKeyName = 'session.id';
 
     /*
-     * Store the app's current path, to enable deep linking after login
+     * Before login, store the current app and its path
      */
-    public static set loginAppCurrentPath(currentPath: string) {
+    public static preLoginStore(currentPath: string): void {
 
-        const key = HtmlStorageHelper._loginAppCurrentPath;
-        sessionStorage.setItem(key, currentPath);
+        sessionStorage.setItem(HtmlStorageHelper._loginCurrentApp, BasePath.get());
+        sessionStorage.setItem(HtmlStorageHelper._loginCurrentPath, currentPath);
+    }
+
+    /*
+     * After login, return the stored path to navigate back to
+     */
+    public static postLoginRestore(): string | null {
+
+        const path = sessionStorage.getItem(HtmlStorageHelper._loginCurrentPath);
+        sessionStorage.removeItem(HtmlStorageHelper._loginCurrentPath);
+        return path;
     }
 
     /*
@@ -21,8 +35,15 @@ export class HtmlStorageHelper {
      */
     public static get loggedOut(): boolean {
 
-        const key = HtmlStorageHelper._loggedOutState;
-        return localStorage.getItem(key) === 'true';
+        return localStorage.getItem(HtmlStorageHelper._loggedOutState) === 'true';
+    }
+
+    /*
+     * Get the antiforgery token used as a secondary CSRF defense in depth
+     */
+    public static get antiForgeryToken(): string {
+
+        return localStorage.getItem(HtmlStorageHelper._antiForgeryToken) || '';
     }
 
     /*
@@ -31,9 +52,7 @@ export class HtmlStorageHelper {
     public static isLoggedOutEvent(event: StorageEvent): boolean {
 
         if (event.storageArea === localStorage) {
-
-            const key = HtmlStorageHelper._loggedOutState;
-            return event.key === key && event.newValue === 'true';
+            return event.key === HtmlStorageHelper._loggedOutState && event.newValue === 'true';
         }
 
         return false;
@@ -44,8 +63,7 @@ export class HtmlStorageHelper {
      */
     public static get apiSessionId(): string {
 
-        const key = HtmlStorageHelper._apiSessionKeyName;
-        return sessionStorage.getItem(key) || '';
+        return sessionStorage.getItem(HtmlStorageHelper._apiSessionKeyName) || '';
     }
 
     /*
@@ -53,7 +71,6 @@ export class HtmlStorageHelper {
      */
     public static set apiSessionId(value: string) {
 
-        const key = HtmlStorageHelper._apiSessionKeyName;
-        sessionStorage.setItem(key, value);
+        sessionStorage.setItem(HtmlStorageHelper._apiSessionKeyName, value);
     }
 }
