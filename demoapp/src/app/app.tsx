@@ -39,7 +39,6 @@ export function App(props: AppProps): JSX.Element {
 
     // Set up React Router navigation
     const navigate = useNavigate();
-    console.log('using navigate');
 
     /*
      * Run the app's startup logic

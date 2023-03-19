@@ -16,14 +16,12 @@ export class Authenticator {
     private readonly _oauthAgentBaseUrl: string;
     private readonly _sessionId: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
-    private readonly _antiForgeryToken: string;
 
     public constructor(configuration: Configuration, sessionId: string) {
 
         this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
         this._sessionId = sessionId;
         this._concurrencyHandler = new ConcurrentActionHandler();
-        this._antiForgeryToken = HtmlStorageHelper.antiForgeryToken;
         this._setupCallbacks();
     }
 
@@ -95,7 +93,7 @@ export class Authenticator {
     public async onCallApi(options: AxiosRequestConfig, isRetry: boolean): Promise<void> {
 
         // If there is no anti forgery token then the user is not logged in
-        if (!this._antiForgeryToken) {
+        if (!HtmlStorageHelper.antiForgeryToken) {
             throw ErrorFactory.fromLoginRequired();
         }
 
@@ -188,7 +186,7 @@ export class Authenticator {
             options.method === 'PATCH' ||
             options.method === 'DELETE') {
 
-            (options.headers as any)['x-mycompany-csrf'] = this._antiForgeryToken;
+            (options.headers as any)['x-mycompany-csrf'] = HtmlStorageHelper.antiForgeryToken;
         }
     }
 
