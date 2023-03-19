@@ -1,16 +1,9 @@
 ---
-#
-# Duplication across demoapp and shellapp is intentional
-#
 engines:
   duplication:
     exclude_paths:
-      - 'shellapp/**'
-      - 'demoapp/**'
-
-#
-# Only use codacy for the src folders of the webhost, shellapp and demoapp
-#
+      - 'shellapp/**/*'
+      - 'demoapp/**/*'
 exclude_paths:
   - '*',
   - 'doc/**',
