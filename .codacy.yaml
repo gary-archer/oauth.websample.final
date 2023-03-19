@@ -18,6 +18,7 @@ exclude_paths:
 #
 engines:
   duplication:
+    enabled: true
     exclude_paths:
-      - "shellapp/**"
-      - "demoapp/**"
+      - 'shellapp/**'
+      - 'demoapp/**'
