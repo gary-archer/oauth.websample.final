@@ -66,7 +66,7 @@ cp demoapp.config.json index.html app.css ./dist
 #
 if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
 
-  node --loader ts-node/esm --no-warnings ./utils/rewriteIndexHtml.ts
+  node --loader ts-node/esm --no-warnings ../deployment/shared/rewriteIndexHtml.ts
   if [ $? -ne 0 ]; then
     echo 'Problem encountered rewriting the shell app index.html'
     exit 1

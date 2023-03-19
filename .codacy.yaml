@@ -1,12 +1,23 @@
 ---
-exclude_paths: [
-    '*',
-    'doc/**',
-    'deployment/**',
-    'demoapp/*',
-    'demoapp/webpack/**',
-    'shellapp/*',
-    'shellapp/webpack/**',
-    'webhost/*',
-    'cloudfront-extensions/*'
-]
+#
+# Only use codacy for the src folders of the webhost, shellapp and demoapp
+#
+exclude_paths:
+  - '*',
+  - 'doc/**',
+  - 'deployment/**',
+  - 'demoapp/*',
+  - 'demoapp/build/**',
+  - 'shellapp/*',
+  - 'shellapp/build/**',
+  - 'webhost/*',
+  - 'cloudfront-extensions/*'
+
+#
+# Duplication across demoapp and shellapp is intentional
+#
+engines:
+  duplication:
+    exclude_paths:
+      - "shellapp/**"
+      - "demoapp/**"
