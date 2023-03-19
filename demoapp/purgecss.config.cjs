@@ -8,7 +8,7 @@ module.exports = {
     content: ['dist/app.bundle.js'],
     css: ['bootstrap.min.css'],
     
-    // This seems to prevent some required elements from being removed
+    // This prevents some required elements from being removed
     // https://github.com/FullHuman/purgecss/issues/491
     safelist: [ 'body', 'container' ],
 }

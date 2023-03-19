@@ -35,7 +35,9 @@ rm -rf ./dist 2>/dev/null
 mkdir ./dist
 
 #
-# Do the main webpack build
+# Build JavaScript bundles
+# On Windows, ensure that you have first set Git bash as the node.js shell
+# npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
 #
 if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
   npm run webpackRelease

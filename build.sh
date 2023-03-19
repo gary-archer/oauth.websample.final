@@ -26,7 +26,7 @@ fi
 cd ..
 
 #
-# Build the shell app, which handles the redirect URI and logged out page
+# Build the shell application, which handles login and logout
 #
 cd shellapp
 ./build.sh 'DEBUG'
@@ -37,7 +37,7 @@ fi
 cd ..
 
 #
-# Build the React SPA's Javascript bundles
+# Build the demo application
 #
 cd demoapp
 ./build.sh 'DEBUG'
