@@ -9,5 +9,5 @@ module.exports = {
     
     // This seems to prevent some required elements from being removed
     // https://github.com/FullHuman/purgecss/issues/491
-    safelist: [ 'body' ],
+    safelist: [ 'body', 'container' ],
 }
