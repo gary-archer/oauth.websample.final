@@ -7,7 +7,9 @@ const config: webpack.Configuration = {
     // Set the working folder and build bundles for the browser
     context: path.resolve(dirname, './src'),
     target: ['web'],
-    devtool: false,
+
+    // Always output a source map, to support stack trace lookups
+    devtool: 'source-map',
 
     entry: {
 

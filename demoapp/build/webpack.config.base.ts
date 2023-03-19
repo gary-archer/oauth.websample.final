@@ -8,7 +8,7 @@ const config: webpack.Configuration = {
     context: path.resolve(dirname, './src'),
     target: ['web'],
 
-    // Always output source maps for SPAs
+    // Always output a source map, to support stack trace lookups
     devtool: 'source-map',
 
     entry: {
