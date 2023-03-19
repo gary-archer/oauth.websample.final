@@ -30,7 +30,7 @@ export class LoginRequiredView {
         const htmlTemplate =
             `<div class='row'>
                 <div class='col-12 text-center mx-auto'>
-                    <h5>{{userMessage}}</h5>
+                    <h6>{{userMessage}}</h6>
                 </div>
             </div>
             <div class='row'>
