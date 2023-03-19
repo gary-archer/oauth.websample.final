@@ -1,7 +1,4 @@
 ---
-engines:
-  duplication:
-    enabled: false
 exclude_paths:
   - '*'
   - 'doc/**'
