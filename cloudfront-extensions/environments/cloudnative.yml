@@ -1,0 +1,6 @@
+#
+# This represents a deployment where the SPA connects to Cloud Native APIs hosted in EKS
+#
+settings:
+  stage: 'cloudnative'
+  distributionId: 'E3ADD9C1K3LQWL'

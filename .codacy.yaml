@@ -1,0 +1,13 @@
+---
+exclude_paths:
+  - '*'
+  - 'doc/**'
+  - 'deployment/**'
+  - 'demoapp/*'
+  - 'demoapp/build/**'
+  - 'shellapp/*'
+  - 'shellapp/build/**'
+  - 'webhost/*'
+  - 'cloudfront-extensions/*'
+  - 'cloudfront-extensions/environments/**'
+  - 'cloudfront-extensions/test/**'

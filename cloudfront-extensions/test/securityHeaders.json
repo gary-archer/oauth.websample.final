@@ -1,0 +1,25 @@
+{
+    "Records": [
+      {
+        "cf": {
+          "request": {
+            "headers": {
+                "x-api-domain": [
+                  {
+                    "key": "x-api-domain",
+                    "value": "https://api.authsamples.com"
+                  }
+                ]
+            }
+          },
+          "response": {
+            "status": 200,
+            "body": "HTML DATA",
+            "headers": {
+            }
+          }
+        }
+      }
+    ]
+  }
+  

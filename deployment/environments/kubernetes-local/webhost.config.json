@@ -1,0 +1,7 @@
+{
+    "port": 8101,
+    "sslCertificateFileName": "./certs/keystore.p12",
+    "sslCertificatePassword": "Password1",
+    "trustedHosts": ["https://api.mycluster.com"],
+    "mode": "deployed"
+}
