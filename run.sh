@@ -49,7 +49,7 @@ if [ "$1" == 'LOCALAPI' ]; then
 fi
 
 #
-# Ensure that the webhost is pointing to the correct API
+# Ensure that web components point to the correct API components
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
