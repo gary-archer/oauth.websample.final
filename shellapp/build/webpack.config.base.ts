@@ -14,21 +14,21 @@ const config: webpack.Configuration = {
     entry: {
 
         // Specify the application entry point
-        app: ['./index.ts']
+        app: ['./index.tsx']
     },
     module: {
         rules: [{
 
-            // Files with a .ts extension are loaded by the Typescript loader
-            test: /\.ts$/,
+            // Files with a .ts or .tsx extension are loaded by the Typescript loader
+            test: /\.(ts|tsx)$/,
             use: 'ts-loader',
             exclude: /node_modules/
         }]
     },
     resolve: {
 
-        // Set extensions for import statements
-        extensions: ['.ts', '.js']
+        // Set extensions for import statements, where .js is used for importing modules from external libraries
+        extensions: ['.ts', '.tsx', '.js']
     },
     output: {
 

@@ -24,8 +24,10 @@ import {AppState} from './appState';
  */
 export function App(props: AppProps): JSX.Element {
 
-    // The view is re-rendered when any of these state properties change
+    // Get global data whenever the view is recreated
     const model = props.viewModel;
+
+    // The view is re-rendered when any of these state properties change
     const [state, setState] = useState<AppState>({
         isInitialised: model.isInitialised,
         isMobileLayout: isMobileLayoutNeeded(),
@@ -230,7 +232,7 @@ export function App(props: AppProps): JSX.Element {
             eventBus: model.eventBus,
             containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
-            dialogTitle: 'Application Error',
+            dialogTitle: 'Demo Application Error',
             centred: true,
         };
 

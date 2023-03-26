@@ -6,7 +6,6 @@ import {ErrorFactory} from '../errors/errorFactory';
 import {UIError} from '../errors/uiError';
 import {AxiosUtils} from '../utilities/axiosUtils';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
-import {EndLoginResponse} from './endLoginResponse';
 import {PageLoadResult} from './pageLoadResult';
 
 /*
@@ -75,29 +74,26 @@ export class Authenticator {
             const request = {
                 url: location.href,
             };
-            const endLoginResponse = await this._callOAuthAgent(
+            const pageLoadResult = await this._callOAuthAgent(
                 'POST',
                 'login/end',
-                request) as EndLoginResponse;
+                request) as PageLoadResult;
 
             // Store the anti forgery token, where it can be picked up by the target micro UI
-            if (endLoginResponse.antiForgeryToken) {
-                HtmlStorageHelper.antiForgeryToken = endLoginResponse.antiForgeryToken;
+            if (pageLoadResult.antiForgeryToken) {
+                HtmlStorageHelper.antiForgeryToken = pageLoadResult.antiForgeryToken;
             }
 
             // Teturn to the callback path of the micro UI that started the login
-            if (endLoginResponse.handled) {
+            if (pageLoadResult.handled) {
 
                 HtmlStorageHelper.loggedOut = false;
                 const appBasePath = HtmlStorageHelper.postLoginRestore() || this._configuration.defaultAppBasePath;
                 location.href = `${location.origin}${appBasePath}callback`;
             }
 
-            // Return a result to the rest of the app
-            return {
-                isLoggedIn: endLoginResponse.isLoggedIn,
-                handled: endLoginResponse.handled
-            };
+            // Return the result to the rest of the app
+            return pageLoadResult;
 
         } catch (e: any) {
 

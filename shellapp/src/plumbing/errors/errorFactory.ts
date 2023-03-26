@@ -142,6 +142,32 @@ export class ErrorFactory {
     }
 
     /*
+     * Return an error due to rendering the view
+     */
+    public static fromRenderError(exception: any, componentStack?: string): UIError {
+
+        // Already handled errors
+        if (exception instanceof UIError) {
+            return exception;
+        }
+
+        // Create the error
+        const error = new UIError(
+            'Web UI',
+            ErrorCodes.renderError,
+            'A technical problem was encountered rendering the UI',
+            exception.stack);
+
+        // Set technical details from the received exception
+        error.details = ErrorFactory._getExceptionMessage(exception);
+        if (componentStack) {
+            error.details += ` : ${componentStack}`;
+        }
+
+        return error;
+    }
+
+    /*
      * Try to update the default API error with response details
      */
     private static _updateFromApiErrorResponse(error: UIError, apiError: any): void {

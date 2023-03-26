@@ -1,7 +1,7 @@
 {
   "name": "finalspa",
   "version": "3.0.0",
-  "description": "The Final SPA, which implements OpenID Connect using an API driven Back End for Front End",
+  "description": "The micro-UI demo application, which calls OAuth 2.0 secured APIs with the latest secure cookies",
   "main": "index.tsx",
   "keywords": [],
   "author": "Gary Archer",

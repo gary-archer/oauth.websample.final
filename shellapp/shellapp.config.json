@@ -1,4 +1,4 @@
 {
-    "apiBaseUrl": "https://api.authsamples-dev.com/demobrand/investments",
+    "defaultAppBasePath": "/demoapp/",
     "oauthAgentBaseUrl": "https://api.authsamples-dev.com/demobrand/oauth-agent"
 }
