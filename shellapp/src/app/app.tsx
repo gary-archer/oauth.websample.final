@@ -6,7 +6,7 @@ import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {DefaultHandler} from '../views/handlers/defaultHandler';
 import {LoginRequiredHandler} from '../views/handlers/loginRequiredHandler';
-import {LogoutHandler} from '../views/handlers/LogoutHandler';
+import {LogoutHandler} from '../views/handlers/logoutHandler';
 import {TitleView} from '../views/headings/titleView';
 import {AppProps} from './appProps';
 import {AppState} from './appState';
