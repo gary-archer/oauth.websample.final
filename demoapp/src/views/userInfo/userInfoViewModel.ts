@@ -51,7 +51,7 @@ export class UserInfoViewModel {
             this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
             onSuccess(userInfo);
 
-        } catch (e) {
+        } catch (e: any) {
 
             const error = ErrorFactory.fromException(e);
             this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);

@@ -11,18 +11,31 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
 
     const [state, setState] = useState<ErrorSummaryViewState>({
         showDetails: false,
-        error: props.error,
     });
 
     /*
-     * Return the markup for the hyperlink
+     * Return the hyperlink and retry button
      */
-    function renderHyperlink(): JSX.Element {
+    function renderSummary(): JSX.Element {
 
         return (
-            <a href='#' className='errorcolor largetext text-center' onClick={handleSummaryClick}>
-                Problem Encountered
-            </a>
+            <>
+                <div className='row'>
+                    <div className='col col-12 text-center mx-auto'>
+                        <a href='#' className='errorcolor largetext' onClick={handleSummaryClick}>
+                            Problem Encountered
+                        </a>
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col col-12 text-center my-2 p-1'>
+                        <button
+                            onClick={props.onRetry}
+                            type='button'
+                            className='btn btn-primary w-25 p-1'>Retry</button>
+                    </div>
+                </div>
+            </>
         );
     }
 
@@ -34,7 +47,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
         const title = 'Shell Application Error';
         const errorDetailsProps = {
             title,
-            error: state.error!,
+            error: props.error!,
             handleClose: handleDetailsDialogClose,
         };
 
@@ -84,14 +97,19 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
         });
     }
 
-    // Render the hyperlink as a centred row
+    // Render nothing if there is no error
+    if (!props.error) {
+
+        return (
+            <>
+            </>
+        );
+    }
+
+    // Otherwise render the link as a centred row, and a modal dialog when the link is clicked
     return (
         <>
-            <div className='row'>
-                <div className='col-6 text-center mx-auto'>
-                    {renderHyperlink()}
-                </div>
-            </div>
+            {renderSummary()}
             {renderModalDialog()}
         </>
     );

@@ -69,7 +69,7 @@ export function App(props: AppProps): JSX.Element {
                 };
             });
 
-        } catch (e) {
+        } catch (e: any) {
 
             // Render startup errors
             setError(e);
@@ -145,7 +145,7 @@ export function App(props: AppProps): JSX.Element {
             // Try the operation
             await model.authenticator.expireAccessToken();
 
-        } catch (e) {
+        } catch (e: any) {
 
             // Write technical error details to the console
             const error = ErrorFactory.fromException(e);
@@ -163,7 +163,7 @@ export function App(props: AppProps): JSX.Element {
             // Try the operation
             await model.authenticator.expireRefreshToken();
 
-        } catch (e) {
+        } catch (e: any) {
 
             // Write technical error details to the console
             const error = ErrorFactory.fromException(e);
@@ -269,7 +269,7 @@ export function App(props: AppProps): JSX.Element {
             eventBus: model.eventBus,
             containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
-            dialogTitle: 'Application Error',
+            dialogTitle: 'Demo Application Error',
             centred: true,
         };
 

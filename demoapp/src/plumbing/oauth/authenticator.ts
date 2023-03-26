@@ -170,7 +170,7 @@ export class Authenticator {
 
             return null;
 
-        } catch (e) {
+        } catch (e: any) {
 
             throw ErrorFactory.fromHttpError(e, url, 'OAuth Agent');
         }

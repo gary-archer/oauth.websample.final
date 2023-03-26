@@ -49,7 +49,7 @@ export class CompaniesContainerViewModel {
             this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
             onSuccess(companies);
 
-        } catch (e) {
+        } catch (e: any) {
 
             const error = ErrorFactory.fromException(e);
             this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);

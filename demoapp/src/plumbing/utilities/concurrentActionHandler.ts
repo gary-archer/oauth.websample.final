@@ -47,7 +47,7 @@ export class ConcurrentActionHandler {
                     c[0]();
                 });
 
-            } catch (e) {
+            } catch (e: any) {
 
                 // On failure resolve all promises with the same error
                 this._callbacks.forEach((c) => {

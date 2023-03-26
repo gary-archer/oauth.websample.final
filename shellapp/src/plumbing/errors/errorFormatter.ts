@@ -74,6 +74,10 @@ export class ErrorFormatter {
      */
     public getErrorStack(error: UIError): ErrorLine | null {
 
+        if (!error) {
+            return null;
+        }
+
         // In debug builds render the stack trace as a long string
         // We can then look up results at https://sourcemaps.info
         if (SHOW_STACK_TRACE) {
