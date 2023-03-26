@@ -23,6 +23,55 @@ export class Authenticator {
     }
 
     /*
+     * Get the 
+     */
+    public async handlePageLoad(): Promise<PageLoadResult> {
+
+        try {
+
+            // Get the authentication state from the OAuth agent
+            const request = {
+                url: location.href,
+            };
+            const pageLoadResult = await this._callOAuthAgent(
+                'POST',
+                'login/end',
+                request) as PageLoadResult;
+
+            // Store the anti forgery token, where it can be picked up by the target micro UI
+            if (pageLoadResult.antiForgeryToken) {
+                HtmlStorageHelper.antiForgeryToken = pageLoadResult.antiForgeryToken;
+            }
+
+            // If a login response was handled, return to the micro-UI that triggered the login
+            if (pageLoadResult.handled) {
+
+                HtmlStorageHelper.loggedOut = false;
+                const appBasePath = HtmlStorageHelper.postLoginRestore() || this._configuration.defaultAppBasePath;
+                location.href = `${location.origin}${appBasePath}callback`;
+            }
+
+            // Return the authenticated state to the rest of the app
+            return pageLoadResult;
+
+        } catch (e: any) {
+
+            // Session expired errors mean re-authentication is required
+            if (this._isSessionExpiredError(e)) {
+
+                HtmlStorageHelper.clearAntiForgeryToken();
+                return {
+                    isLoggedIn: false,
+                    handled: false,
+                };
+            }
+
+            // Rethrow other errors
+            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
+        }
+    }
+
+    /*
      * Trigger the login redirect to the authorization server
      */
     public async login(): Promise<void> {
@@ -60,55 +109,6 @@ export class Authenticator {
         } finally {
 
             HtmlStorageHelper.clearAntiForgeryToken();
-        }
-    }
-
-    /*
-     * When an OpenID Connect authorization response is received, forward it to the current micro UI
-     */
-    public async handlePageLoad(): Promise<PageLoadResult> {
-
-        try {
-
-            // Get the authentication state from the OAuth agent
-            const request = {
-                url: location.href,
-            };
-            const pageLoadResult = await this._callOAuthAgent(
-                'POST',
-                'login/end',
-                request) as PageLoadResult;
-
-            // Store the anti forgery token, where it can be picked up by the target micro UI
-            if (pageLoadResult.antiForgeryToken) {
-                HtmlStorageHelper.antiForgeryToken = pageLoadResult.antiForgeryToken;
-            }
-
-            // Teturn to the callback path of the micro UI that started the login
-            if (pageLoadResult.handled) {
-
-                HtmlStorageHelper.loggedOut = false;
-                const appBasePath = HtmlStorageHelper.postLoginRestore() || this._configuration.defaultAppBasePath;
-                location.href = `${location.origin}${appBasePath}callback`;
-            }
-
-            // Return the result to the rest of the app
-            return pageLoadResult;
-
-        } catch (e: any) {
-
-            // Session expired errors require re-authentication
-            if (this._isSessionExpiredError(e)) {
-
-                HtmlStorageHelper.clearAntiForgeryToken();
-                return {
-                    isLoggedIn: false,
-                    handled: false,
-                };
-            }
-
-            // Rethrow other errors
-            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
         }
     }
 
