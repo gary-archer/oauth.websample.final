@@ -21,6 +21,7 @@ export function CallbackView(props: CallbackViewProps): JSX.Element {
     function startup(): void {
 
         const pathToRestore = HtmlStorageHelper.postLoginRestore() || '/';
+        console.log('Restoring deep link path: ' + pathToRestore);
         props.navigate(pathToRestore);
     }
 

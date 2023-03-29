@@ -31,6 +31,7 @@ export class Authenticator {
      */
     public login(): void {
 
+        console.log('Storing path: ' + CurrentLocation.path);
         HtmlStorageHelper.preLoginStore(CurrentLocation.path);
         location.href = `${location.origin}/login`;
     }
