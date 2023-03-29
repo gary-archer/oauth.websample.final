@@ -1,4 +1,4 @@
-FROM node:18.1.0-bullseye
+FROM node:18.15.0-bullseye
 
 # Configure trusted root certificate authorities
 ARG TRUSTED_CA_CERTS
