@@ -46,15 +46,19 @@ const config: webpack.Configuration = {
     ],
     optimization: {
 
-        // Build third party code to a separate vendor bundle file
+        // Build third party code into two bundles, for React and non-React code
         splitChunks: {
             cacheGroups: {
+                react: {
+                    chunks: 'all',
+                    name: 'react',
+                    test: /node_modules[\\/](react|react-dom|react-router-dom|react-modal)[\\/]/,
+                },
                 vendor: {
-                    chunks: 'initial',
+                    chunks: 'all',
                     name: 'vendor',
                     test: /node_modules/,
-                    enforce: true
-                },
+                }
             }
         }
     }

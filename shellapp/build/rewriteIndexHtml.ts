@@ -16,8 +16,9 @@ export function execute(): void {
     const outFolder = './dist';
 
     // First remove sourceMappingURL references
-    removeSourcemapReference(`${outFolder}/app.bundle.js`);
     removeSourcemapReference(`${outFolder}/vendor.bundle.js`);
+    removeSourcemapReference(`${outFolder}/react.bundle.js`);
+    removeSourcemapReference(`${outFolder}/app.bundle.js`);
 
     // Update CSS resources with a cache busting timestamp and an integrity hash
     updateResource(
@@ -41,6 +42,13 @@ export function execute(): void {
         'vendor.bundle.js',
         timestamp,
         calculateFileHash(`${outFolder}/vendor.bundle.js`));
+
+    updateResource(
+        `${outFolder}/index.html`,
+        'src',
+        'react.bundle.js',
+        timestamp,
+        calculateFileHash(`${outFolder}/react.bundle.js`));
 
     updateResource(
         `${outFolder}/index.html`,

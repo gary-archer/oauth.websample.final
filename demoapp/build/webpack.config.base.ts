@@ -14,7 +14,7 @@ const config: webpack.Configuration = {
     entry: {
 
         // Specify the application entry point
-        app: ['./index.tsx']
+        app: ['./index.tsx'],
     },
     module: {
         rules: [{
@@ -36,27 +36,31 @@ const config: webpack.Configuration = {
         path: path.resolve(dirname, './dist'),
         filename: '[name].bundle.js'
     },
-    optimization: {
-
-        // Build third party code to a separate vendor bundle file
-        splitChunks: {
-            cacheGroups: {
-                vendor: {
-                    chunks: 'initial',
-                    name: 'vendor',
-                    test: /node_modules/,
-                    enforce: true
-                },
-            }
-        }
-    },
     plugins:[
         // Reduce the size of the moment library
         new webpack.IgnorePlugin({
             contextRegExp: /moment$/,
             resourceRegExp: /^\.\/locale$/,
         }),
-    ]
+    ],
+    optimization: {
+
+        // Build third party code into two bundles, for React and non-React code
+        splitChunks: {
+            cacheGroups: {
+                react: {
+                    chunks: 'all',
+                    name: 'react',
+                    test: /node_modules[\\/](react|react-dom|react-router-dom|react-modal)[\\/]/,
+                },
+                vendor: {
+                    chunks: 'all',
+                    name: 'vendor',
+                    test: /node_modules/,
+                }
+            }
+        }
+    }
 };
 
 export default config;
