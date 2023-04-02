@@ -54,11 +54,11 @@ mkdir .package/demoapp
 #
 # Copy HTML assets
 #
-cp '../shellapp/dist/index.html'  .package
-cp '../shellapp/dist/*.bundle.js' .package
-cp '../shellapp/dist/*.css'       .package
-cp '../shellapp/dist/favicon.ico' .package
+cp ../shellapp/dist/index.html  .package
+cp ../shellapp/dist/*.bundle.js .package
+cp ../shellapp/dist/*.css       .package
+cp ../shellapp/dist/favicon.ico .package
 
-cp '../demoapp/dist/index.html'   .package/demoapp
-cp '../demoapp/dist/*.bundle.js'  .package/demoapp
-cp '../demoapp/dist/*.css'        .package/demoapp
+cp ../demoapp/dist/index.html   .package/demoapp
+cp ../demoapp/dist/*.bundle.js  .package/demoapp
+cp ../demoapp/dist/*.css        .package/demoapp
