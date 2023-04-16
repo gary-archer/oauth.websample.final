@@ -57,24 +57,6 @@ spec:
     port: 8000
 ---
 apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: istio-ingress-gateway
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-  - port:
-      number: 443
-      name: https
-      protocol: HTTPS
-    tls:
-      mode: SIMPLE
-      credentialName: mycluster-com-tls
-    hosts:
-    - web.mycluster.com
----
-apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: webhost-virtual-service
