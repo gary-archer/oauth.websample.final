@@ -33,9 +33,6 @@ spec:
             mountPath: /usr/webhost/demoapp/demoapp.config.json
             subPath: demoapp.config.json
             readOnly: true
-          - name: webhost-ssl-cert
-            mountPath: /usr/webhost/certs
-            readOnly: true
       volumes:
         - name: webhost-config
           configMap:
@@ -46,23 +43,18 @@ spec:
         - name: demoapp-config
           configMap:
             name: demoapp-config
-        - name: webhost-ssl-cert
-          secret:
-            secretName: webhost-pkcs12
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: webhost-svc
-  annotations:
-    konghq.com/protocol: https
 spec:
   selector:
     app: webhost
   ports:
-  - name: https
+  - name: http
     protocol: "TCP"
-    port: 8101
+    port: 8000
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
@@ -83,4 +75,4 @@ spec:
               service:
                 name: webhost-svc
                 port:
-                  name: https
+                  name: http
