@@ -56,23 +56,36 @@ spec:
     protocol: "TCP"
     port: 8000
 ---
-kind: Ingress
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
 metadata:
-  name: webhost-ingress
+  name: istio-ingress-gateway
 spec:
-  ingressClassName: kong
-  tls:
-    - hosts:
-        - web.mycluster.com
-  rules:
-    - host: web.mycluster.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: webhost-svc
-                port:
-                  name: http
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: mycluster-com-tls
+    hosts:
+    - web.mycluster.com
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: webhost-virtual-service
+spec:
+  hosts:
+  - web.mycluster.com
+  gateways:
+  - istio-ingress-gateway
+  http:
+  - route:
+    - destination:
+        host: webhost-svc
+        port:
+          number: 8000
