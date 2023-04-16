@@ -1,27 +1,6 @@
 #
 # The Kubernetes resources for the Web Host, which delivers static web content
 #
-kind: Certificate
-apiVersion: cert-manager.io/v1
-metadata:
-  name: webhost-cert
-spec:
-  secretName: webhost-pkcs12
-  issuerRef:
-    name: ca-issuer
-    kind: Issuer
-  commonName: webhost-svc
-  dnsNames:
-  - webhost-svc
-  - webhost-svc.applications.svc
-  - webhost-svc.applications.svc.cluster.local
-  keystores:
-    pkcs12:
-      create: true
-      passwordSecretRef:
-        name: webhost-pkcs12-password
-        key: password
----
 kind: Deployment
 apiVersion: apps/v1
 metadata:

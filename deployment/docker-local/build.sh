@@ -49,16 +49,10 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
-
-#
-# Prepare root CA certificates that the Docker container will trust
-#
-cp certs/authsamples-dev.ca.pem deployment/shared/trusted.ca.pem
-
 #
 # Build the web host into a docker image
 #
-docker build -f ./deployment/shared/Dockerfile --build-arg TRUSTED_CA_CERTS='deployment/shared/trusted.ca.pem' -t webhost:v1 .
+docker build -f ./deployment/shared/Dockerfile -t webhost:v1 .
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the Web Host docker container'
   exit 1
