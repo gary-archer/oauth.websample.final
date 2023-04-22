@@ -1,11 +1,5 @@
 FROM node:18.15.0-bullseye
 
-# Configure trusted root certificate authorities
-ARG TRUSTED_CA_CERTS
-COPY $TRUSTED_CA_CERTS /usr/local/share/certificates/trusted.ca.crt
-RUN update-ca-certificates
-ENV NODE_EXTRA_CA_CERTS='/usr/local/share/certificates/trusted.ca.crt'
-
 # Copy the web host application and install its dependencies
 WORKDIR /usr/webhost
 COPY webhost/dist               /usr/webhost/dist
@@ -24,9 +18,7 @@ COPY demoapp/dist/*.bundle.js   /usr/webhost/demoapp/
 COPY demoapp/dist/*.css         /usr/webhost/demoapp/
 
 #  Run the web host as a low privilege user
-RUN adduser --disabled-password --home /home/webuser --gecos '' webuser
-USER webuser
-
-# Work around openssl and node.js compatibility in some setups
-# https://github.com/nodejs/node/issues/40672
-CMD ["node", "--openssl-legacy-provider", "dist/app.js"]
+RUN groupadd --gid 10000 webuser \
+  && useradd --uid 10001 --gid webuser --shell /bin/bash --create-home webuser
+USER 10001
+CMD ["node", "dist/app.js"]
