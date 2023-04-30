@@ -29,10 +29,12 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Clean the output folder
+# Clean the output folder and copy build files into this SPA
 #
 rm -rf ./dist 2>/dev/null
 mkdir ./dist
+rm -rf build 2>/dev/null
+cp -R ../build ./build
 
 #
 # Build JavaScript bundles
