@@ -10,6 +10,12 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
+# Get the timestamp based docker image tag
+#
+TAG=$(cat ./dockertag.txt)
+export DOCKER_IMAGE="webhost:$TAG"
+
+#
 # Create a configmap for the shell app's JSON configuration file
 #
 kubectl -n applications delete configmap shellapp-config 2>/dev/null
@@ -38,12 +44,6 @@ if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the Web Host configmap'
   exit 1
 fi
-
-#
-# Use a timestamp based docker image tag
-#
-TAG=$(cat ./dockertag.txt)
-export DOCKER_IMAGE="webhost:$TAG"
 
 #
 # Produce the final YAML using the envsubst tool

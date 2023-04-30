@@ -8,11 +8,18 @@
 # Ensure that we are in the root folder
 #
 cd "$(dirname "${BASH_SOURCE[0]}")"
-cd ../..
+
+#
+# Use a timestamp based docker image tag
+#
+TAG=$(date +%Y%m%d%H%M%S)
+echo $TAG > ./dockertag.txt
+DOCKER_IMAGE="webhost:$TAG"
 
 #
 # Build the web host's Javascript code
 #
+cd ../..
 cd webhost
 ./build.sh
 if [ $? -ne 0 ]; then
@@ -42,13 +49,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 cd ../..
-
-#
-# Use a timestamp based docker image tag
-#
-TAG=$(date +%Y%m%d%H%M%S)
-echo $TAG > ./dockertag.txt
-DOCKER_IMAGE="webhost:$TAG"
 
 #
 # Build the Docker image
