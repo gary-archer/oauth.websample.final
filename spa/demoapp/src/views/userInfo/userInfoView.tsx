@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {UserInfo} from '../../api/entities/userInfo';
-import {UIError} from '../../plumbing/errors/uiError';
+import {ErrorCodes} from '../../plumbing/errors/errorCodes';
+import {
+    ErrorEventNames,
+    ErrorSummaryView,
+    UIError,
+    SetErrorEvent} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
-import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {UserInfoViewProps} from './userInfoViewProps';
 import {UserInfoViewState} from './userInfoViewState';
 
@@ -66,7 +69,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
         const onError = (error: UIError) => {
 
-            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('userinfo', error));
+            model.eventBus.emit(ErrorEventNames.SetError, null, new SetErrorEvent('userinfo', error));
             setState((s) => {
                 return {
                     ...s,
@@ -80,11 +83,12 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
             causeError,
         };
 
-        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('userinfo', null));
+        model.eventBus.emit(ErrorEventNames.SetError, null, new SetErrorEvent('userinfo', null));
         model.callApi(onSuccess, onError, options);
     }
 
     const errorProps = {
+        errorsToIgnore: [ErrorCodes.loginRequired],
         eventBus: model.eventBus,
         containingViewName: 'userinfo',
         hyperlinkMessage: 'Problem Encountered',

@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import ReactModal from 'react-modal';
-import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {EventNames} from '../../plumbing/events/eventNames';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
+import {BaseErrorFactory} from '../logic/baseErrorFactory';
+import {ErrorEventNames} from '../events/errorEventNames';
+import {SetErrorEvent} from '../events/setErrorEvent';
 import {ErrorDetailsView} from './errorDetailsView';
 import {ErrorSummaryViewProps} from './errorSummaryViewProps';
 import {ErrorSummaryViewState} from './errorSummaryViewState';
@@ -27,14 +26,14 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
      * Subscribe to events and then do the initial load of data
      */
     async function startup(): Promise<void> {
-        props.eventBus.on(EventNames.SetError, onSetError);
+        props.eventBus.on(ErrorEventNames.SetError, onSetError);
     }
 
     /*
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        props.eventBus.detach(EventNames.SetError, onSetError);
+        props.eventBus.detach(ErrorEventNames.SetError, onSetError);
     }
 
     /*
@@ -49,7 +48,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
                 setState((s) => {
                     return {
                         ...s,
-                        error: ErrorFactory.fromException(event.error),
+                        error: BaseErrorFactory.fromException(event.error),
                     };
                 });
 
@@ -71,7 +70,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
     function renderHyperlink(): JSX.Element {
 
         // This error is expected when there is no auth cookie yet
-        if (state.error && state.error.errorCode === ErrorCodes.loginRequired) {
+        if (isNonError()) {
             return (
                 <>
                 </>
@@ -83,6 +82,13 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
                 {props.hyperlinkMessage}
             </a>
         );
+    }
+
+    /*
+     * Ignore expected errors
+     */
+    function isNonError() {
+        return state.error && props.errorsToIgnore.indexOf(state.error.errorCode) !== -1;
     }
 
     /*
@@ -143,7 +149,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
     }
 
     // If there is no real error, do not render anything
-    if (!state.error || state.error.errorCode === ErrorCodes.loginRequired) {
+    if (isNonError()) {
         return  (
             <>
             </>

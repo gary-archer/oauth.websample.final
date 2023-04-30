@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
 import {Company} from '../../api/entities/company';
-import {UIError} from '../../plumbing/errors/uiError';
+import {ErrorCodes} from '../../plumbing/errors/errorCodes';
+import {
+    ErrorEventNames,
+    ErrorSummaryView,
+    UIError,
+    SetErrorEvent} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
-import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {CurrentLocation} from '../utilities/currentLocation';
 import {CompaniesContainerProps} from './companiesContainerProps';
 import {CompaniesContainerState} from './companiesContainerState';
@@ -72,7 +75,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
 
         const onError = (error: UIError) => {
 
-            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', error));
+            model.eventBus.emit(ErrorEventNames.SetError, null, new SetErrorEvent('companies', error));
             setState((s) => {
                 return {
                     ...s,
@@ -81,7 +84,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
             });
         };
 
-        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
+        model.eventBus.emit(ErrorEventNames.SetError, null, new SetErrorEvent('companies', null));
         model.callApi(onSuccess, onError, causeError);
     }
 
@@ -90,6 +93,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     };
 
     const errorProps = {
+        errorsToIgnore: [ErrorCodes.loginRequired],
         eventBus: model.eventBus,
         containingViewName: 'companies',
         hyperlinkMessage: 'Problem Encountered in Companies View',

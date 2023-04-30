@@ -1,10 +1,10 @@
-import {ErrorCodes} from './errorCodes';
+import {BaseErrorCodes} from './baseErrorCodes';
 import {UIError} from './uiError';
 
 /*
- * A class to handle error processing
+ * Base error creation
  */
-export class ErrorFactory {
+export class BaseErrorFactory {
 
     /*
      * Return an error based on the exception type or properties
@@ -19,56 +19,12 @@ export class ErrorFactory {
         // Create the error
         const error = new UIError(
             'Web UI',
-            ErrorCodes.generalUIError,
+            BaseErrorCodes.generalUIError,
             'A technical problem was encountered in the UI',
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorFactory._getExceptionMessage(exception);
-        return error;
-    }
-
-    /*
-     * Handle errors signing in
-     */
-    public static fromLoginOperation(exception: any, errorCode: string): UIError {
-
-        // Already handled errors
-        if (exception instanceof UIError) {
-            return exception;
-        }
-
-        // Create the error
-        const error = new UIError(
-            'Login',
-            errorCode,
-            'A technical problem occurred during login processing',
-            exception.stack);
-
-        // Set technical details from the received exception
-        error.details = ErrorFactory._getExceptionMessage(exception);
-        return error;
-    }
-
-    /*
-     * Handle sign out request errors
-     */
-    public static fromLogoutOperation(exception: any, errorCode: string): UIError {
-
-        // Already handled errors
-        if (exception instanceof UIError) {
-            return exception;
-        }
-
-        // Create the error
-        const error = new UIError(
-            'Logout',
-            errorCode,
-            'A technical problem occurred during logout processing',
-            exception.stack);
-
-        // Set technical details from the received exception
-        error.details = ErrorFactory._getExceptionMessage(exception);
+        error.details = BaseErrorFactory.getExceptionMessage(exception);
         return error;
     }
 
@@ -79,7 +35,7 @@ export class ErrorFactory {
 
         return new UIError(
             'Data',
-            ErrorCodes.jsonDataError,
+            BaseErrorCodes.jsonDataError,
             'HTTP response data was not valid JSON and could not be parsed');
     }
 
@@ -99,40 +55,40 @@ export class ErrorFactory {
             statusCode = exception.response.status;
         }
 
-        let error = null;
+        let error: UIError;
         if (statusCode === 0) {
 
             // This status is generally a CORS or availability problem
             error = new UIError(
                 'Network',
-                ErrorCodes.networkError,
+                BaseErrorCodes.networkError,
                 `A network problem occurred when the UI called the ${source}`,
                 exception.stack);
-            error.details = this._getExceptionMessage(exception);
+            error.details = BaseErrorFactory.getExceptionMessage(exception);
 
         } else if (statusCode >= 200 && statusCode <= 299) {
 
             // This status is generally a JSON parsing error
             error = new UIError(
                 'JSON',
-                ErrorCodes.jsonDataError,
+                BaseErrorCodes.jsonDataError,
                 `'A technical problem occurred parsing data from the ${source}`,
                 exception.stack);
-            error.details = this._getExceptionMessage(exception);
+            error.details = BaseErrorFactory.getExceptionMessage(exception);
 
         } else {
 
             // Create an error indicating a data problem
             error = new UIError(
                 source,
-                ErrorCodes.responseError,
+                BaseErrorCodes.responseError,
                 `An error response was returned from the ${source}`,
                 exception.stack);
-            error.details = this._getExceptionMessage(exception);
+            error.details = BaseErrorFactory.getExceptionMessage(exception);
 
             // Override the default with a server response when received and CORS allows us to read it
             if (exception.response && exception.response.data && typeof exception.response.data === 'object') {
-                ErrorFactory._updateFromApiErrorResponse(error, exception.response.data);
+                BaseErrorFactory._updateFromApiErrorResponse(error, exception.response.data);
             }
         }
 
@@ -154,17 +110,34 @@ export class ErrorFactory {
         // Create the error
         const error = new UIError(
             'Web UI',
-            ErrorCodes.renderError,
+            BaseErrorCodes.renderError,
             'A technical problem was encountered rendering the UI',
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorFactory._getExceptionMessage(exception);
+        error.details = BaseErrorFactory.getExceptionMessage(exception);
         if (componentStack) {
             error.details += ` : ${componentStack}`;
         }
 
         return error;
+    }
+
+    /*
+     * Get the message from an exception and avoid returning [object Object]
+     */
+    public static getExceptionMessage(exception: any): string {
+
+        if (exception.message) {
+            return exception.message;
+        }
+
+        const details = exception.toString();
+        if (details !== {}.toString()) {
+            return details;
+        }
+
+        return '';
     }
 
     /*
@@ -186,22 +159,5 @@ export class ErrorFactory {
                 error.setApiErrorDetails(apiError.area, apiError.id, apiError.utcTime);
             }
         }
-    }
-
-    /*
-     * Get the message from an exception and avoid returning [object Object]
-     */
-    private static _getExceptionMessage(exception: any): string {
-
-        if (exception.message) {
-            return exception.message;
-        }
-
-        const details = exception.toString();
-        if (details !== {}.toString()) {
-            return details;
-        }
-
-        return '';
     }
 }

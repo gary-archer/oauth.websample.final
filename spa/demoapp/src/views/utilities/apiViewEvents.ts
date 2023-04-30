@@ -1,6 +1,6 @@
 import EventBus from 'js-event-bus';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {UIError} from '../../plumbing/errors/uiError';
+import {UIError} from '../../plumbing/errors/lib';
 import {DataStatusEvent} from '../../plumbing/events/dataStatusEvent';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';

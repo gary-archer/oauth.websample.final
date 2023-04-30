@@ -1,4 +1,4 @@
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {BaseErrorFactory} from '../errors/lib';
 
 /*
  * Utilities related to the Axios library
@@ -12,7 +12,7 @@ export class AxiosUtils {
     public static checkJson(data: any): void {
 
         if (typeof data !== 'object') {
-            const error: any = ErrorFactory.fromJsonParseError();
+            const error: any = BaseErrorFactory.fromJsonParseError();
             error.response = {
                 status: 200,
             };

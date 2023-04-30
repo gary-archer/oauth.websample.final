@@ -5,6 +5,9 @@ import EventBus from 'js-event-bus';
  */
 export interface ErrorSummaryViewProps {
 
+    // Any errors to ignore
+    errorsToIgnore: string[];
+
     // The bus via which the view receives error updates
     eventBus: EventBus;
 

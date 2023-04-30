@@ -4,7 +4,7 @@ import {Company} from '../entities/company';
 import {CompanyTransactions} from '../entities/companyTransactions';
 import {UserInfo} from '../entities/userInfo';
 import {Configuration} from '../../configuration/configuration';
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {BaseErrorFactory} from '../../plumbing/errors/lib';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {ApiClientOptions} from './apiClientOptions';
@@ -86,7 +86,7 @@ export class ApiClient {
 
             // Report Ajax errors if this is not a 401
             if (!this._isApi401Error(error1)) {
-                throw ErrorFactory.fromHttpError(error1, url, 'Web API');
+                throw BaseErrorFactory.fromHttpError(error1, url, 'Web API');
             }
 
             try {
@@ -97,7 +97,7 @@ export class ApiClient {
             } catch (error2) {
 
                 // Report Ajax errors for the retry
-                throw ErrorFactory.fromHttpError(error2, url, 'Web API');
+                throw BaseErrorFactory.fromHttpError(error2, url, 'Web API');
             }
         }
     }
