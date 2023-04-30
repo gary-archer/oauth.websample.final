@@ -24,7 +24,7 @@ cd ..
 #
 # Build the shell app, which handles the redirect URI and logged out page
 #
-cd shellapp
+cd spa/shellapp
 ./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the shell application'
@@ -41,7 +41,7 @@ if [ $? -ne 0 ]; then
   echo '*** SPA build problem encountered'
   exit 1
 fi
-cd ..
+cd ../..
 
 #
 # Build the Docker image
