@@ -1,4 +1,4 @@
-import {UIError} from '../logic/uiError';
+import {UIError} from '../../plumbing/errors/lib';
 
 /*
  * The UI state of the summary view and its modal dialog

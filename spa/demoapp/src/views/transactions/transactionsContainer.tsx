@@ -2,13 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {
-    ErrorEventNames,
-    ErrorSummaryView,
-    UIError,
-    SetErrorEvent} from '../../plumbing/errors/lib';
+import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
+import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
+import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {CurrentLocation} from '../utilities/currentLocation';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
@@ -83,7 +81,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
             } else {
 
-                model.eventBus.emit(ErrorEventNames.SetError, null, new SetErrorEvent('transactions', error));
+                model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', error));
                 setState((s) => {
                     return {
                         ...s,
@@ -93,7 +91,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
             }
         };
 
-        model.eventBus.emit(ErrorEventNames.SetError, null, new SetErrorEvent('transactions', null));
+        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', null));
         model.callApi(companyId, onSuccess, onError, causeError);
     }
 

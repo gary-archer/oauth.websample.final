@@ -28,7 +28,7 @@ export class ErrorFormatter {
 
         /* FIELDS FOR TECHNICAL SUPPORT STAFF */
 
-        // Show the time of the error
+        // Show the UTC time of the error
         if (error.utcTime.length > 0) {
             const displayTime = moment(error.utcTime).format('DD MMM YYYY HH:mm:ss');
             lines.push(this._createErrorLine('UTC Time', displayTime));

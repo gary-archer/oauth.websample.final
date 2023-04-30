@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import ReactModal from 'react-modal';
-import {BaseErrorFactory} from '../logic/baseErrorFactory';
-import {ErrorEventNames} from '../events/errorEventNames';
-import {SetErrorEvent} from '../events/setErrorEvent';
+import {BaseErrorFactory} from '../../plumbing/errors/lib';
+import {EventNames} from '../../plumbing/events/eventNames';
+import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorDetailsView} from './errorDetailsView';
 import {ErrorSummaryViewProps} from './errorSummaryViewProps';
 import {ErrorSummaryViewState} from './errorSummaryViewState';
@@ -26,14 +26,14 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
      * Subscribe to events and then do the initial load of data
      */
     async function startup(): Promise<void> {
-        props.eventBus.on(ErrorEventNames.SetError, onSetError);
+        props.eventBus.on(EventNames.SetError, onSetError);
     }
 
     /*
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        props.eventBus.detach(ErrorEventNames.SetError, onSetError);
+        props.eventBus.detach(EventNames.SetError, onSetError);
     }
 
     /*
@@ -69,7 +69,6 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
      */
     function renderHyperlink(): JSX.Element {
 
-        // This error is expected when there is no auth cookie yet
         if (isNonError()) {
             return (
                 <>
@@ -85,10 +84,19 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
     }
 
     /*
-     * Ignore expected errors
+     * Only render real errors
      */
     function isNonError() {
-        return state.error && props.errorsToIgnore.indexOf(state.error.errorCode) !== -1;
+
+        if (!state.error) {
+            return true;
+        }
+
+        if (props.errorsToIgnore.indexOf(state.error.errorCode) !== -1) {
+            return true;
+        }
+
+        return false;
     }
 
     /*
@@ -160,7 +168,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
 
         return (
 
-            // Render the hyperlink as a centred row in the main UI
+            // Render the hyperlink as a centred row
             <>
                 <div className='row'>
                     <div className='col-6 text-center mx-auto'>
@@ -175,7 +183,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
 
         return (
 
-            // Render the hyperlink in a more compact form, used for user info errors
+            // Render the hyperlink in part of an existing row
             <>
                 {renderHyperlink()}
                 {renderModalDialog()}

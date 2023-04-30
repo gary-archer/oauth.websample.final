@@ -1,5 +1,5 @@
 import React, {ErrorInfo} from 'react';
-import {BaseErrorFactory} from '../logic/baseErrorFactory';
+import {BaseErrorFactory} from '../../plumbing/errors/lib';
 import {ErrorBoundaryState} from './errorBoundaryState';
 import {ErrorDetailsView} from './errorDetailsView';
 
@@ -12,6 +12,7 @@ export class ErrorBoundary extends React.Component<any, ErrorBoundaryState> {
      * Update state so the next render will show the fallback UI
      */
     public static getDerivedStateFromError(error: any): any {
+
         return {error: BaseErrorFactory.fromRenderError(error)};
     }
 

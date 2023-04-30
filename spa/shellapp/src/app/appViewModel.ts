@@ -1,4 +1,3 @@
-import EventBus from 'js-event-bus';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {Authenticator} from '../plumbing/oauth/authenticator';
@@ -12,7 +11,6 @@ export class AppViewModel {
     // Global objects
     private _configuration: Configuration | null;
     private _authenticator: Authenticator | null;
-    private _eventBus: EventBus;
 
     // State flags
     private _isInitialised: boolean;
@@ -26,9 +24,6 @@ export class AppViewModel {
         this._configuration = null;
         this._authenticator = null;
         this._isInitialised = false;
-
-        // Create the event bus for communicating between views
-        this._eventBus = new EventBus();
     }
 
     /*
@@ -48,9 +43,6 @@ export class AppViewModel {
             const authenticator = new Authenticator(this._configuration, sessionId);
             this._authenticator = authenticator;
 
-            // Create the event bus for communicating between views
-            this._eventBus = new EventBus();
-
             // Update state
             this._isInitialised = true;
         }
@@ -69,9 +61,5 @@ export class AppViewModel {
 
     public get authenticator(): Authenticator {
         return this._authenticator!;
-    }
-
-    public get eventBus(): EventBus {
-        return this._eventBus;
     }
 }

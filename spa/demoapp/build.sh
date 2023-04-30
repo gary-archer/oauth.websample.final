@@ -40,7 +40,7 @@ mkdir ./dist
 rm -rf ./build 2>/dev/null
 cp -R ../build ./build
 rm -rf ./src/plumbing/errors/lib 2>/dev/null
-cp -R ../errorlibrary ./src/plumbing/errors/lib
+cp -R ../errorlogic ./src/plumbing/errors/lib
 
 #
 # Build JavaScript bundles

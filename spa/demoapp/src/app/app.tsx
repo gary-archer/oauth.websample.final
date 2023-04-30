@@ -1,18 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {
-    BaseErrorFactory,
-    ErrorConsoleReporter,
-    ErrorEventNames,
-    ErrorSummaryView,
-    SetErrorEvent} from '../plumbing/errors/lib';
+import {BaseErrorFactory, ErrorConsoleReporter} from '../plumbing/errors/lib';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
+import {SetErrorEvent} from '../plumbing/events/setErrorEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CallbackView} from '../views/callback/callbackView';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
+import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {HeaderButtonsView} from '../views/headings/headerButtonsView';
 import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
@@ -209,7 +206,7 @@ export function App(props: AppProps): JSX.Element {
      * A shared subroutine to set error state
      */
     function setError(e: any): void {
-        model.eventBus.emit(ErrorEventNames.SetError, null, new SetErrorEvent('main', e));
+        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('main', e));
     }
 
     /*
