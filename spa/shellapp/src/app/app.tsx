@@ -210,14 +210,14 @@ export function App(props: AppProps): JSX.Element {
 
         const loginHandlerProps = {
             isAfterLogout: false,
+            hasError: !!state.error,
             onLogin,
-            error: state.error,
         };
 
         const loggedOutHandlerProps = {
             isAfterLogout: true,
+            hasError: !!state.error,
             onLogin,
-            error: state.error,
         };
 
         const logoutHandlerProps = {

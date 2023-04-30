@@ -3,5 +3,6 @@
  */
 export interface LoginRequiredProps {
     isAfterLogout: boolean;
+    hasError: boolean;
     onLogin: () => void;
 }
