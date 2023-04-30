@@ -40,6 +40,21 @@ if [ $? -ne 0 ]; then
 fi
 
 #
+# Use a timestamp based docker image tag
+#
+TAG=$(cat ./dockertag.txt)
+export DOCKER_IMAGE="webhost:$TAG"
+
+#
+# Produce the final YAML using the envsubst tool
+#
+envsubst < ./webhost-template.yaml > ./webhost.yaml
+if [ $? -ne 0 ]; then
+  echo '*** Problem encountered running envsubst to produce the final webhost.yaml file'
+  exit 1
+fi
+
+#
 # Trigger deployment of the web host to the Kubernetes cluster
 #
 kubectl -n applications delete -f webhost.yaml 2>/dev/null

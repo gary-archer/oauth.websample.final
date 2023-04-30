@@ -44,9 +44,16 @@ fi
 cd ../..
 
 #
+# Use a timestamp based docker image tag
+#
+TAG=$(date +%Y%m%d%H%M%S)
+echo $TAG > ./dockertag.txt
+DOCKER_IMAGE="webhost:$TAG"
+
+#
 # Build the Docker image
 #
-docker build --no-cache -f deployment/shared/Dockerfile -t webhost:latest .
+docker build --no-cache -f deployment/shared/Dockerfile -t "$DOCKER_IMAGE" .
 if [ $? -ne 0 ]; then
   echo '*** Web Host docker build problem encountered'
   exit 1
@@ -55,7 +62,7 @@ fi
 #
 # Load it into kind's Docker registry
 #
-kind load docker-image webhost:latest --name oauth
+kind load docker-image "$DOCKER_IMAGE" --name oauth
 if [ $? -ne 0 ]; then
   echo '*** Web Host docker deploy problem encountered'
   exit 1
