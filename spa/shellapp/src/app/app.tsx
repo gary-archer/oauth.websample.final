@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
-import {ErrorFactory} from '../plumbing/errors/errorFactory';
-import {ErrorSummaryView} from '../views/errors/errorSummaryView';
+import {
+    BaseErrorFactory,
+    ErrorConsoleReporter,
+    ErrorEventNames,
+    ErrorSummaryView,
+    SetErrorEvent} from '../plumbing/errors/lib';
 import {DefaultHandler} from '../views/handlers/defaultHandler';
 import {LoginRequiredHandler} from '../views/handlers/loginRequiredHandler';
 import {LogoutHandler} from '../views/handlers/logoutHandler';
@@ -23,7 +26,6 @@ export function App(props: AppProps): JSX.Element {
     const [state, setState] = useState<AppState>({
         isInitialised: model.isInitialised,
         isMobileLayout: isMobileLayoutNeeded(),
-        error: null,
     });
 
     // Startup runs only once
@@ -131,7 +133,7 @@ export function App(props: AppProps): JSX.Element {
 
         } catch(e: any) {
 
-            const error = ErrorFactory.fromException(e);
+            const error = BaseErrorFactory.fromException(e);
             ErrorConsoleReporter.output(error);
             navigate('/loggedout');
         }
@@ -170,15 +172,7 @@ export function App(props: AppProps): JSX.Element {
      * A shared subroutine to set error state
      */
     function setError(e: any): void {
-
-        const error = e ? ErrorFactory.fromException(e) : null;
-
-        setState((s) => {
-            return {
-                ...s,
-                error,
-            };
-        });
+        model.eventBus.emit(ErrorEventNames.SetError, null, new SetErrorEvent('main', e));
     }
 
     /*
@@ -187,7 +181,12 @@ export function App(props: AppProps): JSX.Element {
     function renderInitialScreen(): JSX.Element {
 
         const errorSummaryProps = {
-            error: state.error,
+            errorsToIgnore: [],
+            eventBus: model.eventBus,
+            containingViewName: 'main',
+            hyperlinkMessage: 'Problem Encountered',
+            dialogTitle: 'Shell Application Error',
+            centred: true,
             onRetry: onRetry,
         };
 
@@ -205,20 +204,23 @@ export function App(props: AppProps): JSX.Element {
     function renderMain(): JSX.Element {
 
         const errorSummaryProps = {
-            error: state.error,
+            errorsToIgnore: [],
+            eventBus: model.eventBus,
+            containingViewName: 'main',
+            hyperlinkMessage: 'Problem Encountered',
+            dialogTitle: 'Shell Application Error',
+            centred: true,
             onRetry: onRetry,
         };
 
         const loginHandlerProps = {
             isAfterLogout: false,
             onLogin,
-            error: state.error,
         };
 
         const loggedOutHandlerProps = {
             isAfterLogout: true,
             onLogin,
-            error: state.error,
         };
 
         const logoutHandlerProps = {

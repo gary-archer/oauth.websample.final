@@ -3,7 +3,7 @@ import {Guid} from 'guid-typescript';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
-import {UIError} from '../errors/uiError';
+import {BaseErrorFactory, UIError} from '../errors/lib';
 import {AxiosUtils} from '../utilities/axiosUtils';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {PageLoadResult} from './pageLoadResult';
@@ -156,7 +156,7 @@ export class Authenticator {
 
         } catch (e: any) {
 
-            throw ErrorFactory.fromHttpError(e, url, 'OAuth Agent');
+            throw BaseErrorFactory.fromHttpError(e, url, 'OAuth Agent');
         }
     }
 

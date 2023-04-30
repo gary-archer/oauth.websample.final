@@ -6,13 +6,6 @@ import {LoginRequiredProps} from './loginRequiredProps';
  */
 export function LoginRequiredHandler(props: LoginRequiredProps): JSX.Element {
 
-    if (props.error) {
-        return (
-            <>
-            </>
-        );
-    }
-
     const userMessage = props.isAfterLogout ? 'You have been logged out' : 'Welcome back';
     return  (
         <>
