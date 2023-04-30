@@ -53,14 +53,14 @@ fi
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
-  cp deployment/environments/dev-localapi/shellapp.config.json shellapp/dist/shellapp.config.json
-  cp deployment/environments/dev-localapi/demoapp.config.json  demoapp/dist/demoapp.config.json
+  cp deployment/environments/dev-localapi/shellapp.config.json spa/shellapp/dist/shellapp.config.json
+  cp deployment/environments/dev-localapi/demoapp.config.json  spa/demoapp/dist/demoapp.config.json
   cp deployment/environments/dev-localapi/webhost.config.json  webhost/webhost.config.json
 
 else 
 
-  cp deployment/environments/dev/shellapp.config.json shellapp/dist/shellapp.config.json
-  cp deployment/environments/dev/demoapp.config.json demoapp/dist/demoapp.config.json
+  cp deployment/environments/dev/shellapp.config.json spa/shellapp/dist/shellapp.config.json
+  cp deployment/environments/dev/demoapp.config.json spa/demoapp/dist/demoapp.config.json
   cp deployment/environments/dev/webhost.config.json webhost/webhost.config.json
 fi
 
@@ -91,6 +91,11 @@ echo 'Waiting for Web Host to become available ...'
 while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/index.html")" != '200' ]; do
   sleep 2
 done
+
+#
+# Restore the default web host configuration once it is running
+#
+cp deployment/environments/dev/webhost.config.json webhost/webhost.config.json
 
 #
 # Run the SPA in the default browser, then sign in with these credentials:

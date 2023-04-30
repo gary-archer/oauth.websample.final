@@ -23,7 +23,7 @@ if [ $? -ne 0 ]; then
   echo 'Problem encountered building the development web host'
   exit
 fi
-cd ..
+cd ../spa
 
 #
 # Build the shell application, which handles login and logout
@@ -45,7 +45,7 @@ if [ $? -ne 0 ]; then
   echo 'Problem encountered building the demo application'
   exit
 fi
-cd ..
+cd ../..
 
 #
 # When connecting the SPA to a local API, build a token handler to run on the local development computer
