@@ -57,7 +57,7 @@ export class WebStaticContent {
         if (this._configuration.mode === 'development') {
 
             // During development, point to built SPA files
-            return '../demoapp/dist';
+            return '../spa/demoapp/dist';
 
         } else {
 
@@ -74,7 +74,7 @@ export class WebStaticContent {
         if (this._configuration.mode === 'development') {
 
             // During development, point to built SPA files
-            return '../shellapp/dist';
+            return '../spa/shellapp/dist';
 
         } else {
 
