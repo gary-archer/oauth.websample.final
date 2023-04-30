@@ -46,7 +46,7 @@ cd ../..
 #
 # Build the Docker image
 #
-docker build --no-cache -f deployment/shared/Dockerfile -t webhost:v1 .
+docker build --no-cache -f deployment/shared/Dockerfile -t webhost:latest .
 if [ $? -ne 0 ]; then
   echo '*** Web Host docker build problem encountered'
   exit 1
@@ -55,7 +55,7 @@ fi
 #
 # Load it into kind's Docker registry
 #
-kind load docker-image webhost:v1 --name oauth
+kind load docker-image webhost:latest --name oauth
 if [ $? -ne 0 ]; then
   echo '*** Web Host docker deploy problem encountered'
   exit 1

@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: webhost
-        image: webhost:v1
+        image: webhost:latest
         volumeMounts:
           - name: webhost-config
             mountPath: /usr/webhost/webhost.config.json

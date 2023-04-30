@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   webhost:
-    image: webhost:v1
+    image: webhost:latest
     hostname: web.authsamples-dev.com
     ports:
       - 443:8000
