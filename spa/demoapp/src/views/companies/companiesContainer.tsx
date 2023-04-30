@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
 import {Company} from '../../api/entities/company';
-import {UIError} from '../../plumbing/errors/uiError';
+import {ErrorCodes} from '../../plumbing/errors/errorCodes';
+import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
 import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
@@ -90,6 +91,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     };
 
     const errorProps = {
+        errorsToIgnore: [ErrorCodes.loginRequired],
         eventBus: model.eventBus,
         containingViewName: 'companies',
         hyperlinkMessage: 'Problem Encountered in Companies View',

@@ -1,4 +1,4 @@
-import {UIError} from '../../plumbing/errors/uiError';
+import {UIError} from '../../plumbing/errors/lib';
 
 /*
  * Used to render a fallback UI when there is a rendering error

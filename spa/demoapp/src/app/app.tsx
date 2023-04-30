@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
-import {ErrorFactory} from '../plumbing/errors/errorFactory';
+import {BaseErrorFactory, ErrorConsoleReporter} from '../plumbing/errors/lib';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {SetErrorEvent} from '../plumbing/events/setErrorEvent';
@@ -148,7 +147,7 @@ export function App(props: AppProps): JSX.Element {
         } catch (e: any) {
 
             // Write technical error details to the console
-            const error = ErrorFactory.fromException(e);
+            const error = BaseErrorFactory.fromException(e);
             ErrorConsoleReporter.output(error);
         }
     }
@@ -166,7 +165,7 @@ export function App(props: AppProps): JSX.Element {
         } catch (e: any) {
 
             // Write technical error details to the console
-            const error = ErrorFactory.fromException(e);
+            const error = BaseErrorFactory.fromException(e);
             ErrorConsoleReporter.output(error);
         }
     }
@@ -229,6 +228,7 @@ export function App(props: AppProps): JSX.Element {
         };
 
         const errorProps = {
+            errorsToIgnore: [],
             eventBus: model.eventBus,
             containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
@@ -266,6 +266,7 @@ export function App(props: AppProps): JSX.Element {
         };
 
         const errorProps = {
+            errorsToIgnore: [],
             eventBus: model.eventBus,
             containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',

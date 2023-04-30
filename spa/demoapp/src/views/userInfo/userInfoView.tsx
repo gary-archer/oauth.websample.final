@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {UserInfo} from '../../api/entities/userInfo';
-import {UIError} from '../../plumbing/errors/uiError';
+import {ErrorCodes} from '../../plumbing/errors/errorCodes';
+import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
 import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
@@ -85,6 +86,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     }
 
     const errorProps = {
+        errorsToIgnore: [ErrorCodes.loginRequired],
         eventBus: model.eventBus,
         containingViewName: 'userinfo',
         hyperlinkMessage: 'Problem Encountered',

@@ -20,6 +20,7 @@ export class AppViewModel {
      */
     public constructor() {
 
+        // Objects that need configuration are initially null
         this._configuration = null;
         this._authenticator = null;
         this._isInitialised = false;

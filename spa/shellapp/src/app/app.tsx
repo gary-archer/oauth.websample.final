@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
-import {ErrorFactory} from '../plumbing/errors/errorFactory';
+import {BaseErrorFactory, ErrorConsoleReporter} from '../plumbing/errors/lib';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {DefaultHandler} from '../views/handlers/defaultHandler';
 import {LoginRequiredHandler} from '../views/handlers/loginRequiredHandler';
@@ -131,7 +130,7 @@ export function App(props: AppProps): JSX.Element {
 
         } catch(e: any) {
 
-            const error = ErrorFactory.fromException(e);
+            const error = BaseErrorFactory.fromException(e);
             ErrorConsoleReporter.output(error);
             navigate('/loggedout');
         }
@@ -171,7 +170,7 @@ export function App(props: AppProps): JSX.Element {
      */
     function setError(e: any): void {
 
-        const error = e ? ErrorFactory.fromException(e) : null;
+        const error = e ? BaseErrorFactory.fromException(e) : null;
 
         setState((s) => {
             return {

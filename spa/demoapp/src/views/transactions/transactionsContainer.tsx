@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
-import {UIError} from '../../plumbing/errors/uiError';
+import {ErrorCodes} from '../../plumbing/errors/errorCodes';
+import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
 import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
@@ -119,6 +120,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     }
 
     const errorProps = {
+        errorsToIgnore: [ErrorCodes.loginRequired],
         eventBus: model.eventBus,
         containingViewName: 'transactions',
         hyperlinkMessage: 'Problem Encountered in Transactions View',

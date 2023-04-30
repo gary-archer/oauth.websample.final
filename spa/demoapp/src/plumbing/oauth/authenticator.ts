@@ -1,9 +1,9 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
 import {Configuration} from '../../configuration/configuration';
+import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {CurrentLocation} from '../../views/utilities/currentLocation';
 import {ErrorFactory} from '../errors/errorFactory';
-import {UIError} from '../errors/uiError';
 import {AxiosUtils} from '../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
@@ -31,7 +31,6 @@ export class Authenticator {
      */
     public login(): void {
 
-        console.log('Storing path: ' + CurrentLocation.path);
         HtmlStorageHelper.preLoginStore(CurrentLocation.path);
         location.href = `${location.origin}/login`;
     }
@@ -173,7 +172,7 @@ export class Authenticator {
 
         } catch (e: any) {
 
-            throw ErrorFactory.fromHttpError(e, url, 'OAuth Agent');
+            throw BaseErrorFactory.fromHttpError(e, url, 'OAuth Agent');
         }
     }
 

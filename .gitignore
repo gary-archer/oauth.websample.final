@@ -2,6 +2,8 @@
 node_modules
 spa/shellapp/build
 spa/demoapp/build
+spa/shellapp/src/plumbing/errors/lib
+spa/demoapp/src/plumbing/errors/lib
 dist
 resources
 certs

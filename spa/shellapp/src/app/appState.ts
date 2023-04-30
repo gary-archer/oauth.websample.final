@@ -1,4 +1,4 @@
-import {UIError} from '../plumbing/errors/uiError';
+import {UIError} from '../plumbing/errors/lib';
 
 /*
  * Application level state used for rendering
@@ -12,5 +12,5 @@ export interface AppState {
     isMobileLayout: boolean;
 
     // Populated when there is an error to display
-    error: UIError | null,
+    error: UIError | null;
 }

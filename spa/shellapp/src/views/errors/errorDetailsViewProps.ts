@@ -1,4 +1,4 @@
-import {UIError} from '../../plumbing/errors/uiError';
+import {UIError} from '../../plumbing/errors/lib';
 
 /*
  * Input to the error details view

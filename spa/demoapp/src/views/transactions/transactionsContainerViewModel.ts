@@ -2,8 +2,7 @@ import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {UIError} from '../../plumbing/errors/uiError';
+import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {ApiViewEvents} from '../utilities/apiViewEvents';
 import {ApiViewNames} from '../utilities/apiViewNames';
 
@@ -53,7 +52,7 @@ export class TransactionsContainerViewModel {
 
         } catch (e: any) {
 
-            const error = ErrorFactory.fromException(e);
+            const error = BaseErrorFactory.fromException(e);
             this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
             onError(this._isExpectedApiError(error), error);
         }

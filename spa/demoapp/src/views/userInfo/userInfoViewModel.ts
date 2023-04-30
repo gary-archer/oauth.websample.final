@@ -1,8 +1,7 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
 import {UserInfo} from '../../api/entities/userInfo';
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {UIError} from '../../plumbing/errors/uiError';
+import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {ApiViewEvents} from '../utilities/apiViewEvents';
 import {ApiViewNames} from '../utilities/apiViewNames';
 import {UserInfoLoadOptions}  from './userInfoLoadOptions';
@@ -53,7 +52,7 @@ export class UserInfoViewModel {
 
         } catch (e: any) {
 
-            const error = ErrorFactory.fromException(e);
+            const error = BaseErrorFactory.fromException(e);
             this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);
             onError(error);
         }
