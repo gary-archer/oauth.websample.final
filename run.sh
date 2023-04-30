@@ -93,6 +93,11 @@ while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/index.html")
 done
 
 #
+# Restore the default web host configuration once it is running
+#
+cp deployment/environments/dev/webhost.config.json webhost/webhost.config.json
+
+#
 # Run the SPA in the default browser, then sign in with these credentials:
 # - guestuser@mycompany.com
 # - Password1
