@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {ErrorLine} from './errorLine';
 import {UIError} from './uiError';
 
@@ -30,7 +29,17 @@ export class ErrorFormatter {
 
         // Show the UTC time of the error
         if (error.utcTime.length > 0) {
-            const displayTime = moment(error.utcTime).format('DD MMM YYYY HH:mm:ss');
+
+            const errorTime = Date.parse(error.utcTime);
+            const displayTime = new Date(errorTime).toLocaleString('en-GB', {
+                timeZone: 'utc',
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            });
             lines.push(this._createErrorLine('UTC Time', displayTime));
         }
 

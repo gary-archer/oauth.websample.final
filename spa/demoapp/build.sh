@@ -20,15 +20,6 @@ if [ ! -d 'node_modules' ]; then
 fi
 
 #
-# Check code quality
-#
-npm run lint
-if [ $? -ne 0 ]; then
-  echo 'Demo app code quality checks failed'
-  exit 1
-fi
-
-#
 # Clean the output folder
 #
 rm -rf ./dist 2>/dev/null
@@ -41,6 +32,15 @@ rm -rf ./build 2>/dev/null
 cp -R ../build ./build
 rm -rf ./src/plumbing/errors/lib 2>/dev/null
 cp -R ../errorlogic ./src/plumbing/errors/lib
+
+#
+# Check code quality
+#
+npm run lint
+if [ $? -ne 0 ]; then
+  echo 'Demo app code quality checks failed'
+  exit 1
+fi
 
 #
 # Build JavaScript bundles
