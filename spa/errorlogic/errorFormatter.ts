@@ -31,7 +31,7 @@ export class ErrorFormatter {
         if (error.utcTime.length > 0) {
 
             const errorTime = Date.parse(error.utcTime);
-            const displayTime = new Date(errorTime).toLocaleString('en-GB', {
+            const displayTime = new Date(errorTime).toLocaleString('en', {
                 timeZone: 'utc',
                 day: '2-digit',
                 month: 'short',
@@ -39,7 +39,8 @@ export class ErrorFormatter {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
-            });
+                hour12: false,
+            }).replace(/,/g, '');
             lines.push(this._createErrorLine('UTC Time', displayTime));
         }
 
