@@ -50,7 +50,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Invalidate existing files
+# For the simple demo app, we invalidate all files in the distribution
 #
 if [ "$ENVIRONMENT" == 'serverless' ]; then
   aws cloudfront create-invalidation --distribution-id=E1P4XPOL1PNE6Z --paths '/*'
