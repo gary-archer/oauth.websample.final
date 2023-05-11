@@ -28,11 +28,14 @@ const handler = async (event: any, context: Context) => {
     // Add standard headers, including the content security policy
     responseHeaders['content-security-policy'] = [{key: 'Content-Security-Policy', value: policy}];
     responseHeaders['strict-transport-security'] =
-        [{key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubdomains; preload'}];
+        [{key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubdomains; preload'}];
     responseHeaders['x-frame-options'] = [{key: 'X-Frame-Options', value: 'DENY'}];
     responseHeaders['x-content-type-options'] = [{key: 'X-Content-Type-Options', value: 'nosniff'}];
     responseHeaders['x-xss-protection'] = [{key: 'X-XSS-Protection', value: '1; mode=block'}];
     responseHeaders['referrer-policy'] = [{key: 'Referrer-Policy', value: 'same-origin'}];
+
+    // Also ensure that resources other than the index.html file are served from the browser cache
+    responseHeaders['cache-control'] = [{key: 'Cache-Control', value: 'public, max-age: 31536000'}];
     return response;
 };
 

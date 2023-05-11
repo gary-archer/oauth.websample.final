@@ -34,11 +34,17 @@ export class SecurityHeaders {
 
         // Add standard headers, including the content security policy
         response.setHeader('content-security-policy', policy);
-        response.setHeader('strict-transport-security', 'max-age=63072000; includeSubdomains; preload');
+        response.setHeader('strict-transport-security', 'max-age=31536000; includeSubdomains; preload');
         response.setHeader('x-frame-options', 'DENY');
         response.setHeader('x-xss-protection', '1; mode=block');
         response.setHeader('x-content-type-options', 'nosniff');
         response.setHeader('referrer-policy', 'same-origin');
+
+        // Ensure that resources other than the index.html file are served from the browser cache
+        if (this._configuration.mode === 'deployed') {
+            response.setHeader('cache-control', 'public, max-age: 31536000');
+        }
+
         next();
     }
 
