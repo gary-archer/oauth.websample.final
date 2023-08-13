@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
-import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
@@ -21,7 +20,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     const params = useParams();
     const companyId = params.id!;
     const [state, setState] = useState<TransactionsContainerState>({
-        data: null,
+        data: model.transactions,
     });
 
     useEffect(() => {
@@ -37,16 +36,21 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     async function startup(): Promise<void> {
 
         // Subscribe for reload events
+        console.log('*** TRANSACTIONS STARTUP ***');
         model.eventBus.on(EventNames.ReloadMainView, onReload);
 
         // Do the initial load of data
-        await loadData(false);
+        if (model.enteredCompanyId !== companyId) {
+            model.enteredCompanyId = companyId;
+            await loadData(false);
+        }
     }
 
     /*
      * Unsubscribe when we unload
      */
     function cleanup(): void {
+        console.log('*** TRANSACTIONS CLEANUP ***');
         model.eventBus.detach(EventNames.ReloadMainView, onReload);
     }
 
@@ -62,12 +66,12 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     async function loadData(causeError: boolean): Promise<void> {
 
-        const onSuccess = (data: CompanyTransactions) => {
+        const onSuccess = () => {
 
             setState((s) => {
                 return {
                     ...s,
-                    data,
+                    data: model.transactions,
                 };
             });
         };

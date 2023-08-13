@@ -17,8 +17,8 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     const model = props.viewModel;
     const [state, setState] = useState<UserInfoViewState>({
-        oauthUserInfo: null,
-        apiUserInfo: null,
+        oauthUserInfo: model.oauthUserInfo,
+        apiUserInfo: model.apiUserInfo,
     });
 
     useEffect(() => {
@@ -35,7 +35,10 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         model.eventBus.on(EventNames.ReloadUserInfo, onReload);
 
         // Do the initial load of data
-        await loadData(false);
+        if (!model.entered) {
+            model.entered = true;
+            await loadData(false);
+        }
     }
 
     /*

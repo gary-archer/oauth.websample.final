@@ -32,6 +32,7 @@ export class AppViewModel {
     private _userInfoViewModel: UserInfoViewModel | null;
 
     // State flags
+    private _isEntered: boolean;
     private _isInitialised: boolean;
 
     /*
@@ -59,6 +60,7 @@ export class AppViewModel {
         this._userInfoViewModel = null;
 
         // Flags
+        this._isEntered = false;
         this._isInitialised = false;
         this._setupCallbacks();
     }
@@ -86,7 +88,18 @@ export class AppViewModel {
     }
 
     /*
-     * Return details to the view
+     * Manage React strict mode re-entrancy
+     */
+    public set isEntered(value: boolean) {
+        this._isEntered = value;
+    }
+
+    public get isEntered(): boolean {
+        return this._isEntered;
+    }
+
+    /*
+     * Return other details to the view
      */
     public get isInitialised(): boolean {
         return this._isInitialised;

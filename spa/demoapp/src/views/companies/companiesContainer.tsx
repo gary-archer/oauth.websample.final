@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
-import {Company} from '../../api/entities/company';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
@@ -20,7 +19,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
 
     const model = props.viewModel;
     const [state, setState] = useState<CompaniesContainerState>({
-        companies: [],
+        companies: model.companies,
     });
 
     useEffect(() => {
@@ -39,7 +38,10 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         model.eventBus.on(EventNames.ReloadMainView, onReload);
 
         // Do the initial load of data
-        await loadData(false);
+        if (!model.entered) {
+            model.entered = true;
+            await loadData(false);
+        }
     }
 
     /*
@@ -61,12 +63,12 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
      */
     async function loadData(causeError: boolean): Promise<void> {
 
-        const onSuccess = (companies: Company[]) => {
+        const onSuccess = () => {
 
             setState((s) => {
                 return {
                     ...s,
-                    companies,
+                    companies: model.companies,
                 };
             });
         };

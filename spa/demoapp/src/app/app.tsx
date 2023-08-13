@@ -34,8 +34,13 @@ export function App(props: AppProps): JSX.Element {
 
     // Startup runs only once
     useEffect(() => {
-        startup();
-        return () => cleanup();
+
+        if (!model.isEntered) {
+            model.isEntered = true;
+            startup();
+            return () => cleanup();
+        }
+
     }, []);
 
     // Set up React Router navigation
