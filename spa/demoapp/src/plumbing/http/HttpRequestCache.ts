@@ -8,23 +8,22 @@ import {HttpRequestCacheItem} from './HttpRequestCacheItem';
  */
 export class HttpRequestCache {
 
-    // A map of URLs to request information
+    // A map of URLs to request items
     private readonly requests: { [name: string]: HttpRequestCacheItem } = {};
 
     /*
      * Return existing data or not found
      */
-    public getData(url: string): HttpRequestCacheItem {
+    public getData(url: string): HttpRequestCacheItem | null {
         return this.requests[url];
     }
 
     /*
-     * Indicate that a URL is loading
+     * Create an item
      */
-    public setLoading(url: string): void {
+    public createItem(url: string): void {
 
         const item = {
-            isLoading: true,
             data: null,
             error: null,
         };
@@ -38,7 +37,6 @@ export class HttpRequestCache {
 
         const item = this.requests[url];
         if (item) {
-            item.isLoading = false;
             item.data = data;
         }
     }
@@ -50,7 +48,6 @@ export class HttpRequestCache {
 
         const item = this.requests[url];
         if (item) {
-            item.isLoading = false;
             item.error = error;
         }
     }

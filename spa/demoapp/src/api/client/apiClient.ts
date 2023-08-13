@@ -92,14 +92,6 @@ export class ApiClient {
             causeError: false,
         };
 
-        // Return existing data from the memory cache when available
-        if (!apiClientOptions.forceReload) {
-            const cachedRequest = this._requestCache.getData(url);
-            if (cachedRequest) {
-                return cachedRequest.data;
-            }
-        }
-
         // Avoid an API call if we know it will fail
         if (!this._authenticator.isLoggedIn()) {
             throw ErrorFactory.fromLoginRequired();
@@ -136,6 +128,15 @@ export class ApiClient {
 
         try {
 
+            // Return existing data from the memory cache when available
+            if (!apiClientOptions.forceReload) {
+                const cachedRequest = this._requestCache.getData(url);
+                if (cachedRequest) {
+                    return cachedRequest.data;
+                }
+            }
+            this._requestCache.createItem(url);
+
             // Set options and send the secure cookie to the API origin
             const options = {
                 url,
@@ -149,7 +150,6 @@ export class ApiClient {
             this._authenticator.addAntiForgeryToken(options);
 
             // Make the API request
-            this._requestCache.setLoading(url);
             const response = await axios.request(options);
             AxiosUtils.checkJson(response.data);
             this._requestCache.setData(url, response.data);
