@@ -6,6 +6,7 @@ import {CompanyTransactions} from '../entities/companyTransactions';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {BaseErrorFactory} from '../../plumbing/errors/lib';
+import {HttpRequestCache} from '../../plumbing/http/HttpRequestCache';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {ApiClientOptions} from './apiClientOptions';
@@ -18,8 +19,13 @@ export class ApiClient {
     private readonly _apiBaseUrl: string;
     private readonly _sessionId: string;
     private readonly _authenticator: Authenticator;
+    private readonly _requestCache: HttpRequestCache;
 
-    public constructor(configuration: Configuration, sessionId: string, authenticator: Authenticator) {
+    public constructor(
+        configuration: Configuration,
+        sessionId: string,
+        authenticator: Authenticator,
+        requestCache: HttpRequestCache) {
 
         this._apiBaseUrl = configuration.apiBaseUrl;
         if (!this._apiBaseUrl.endsWith('/')) {
@@ -28,12 +34,14 @@ export class ApiClient {
 
         this._sessionId = sessionId;
         this._authenticator = authenticator;
+        this._requestCache = requestCache;
     }
 
     /*
      * Get a list of companies
      */
-    public async getCompanyList(callerOptions?: ApiClientOptions): Promise<Company[]> {
+    public async getCompanyList(callerOptions?: ApiClientOptions)
+        : Promise<Company[] | null> {
 
         return this._callApi(
             'companies',
@@ -45,7 +53,8 @@ export class ApiClient {
     /*
      * Get a list of transactions for a single company
      */
-    public async getCompanyTransactions(id: string, callerOptions?: ApiClientOptions): Promise<CompanyTransactions> {
+    public async getCompanyTransactions(id: string, callerOptions?: ApiClientOptions)
+        : Promise<CompanyTransactions | null> {
 
         return this._callApi(
             `companies/${id}/transactions`,
@@ -57,7 +66,8 @@ export class ApiClient {
     /*
      * Download user attributes the UI needs that are not stored in the authorization server
      */
-    public async getUserInfo(callerOptions?: ApiClientOptions): Promise<ApiUserInfo> {
+    public async getUserInfo(callerOptions?: ApiClientOptions)
+        : Promise<ApiUserInfo | null> {
 
         return this._callApi(
             'userinfo',
@@ -75,11 +85,18 @@ export class ApiClient {
         dataToSend: any,
         callerOptions?: ApiClientOptions): Promise<any> {
 
+        // Return the data from the memory cache if available
+        const url = `${this._apiBaseUrl}${path}`;
+        const cachedRequest = this._requestCache.getData(url);
+        if (cachedRequest) {
+            return cachedRequest.data;
+        }
+
+        // Avoid an API call if we know it will fail
         if (!this._authenticator.isLoggedIn()) {
             throw ErrorFactory.fromLoginRequired();
         }
 
-        const url = `${this._apiBaseUrl}${path}`;
         try {
 
             // Call the API
@@ -124,13 +141,17 @@ export class ApiClient {
             this._authenticator.addAntiForgeryToken(options);
 
             // Make the API request
+            this._requestCache.setLoading(url);
             const response = await axios.request(options);
             AxiosUtils.checkJson(response.data);
+            this._requestCache.setData(url, response.data);
             return response.data;
 
         } catch (e: any) {
 
-            throw BaseErrorFactory.fromHttpError(e, url, 'web API');
+            const error = BaseErrorFactory.fromHttpError(e, url, 'web API');
+            this._requestCache.setError(url, error);
+            throw error;
         }
     }
 

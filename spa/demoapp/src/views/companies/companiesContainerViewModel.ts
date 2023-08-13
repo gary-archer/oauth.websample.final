@@ -14,7 +14,6 @@ export class CompaniesContainerViewModel {
     private readonly _eventBus: EventBus;
     private readonly _apiViewEvents: ApiViewEvents;
     private _companies: Company[];
-    private _entered: boolean;
 
     public constructor(
         apiClient: ApiClient,
@@ -25,7 +24,6 @@ export class CompaniesContainerViewModel {
         this._eventBus = eventBus;
         this._apiViewEvents = apiViewEvents;
         this._companies = [];
-        this._entered = false;
     }
 
     /*
@@ -40,17 +38,6 @@ export class CompaniesContainerViewModel {
     }
 
     /*
-     * Manage React strict mode re-entrancy to prevent redundant Ajax requests
-     */
-    public set entered(value: boolean) {
-        this._entered = value;
-    }
-
-    public get entered(): boolean {
-        return this._entered;
-    }
-
-    /*
      * Get data from the API and then notify the caller
      */
     public async callApi(
@@ -61,7 +48,10 @@ export class CompaniesContainerViewModel {
         try {
 
             this._apiViewEvents.onViewLoading(ApiViewNames.Main);
-            this._companies = await this._apiClient.getCompanyList({causeError});
+            const result = await this._apiClient.getCompanyList({causeError});
+            if (result) {
+                this._companies = result;
+            }
             this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
             onSuccess();
 

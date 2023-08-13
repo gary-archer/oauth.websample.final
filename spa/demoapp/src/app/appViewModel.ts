@@ -5,6 +5,7 @@ import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {EventNames} from '../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../plumbing/events/reloadMainViewEvent';
 import {ReloadUserInfoEvent} from '../plumbing/events/reloadUserInfoEvent';
+import {HttpRequestCache} from '../plumbing/http/HttpRequestCache';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
@@ -23,6 +24,7 @@ export class AppViewModel {
     private _configuration: Configuration | null;
     private _authenticator: Authenticator | null;
     private _apiClient: ApiClient | null;
+    private _httpRequestCache: HttpRequestCache;
     private _eventBus: EventBus;
     private _apiViewEvents: ApiViewEvents;
 
@@ -44,6 +46,7 @@ export class AppViewModel {
         this._configuration = null;
         this._authenticator = null;
         this._apiClient = null;
+        this._httpRequestCache = new HttpRequestCache();
 
         // Create the event bus for communicating between views
         this._eventBus = new EventBus();
@@ -80,7 +83,11 @@ export class AppViewModel {
             // Create global objects for managing OAuth and API calls
             const sessionId = SessionManager.get();
             this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
-            this._apiClient = new ApiClient(this.configuration, sessionId, this._authenticator);
+            this._apiClient = new ApiClient(
+                this.configuration,
+                sessionId,
+                this._authenticator,
+                this._httpRequestCache);
 
             // Update state
             this._isInitialised = true;

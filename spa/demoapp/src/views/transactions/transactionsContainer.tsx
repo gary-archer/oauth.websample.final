@@ -36,21 +36,16 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     async function startup(): Promise<void> {
 
         // Subscribe for reload events
-        console.log('*** TRANSACTIONS STARTUP ***');
         model.eventBus.on(EventNames.ReloadMainView, onReload);
 
         // Do the initial load of data
-        if (model.enteredCompanyId !== companyId) {
-            model.enteredCompanyId = companyId;
-            await loadData(false);
-        }
+        await loadData(false);
     }
 
     /*
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        console.log('*** TRANSACTIONS CLEANUP ***');
         model.eventBus.detach(EventNames.ReloadMainView, onReload);
     }
 
@@ -68,12 +63,16 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
         const onSuccess = () => {
 
-            setState((s) => {
-                return {
-                    ...s,
-                    data: model.transactions,
-                };
-            });
+            if (model.transactions) {
+
+                console.log(JSON.stringify(model.transactions));
+                setState((s) => {
+                    return {
+                        ...s,
+                        data: model.transactions,
+                    };
+                });
+            }
         };
 
         const onError = (isExpected: boolean, error: UIError) => {
@@ -118,7 +117,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
         return  (
             <>
-                {state.data && <TransactionsView {...childProps}/>}
+                <TransactionsView {...childProps}/>
             </>
         );
     }

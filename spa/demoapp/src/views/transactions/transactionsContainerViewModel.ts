@@ -15,7 +15,6 @@ export class TransactionsContainerViewModel {
     private readonly _eventBus: EventBus;
     private readonly _apiViewEvents: ApiViewEvents;
     private _transactions: CompanyTransactions | null;
-    private _enteredCompanyId: string;
 
     public constructor(
         apiClient: ApiClient,
@@ -26,7 +25,6 @@ export class TransactionsContainerViewModel {
         this._eventBus = eventBus;
         this._apiViewEvents = apiViewEvents;
         this._transactions = null;
-        this._enteredCompanyId = '';
     }
 
     /*
@@ -41,17 +39,6 @@ export class TransactionsContainerViewModel {
     }
 
     /*
-     * Manage React strict mode re-entrancy to prevent redundant Ajax requests
-     */
-    public get enteredCompanyId(): string {
-        return this._enteredCompanyId;
-    }
-
-    public set enteredCompanyId(value: string) {
-        this._enteredCompanyId = value;
-    }
-
-    /*
      * Get data from the API and then notify the caller
      */
     public async callApi(
@@ -63,7 +50,10 @@ export class TransactionsContainerViewModel {
         try {
 
             this._apiViewEvents.onViewLoading(ApiViewNames.Main);
-            this._transactions = await this._apiClient.getCompanyTransactions(id, {causeError});
+            const result = await this._apiClient.getCompanyTransactions(id, {causeError});
+            if (result) {
+                this._transactions = result;
+            }
             this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
             onSuccess();
 

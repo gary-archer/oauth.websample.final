@@ -35,10 +35,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         model.eventBus.on(EventNames.ReloadUserInfo, onReload);
 
         // Do the initial load of data
-        if (!model.entered) {
-            model.entered = true;
-            await loadData(false);
-        }
+        await loadData(false);
     }
 
     /*
@@ -78,15 +75,17 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     async function loadData(reload = false, causeError = false): Promise<void> {
 
-        const onSuccess = (oauthUserInfo: OAuthUserInfo, apiUserInfo: ApiUserInfo) => {
+        const onSuccess = (oauthUserInfo: OAuthUserInfo | null, apiUserInfo: ApiUserInfo | null) => {
 
-            setState((s) => {
-                return {
-                    ...s,
-                    oauthUserInfo,
-                    apiUserInfo,
-                };
-            });
+            if (model.oauthUserInfo && model.apiUserInfo) {
+                setState((s) => {
+                    return {
+                        ...s,
+                        oauthUserInfo,
+                        apiUserInfo,
+                    };
+                });
+            }
         };
 
         const onError = (error: UIError) => {

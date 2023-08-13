@@ -38,10 +38,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         model.eventBus.on(EventNames.ReloadMainView, onReload);
 
         // Do the initial load of data
-        if (!model.entered) {
-            model.entered = true;
-            await loadData(false);
-        }
+        await loadData(false);
     }
 
     /*
@@ -65,12 +62,14 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
 
         const onSuccess = () => {
 
-            setState((s) => {
-                return {
-                    ...s,
-                    companies: model.companies,
-                };
-            });
+            if (model.companies) {
+                setState((s) => {
+                    return {
+                        ...s,
+                        companies: model.companies,
+                    };
+                });
+            }
         };
 
         const onError = (error: UIError) => {

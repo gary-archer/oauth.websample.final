@@ -19,7 +19,6 @@ export class UserInfoViewModel {
     private readonly _apiViewEvents: ApiViewEvents;
     private _oauthUserInfo: OAuthUserInfo | null;
     private _apiUserInfo: ApiUserInfo | null;
-    private _entered: boolean;
 
     public constructor(
         authenticator: Authenticator,
@@ -33,7 +32,6 @@ export class UserInfoViewModel {
         this._apiViewEvents = apiViewEvents;
         this._oauthUserInfo = null;
         this._apiUserInfo = null;
-        this._entered = false;
     }
 
     /*
@@ -49,17 +47,6 @@ export class UserInfoViewModel {
 
     public get eventBus(): EventBus {
         return this._eventBus;
-    }
-
-    /*
-     * Manage React strict mode re-entrancy to prevent redundant Ajax requests
-     */
-    public set entered(value: boolean) {
-        this._entered = value;
-    }
-
-    public get entered(): boolean {
-        return this._entered;
     }
 
     /*
@@ -88,7 +75,9 @@ export class UserInfoViewModel {
 
             // Update views
             this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
-            onSuccess(oauthUserInfo, apiUserInfo);
+            if (apiUserInfo) {
+                onSuccess(oauthUserInfo, apiUserInfo);
+            }
 
         } catch (e: any) {
 

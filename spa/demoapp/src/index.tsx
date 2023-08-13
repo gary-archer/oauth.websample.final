@@ -14,11 +14,11 @@ const props = {
 // Create the React router with the base value
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render (
-    <ErrorBoundary>
-        <StrictMode>
+    <StrictMode>
+        <ErrorBoundary>
             <BrowserRouter basename={BasePath.get()}>
                 <App {...props} />
             </BrowserRouter>
-        </StrictMode>
-    </ErrorBoundary>
+        </ErrorBoundary>
+    </StrictMode>
 );
