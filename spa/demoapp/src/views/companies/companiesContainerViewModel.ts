@@ -14,7 +14,7 @@ export class CompaniesContainerViewModel {
     private readonly _apiClient: ApiClient;
     private readonly _eventBus: EventBus;
     private readonly _apiViewEvents: ApiViewEvents;
-    private _companies: Company[];
+    private _companies: Company[] | null;
 
     public constructor(
         apiClient: ApiClient,
@@ -30,7 +30,7 @@ export class CompaniesContainerViewModel {
     /*
      * Property accessors
      */
-    public get companies(): Company[] {
+    public get companies(): Company[] | null {
         return this._companies;
     }
 

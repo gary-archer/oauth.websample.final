@@ -84,7 +84,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
             setState((s) => {
                 return {
                     ...s,
-                    companies: [],
+                    companies: null,
                 };
             });
         };
@@ -111,7 +111,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         return  (
             <>
                 <ErrorSummaryView {...errorProps}/>
-                {state.companies.length > 0 && <CompaniesMobileView {...childProps}/>}
+                {state.companies && <CompaniesMobileView {...childProps}/>}
             </>
         );
 
@@ -120,7 +120,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         return  (
             <>
                 <ErrorSummaryView {...errorProps}/>
-                {state.companies.length > 0 && <CompaniesDesktopView {...childProps}/>}
+                {state.companies && <CompaniesDesktopView {...childProps}/>}
             </>
         );
     }

@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
-import {ApiUserInfo} from '../../api/entities/apiUserInfo';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
 import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
-import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {UserInfoViewProps} from './userInfoViewProps';
 import {UserInfoViewState} from './userInfoViewState';
@@ -81,14 +79,14 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     async function loadData(options?: ApiClientOptions): Promise<void> {
 
-        const onSuccess = (oauthUserInfo: OAuthUserInfo | null, apiUserInfo: ApiUserInfo | null) => {
+        const onSuccess = () => {
 
             if (model.oauthUserInfo && model.apiUserInfo) {
                 setState((s) => {
                     return {
                         ...s,
-                        oauthUserInfo,
-                        apiUserInfo,
+                        oauthUserInfo: model.oauthUserInfo,
+                        apiUserInfo : model.apiUserInfo,
                     };
                 });
             }
@@ -118,14 +116,16 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         dialogTitle: 'User Info Error',
         centred: false,
     };
+
     return (
         <>
             <div className='text-end mx-auto'>
                 <ErrorSummaryView {...errorProps}/>
             </div>
+            {state.oauthUserInfo && state.apiUserInfo &&
             <div className='text-end mx-auto'>
                 <p className='fw-bold'>{`${getUserNameForDisplay()}`}</p>
-            </div>
+            </div>}
         </>
     );
 }

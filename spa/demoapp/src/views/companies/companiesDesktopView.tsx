@@ -53,7 +53,7 @@ export function CompaniesDesktopView(props: CompaniesViewProps): JSX.Element {
                 <div className='col-2 fw-bold text-end'># Investors</div>
             </div>
             <div className='card-body'>
-                {props.companies.map((company) => renderItem(company))}
+                {props.companies!.map((company) => renderItem(company))}
             </div>
         </div>
     );

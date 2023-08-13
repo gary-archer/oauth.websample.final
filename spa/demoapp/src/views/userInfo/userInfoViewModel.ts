@@ -53,7 +53,7 @@ export class UserInfoViewModel {
      * Get data from the API and then notify the caller
      */
     public async callApi(
-        onSuccess: (oauthUserInfo: OAuthUserInfo, apiUserInfo: ApiUserInfo) => void,
+        onSuccess: () => void,
         onError: (error: UIError) => void,
         options?: ApiClientOptions): Promise<void> {
 
@@ -72,11 +72,17 @@ export class UserInfoViewModel {
             const oauthUserInfo = results[0];
             const apiUserInfo = results[1];
 
+            // Update data
+            if (oauthUserInfo) {
+                this._oauthUserInfo = oauthUserInfo;
+            }
+            if (apiUserInfo) {
+                this._apiUserInfo = apiUserInfo;
+            }
+
             // Update views
             this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
-            if (apiUserInfo) {
-                onSuccess(oauthUserInfo, apiUserInfo);
-            }
+            onSuccess();
 
         } catch (e: any) {
 
