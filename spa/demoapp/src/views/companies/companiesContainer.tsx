@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
+import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
@@ -38,7 +39,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         model.eventBus.on(EventNames.ReloadMainView, onReload);
 
         // Do the initial load of data
-        await loadData(false);
+        await loadData();
     }
 
     /*
@@ -52,13 +53,18 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
      * Receive the reload event
      */
     function onReload(event: ReloadMainViewEvent): void {
-        loadData(event.causeError);
+
+        const options = {
+            forceReload: true,
+            causeError: event.causeError,
+        };
+        loadData(options);
     }
 
     /*
      * Get data from the API and update state
      */
-    async function loadData(causeError: boolean): Promise<void> {
+    async function loadData(options?: ApiClientOptions): Promise<void> {
 
         const onSuccess = () => {
 
@@ -84,7 +90,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         };
 
         model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
-        model.callApi(onSuccess, onError, causeError);
+        model.callApi(onSuccess, onError, options);
     }
 
     const childProps = {

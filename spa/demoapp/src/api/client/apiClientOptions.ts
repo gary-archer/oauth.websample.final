@@ -3,6 +3,9 @@
  */
 export interface ApiClientOptions {
 
-    // We can send an option to make the API fail, to demonstrate 500 handling
+    // Used with a reload data button
+    forceReload: boolean;
+
+    // An option to make the API fail, to rehearse 500 error handling
     causeError: boolean;
 }

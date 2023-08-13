@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/lib';
@@ -35,7 +36,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         model.eventBus.on(EventNames.ReloadUserInfo, onReload);
 
         // Do the initial load of data
-        await loadData(false);
+        await loadData();
     }
 
     /*
@@ -49,7 +50,12 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Process the reload event
      */
     function onReload(event: ReloadUserInfoEvent): void {
-        loadData(true, event.causeError);
+
+        const options = {
+            forceReload: true,
+            causeError: event.causeError,
+        };
+        loadData(options);
     }
 
     /*
@@ -73,7 +79,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     /*
      * Ask the model to load data, then update state
      */
-    async function loadData(reload = false, causeError = false): Promise<void> {
+    async function loadData(options?: ApiClientOptions): Promise<void> {
 
         const onSuccess = (oauthUserInfo: OAuthUserInfo | null, apiUserInfo: ApiUserInfo | null) => {
 
@@ -98,11 +104,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
                     apiUserInfo: null,
                 };
             });
-        };
-
-        const options = {
-            reload,
-            causeError,
         };
 
         model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('userinfo', null));

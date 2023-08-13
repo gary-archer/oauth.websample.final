@@ -1,5 +1,6 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
+import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
@@ -45,12 +46,12 @@ export class TransactionsContainerViewModel {
         id: string,
         onSuccess: () => void,
         onError: (isExpected: boolean, error: UIError) => void,
-        causeError: boolean): Promise<void> {
+        options?: ApiClientOptions): Promise<void> {
 
         try {
 
             this._apiViewEvents.onViewLoading(ApiViewNames.Main);
-            const result = await this._apiClient.getCompanyTransactions(id, {causeError});
+            const result = await this._apiClient.getCompanyTransactions(id, options);
             if (result) {
                 this._transactions = result;
             }

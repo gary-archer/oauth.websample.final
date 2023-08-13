@@ -1,12 +1,12 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
+import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
 import {ApiViewEvents} from '../utilities/apiViewEvents';
 import {ApiViewNames} from '../utilities/apiViewNames';
-import {UserInfoLoadOptions}  from './userInfoLoadOptions';
 
 /*
  * The view model for the user info view
@@ -55,18 +55,17 @@ export class UserInfoViewModel {
     public async callApi(
         onSuccess: (oauthUserInfo: OAuthUserInfo, apiUserInfo: ApiUserInfo) => void,
         onError: (error: UIError) => void,
-        options: UserInfoLoadOptions): Promise<void> {
+        options?: ApiClientOptions): Promise<void> {
 
         try {
 
             this._apiViewEvents.onViewLoading(ApiViewNames.UserInfo);
-            const requestOptions = {causeError: options.causeError};
 
             // The UI gets OAuth user info from the authorization server
             const oauthUserInfoPromise = this._authenticator.getUserInfo();
 
             // The UI gets domain specific user attributes from its API
-            const apiUserInfoPromise = this._apiClient.getUserInfo(requestOptions);
+            const apiUserInfoPromise = this._apiClient.getUserInfo(options);
 
             // Run the tasks in parallel
             const results = await Promise.all([oauthUserInfoPromise, apiUserInfoPromise]);

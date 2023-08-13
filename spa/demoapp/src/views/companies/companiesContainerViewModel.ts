@@ -1,6 +1,7 @@
 import EventBus from 'js-event-bus';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {ApiClient} from '../../api/client/apiClient';
+import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {Company} from '../../api/entities/company';
 import {ApiViewEvents} from '../utilities/apiViewEvents';
 import {ApiViewNames} from '../utilities/apiViewNames';
@@ -43,12 +44,12 @@ export class CompaniesContainerViewModel {
     public async callApi(
         onSuccess: () => void,
         onError: (error: UIError) => void,
-        causeError: boolean): Promise<void> {
+        options?: ApiClientOptions): Promise<void> {
 
         try {
 
             this._apiViewEvents.onViewLoading(ApiViewNames.Main);
-            const result = await this._apiClient.getCompanyList({causeError});
+            const result = await this._apiClient.getCompanyList(options);
             if (result) {
                 this._companies = result;
             }

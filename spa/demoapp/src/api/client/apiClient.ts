@@ -85,11 +85,19 @@ export class ApiClient {
         dataToSend: any,
         callerOptions?: ApiClientOptions): Promise<any> {
 
-        // Return the data from the memory cache if available
+        // Get the full request URL
         const url = `${this._apiBaseUrl}${path}`;
-        const cachedRequest = this._requestCache.getData(url);
-        if (cachedRequest) {
-            return cachedRequest.data;
+        const apiClientOptions = callerOptions || {
+            forceReload: false,
+            causeError: false,
+        };
+
+        // Return existing data from the memory cache when available
+        if (!apiClientOptions.forceReload) {
+            const cachedRequest = this._requestCache.getData(url);
+            if (cachedRequest) {
+                return cachedRequest.data;
+            }
         }
 
         // Avoid an API call if we know it will fail
@@ -100,7 +108,7 @@ export class ApiClient {
         try {
 
             // Call the API
-            return await this._callApiWithCredential(url, method, dataToSend, callerOptions);
+            return await this._callApiWithCredential(url, method, dataToSend, apiClientOptions);
 
         } catch (e: any) {
 
@@ -113,7 +121,7 @@ export class ApiClient {
             await this._authenticator.synchronizedRefresh();
 
             // Call the API again with the rewritten access token cookie
-            return await this._callApiWithCredential(url, method, dataToSend, callerOptions);
+            return await this._callApiWithCredential(url, method, dataToSend, apiClientOptions);
         }
     }
 
@@ -124,7 +132,7 @@ export class ApiClient {
         url: string,
         method: string,
         dataToSend: any,
-        callerOptions?: ApiClientOptions): Promise<any> {
+        apiClientOptions: ApiClientOptions): Promise<any> {
 
         try {
 
@@ -133,7 +141,7 @@ export class ApiClient {
                 url,
                 method,
                 data: dataToSend,
-                headers: this._getHeaders(callerOptions?.causeError),
+                headers: this._getHeaders(apiClientOptions),
                 withCredentials: true,
             } as AxiosRequestConfig;
 
@@ -158,7 +166,7 @@ export class ApiClient {
     /*
      * Add headers for logging and advanced testing purposes
      */
-    private _getHeaders(causeError?: boolean | undefined): any {
+    private _getHeaders(apiClientOptions: ApiClientOptions): any {
 
         const headers: any = {
 
@@ -169,7 +177,7 @@ export class ApiClient {
         };
 
         // A special header can be sent to ask the API to throw a simulated exception
-        if (causeError) {
+        if (apiClientOptions.causeError) {
             headers['x-mycompany-test-exception'] = 'SampleApi';
         }
 
