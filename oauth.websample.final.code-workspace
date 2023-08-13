@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "demoapp"
+		},
+		{
+			"path": "shellapp"
+		},
+		{
+			"path": "webhost"
+		},
+		{
+			"path": "cloudfront-extensions"
+		},
+		{
+			"path": "deployment"
+		}
+	]
+}

@@ -1,0 +1,4 @@
+{
+    "defaultAppBasePath": "/demoapp/",
+    "oauthAgentBaseUrl": "https://apilocal.authsamples-dev.com:444/demobrand/oauth-agent"
+}

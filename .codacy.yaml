@@ -1,0 +1,12 @@
+---
+exclude_paths:
+  - '*'
+  - 'doc/**'
+  - 'deployment/**'
+  - 'spa/demoapp/*'
+  - 'spa/shellapp/*'
+  - 'spa/build/**'
+  - 'webhost/*'
+  - 'cloudfront-extensions/*'
+  - 'cloudfront-extensions/environments/**'
+  - 'cloudfront-extensions/test/**'

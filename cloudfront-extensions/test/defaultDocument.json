@@ -1,0 +1,13 @@
+{
+    "Records": [
+      {
+        "cf": {
+          "request": {
+            "method": "GET",
+            "uri": "/demoapp/app.bundle.js",
+            "querystring": "t=123"
+          }
+        }
+      }
+    ]
+  }

@@ -1,0 +1,7 @@
+{
+    "port": 8000,
+    "sslCertificateFileName": "",
+    "sslCertificatePassword": "",
+    "trustedHosts": ["https://api.mycluster.com"],
+    "mode": "deployed"
+}

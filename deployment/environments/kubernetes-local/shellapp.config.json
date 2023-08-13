@@ -1,0 +1,4 @@
+{
+    "defaultAppBasePath": "/demoapp/",
+    "oauthAgentBaseUrl": "https://api.mycluster.com/demobrand/oauth-agent"
+}

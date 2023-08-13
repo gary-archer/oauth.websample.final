@@ -1,0 +1,7 @@
+{
+    "port": 443,
+    "sslCertificateFileName": "../certs/authsamples-dev.ssl.p12",
+    "sslCertificatePassword": "Password1",
+    "trustedHosts": ["https://apilocal.authsamples-dev.com:444"],
+    "mode": "development"
+}
