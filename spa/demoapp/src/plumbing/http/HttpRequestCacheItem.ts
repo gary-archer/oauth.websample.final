@@ -1,5 +1,8 @@
-import { UIError } from '../errors/lib';
+import {UIError} from '../errors/lib';
 
+/*
+ * The state of request data mapped to a URL
+ */
 export interface HttpRequestCacheItem {
 
     isLoading: boolean;
