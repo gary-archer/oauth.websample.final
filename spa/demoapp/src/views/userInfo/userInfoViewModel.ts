@@ -5,8 +5,8 @@ import {ApiUserInfo} from '../../api/entities/apiUserInfo';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
+import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
 import {ApiViewEvents} from '../utilities/apiViewEvents';
-import {ApiViewNames} from '../utilities/apiViewNames';
 
 /*
  * The view model for the user info view
@@ -63,7 +63,7 @@ export class UserInfoViewModel {
         try {
 
             this._error = null;
-            this._apiViewEvents.onViewLoading(ApiViewNames.UserInfo);
+            this._apiViewEvents.onViewLoading(HttpRequestNames.UserInfo);
 
             // The UI gets OAuth user info from the authorization server
             const oauthUserInfoPromise = this._authenticator.getUserInfo();
@@ -85,7 +85,7 @@ export class UserInfoViewModel {
             }
 
             // Update views
-            this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
+            this._apiViewEvents.onViewLoaded(HttpRequestNames.UserInfo);
 
         } catch (e: any) {
 
@@ -93,7 +93,7 @@ export class UserInfoViewModel {
             this._error = BaseErrorFactory.fromException(e);
             this._oauthUserInfo = null;
             this._apiUserInfo = null;
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, this._error);
+            this._apiViewEvents.onViewLoadFailed(HttpRequestNames.UserInfo, this._error);
         }
     }
 }

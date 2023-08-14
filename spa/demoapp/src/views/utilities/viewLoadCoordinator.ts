@@ -5,12 +5,11 @@ import {DataStatusEvent} from '../../plumbing/events/dataStatusEvent';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
 import {ApiViewLoadState} from './apiViewLoadState';
-import {ApiViewNames} from './apiViewNames';
 
 /*
  * A helper class to keep track of views that call APIs and whether a login_required error has been received
  */
-export class ApiViewEvents {
+export class ViewLoadCoordinator {
 
     private readonly _eventBus: EventBus;
     private _viewsState: ApiViewLoadState[];

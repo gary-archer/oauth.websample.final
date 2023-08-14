@@ -4,8 +4,8 @@ import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
+import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
 import {ApiViewEvents} from '../utilities/apiViewEvents';
-import {ApiViewNames} from '../utilities/apiViewNames';
 
 /*
  * The view model for the transactions container view
@@ -53,19 +53,19 @@ export class TransactionsContainerViewModel {
         try {
 
             this._error = null;
-            this._apiViewEvents.onViewLoading(ApiViewNames.Main);
+            this._apiViewEvents.onViewLoading(HttpRequestNames.Transactions);
             const result = await this._apiClient.getCompanyTransactions(id, options);
             if (result) {
                 this._transactions = result;
             }
 
-            this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
+            this._apiViewEvents.onViewLoaded(HttpRequestNames.Transactions);
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._transactions = null;
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, this._error);
+            this._apiViewEvents.onViewLoadFailed(HttpRequestNames.Transactions, this._error);
         }
     }
 

@@ -5,7 +5,7 @@ import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {EventNames} from '../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../plumbing/events/reloadMainViewEvent';
 import {ReloadUserInfoEvent} from '../plumbing/events/reloadUserInfoEvent';
-import {HttpRequestCache} from '../plumbing/http/HttpRequestCache';
+import {HttpRequestCache} from '../plumbing/http/httpRequestCache';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
@@ -13,7 +13,6 @@ import {CompaniesContainerViewModel} from '../views/companies/companiesContainer
 import {TransactionsContainerViewModel} from '../views/transactions/transactionsContainerViewModel';
 import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
 import {ApiViewEvents} from '../views/utilities/apiViewEvents';
-import {ApiViewNames} from '../views/utilities/apiViewNames';
 
 /*
  * Global objects as input to the application view
@@ -52,9 +51,7 @@ export class AppViewModel {
 
         // Create a helper class to notify us about views that make API calls
         // This will enable us to only trigger any login redirects once, after all views have tried to load
-        this._apiViewEvents = new ApiViewEvents(this._eventBus);
-        this._apiViewEvents.addView(ApiViewNames.Main);
-        this._apiViewEvents.addView(ApiViewNames.UserInfo);
+        this._apiLoader = new ApiLoader(this._eventBus);
 
         // Child view models
         this._companiesViewModel = null;

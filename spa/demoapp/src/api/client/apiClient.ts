@@ -6,7 +6,8 @@ import {CompanyTransactions} from '../entities/companyTransactions';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {BaseErrorFactory} from '../../plumbing/errors/lib';
-import {HttpRequestCache} from '../../plumbing/http/HttpRequestCache';
+import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
+import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {ApiClientOptions} from './apiClientOptions';
@@ -44,6 +45,7 @@ export class ApiClient {
         : Promise<Company[] | null> {
 
         return this._callApi(
+            HttpRequestNames.Companies,
             'companies',
             'GET',
             null,
@@ -57,6 +59,7 @@ export class ApiClient {
         : Promise<CompanyTransactions | null> {
 
         return this._callApi(
+            HttpRequestNames.Transactions,
             `companies/${id}/transactions`,
             'GET',
             null,
@@ -70,6 +73,7 @@ export class ApiClient {
         : Promise<ApiUserInfo | null> {
 
         return this._callApi(
+            HttpRequestNames.UserInfo,
             'userinfo',
             'GET',
             null,
@@ -80,27 +84,29 @@ export class ApiClient {
      * A parameterized method containing application specific logic for managing API calls
      */
     private async _callApi(
+        name: string,
         path: string,
         method: string,
         dataToSend: any,
         callerOptions?: ApiClientOptions): Promise<any> {
 
-        // Get the full request URL
+        // Avoid an API request when we know it will fail
+        if (!this._authenticator.isLoggedIn()) {
+            const cacheItem = this._requestCache.createItem(name);
+            cacheItem.error = ErrorFactory.fromLoginRequired();
+            return;
+        }
+
+        // Initialise data
         const url = `${this._apiBaseUrl}${path}`;
         const apiClientOptions = callerOptions || {
             forceReload: false,
             causeError: false,
         };
 
-        // Avoid an API call if we know it will fail
-        if (!this._authenticator.isLoggedIn()) {
-            throw ErrorFactory.fromLoginRequired();
-        }
-
         try {
-
             // Call the API
-            return await this._callApiWithCredential(url, method, dataToSend, apiClientOptions);
+            return await this._callApiWithCredential(name, url, method, dataToSend, apiClientOptions);
 
         } catch (e: any) {
 
@@ -113,7 +119,7 @@ export class ApiClient {
             await this._authenticator.synchronizedRefresh();
 
             // Call the API again with the rewritten access token cookie
-            return await this._callApiWithCredential(url, method, dataToSend, apiClientOptions);
+            return await this._callApiWithCredential(name, url, method, dataToSend, apiClientOptions);
         }
     }
 
@@ -121,21 +127,23 @@ export class ApiClient {
      * Do the work of calling the API
      */
     private async _callApiWithCredential(
+        name: string,
         url: string,
         method: string,
         dataToSend: any,
         apiClientOptions: ApiClientOptions): Promise<any> {
 
-        try {
-
-            // Return existing data from the memory cache when available
-            if (!apiClientOptions.forceReload) {
-                const cachedRequest = this._requestCache.getData(url);
-                if (cachedRequest && !cachedRequest.error) {
-                    return cachedRequest.data;
-                }
+        // Return existing data from the memory cache when available
+        if (!apiClientOptions.forceReload) {
+            let cacheItem = this._requestCache.getItem(name);
+            if (cacheItem && !cacheItem.error) {
+                return cacheItem.data;
             }
-            this._requestCache.createItem(url);
+        }
+
+        // Create the cache item to avoid a redundant API request during view recreation
+        const cacheItem = this._requestCache.createItem(url);
+        try {
 
             // Set options and send the secure cookie to the API origin
             const options = {
@@ -152,13 +160,16 @@ export class ApiClient {
             // Make the API request
             const response = await axios.request(options);
             AxiosUtils.checkJson(response.data);
-            this._requestCache.setData(url, response.data);
+            
+            // Update the cache and return the result
+            cacheItem.data = response.data;
             return response.data;
 
         } catch (e: any) {
 
+            // Get the error and save it to the cache
             const error = BaseErrorFactory.fromHttpError(e, url, 'web API');
-            this._requestCache.setError(url, error);
+            cacheItem.error = error;
             throw error;
         }
     }

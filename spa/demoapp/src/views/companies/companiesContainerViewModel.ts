@@ -3,8 +3,8 @@ import {ApiClient} from '../../api/client/apiClient';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {Company} from '../../api/entities/company';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
-import {ApiViewEvents} from '../utilities/apiViewEvents';
-import {ApiViewNames} from '../utilities/apiViewNames';
+import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
+import {ApiViewEvents} from '../utilities/apiViewEvents'
 
 /*
  * The view model for the companies container view
@@ -52,19 +52,19 @@ export class CompaniesContainerViewModel {
         try {
 
             this._error = null;
-            this._apiViewEvents.onViewLoading(ApiViewNames.Main);
+            this._apiViewEvents.onViewLoading(HttpRequestNames.Companies);
             const result = await this._apiClient.getCompanyList(options);
             if (result && result.length > 0) {
                 this._companies = result;
             }
             
-            this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
+            this._apiViewEvents.onViewLoaded(HttpRequestNames.Companies);
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._companies = [];
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, this._error);
+            this._apiViewEvents.onViewLoadFailed(HttpRequestNames.Companies, this._error);
         }
     }
 }
