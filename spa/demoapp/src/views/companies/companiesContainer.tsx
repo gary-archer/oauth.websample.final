@@ -99,9 +99,9 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         <>
             {state.error && <ErrorSummaryView {...getErrorProps()}/>}
 
-            {state.companies.length > 0 && props.isMobileLayout ? 
+            {state.companies.length > 0 && (props.isMobileLayout ? 
                 <CompaniesMobileView {...childProps}/> : 
-                <CompaniesDesktopView {...childProps}/>}
+                <CompaniesDesktopView {...childProps}/>)}
 
         </>
     );
