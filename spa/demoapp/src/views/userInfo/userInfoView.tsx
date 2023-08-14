@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadUserInfoEvent} from '../../plumbing/events/reloadUserInfoEvent';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
+import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {UserInfoViewProps} from './userInfoViewProps';
 import {UserInfoViewState} from './userInfoViewState';
 
@@ -18,6 +17,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     const [state, setState] = useState<UserInfoViewState>({
         oauthUserInfo: model.oauthUserInfo,
         apiUserInfo: model.apiUserInfo,
+        error: null,
     });
 
     useEffect(() => {
@@ -79,49 +79,37 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     async function loadData(options?: ApiClientOptions): Promise<void> {
 
-        const onSuccess = () => {
-
-            if (model.oauthUserInfo && model.apiUserInfo) {
-                setState((s) => {
-                    return {
-                        ...s,
-                        oauthUserInfo: model.oauthUserInfo,
-                        apiUserInfo : model.apiUserInfo,
-                    };
-                });
-            }
-        };
-
-        const onError = (error: UIError) => {
-
-            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('userinfo', error));
-            setState((s) => {
-                return {
-                    ...s,
-                    oauthUserInfo: null,
-                    apiUserInfo: null,
-                };
-            });
-        };
-
-        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('userinfo', null));
-        model.callApi(onSuccess, onError, options);
+        await model.callApi(options);
+        setState((s) => {
+            return {
+                ...s,
+                oauthUserInfo: model.oauthUserInfo,
+                apiUserInfo : model.apiUserInfo,
+                error: model.error,
+            };
+        });
     }
 
-    const errorProps = {
-        errorsToIgnore: [ErrorCodes.loginRequired],
-        eventBus: model.eventBus,
-        containingViewName: 'userinfo',
-        hyperlinkMessage: 'Problem Encountered',
-        dialogTitle: 'User Info Error',
-        centred: false,
-    };
+    /*
+     * Return error props when there is an error to render
+     */
+    function getErrorProps(): ErrorSummaryViewProps {
+
+        return {
+            error: state.error!,
+            errorsToIgnore: [ErrorCodes.loginRequired],
+            containingViewName: 'userinfo',
+            hyperlinkMessage: 'Problem Encountered',
+            dialogTitle: 'User Info Error',
+            centred: false,
+        };
+    }
 
     return (
         <>
-            <div className='text-end mx-auto'>
-                <ErrorSummaryView {...errorProps}/>
-            </div>
+            {state.error && <div className='text-end mx-auto'>
+                <ErrorSummaryView {...getErrorProps()}/>
+            </div>}
             {state.oauthUserInfo && state.apiUserInfo &&
             <div className='text-end mx-auto'>
                 <p className='fw-bold'>{`${getUserNameForDisplay()}`}</p>

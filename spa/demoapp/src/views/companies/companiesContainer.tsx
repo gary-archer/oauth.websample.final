@@ -2,11 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
+import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
 import {CompaniesContainerProps} from './companiesContainerProps';
 import {CompaniesContainerState} from './companiesContainerState';
@@ -21,6 +20,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     const model = props.viewModel;
     const [state, setState] = useState<CompaniesContainerState>({
         companies: model.companies,
+        error: model.error,
     });
 
     useEffect(() => {
@@ -66,62 +66,43 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
      */
     async function loadData(options?: ApiClientOptions): Promise<void> {
 
-        const onSuccess = () => {
+        await model.callApi(options);
+        setState((s) => {
+            return {
+                ...s,
+                companies: model.companies,
+                error: model.error,
+            };
+        });
+    }
 
-            if (model.companies) {
-                setState((s) => {
-                    return {
-                        ...s,
-                        companies: model.companies,
-                    };
-                });
-            }
+    /*
+     * Return error props when there is an error to render
+     */
+    function getErrorProps(): ErrorSummaryViewProps {
+
+        return {
+            error: state.error!,
+            errorsToIgnore: [ErrorCodes.loginRequired],
+            containingViewName: 'companies',
+            hyperlinkMessage: 'Problem Encountered in Companies View',
+            dialogTitle: 'Companies View Error',
+            centred: true,
         };
-
-        const onError = (error: UIError) => {
-
-            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', error));
-            setState((s) => {
-                return {
-                    ...s,
-                    companies: null,
-                };
-            });
-        };
-
-        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
-        model.callApi(onSuccess, onError, options);
     }
 
     const childProps = {
         companies: state.companies,
     };
 
-    const errorProps = {
-        errorsToIgnore: [ErrorCodes.loginRequired],
-        eventBus: model.eventBus,
-        containingViewName: 'companies',
-        hyperlinkMessage: 'Problem Encountered in Companies View',
-        dialogTitle: 'Companies View Error',
-        centred: true,
-    };
+    return  (
+        <>
+            {state.error && <ErrorSummaryView {...getErrorProps()}/>}
 
-    if (props.isMobileLayout) {
+            {state.companies.length > 0 && props.isMobileLayout ? 
+                <CompaniesMobileView {...childProps}/> : 
+                <CompaniesDesktopView {...childProps}/>}
 
-        return  (
-            <>
-                <ErrorSummaryView {...errorProps}/>
-                {state.companies && <CompaniesMobileView {...childProps}/>}
-            </>
-        );
-
-    } else {
-
-        return  (
-            <>
-                <ErrorSummaryView {...errorProps}/>
-                {state.companies && <CompaniesDesktopView {...childProps}/>}
-            </>
-        );
-    }
+        </>
+    );
 }

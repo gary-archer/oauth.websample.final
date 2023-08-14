@@ -1,8 +1,8 @@
 import EventBus from 'js-event-bus';
-import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {ApiClient} from '../../api/client/apiClient';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {Company} from '../../api/entities/company';
+import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {ApiViewEvents} from '../utilities/apiViewEvents';
 import {ApiViewNames} from '../utilities/apiViewNames';
 
@@ -14,7 +14,8 @@ export class CompaniesContainerViewModel {
     private readonly _apiClient: ApiClient;
     private readonly _eventBus: EventBus;
     private readonly _apiViewEvents: ApiViewEvents;
-    private _companies: Company[] | null;
+    private _companies: Company[];
+    private _error: UIError | null;
 
     public constructor(
         apiClient: ApiClient,
@@ -25,13 +26,18 @@ export class CompaniesContainerViewModel {
         this._eventBus = eventBus;
         this._apiViewEvents = apiViewEvents;
         this._companies = [];
+        this._error = null;
     }
 
     /*
      * Property accessors
      */
-    public get companies(): Company[] | null {
+    public get companies(): Company[] {
         return this._companies;
+    }
+
+    public get error(): UIError | null {
+        return this._error;
     }
 
     public get eventBus(): EventBus {
@@ -41,26 +47,24 @@ export class CompaniesContainerViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(
-        onSuccess: () => void,
-        onError: (error: UIError) => void,
-        options?: ApiClientOptions): Promise<void> {
+    public async callApi(options?: ApiClientOptions): Promise<void> {
 
         try {
 
+            this._error = null;
             this._apiViewEvents.onViewLoading(ApiViewNames.Main);
             const result = await this._apiClient.getCompanyList(options);
-            if (result) {
+            if (result && result.length > 0) {
                 this._companies = result;
             }
+            
             this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
-            onSuccess();
 
         } catch (e: any) {
 
-            const error = BaseErrorFactory.fromException(e);
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
-            onError(error);
+            this._error = BaseErrorFactory.fromException(e);
+            this._companies = [];
+            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, this._error);
         }
     }
 }

@@ -131,7 +131,7 @@ export class ApiClient {
             // Return existing data from the memory cache when available
             if (!apiClientOptions.forceReload) {
                 const cachedRequest = this._requestCache.getData(url);
-                if (cachedRequest) {
+                if (cachedRequest && !cachedRequest.error) {
                     return cachedRequest.data;
                 }
             }

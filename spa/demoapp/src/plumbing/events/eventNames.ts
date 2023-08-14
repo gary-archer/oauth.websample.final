@@ -6,5 +6,4 @@ export class EventNames {
     public static DataStatus     = 'DataStatus';
     public static ReloadMainView = 'ReloadMainView';
     public static ReloadUserInfo = 'ReloadUserInfo';
-    public static SetError       = 'SetError';
 }

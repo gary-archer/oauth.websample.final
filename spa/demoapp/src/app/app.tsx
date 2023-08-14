@@ -4,13 +4,14 @@ import {Route, Routes, useNavigate} from 'react-router-dom';
 import {BaseErrorFactory, ErrorConsoleReporter} from '../plumbing/errors/lib';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
-import {SetErrorEvent} from '../plumbing/events/setErrorEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CallbackView} from '../views/callback/callbackView';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
+import {ErrorSummaryViewProps} from '../views/errors/errorSummaryViewProps';
 import {HeaderButtonsView} from '../views/headings/headerButtonsView';
+import {HeaderButtonsViewProps} from '../views/headings/headerButtonsViewProps';
 import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
@@ -30,16 +31,13 @@ export function App(props: AppProps): JSX.Element {
     const [state, setState] = useState<AppState>({
         isInitialised: model.isInitialised,
         isMobileLayout: isMobileLayoutNeeded(),
+        error: null,
     });
 
     // Startup runs only once
     useEffect(() => {
-
-        if (!model.isEntered) {
-            model.isEntered = true;
-            startup();
-            return () => cleanup();
-        }
+        startup();
+        return () => cleanup();
 
     }, []);
 
@@ -58,7 +56,7 @@ export function App(props: AppProps): JSX.Element {
 
             // Initialise view models
             await model.initialise();
-            setError(null);
+            state.error = null;
 
             // Subscribe to application and window events
             model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
@@ -76,7 +74,7 @@ export function App(props: AppProps): JSX.Element {
         } catch (e: any) {
 
             // Render startup errors
-            setError(e);
+            state.error = BaseErrorFactory.fromException(e);
         }
     }
 
@@ -208,10 +206,33 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * A shared subroutine to set error state
+     * Return the header props
      */
-    function setError(e: any): void {
-        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('main', e));
+    function getErrorProps(): ErrorSummaryViewProps {
+
+        return {
+            error: state.error!,
+            errorsToIgnore: [],
+            containingViewName: 'main',
+            hyperlinkMessage: 'Problem Encountered',
+            dialogTitle: 'Demo Application Error',
+            centred: true,
+        };
+    }
+
+    /*
+     * Return header button props
+     */
+    function getHeaderButtonProps(): HeaderButtonsViewProps {
+
+        return {
+            eventBus: model.eventBus,
+            handleHomeClick: onHome,
+            handleExpireAccessTokenClick: onExpireAccessToken,
+            handleExpireRefreshTokenClick: onExpireRefreshToken,
+            handleReloadDataClick: model.reloadData,
+            handleLogoutClick: onLogout,
+        };
     }
 
     /*
@@ -223,29 +244,11 @@ export function App(props: AppProps): JSX.Element {
             userInfo: null,
         };
 
-        const headerButtonProps = {
-            eventBus: model.eventBus,
-            handleHomeClick: onHome,
-            handleExpireAccessTokenClick: onExpireAccessToken,
-            handleExpireRefreshTokenClick: onExpireRefreshToken,
-            handleReloadDataClick: model.reloadData,
-            handleLogoutClick: onLogout,
-        };
-
-        const errorProps = {
-            errorsToIgnore: [],
-            eventBus: model.eventBus,
-            containingViewName: 'main',
-            hyperlinkMessage: 'Problem Encountered',
-            dialogTitle: 'Demo Application Error',
-            centred: true,
-        };
-
         return (
             <>
                 <TitleView {...titleProps} />
-                <HeaderButtonsView {...headerButtonProps} />
-                <ErrorSummaryView {...errorProps} />
+                <HeaderButtonsView {...getHeaderButtonProps()} />
+                <ErrorSummaryView {...getErrorProps()} />
             </>
         );
     }
@@ -259,24 +262,6 @@ export function App(props: AppProps): JSX.Element {
             userInfo: {
                 viewModel: model.getUserInfoViewModel(),
             },
-        };
-
-        const headerButtonProps = {
-            eventBus: model.eventBus,
-            handleHomeClick: onHome,
-            handleExpireAccessTokenClick: onExpireAccessToken,
-            handleExpireRefreshTokenClick: onExpireRefreshToken,
-            handleReloadDataClick: model.reloadData,
-            handleLogoutClick: onLogout,
-        };
-
-        const errorProps = {
-            errorsToIgnore: [],
-            eventBus: model.eventBus,
-            containingViewName: 'main',
-            hyperlinkMessage: 'Problem Encountered',
-            dialogTitle: 'Demo Application Error',
-            centred: true,
         };
 
         const sessionProps = {
@@ -302,8 +287,8 @@ export function App(props: AppProps): JSX.Element {
         return (
             <>
                 <TitleView {...titleProps} />
-                <HeaderButtonsView {...headerButtonProps} />
-                <ErrorSummaryView {...errorProps} />
+                <HeaderButtonsView {...getHeaderButtonProps()} />
+                <ErrorSummaryView {...getErrorProps()} />
                 <SessionView {...sessionProps} />
                 <Routes>
                     <Route path='/callback'      element={<CallbackView {...callbackProps} />} />

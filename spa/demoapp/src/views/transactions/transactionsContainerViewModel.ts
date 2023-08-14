@@ -16,6 +16,7 @@ export class TransactionsContainerViewModel {
     private readonly _eventBus: EventBus;
     private readonly _apiViewEvents: ApiViewEvents;
     private _transactions: CompanyTransactions | null;
+    private _error: UIError | null;
 
     public constructor(
         apiClient: ApiClient,
@@ -26,6 +27,7 @@ export class TransactionsContainerViewModel {
         this._eventBus = eventBus;
         this._apiViewEvents = apiViewEvents;
         this._transactions = null;
+        this._error = null;
     }
 
     /*
@@ -35,6 +37,10 @@ export class TransactionsContainerViewModel {
         return this._transactions;
     }
 
+    public get error(): UIError | null {
+        return this._error;
+    }
+
     public get eventBus(): EventBus {
         return this._eventBus;
     }
@@ -42,46 +48,45 @@ export class TransactionsContainerViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(
-        id: string,
-        onSuccess: () => void,
-        onError: (isExpected: boolean, error: UIError) => void,
-        options?: ApiClientOptions): Promise<void> {
+    public async callApi(id: string, options?: ApiClientOptions): Promise<void> {
 
         try {
 
+            this._error = null;
             this._apiViewEvents.onViewLoading(ApiViewNames.Main);
             const result = await this._apiClient.getCompanyTransactions(id, options);
             if (result) {
                 this._transactions = result;
             }
+
             this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
-            onSuccess();
 
         } catch (e: any) {
 
-            const error = BaseErrorFactory.fromException(e);
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
-            onError(this._isExpectedApiError(error), error);
+            this._error = BaseErrorFactory.fromException(e);
+            this._transactions = null;
+            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, this._error);
         }
     }
 
     /*
      * Handle 'business errors' received from the API
      */
-    private _isExpectedApiError(error: UIError): boolean {
+    public isExpectedApiError(): boolean {
 
-        if (error.statusCode === 404 && error.errorCode === ErrorCodes.companyNotFound) {
+        if(this._error) {
 
-            // User typed an id value outside of allowed company ids
-            return true;
+            if (this._error.statusCode === 404 && this._error.errorCode === ErrorCodes.companyNotFound) {
 
-        }
+                // User typed an id value outside of allowed company ids
+                return true;
+            }
 
-        if (error.statusCode === 400 && error.errorCode === ErrorCodes.invalidCompanyId) {
+            if (this._error.statusCode === 400 && this._error.errorCode === ErrorCodes.invalidCompanyId) {
 
-            // User typed an invalid id such as 'abc'
-            return true;
+                // User typed an invalid id such as 'abc'
+                return true;
+            }
         }
 
         return false;

@@ -65,7 +65,7 @@ export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
                 </div>
             </div>
             <div className='card-body'>
-                {props.companies!.map((company) => renderItem(company))}
+                {props.companies.map((company) => renderItem(company))}
             </div>
         </div>
     );

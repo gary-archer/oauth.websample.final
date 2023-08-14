@@ -19,6 +19,7 @@ export class UserInfoViewModel {
     private readonly _apiViewEvents: ApiViewEvents;
     private _oauthUserInfo: OAuthUserInfo | null;
     private _apiUserInfo: ApiUserInfo | null;
+    private _error: UIError | null;
 
     public constructor(
         authenticator: Authenticator,
@@ -32,6 +33,7 @@ export class UserInfoViewModel {
         this._apiViewEvents = apiViewEvents;
         this._oauthUserInfo = null;
         this._apiUserInfo = null;
+        this._error = null;
     }
 
     /*
@@ -45,6 +47,10 @@ export class UserInfoViewModel {
         return this._apiUserInfo;
     }
 
+    public get error(): UIError | null {
+        return this._error;
+    }
+
     public get eventBus(): EventBus {
         return this._eventBus;
     }
@@ -52,13 +58,11 @@ export class UserInfoViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(
-        onSuccess: () => void,
-        onError: (error: UIError) => void,
-        options?: ApiClientOptions): Promise<void> {
+    public async callApi(options?: ApiClientOptions): Promise<void> {
 
         try {
 
+            this._error = null;
             this._apiViewEvents.onViewLoading(ApiViewNames.UserInfo);
 
             // The UI gets OAuth user info from the authorization server
@@ -82,14 +86,14 @@ export class UserInfoViewModel {
 
             // Update views
             this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
-            onSuccess();
 
         } catch (e: any) {
 
             // Report errors
-            const error = BaseErrorFactory.fromException(e);
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);
-            onError(error);
+            this._error = BaseErrorFactory.fromException(e);
+            this._oauthUserInfo = null;
+            this._apiUserInfo = null;
+            this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, this._error);
         }
     }
 }

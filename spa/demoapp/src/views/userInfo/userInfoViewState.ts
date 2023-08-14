@@ -1,4 +1,5 @@
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
+import {UIError} from '../../plumbing/errors/lib';
 import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
 
 /*
@@ -7,4 +8,5 @@ import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
 export interface UserInfoViewState {
     oauthUserInfo: OAuthUserInfo | null;
     apiUserInfo: ApiUserInfo | null;
+    error: UIError | null;
 }

@@ -2,11 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
+import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
@@ -22,6 +21,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     const companyId = params.id!;
     const [state, setState] = useState<TransactionsContainerState>({
         data: model.transactions,
+        error: null,
     });
 
     useEffect(() => {
@@ -67,39 +67,39 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     async function loadData(options?: ApiClientOptions): Promise<void> {
 
-        const onSuccess = () => {
+        await model.callApi(companyId, options);
 
-            if (model.transactions) {
-                setState((s) => {
-                    return {
-                        ...s,
-                        data: model.transactions,
-                    };
-                });
-            }
+        if (model.error && model.isExpectedApiError()) {
+
+            // For 'expected' errors, return to the home view
+            props.navigate('/');
+
+        } else {
+        
+            // Otherwise update state
+            setState((s) => {
+                return {
+                    ...s,
+                    data: model.transactions,
+                    error: model.error,
+                };
+            });
         };
+    }
 
-        const onError = (isExpected: boolean, error: UIError) => {
+    /*
+     * Return error props when there is an error to render
+     */
+    function getErrorProps(): ErrorSummaryViewProps {
 
-            if (isExpected) {
-
-                // For 'expected' errors, return to the home view
-                props.navigate('/');
-
-            } else {
-
-                model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', error));
-                setState((s) => {
-                    return {
-                        ...s,
-                        data: null,
-                    };
-                });
-            }
+        return {
+            error: state.error!,
+            errorsToIgnore: [ErrorCodes.loginRequired],
+            containingViewName: 'transactions',
+            hyperlinkMessage: 'Problem Encountered in Transactions View',
+            dialogTitle: 'Transactions View Error',
+            centred: true,
         };
-
-        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', null));
-        model.callApi(companyId, onSuccess, onError, options);
     }
 
     /*
@@ -126,18 +126,9 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
         );
     }
 
-    const errorProps = {
-        errorsToIgnore: [ErrorCodes.loginRequired],
-        eventBus: model.eventBus,
-        containingViewName: 'transactions',
-        hyperlinkMessage: 'Problem Encountered in Transactions View',
-        dialogTitle: 'Transactions View Error',
-        centred: true,
-    };
-
     return  (
         <>
-            <ErrorSummaryView {...errorProps}/>
+            {state.error && <ErrorSummaryView {...getErrorProps()}/>}
             {renderTransactionsView()}
         </>
     );
