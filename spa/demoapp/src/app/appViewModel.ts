@@ -1,5 +1,6 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../api/client/apiClient';
+import {ApiCoordinator} from '../api/client/apiCoordinator';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {EventNames} from '../plumbing/events/eventNames';
@@ -12,20 +13,21 @@ import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainerViewModel} from '../views/companies/companiesContainerViewModel';
 import {TransactionsContainerViewModel} from '../views/transactions/transactionsContainerViewModel';
 import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
-import {ApiViewEvents} from '../views/utilities/apiViewEvents';
 
 /*
  * Global objects as input to the application view
  */
 export class AppViewModel {
 
-    // Global objects
+    // Global objects created from configuration
     private _configuration: Configuration | null;
     private _authenticator: Authenticator | null;
     private _apiClient: ApiClient | null;
-    private _httpRequestCache: HttpRequestCache;
-    private _eventBus: EventBus;
-    private _apiViewEvents: ApiViewEvents;
+
+    // Other global objects
+    private readonly _httpRequestCache: HttpRequestCache;
+    private readonly _eventBus: EventBus;
+    private readonly _apiCoordinator: ApiCoordinator;
 
     // Child view models
     private _companiesViewModel: CompaniesContainerViewModel | null;
@@ -46,12 +48,9 @@ export class AppViewModel {
         this._apiClient = null;
         this._httpRequestCache = new HttpRequestCache();
 
-        // Create the event bus for communicating between views
+        // Create objects used for communicating across views
         this._eventBus = new EventBus();
-
-        // Create a helper class to notify us about views that make API calls
-        // This will enable us to only trigger any login redirects once, after all views have tried to load
-        this._apiLoader = new ApiLoader(this._eventBus);
+        this._apiCoordinator = new ApiCoordinator(this._httpRequestCache, this._eventBus);
 
         // Child view models
         this._companiesViewModel = null;
@@ -112,10 +111,6 @@ export class AppViewModel {
         return this._eventBus;
     }
 
-    public get apiViewEvents(): ApiViewEvents {
-        return this._apiViewEvents;
-    }
-
     /*
      * Return child view models when requested
      */
@@ -126,7 +121,7 @@ export class AppViewModel {
             this._companiesViewModel = new CompaniesContainerViewModel(
                 this._apiClient!,
                 this._eventBus,
-                this._apiViewEvents,
+                this._apiCoordinator,
             );
         }
 
@@ -141,7 +136,7 @@ export class AppViewModel {
             (
                 this._apiClient!,
                 this._eventBus,
-                this._apiViewEvents,
+                this._apiCoordinator,
             );
         }
 
@@ -156,7 +151,7 @@ export class AppViewModel {
                 this.authenticator!,
                 this._apiClient!,
                 this._eventBus,
-                this._apiViewEvents,
+                this._apiCoordinator,
             );
         }
 
@@ -167,8 +162,6 @@ export class AppViewModel {
      * Ask all views to get updated data from the API
      */
     public reloadData(causeError: boolean): void {
-
-        this._apiViewEvents.clearState();
         this._eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(causeError));
         this._eventBus.emit(EventNames.ReloadUserInfo, null, new ReloadUserInfoEvent(causeError));
     }

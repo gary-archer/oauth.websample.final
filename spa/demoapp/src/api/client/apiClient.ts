@@ -141,7 +141,7 @@ export class ApiClient {
             }
         }
 
-        // Create the cache item to avoid a redundant API request during view recreation
+        // Create the cache item to avoid a redundant API request on every view recreation
         const cacheItem = this._requestCache.createItem(url);
         try {
 

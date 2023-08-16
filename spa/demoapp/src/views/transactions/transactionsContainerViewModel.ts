@@ -1,11 +1,11 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
+import {ApiCoordinator} from '../../api/client/apiCoordinator';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
-import {ApiViewEvents} from '../utilities/apiViewEvents';
 
 /*
  * The view model for the transactions container view
@@ -14,18 +14,18 @@ export class TransactionsContainerViewModel {
 
     private readonly _apiClient: ApiClient;
     private readonly _eventBus: EventBus;
-    private readonly _apiViewEvents: ApiViewEvents;
+    private readonly _apiCoordinator: ApiCoordinator;
     private _transactions: CompanyTransactions | null;
     private _error: UIError | null;
 
     public constructor(
         apiClient: ApiClient,
         eventBus: EventBus,
-        apiViewEvents: ApiViewEvents,
+        apiCoordinator: ApiCoordinator,
     ) {
         this._apiClient = apiClient;
         this._eventBus = eventBus;
-        this._apiViewEvents = apiViewEvents;
+        this._apiCoordinator = apiCoordinator;
         this._transactions = null;
         this._error = null;
     }
@@ -53,19 +53,19 @@ export class TransactionsContainerViewModel {
         try {
 
             this._error = null;
-            this._apiViewEvents.onViewLoading(HttpRequestNames.Transactions);
+            this._apiCoordinator.onViewLoading(HttpRequestNames.Transactions);
             const result = await this._apiClient.getCompanyTransactions(id, options);
             if (result) {
                 this._transactions = result;
             }
 
-            this._apiViewEvents.onViewLoaded(HttpRequestNames.Transactions);
+            this._apiCoordinator.onViewLoaded(HttpRequestNames.Transactions);
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._transactions = null;
-            this._apiViewEvents.onViewLoadFailed(HttpRequestNames.Transactions, this._error);
+            this._apiCoordinator.onViewLoadFailed(HttpRequestNames.Transactions, this._error);
         }
     }
 

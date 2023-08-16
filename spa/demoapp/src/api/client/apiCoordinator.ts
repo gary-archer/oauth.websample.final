@@ -1,42 +1,23 @@
 import EventBus from 'js-event-bus';
-import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/lib';
-import {DataStatusEvent} from '../../plumbing/events/dataStatusEvent';
-import {EventNames} from '../../plumbing/events/eventNames';
-import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
-import {ApiViewLoadState} from './apiViewLoadState';
+import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
 
 /*
- * A helper class to keep track of views that call APIs and whether a login_required error has been received
+ * Coordinates API requests from multiple views, so that login redirects are only triggered once
  */
-export class ViewLoadCoordinator {
+export class ApiCoordinator {
 
+    private readonly _httpRequestCache: HttpRequestCache;
     private readonly _eventBus: EventBus;
-    private _viewsState: ApiViewLoadState[];
-    private _loginRequired: boolean;
 
     /*
-     * Set the initial state at construction
+     * Set the initial state
      */
-    public constructor(eventBus: EventBus) {
+    public constructor(httpRequestCache: HttpRequestCache, eventBus: EventBus) {
 
+        this._httpRequestCache = httpRequestCache;
         this._eventBus = eventBus;
-        this._viewsState = [];
-        this._loginRequired = false;
         this._setupCallbacks();
-    }
-
-    /*
-     * Each view is added along with an initial unloaded state
-     */
-    public addView(name: string): void {
-
-        const viewState = {
-            name,
-            loaded: false,
-            failed: false,
-        };
-        this._viewsState.push(viewState);
     }
 
     /*
@@ -46,9 +27,9 @@ export class ViewLoadCoordinator {
 
         this._updateLoadState(name, false, false);
 
-        if (name === ApiViewNames.Main) {
+        /*if (name === ApiViewNames.Main) {
             this._eventBus.emit(EventNames.DataStatus, null, new DataStatusEvent(false));
-        }
+        }*/
     }
 
     /*
@@ -58,9 +39,9 @@ export class ViewLoadCoordinator {
 
         this._updateLoadState(name, true, false);
 
-        if (name === ApiViewNames.Main) {
+        /*if (name === ApiViewNames.Main) {
             this._eventBus.emit(EventNames.DataStatus, null, new DataStatusEvent(true));
-        }
+        }*/
 
         this._triggerLoginIfRequired();
     }
@@ -72,9 +53,9 @@ export class ViewLoadCoordinator {
 
         this._updateLoadState(name, true, true);
 
-        if (error.errorCode === ErrorCodes.loginRequired) {
+        /*if (error.errorCode === ErrorCodes.loginRequired) {
             this._loginRequired = true;
-        }
+        }*/
 
         this._triggerLoginIfRequired();
     }
@@ -83,7 +64,7 @@ export class ViewLoadCoordinator {
      * Indicate if any view failed to load
      */
     public hasLoadError(): boolean {
-        const found = this._viewsState.find((v) => v.failed === true);
+        const found = false; // this._viewsState.find((v) => v.failed === true);
         return !!found;
     }
 
@@ -92,12 +73,12 @@ export class ViewLoadCoordinator {
      */
     public clearState(): void {
 
-        this._viewsState.forEach((v) => {
+        /*this._viewsState.forEach((v) => {
             v.loaded = false;
             v.failed = false;
         });
 
-        this._loginRequired = false;
+        this._loginRequired = false;*/
     }
 
     /*
@@ -105,11 +86,11 @@ export class ViewLoadCoordinator {
      */
     private _updateLoadState(name: string, loaded: boolean, failed: boolean) {
 
-        const found = this._viewsState.find((v) => v.name === name);
+        /*const found = this._viewsState.find((v) => v.name === name);
         if (found) {
             found.loaded = loaded;
             found.failed = failed;
-        }
+        }*/
     }
 
     /*
@@ -117,10 +98,10 @@ export class ViewLoadCoordinator {
      */
     private _triggerLoginIfRequired(): void {
 
-        const allViewsLoaded = this._viewsState.filter((v) => v.loaded === true).length === this._viewsState.length;
+        /*const allViewsLoaded = this._viewsState.filter((v) => v.loaded === true).length === this._viewsState.length;
         if (allViewsLoaded && this._loginRequired) {
             this._eventBus.emit(EventNames.LoginRequired, null, new LoginRequiredEvent());
-        }
+        }*/
     }
 
     /*
