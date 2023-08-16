@@ -7,19 +7,19 @@ import {HttpRequestCacheItem} from './httpRequestCacheItem';
  */
 export class HttpRequestCache {
 
-    // A map of named API requests to the result
-    private readonly _requests: { [name: string]: HttpRequestCacheItem } = {};
+    // A map of URLs to the result
+    private readonly _requests: { [url: string]: HttpRequestCacheItem } = {};
 
     /*
      * Create an item when an API request is triggered
      */
-    public createItem(name: string): HttpRequestCacheItem {
+    public createItem(url: string): HttpRequestCacheItem {
 
-        let item = this.getItem(name);
+        let item = this.getItem(url);
         if (!item) {
 
             item = new HttpRequestCacheItem();
-            this._requests[name] = item;
+            this._requests[url] = item;
         }
 
         return item;
@@ -28,17 +28,17 @@ export class HttpRequestCache {
     /*
      * Get an item if it exists
      */
-    public getItem(name: string): HttpRequestCacheItem | null {
-        return this._requests[name];
+    public getItem(url: string): HttpRequestCacheItem | null {
+        return this._requests[url];
     }
 
     /*
      * Remove an item if it exists
      */
-    public removeItem(name: string): void {
+    public removeItem(url: string): void {
 
-        if (this._requests[name]) {
-            delete this._requests[name];
+        if (this._requests[url]) {
+            delete this._requests[url];
         }
     }
 }
