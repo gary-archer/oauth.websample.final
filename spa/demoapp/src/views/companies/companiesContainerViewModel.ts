@@ -1,6 +1,6 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
-import {ApiClientOptions} from '../../api/client/apiClientOptions';
+import {ApiClientContext} from '../../api/client/apiClientContext';
 import {Company} from '../../api/entities/company';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {ViewNames} from '../utilities/viewNames';
@@ -47,14 +47,14 @@ export class CompaniesContainerViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(options?: ApiClientOptions): Promise<void> {
+    public async callApi(context: ApiClientContext): Promise<void> {
 
         this._viewModelCoordinator.onViewLoading(ViewNames.Main);
         this._error = null;
 
         try {
 
-            const result = await this._apiClient.getCompanyList(options);
+            const result = await this._apiClient.getCompanyList(context);
             if (result && result.length > 0) {
                 this._companies = result;
             }
@@ -66,7 +66,7 @@ export class CompaniesContainerViewModel {
 
         } finally {
 
-            this._viewModelCoordinator.onViewLoaded(ViewNames.Main);
+            this._viewModelCoordinator.onViewLoaded(ViewNames.Main, [context.url]);
         }
     }
 }

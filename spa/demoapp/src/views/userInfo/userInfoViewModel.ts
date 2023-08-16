@@ -1,6 +1,6 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
-import {ApiClientOptions} from '../../api/client/apiClientOptions';
+import {ApiClientContext} from '../../api/client/apiClientContext';
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
@@ -58,7 +58,7 @@ export class UserInfoViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(options?: ApiClientOptions): Promise<void> {
+    public async callApi(context: ApiClientContext): Promise<void> {
 
         this._viewModelCoordinator.onViewLoading(ViewNames.UserInfo);
         this._error = null;
@@ -69,7 +69,7 @@ export class UserInfoViewModel {
             const oauthUserInfoPromise = this._authenticator.getUserInfo();
 
             // The UI gets domain specific user attributes from its API
-            const apiUserInfoPromise = this._apiClient.getUserInfo(options);
+            const apiUserInfoPromise = this._apiClient.getUserInfo(context);
 
             // Run the tasks in parallel
             const results = await Promise.all([oauthUserInfoPromise, apiUserInfoPromise]);
@@ -93,7 +93,7 @@ export class UserInfoViewModel {
 
         } finally {
 
-            this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo);
+            this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo, [context.url]);
         }
     }
 }

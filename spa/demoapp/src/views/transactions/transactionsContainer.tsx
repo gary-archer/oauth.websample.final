@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
-import {ApiClientOptions} from '../../api/client/apiClientOptions';
+import {ApiClientContext} from '../../api/client/apiClientContext';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
@@ -36,7 +36,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     async function startup(): Promise<void> {
         model.eventBus.on(EventNames.ReloadData, onReload);
-        await loadData();
+        await loadData(new ApiClientContext());
     }
 
     /*
@@ -51,19 +51,18 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     function onReload(event: ReloadDataEvent): void {
 
-        const options = {
-            forceReload: true,
-            causeError: event.causeError,
-        };
-        loadData(options);
+        const context = new ApiClientContext();
+        context.forceReload = true;
+        context.causeError = event.causeError,
+        loadData(context);
     }
 
     /*
      * Get data from the API and update state
      */
-    async function loadData(options?: ApiClientOptions): Promise<void> {
+    async function loadData(context: ApiClientContext): Promise<void> {
 
-        await model.callApi(companyId, options);
+        await model.callApi(companyId, context);
 
         if (model.error && model.isExpectedApiError()) {
 

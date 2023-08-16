@@ -9,7 +9,7 @@ import {BaseErrorFactory} from '../../plumbing/errors/lib';
 import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
-import {ApiClientOptions} from './apiClientOptions';
+import {ApiClientContext} from './apiClientContext';
 
 /*
  * A high level class used by the rest of the SPA to trigger API calls
@@ -40,40 +40,40 @@ export class ApiClient {
     /*
      * Get a list of companies
      */
-    public async getCompanyList(callerOptions?: ApiClientOptions)
+    public async getCompanyList(context: ApiClientContext)
         : Promise<Company[] | null> {
 
         return this._callApi(
             'companies',
             'GET',
             null,
-            callerOptions);
+            context);
     }
 
     /*
      * Get a list of transactions for a single company
      */
-    public async getCompanyTransactions(id: string, callerOptions?: ApiClientOptions)
+    public async getCompanyTransactions(id: string, context: ApiClientContext)
         : Promise<CompanyTransactions | null> {
 
         return this._callApi(
             `companies/${id}/transactions`,
             'GET',
             null,
-            callerOptions);
+            context);
     }
 
     /*
      * Download user attributes the UI needs that are not stored in the authorization server
      */
-    public async getUserInfo(callerOptions?: ApiClientOptions)
+    public async getUserInfo(context: ApiClientContext)
         : Promise<ApiUserInfo | null> {
 
         return this._callApi(
             'userinfo',
             'GET',
             null,
-            callerOptions);
+            context);
     }
 
     /*
@@ -83,18 +83,15 @@ export class ApiClient {
         path: string,
         method: string,
         dataToSend: any,
-        callerOptions?: ApiClientOptions): Promise<any> {
+        context: ApiClientContext): Promise<any> {
 
-        // Initialise data
+        // Get the URL and pass it back in the context
         const url = `${this._apiBaseUrl}${path}`;
-        const apiClientOptions = callerOptions || {
-            forceReload: false,
-            causeError: false,
-        };
+        context.url = url;
 
         try {
             // Call the API
-            return await this._callApiWithCredential(url, method, dataToSend, apiClientOptions);
+            return await this._callApiWithCredential(url, method, dataToSend, context);
 
         } catch (e: any) {
 
@@ -107,7 +104,7 @@ export class ApiClient {
             await this._authenticator.synchronizedRefresh();
 
             // Call the API again with the rewritten access token cookie
-            return await this._callApiWithCredential(url, method, dataToSend, apiClientOptions);
+            return await this._callApiWithCredential(url, method, dataToSend, context);
         }
     }
 
@@ -118,10 +115,10 @@ export class ApiClient {
         url: string,
         method: string,
         dataToSend: any,
-        apiClientOptions: ApiClientOptions): Promise<any> {
+        context: ApiClientContext): Promise<any> {
 
         // Remove the item from the cache when a reload is requested
-        if (apiClientOptions.forceReload) {
+        if (context.forceReload) {
             this._httpRequestCache.removeItem(url);
         }
 
@@ -146,7 +143,7 @@ export class ApiClient {
                 url,
                 method,
                 data: dataToSend,
-                headers: this._getHeaders(apiClientOptions),
+                headers: this._getHeaders(context),
                 withCredentials: true,
             } as AxiosRequestConfig;
 
@@ -173,7 +170,7 @@ export class ApiClient {
     /*
      * Add headers for logging and advanced testing purposes
      */
-    private _getHeaders(apiClientOptions: ApiClientOptions): any {
+    private _getHeaders(context: ApiClientContext): any {
 
         const headers: any = {
 
@@ -184,7 +181,7 @@ export class ApiClient {
         };
 
         // A special header can be sent to ask the API to throw a simulated exception
-        if (apiClientOptions.causeError) {
+        if (context.causeError) {
             headers['x-mycompany-test-exception'] = 'SampleApi';
         }
 

@@ -14,6 +14,7 @@ export class ViewModelCoordinator {
 
     private readonly _httpRequestCache: HttpRequestCache;
     private readonly _eventBus: EventBus;
+    private _urls: string[];
 
     /*
      * Set the initial state
@@ -22,6 +23,7 @@ export class ViewModelCoordinator {
 
         this._httpRequestCache = httpRequestCache;
         this._eventBus = eventBus;
+        this._urls = [];
         this._setupCallbacks();
     }
 
@@ -40,12 +42,13 @@ export class ViewModelCoordinator {
      * Handle loaded notifications by sending an event
      * A subscriber can then show a UI effect such as enabling header buttons
      */
-    public onViewLoaded(name: string): void {
+    public onViewLoaded(name: string, urls: string[]): void {
 
         if (name === ViewNames.Main) {
             this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
         }
 
+        urls.forEach((u) => this._urls.push(u));
         this._triggerLoginIfRequired();
     }
 
@@ -60,8 +63,6 @@ export class ViewModelCoordinator {
      * If all views are loaded and one or more has reported login required, then trigger a redirect
      */
     private _triggerLoginIfRequired(): void {
-
-        // this._eventBus.emit(EventNames.LoginRequired, null, new LoginRequiredEvent());
     }
 
     /*
