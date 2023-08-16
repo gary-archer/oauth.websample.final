@@ -49,22 +49,24 @@ export class CompaniesContainerViewModel {
      */
     public async callApi(options?: ApiClientOptions): Promise<void> {
 
+        this._apiCoordinator.onViewLoading(HttpRequestNames.Companies);
+        this._error = null;
+
         try {
 
-            this._error = null;
-            this._apiCoordinator.onViewLoading(HttpRequestNames.Companies);
             const result = await this._apiClient.getCompanyList(options);
             if (result && result.length > 0) {
                 this._companies = result;
             }
-            
-            this._apiCoordinator.onViewLoaded(HttpRequestNames.Companies);
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._companies = [];
-            this._apiCoordinator.onViewLoadFailed(HttpRequestNames.Companies, this._error);
+
+        } finally {
+
+            this._apiCoordinator.onViewLoaded(HttpRequestNames.Companies);
         }
     }
 }

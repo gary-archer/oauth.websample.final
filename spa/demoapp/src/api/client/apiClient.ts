@@ -90,13 +90,6 @@ export class ApiClient {
         dataToSend: any,
         callerOptions?: ApiClientOptions): Promise<any> {
 
-        // Avoid an API request when we know it will fail
-        if (!this._authenticator.isLoggedIn()) {
-            const cacheItem = this._requestCache.createItem(name);
-            cacheItem.error = ErrorFactory.fromLoginRequired();
-            return;
-        }
-
         // Initialise data
         const url = `${this._apiBaseUrl}${path}`;
         const apiClientOptions = callerOptions || {
@@ -141,9 +134,15 @@ export class ApiClient {
             }
         }
 
-        // Create the cache item to avoid a redundant API request on every view recreation
+        // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
         const cacheItem = this._requestCache.createItem(url);
+
         try {
+
+            // Avoid the overhead of an API request when we know it will fail
+            if (!this._authenticator.isLoggedIn()) {
+                throw ErrorFactory.fromLoginRequired();
+            }
 
             // Set options and send the secure cookie to the API origin
             const options = {

@@ -15,11 +15,16 @@ export class HttpRequestCache {
      */
     public createItem(name: string): HttpRequestCacheItem {
 
-        const item = {
-            data: null,
-            error: null,
-        };
-        this.requests[name] = item;
+        let item = this.getItem(name);
+        if (!item) {
+
+            item = {
+                data: null,
+                error: null,
+            };
+            this.requests[name] = item;
+        }
+        
         return item;
     }
 

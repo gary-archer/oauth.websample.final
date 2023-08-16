@@ -50,22 +50,24 @@ export class TransactionsContainerViewModel {
      */
     public async callApi(id: string, options?: ApiClientOptions): Promise<void> {
 
+        this._apiCoordinator.onViewLoading(HttpRequestNames.Transactions);
+        this._error = null;
+
         try {
 
-            this._error = null;
-            this._apiCoordinator.onViewLoading(HttpRequestNames.Transactions);
             const result = await this._apiClient.getCompanyTransactions(id, options);
             if (result) {
                 this._transactions = result;
             }
 
-            this._apiCoordinator.onViewLoaded(HttpRequestNames.Transactions);
-
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._transactions = null;
-            this._apiCoordinator.onViewLoadFailed(HttpRequestNames.Transactions, this._error);
+
+        } finally {
+
+            this._apiCoordinator.onViewLoaded(HttpRequestNames.Transactions);
         }
     }
 
