@@ -181,6 +181,8 @@ export class AppViewModel {
      * Ask all views to get updated data from the API
      */
     public reloadData(causeError: boolean): void {
+
+        this._viewModelCoordinator.resetState();
         this._eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }
 

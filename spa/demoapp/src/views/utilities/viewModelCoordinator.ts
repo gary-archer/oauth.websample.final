@@ -15,7 +15,6 @@ export class ViewModelCoordinator {
     private readonly _httpRequestCache: HttpRequestCache;
     private readonly _eventBus: EventBus;
     private _urls: string[];
-    private _hasErrors: boolean;
 
     /*
      * Set the initial state
@@ -25,7 +24,6 @@ export class ViewModelCoordinator {
         this._httpRequestCache = httpRequestCache;
         this._eventBus = eventBus;
         this._urls = [];
-        this._hasErrors = false;
         this._setupCallbacks();
     }
 
@@ -58,41 +56,40 @@ export class ViewModelCoordinator {
     }
 
     /*
+     * Return true if there were any load errors
+     */
+    public hasErrors(): boolean {
+
+        let result = false;
+        this._urls.forEach((u) => {
+
+            const found = this._httpRequestCache.getItem(u);
+            if (found?.error) {
+                result = true;
+            }
+        });
+
+        return result;
+    }
+
+    /*
+     * Reset state when the Reload Data button is clicked
+     */
+    public resetState(): void {
+        this._urls = [];
+    }
+
+    /*
      * If all views are loaded and one or more has reported login required, then trigger a redirect
      */
     private _triggerLoginIfRequired(): void {
 
         // The SPA makes two API requests, for the main view and for user info
-        // Once all views have loaded, classify results and reset
         if (this._urls.length === 2) {
-
-            // Record whether there are any errors
-            this._hasErrors = this._calculateHasErrors();
-
-            // Fire the event if needed
             if (this._calculateIsLoginRequired()) {
                 this._eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
             }
-
-            // Reset
-            this._urls = [];
         }
-    }
-
-    /*
-     * Record if there were any API errors that might require a reload later
-     */
-    private _calculateHasErrors(): boolean {
-
-        this._urls.forEach((u) => {
-
-            const found = this._httpRequestCache.getItem(u);
-            if (found?.error) {
-                return true;
-            }
-        });
-
-        return false;
     }
 
     /*
@@ -100,22 +97,16 @@ export class ViewModelCoordinator {
      */
     private _calculateIsLoginRequired(): boolean {
 
+        let result = false;
         this._urls.forEach((u) => {
 
             const found = this._httpRequestCache.getItem(u);
             if (found?.error?.errorCode === ErrorCodes.loginRequired) {
-                return true;
+                result = true;
             }
         });
 
-        return false;
-    }
-
-    /*
-     * Return true if there were any load errors
-     */
-    public hasErrors(): boolean {
-        return this._hasErrors;
+        return result;
     }
 
     /*

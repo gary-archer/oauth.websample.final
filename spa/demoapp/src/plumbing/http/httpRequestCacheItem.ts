@@ -31,7 +31,7 @@ export class HttpRequestCacheItem {
         return this._error;
     }
 
-    public set error(value: UIError) {
+    public set error(value: UIError | null) {
         this._error = value;
     }
 }
