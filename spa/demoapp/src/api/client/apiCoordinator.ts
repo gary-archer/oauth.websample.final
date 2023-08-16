@@ -1,7 +1,7 @@
 import EventBus from 'js-event-bus';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {DataStatusEvent} from '../../plumbing/events/dataStatusEvent';
+import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
 import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
 import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
@@ -33,7 +33,7 @@ export class ApiCoordinator {
 
         if (name === HttpRequestNames.Companies || name === HttpRequestNames.Transactions) {
             this._currentMainRequest = name;
-            this._eventBus.emit(EventNames.DataStatus, null, new DataStatusEvent(false));
+            this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(false));
         }
     }
 
@@ -45,10 +45,20 @@ export class ApiCoordinator {
 
         if (name === HttpRequestNames.Companies || name === HttpRequestNames.Transactions) {
             this._currentMainRequest = name;
-            this._eventBus.emit(EventNames.DataStatus, null, new DataStatusEvent(true));
+            this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
         }
 
         this._triggerLoginIfRequired();
+    }
+
+    /*
+     * Return true if there are any load errors
+     */
+    public hasErrors(): boolean {
+
+        const mainCacheItem = this._httpRequestCache.getItem(this._currentMainRequest);
+        const userInfoCacheItem = this._httpRequestCache.getItem(HttpRequestNames.UserInfo);
+        return !!mainCacheItem?.error|| !!userInfoCacheItem?.error;
     }
 
     /*
@@ -63,7 +73,7 @@ export class ApiCoordinator {
         // See if either API call has a login required result
         if (mainCacheItem?.error?.errorCode === ErrorCodes.loginRequired ||
             userInfoCacheItem?.error?.errorCode === ErrorCodes.loginRequired) {
-        
+
             // If so then raise a single event to start a login
             this._eventBus.emit(EventNames.LoginRequired, null, new LoginRequiredEvent());
         }

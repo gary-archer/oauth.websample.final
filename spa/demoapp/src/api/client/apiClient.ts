@@ -126,16 +126,19 @@ export class ApiClient {
         dataToSend: any,
         apiClientOptions: ApiClientOptions): Promise<any> {
 
+        // Remove the item from the cache when a reload is requested
+        if (apiClientOptions.forceReload) {
+            this._requestCache.removeItem(name);
+        }
+
         // Return existing data from the memory cache when available
-        if (!apiClientOptions.forceReload) {
-            let cacheItem = this._requestCache.getItem(name);
-            if (cacheItem && !cacheItem.error) {
-                return cacheItem.data;
-            }
+        let cacheItem = this._requestCache.getItem(name);
+        if (cacheItem && !cacheItem.error) {
+            return cacheItem.data;
         }
 
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
-        const cacheItem = this._requestCache.createItem(url);
+        cacheItem = this._requestCache.createItem(url);
 
         try {
 
@@ -159,7 +162,7 @@ export class ApiClient {
             // Make the API request
             const response = await axios.request(options);
             AxiosUtils.checkJson(response.data);
-            
+
             // Update the cache and return the result
             cacheItem.data = response.data;
             return response.data;

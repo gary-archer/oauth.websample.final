@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {BaseErrorFactory, ErrorConsoleReporter} from '../plumbing/errors/lib';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
@@ -15,7 +14,6 @@ import {HeaderButtonsViewProps} from '../views/headings/headerButtonsViewProps';
 import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
-import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
 import {AppState} from './appState';
 
@@ -29,7 +27,6 @@ export function App(props: AppProps): JSX.Element {
 
     // The view is re-rendered when any of these state properties change
     const [state, setState] = useState<AppState>({
-        isInitialised: model.isInitialised,
         isMobileLayout: isMobileLayoutNeeded(),
         error: null,
     });
@@ -52,30 +49,19 @@ export function App(props: AppProps): JSX.Element {
         // Initialise the modal dialog system used for error popups
         Modal.setAppElement('#root');
 
-        try {
+        // Load the main view model
+        await model.initialise();
+        setState((s) => {
+            return {
+                ...s,
+                error: model.error,
+            };
+        });
 
-            // Initialise view models
-            await model.initialise();
-            state.error = null;
-
-            // Subscribe to application and window events
-            model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
-            window.onresize = onResize;
-            window.onstorage = onStorage;
-
-            // Update state
-            setState((s) => {
-                return {
-                    ...s,
-                    isInitialised: true,
-                };
-            });
-
-        } catch (e: any) {
-
-            // Render startup errors
-            state.error = BaseErrorFactory.fromException(e);
-        }
+        // Subscribe to application and window events
+        model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
+        window.onresize = onResize;
+        window.onstorage = onStorage;
     }
 
     /*
@@ -105,29 +91,18 @@ export function App(props: AppProps): JSX.Element {
     async function onHome(): Promise<void> {
 
         // If there is a startup error then reinitialise the app when home is pressed
-        if (!state.isInitialised) {
+        if (!model.isInitialised) {
             cleanup();
             await startup();
         }
 
-        if (state.isInitialised) {
-
-            if (CurrentLocation.path === '/') {
-
-                // Force a reload of the main view if we are already in the home view
-                model.reloadMainView();
-
-            } else {
-
-                // Otherwise navigate home
-                navigate('/');
-            }
-
-            // Also reload user info if we are recovering from an error
-            /*if (model.apiViewEvents.hasLoadError()) {
-                model.reloadUserInfo();
-            }*/
+        // Otherwise navigate home
+        if (model.isInitialised) {
+            navigate('/');
         }
+
+        // Trigger a reload if recovering from errors
+        model.reloadDataOnError();
     }
 
     /*
@@ -142,17 +117,14 @@ export function App(props: AppProps): JSX.Element {
      */
     async function onExpireAccessToken(): Promise<void> {
 
-        try {
+        await model.expireAccessToken();
+        setState((s) => {
+            return {
+                ...s,
+                error: model.error,
+            };
+        });
 
-            // Try the operation
-            await model.authenticator.expireAccessToken();
-
-        } catch (e: any) {
-
-            // Write technical error details to the console
-            const error = BaseErrorFactory.fromException(e);
-            ErrorConsoleReporter.output(error);
-        }
     }
 
     /*
@@ -160,17 +132,13 @@ export function App(props: AppProps): JSX.Element {
      */
     async function onExpireRefreshToken(): Promise<void> {
 
-        try {
-
-            // Try the operation
-            await model.authenticator.expireRefreshToken();
-
-        } catch (e: any) {
-
-            // Write technical error details to the console
-            const error = BaseErrorFactory.fromException(e);
-            ErrorConsoleReporter.output(error);
-        }
+        await model.expireRefreshToken();
+        setState((s) => {
+            return {
+                ...s,
+                error: model.error,
+            };
+        });
     }
 
     /*
@@ -299,7 +267,7 @@ export function App(props: AppProps): JSX.Element {
         );
     }
 
-    if (!state.isInitialised) {
+    if (!model.isInitialised) {
         return renderInitialScreen();
     } else {
         return renderMain();

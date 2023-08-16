@@ -7,7 +7,7 @@ export interface ErrorSummaryViewProps {
 
     // The error
     error: UIError;
-    
+
     // Any errors to ignore
     errorsToIgnore: string[];
 

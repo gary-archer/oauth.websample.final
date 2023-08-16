@@ -1,5 +1,5 @@
 /*
- * An event object for reloading data
+ * Represents a user requesting a data reload
  */
 export class ReloadDataEvent {
 

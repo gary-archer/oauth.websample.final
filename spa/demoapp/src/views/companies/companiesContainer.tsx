@@ -3,7 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
+import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
@@ -31,14 +31,10 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     CurrentLocation.path = useLocation().pathname;
 
     /*
-     * Load data then listen for the reload event
+     * Subscribe for reload events and then do the initial load of data
      */
     async function startup(): Promise<void> {
-
-        // Subscribe for reload events
-        model.eventBus.on(EventNames.ReloadMainView, onReload);
-
-        // Do the initial load of data
+        model.eventBus.on(EventNames.ReloadData, onReload);
         await loadData();
     }
 
@@ -46,13 +42,13 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        model.eventBus.detach(EventNames.ReloadMainView, onReload);
+        model.eventBus.detach(EventNames.ReloadData, onReload);
     }
 
     /*
      * Receive the reload event
      */
-    function onReload(event: ReloadMainViewEvent): void {
+    function onReload(event: ReloadDataEvent): void {
 
         const options = {
             forceReload: true,
@@ -99,8 +95,8 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         <>
             {state.error && <ErrorSummaryView {...getErrorProps()}/>}
 
-            {state.companies.length > 0 && (props.isMobileLayout ? 
-                <CompaniesMobileView {...childProps}/> : 
+            {state.companies.length > 0 && (props.isMobileLayout ?
+                <CompaniesMobileView {...childProps}/> :
                 <CompaniesDesktopView {...childProps}/>)}
 
         </>

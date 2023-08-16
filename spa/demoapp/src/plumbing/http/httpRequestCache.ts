@@ -11,7 +11,7 @@ export class HttpRequestCache {
     private readonly requests: { [name: string]: HttpRequestCacheItem } = {};
 
     /*
-     * Create an item the first time
+     * Create an item when an API request is triggered
      */
     public createItem(name: string): HttpRequestCacheItem {
 
@@ -24,14 +24,24 @@ export class HttpRequestCache {
             };
             this.requests[name] = item;
         }
-        
+
         return item;
     }
 
     /*
-     * Return an existing item
+     * Get an item if it exists
      */
     public getItem(name: string): HttpRequestCacheItem | null {
         return this.requests[name];
+    }
+
+    /*
+     * Remove an item if it exists
+     */
+    public removeItem(name: string): void {
+
+        if (this.requests[name]) {
+            delete this.requests[name];
+        }
     }
 }

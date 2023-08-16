@@ -3,9 +3,9 @@ import {ApiClient} from '../api/client/apiClient';
 import {ApiCoordinator} from '../api/client/apiCoordinator';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
+import {BaseErrorFactory, UIError} from '../plumbing/errors/lib';
 import {EventNames} from '../plumbing/events/eventNames';
-import {ReloadMainViewEvent} from '../plumbing/events/reloadMainViewEvent';
-import {ReloadUserInfoEvent} from '../plumbing/events/reloadUserInfoEvent';
+import {ReloadDataEvent} from '../plumbing/events/reloadDataEvent';
 import {HttpRequestCache} from '../plumbing/http/httpRequestCache';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
@@ -35,6 +35,7 @@ export class AppViewModel {
     private _userInfoViewModel: UserInfoViewModel | null;
 
     // State flags
+    private _error: UIError | null;
     private _isInitialised: boolean;
 
     /*
@@ -57,7 +58,8 @@ export class AppViewModel {
         this._transactionsViewModel = null;
         this._userInfoViewModel = null;
 
-        // Flags
+        // Other state
+        this._error = null;
         this._isInitialised = false;
         this._setupCallbacks();
     }
@@ -70,29 +72,42 @@ export class AppViewModel {
 
         if (!this._isInitialised) {
 
-            // Get the application configuration
-            const loader = new ConfigurationLoader();
-            this._configuration = await loader.get();
+            try {
 
-            // Create global objects for managing OAuth and API calls
-            const sessionId = SessionManager.get();
-            this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
-            this._apiClient = new ApiClient(
-                this.configuration,
-                sessionId,
-                this._authenticator,
-                this._httpRequestCache);
+                // Get the application configuration
+                this._error = null;
+                const loader = new ConfigurationLoader();
+                this._configuration = await loader.get();
 
-            // Update state
-            this._isInitialised = true;
+                // Create global objects for managing OAuth and API calls
+                const sessionId = SessionManager.get();
+                this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
+                this._apiClient = new ApiClient(
+                    this.configuration,
+                    sessionId,
+                    this._authenticator,
+                    this._httpRequestCache);
+
+                // Update state
+                this._isInitialised = true;
+
+            } catch (e: any) {
+
+                // Render startup errors
+                this._error = BaseErrorFactory.fromException(e);
+            }
         }
     }
 
     /*
-     * Return other details to the view
+     * Property accessors
      */
     public get isInitialised(): boolean {
         return this._isInitialised;
+    }
+
+    public get error(): UIError | null {
+        return this._error;
     }
 
     public get configuration(): Configuration {
@@ -162,22 +177,41 @@ export class AppViewModel {
      * Ask all views to get updated data from the API
      */
     public reloadData(causeError: boolean): void {
-        this._eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(causeError));
-        this._eventBus.emit(EventNames.ReloadUserInfo, null, new ReloadUserInfoEvent(causeError));
+        this._eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }
 
     /*
-     * Reload only the main view
+     * Reload data after an error
      */
-    public reloadMainView(): void {
-        this._eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(false));
+    public reloadDataOnError(): void {
+
+        if (this._apiCoordinator.hasErrors()) {
+            this.reloadData(false);
+        }
     }
 
     /*
-     * Reload only user info
+     * For reliability testing, ask the OAuth agent to make the access token act expired, and handle errors
      */
-    public reloadUserInfo(): void {
-        this._eventBus.emit(EventNames.ReloadUserInfo, null, new ReloadUserInfoEvent(false));
+    public async expireAccessToken(): Promise<void> {
+
+        try {
+            await this._authenticator?.expireAccessToken();
+        } catch (e: any) {
+            this._error = BaseErrorFactory.fromException(e);
+        }
+    }
+
+    /*
+     * For reliability testing, ask the OAuth agent to make the refresh token act expired, and handle errors
+     */
+    public async expireRefreshToken(): Promise<void> {
+
+        try {
+            await this._authenticator?.expireRefreshToken();
+        } catch (e: any) {
+            this._error = BaseErrorFactory.fromException(e);
+        }
     }
 
     /*
@@ -185,6 +219,5 @@ export class AppViewModel {
      */
     private _setupCallbacks() {
         this.reloadData = this.reloadData.bind(this);
-        this.reloadMainView = this.reloadMainView.bind(this);
     }
 }
