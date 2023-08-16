@@ -4,16 +4,16 @@ import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
 import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
-import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
+import {ViewNames} from '../../views/utilities/viewNames';
 
 /*
- * Coordinates API requests from multiple views, so that login redirects are only triggered once
+ * Coordinates API requests from multiple views, and notifies once all API calls are complete
+ * This ensures that login redirects are only triggered once
  */
-export class ApiCoordinator {
+export class ViewModelCoordinator {
 
     private readonly _httpRequestCache: HttpRequestCache;
     private readonly _eventBus: EventBus;
-    private _currentMainRequest = '';
 
     /*
      * Set the initial state
@@ -31,8 +31,7 @@ export class ApiCoordinator {
      */
     public onViewLoading(name: string): void {
 
-        if (name === HttpRequestNames.Companies || name === HttpRequestNames.Transactions) {
-            this._currentMainRequest = name;
+        if (name === ViewNames.Main) {
             this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(false));
         }
     }
@@ -43,8 +42,7 @@ export class ApiCoordinator {
      */
     public onViewLoaded(name: string): void {
 
-        if (name === HttpRequestNames.Companies || name === HttpRequestNames.Transactions) {
-            this._currentMainRequest = name;
+        if (name === ViewNames.Main) {
             this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
         }
 
@@ -55,10 +53,7 @@ export class ApiCoordinator {
      * Return true if there are any load errors
      */
     public hasErrors(): boolean {
-
-        const mainCacheItem = this._httpRequestCache.getItem(this._currentMainRequest);
-        const userInfoCacheItem = this._httpRequestCache.getItem(HttpRequestNames.UserInfo);
-        return !!mainCacheItem?.error|| !!userInfoCacheItem?.error;
+        return false;
     }
 
     /*
@@ -66,17 +61,7 @@ export class ApiCoordinator {
      */
     private _triggerLoginIfRequired(): void {
 
-        // Get results of API requests
-        const mainCacheItem = this._httpRequestCache.getItem(this._currentMainRequest);
-        const userInfoCacheItem = this._httpRequestCache.getItem(HttpRequestNames.UserInfo);
-
-        // See if either API call has a login required result
-        if (mainCacheItem?.error?.errorCode === ErrorCodes.loginRequired ||
-            userInfoCacheItem?.error?.errorCode === ErrorCodes.loginRequired) {
-
-            // If so then raise a single event to start a login
-            this._eventBus.emit(EventNames.LoginRequired, null, new LoginRequiredEvent());
-        }
+        // this._eventBus.emit(EventNames.LoginRequired, null, new LoginRequiredEvent());
     }
 
     /*

@@ -1,11 +1,11 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
-import {ApiCoordinator} from '../../api/client/apiCoordinator';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
-import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
+import {ViewNames} from '../utilities/viewNames';
+import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
  * The view model for the transactions container view
@@ -14,18 +14,18 @@ export class TransactionsContainerViewModel {
 
     private readonly _apiClient: ApiClient;
     private readonly _eventBus: EventBus;
-    private readonly _apiCoordinator: ApiCoordinator;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _transactions: CompanyTransactions | null;
     private _error: UIError | null;
 
     public constructor(
         apiClient: ApiClient,
         eventBus: EventBus,
-        apiCoordinator: ApiCoordinator,
+        viewModelCoordinator: ViewModelCoordinator,
     ) {
         this._apiClient = apiClient;
         this._eventBus = eventBus;
-        this._apiCoordinator = apiCoordinator;
+        this._viewModelCoordinator = viewModelCoordinator;
         this._transactions = null;
         this._error = null;
     }
@@ -50,7 +50,7 @@ export class TransactionsContainerViewModel {
      */
     public async callApi(id: string, options?: ApiClientOptions): Promise<void> {
 
-        this._apiCoordinator.onViewLoading(HttpRequestNames.Transactions);
+        this._viewModelCoordinator.onViewLoading(ViewNames.Main);
         this._error = null;
 
         try {
@@ -67,7 +67,7 @@ export class TransactionsContainerViewModel {
 
         } finally {
 
-            this._apiCoordinator.onViewLoaded(HttpRequestNames.Transactions);
+            this._viewModelCoordinator.onViewLoaded(ViewNames.Main);
         }
     }
 

@@ -1,6 +1,6 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../api/client/apiClient';
-import {ApiCoordinator} from '../api/client/apiCoordinator';
+import {ViewModelCoordinator} from '../views/utilities/viewModelCoordinator';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {BaseErrorFactory, UIError} from '../plumbing/errors/lib';
@@ -26,8 +26,8 @@ export class AppViewModel {
 
     // Other global objects
     private readonly _httpRequestCache: HttpRequestCache;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
     private readonly _eventBus: EventBus;
-    private readonly _apiCoordinator: ApiCoordinator;
 
     // Child view models
     private _companiesViewModel: CompaniesContainerViewModel | null;
@@ -47,11 +47,11 @@ export class AppViewModel {
         this._configuration = null;
         this._authenticator = null;
         this._apiClient = null;
-        this._httpRequestCache = new HttpRequestCache();
 
-        // Create objects used for communicating across views
+        // Create objects used for managing communication across views
         this._eventBus = new EventBus();
-        this._apiCoordinator = new ApiCoordinator(this._httpRequestCache, this._eventBus);
+        this._httpRequestCache = new HttpRequestCache();
+        this._viewModelCoordinator = new ViewModelCoordinator(this._httpRequestCache, this._eventBus);
 
         // Child view models
         this._companiesViewModel = null;
@@ -79,9 +79,13 @@ export class AppViewModel {
                 const loader = new ConfigurationLoader();
                 this._configuration = await loader.get();
 
-                // Create global objects for managing OAuth and API calls
+                // Create an API session ID
                 const sessionId = SessionManager.get();
+
+                // Create an authentication for OAuth operations
                 this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
+
+                // Create a client for calling the API
                 this._apiClient = new ApiClient(
                     this.configuration,
                     sessionId,
@@ -136,7 +140,7 @@ export class AppViewModel {
             this._companiesViewModel = new CompaniesContainerViewModel(
                 this._apiClient!,
                 this._eventBus,
-                this._apiCoordinator,
+                this._viewModelCoordinator,
             );
         }
 
@@ -151,7 +155,7 @@ export class AppViewModel {
             (
                 this._apiClient!,
                 this._eventBus,
-                this._apiCoordinator,
+                this._viewModelCoordinator,
             );
         }
 
@@ -166,7 +170,7 @@ export class AppViewModel {
                 this.authenticator!,
                 this._apiClient!,
                 this._eventBus,
-                this._apiCoordinator,
+                this._viewModelCoordinator,
             );
         }
 
@@ -185,7 +189,7 @@ export class AppViewModel {
      */
     public reloadDataOnError(): void {
 
-        if (this._apiCoordinator.hasErrors()) {
+        if (this._viewModelCoordinator.hasErrors()) {
             this.reloadData(false);
         }
     }

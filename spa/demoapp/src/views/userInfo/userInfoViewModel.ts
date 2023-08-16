@@ -1,12 +1,12 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
-import {ApiCoordinator} from '../../api/client/apiCoordinator';
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
-import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
+import {ViewNames} from '../utilities/viewNames';
+import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
  * The view model for the user info view
@@ -16,7 +16,7 @@ export class UserInfoViewModel {
     private readonly _authenticator: Authenticator;
     private readonly _apiClient: ApiClient;
     private readonly _eventBus: EventBus;
-    private readonly _apiCoordinator: ApiCoordinator;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _oauthUserInfo: OAuthUserInfo | null;
     private _apiUserInfo: ApiUserInfo | null;
     private _error: UIError | null;
@@ -25,12 +25,12 @@ export class UserInfoViewModel {
         authenticator: Authenticator,
         apiClient: ApiClient,
         eventBus: EventBus,
-        apiCoordinator: ApiCoordinator,
+        viewModelCoordinator: ViewModelCoordinator,
     ) {
         this._authenticator = authenticator;
         this._apiClient = apiClient;
         this._eventBus = eventBus;
-        this._apiCoordinator = apiCoordinator;
+        this._viewModelCoordinator = viewModelCoordinator;
         this._oauthUserInfo = null;
         this._apiUserInfo = null;
         this._error = null;
@@ -60,7 +60,7 @@ export class UserInfoViewModel {
      */
     public async callApi(options?: ApiClientOptions): Promise<void> {
 
-        this._apiCoordinator.onViewLoading(HttpRequestNames.UserInfo);
+        this._viewModelCoordinator.onViewLoading(ViewNames.UserInfo);
         this._error = null;
 
         try {
@@ -93,7 +93,7 @@ export class UserInfoViewModel {
 
         } finally {
 
-            this._apiCoordinator.onViewLoaded(HttpRequestNames.UserInfo);
+            this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo);
         }
     }
 }

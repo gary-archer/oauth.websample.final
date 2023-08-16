@@ -8,7 +8,7 @@ import {HttpRequestCacheItem} from './httpRequestCacheItem';
 export class HttpRequestCache {
 
     // A map of named API requests to the result
-    private readonly requests: { [name: string]: HttpRequestCacheItem } = {};
+    private readonly _requests: { [name: string]: HttpRequestCacheItem } = {};
 
     /*
      * Create an item when an API request is triggered
@@ -18,11 +18,8 @@ export class HttpRequestCache {
         let item = this.getItem(name);
         if (!item) {
 
-            item = {
-                data: null,
-                error: null,
-            };
-            this.requests[name] = item;
+            item = new HttpRequestCacheItem();
+            this._requests[name] = item;
         }
 
         return item;
@@ -32,7 +29,7 @@ export class HttpRequestCache {
      * Get an item if it exists
      */
     public getItem(name: string): HttpRequestCacheItem | null {
-        return this.requests[name];
+        return this._requests[name];
     }
 
     /*
@@ -40,8 +37,8 @@ export class HttpRequestCache {
      */
     public removeItem(name: string): void {
 
-        if (this.requests[name]) {
-            delete this.requests[name];
+        if (this._requests[name]) {
+            delete this._requests[name];
         }
     }
 }

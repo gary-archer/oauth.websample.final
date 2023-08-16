@@ -7,7 +7,6 @@ import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {BaseErrorFactory} from '../../plumbing/errors/lib';
 import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
-import {HttpRequestNames} from '../../plumbing/http/httpRequestNames';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {ApiClientOptions} from './apiClientOptions';
@@ -20,13 +19,13 @@ export class ApiClient {
     private readonly _apiBaseUrl: string;
     private readonly _sessionId: string;
     private readonly _authenticator: Authenticator;
-    private readonly _requestCache: HttpRequestCache;
+    private readonly _httpRequestCache: HttpRequestCache;
 
     public constructor(
         configuration: Configuration,
         sessionId: string,
         authenticator: Authenticator,
-        requestCache: HttpRequestCache) {
+        httpRequestCache: HttpRequestCache) {
 
         this._apiBaseUrl = configuration.apiBaseUrl;
         if (!this._apiBaseUrl.endsWith('/')) {
@@ -35,7 +34,7 @@ export class ApiClient {
 
         this._sessionId = sessionId;
         this._authenticator = authenticator;
-        this._requestCache = requestCache;
+        this._httpRequestCache = httpRequestCache;
     }
 
     /*
@@ -45,7 +44,6 @@ export class ApiClient {
         : Promise<Company[] | null> {
 
         return this._callApi(
-            HttpRequestNames.Companies,
             'companies',
             'GET',
             null,
@@ -59,7 +57,6 @@ export class ApiClient {
         : Promise<CompanyTransactions | null> {
 
         return this._callApi(
-            HttpRequestNames.Transactions,
             `companies/${id}/transactions`,
             'GET',
             null,
@@ -73,7 +70,6 @@ export class ApiClient {
         : Promise<ApiUserInfo | null> {
 
         return this._callApi(
-            HttpRequestNames.UserInfo,
             'userinfo',
             'GET',
             null,
@@ -84,7 +80,6 @@ export class ApiClient {
      * A parameterized method containing application specific logic for managing API calls
      */
     private async _callApi(
-        name: string,
         path: string,
         method: string,
         dataToSend: any,
@@ -99,7 +94,7 @@ export class ApiClient {
 
         try {
             // Call the API
-            return await this._callApiWithCredential(name, url, method, dataToSend, apiClientOptions);
+            return await this._callApiWithCredential(url, method, dataToSend, apiClientOptions);
 
         } catch (e: any) {
 
@@ -112,7 +107,7 @@ export class ApiClient {
             await this._authenticator.synchronizedRefresh();
 
             // Call the API again with the rewritten access token cookie
-            return await this._callApiWithCredential(name, url, method, dataToSend, apiClientOptions);
+            return await this._callApiWithCredential(url, method, dataToSend, apiClientOptions);
         }
     }
 
@@ -120,7 +115,6 @@ export class ApiClient {
      * Do the work of calling the API
      */
     private async _callApiWithCredential(
-        name: string,
         url: string,
         method: string,
         dataToSend: any,
@@ -128,21 +122,21 @@ export class ApiClient {
 
         // Remove the item from the cache when a reload is requested
         if (apiClientOptions.forceReload) {
-            this._requestCache.removeItem(name);
+            this._httpRequestCache.removeItem(url);
         }
 
         // Return existing data from the memory cache when available
-        let cacheItem = this._requestCache.getItem(name);
+        let cacheItem = this._httpRequestCache.getItem(url);
         if (cacheItem && !cacheItem.error) {
             return cacheItem.data;
         }
 
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
-        cacheItem = this._requestCache.createItem(url);
+        cacheItem = this._httpRequestCache.createItem(url);
 
         try {
 
-            // Avoid the overhead of an API request when we know it will fail
+            // Avoid the overhead of an API request when it will immediately fail
             if (!this._authenticator.isLoggedIn()) {
                 throw ErrorFactory.fromLoginRequired();
             }
