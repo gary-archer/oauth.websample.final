@@ -3,8 +3,8 @@ import {ApiClient} from '../../api/client/apiClient';
 import {ApiClientOptions} from '../../api/client/apiClientOptions';
 import {Company} from '../../api/entities/company';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
-import {ApiViewEvents} from '../utilities/apiViewEvents';
-import {ApiViewNames} from '../utilities/apiViewNames';
+import {ViewNames} from '../utilities/viewNames';
+import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
  * The view model for the companies container view
@@ -13,18 +13,18 @@ export class CompaniesContainerViewModel {
 
     private readonly _apiClient: ApiClient;
     private readonly _eventBus: EventBus;
-    private readonly _apiViewEvents: ApiViewEvents;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _companies: Company[];
     private _error: UIError | null;
 
     public constructor(
         apiClient: ApiClient,
         eventBus: EventBus,
-        apiViewEvents: ApiViewEvents,
+        viewModelCoordinator: ViewModelCoordinator,
     ) {
         this._apiClient = apiClient;
         this._eventBus = eventBus;
-        this._apiViewEvents = apiViewEvents;
+        this._viewModelCoordinator = viewModelCoordinator;
         this._companies = [];
         this._error = null;
     }
@@ -49,22 +49,24 @@ export class CompaniesContainerViewModel {
      */
     public async callApi(options?: ApiClientOptions): Promise<void> {
 
+        this._viewModelCoordinator.onViewLoading(ViewNames.Main);
+        this._error = null;
+
         try {
 
-            this._error = null;
-            this._apiViewEvents.onViewLoading(ApiViewNames.Main);
             const result = await this._apiClient.getCompanyList(options);
             if (result && result.length > 0) {
                 this._companies = result;
             }
-            
-            this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._companies = [];
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, this._error);
+
+        } finally {
+
+            this._viewModelCoordinator.onViewLoaded(ViewNames.Main);
         }
     }
 }

@@ -5,8 +5,8 @@ import {ApiUserInfo} from '../../api/entities/apiUserInfo';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
-import {ApiViewEvents} from '../utilities/apiViewEvents';
-import {ApiViewNames} from '../utilities/apiViewNames';
+import {ViewNames} from '../utilities/viewNames';
+import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
  * The view model for the user info view
@@ -16,7 +16,7 @@ export class UserInfoViewModel {
     private readonly _authenticator: Authenticator;
     private readonly _apiClient: ApiClient;
     private readonly _eventBus: EventBus;
-    private readonly _apiViewEvents: ApiViewEvents;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _oauthUserInfo: OAuthUserInfo | null;
     private _apiUserInfo: ApiUserInfo | null;
     private _error: UIError | null;
@@ -25,12 +25,12 @@ export class UserInfoViewModel {
         authenticator: Authenticator,
         apiClient: ApiClient,
         eventBus: EventBus,
-        apiViewEvents: ApiViewEvents,
+        viewModelCoordinator: ViewModelCoordinator,
     ) {
         this._authenticator = authenticator;
         this._apiClient = apiClient;
         this._eventBus = eventBus;
-        this._apiViewEvents = apiViewEvents;
+        this._viewModelCoordinator = viewModelCoordinator;
         this._oauthUserInfo = null;
         this._apiUserInfo = null;
         this._error = null;
@@ -60,10 +60,10 @@ export class UserInfoViewModel {
      */
     public async callApi(options?: ApiClientOptions): Promise<void> {
 
-        try {
+        this._viewModelCoordinator.onViewLoading(ViewNames.UserInfo);
+        this._error = null;
 
-            this._error = null;
-            this._apiViewEvents.onViewLoading(ApiViewNames.UserInfo);
+        try {
 
             // The UI gets OAuth user info from the authorization server
             const oauthUserInfoPromise = this._authenticator.getUserInfo();
@@ -84,16 +84,16 @@ export class UserInfoViewModel {
                 this._apiUserInfo = apiUserInfo;
             }
 
-            // Update views
-            this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
-
         } catch (e: any) {
 
             // Report errors
             this._error = BaseErrorFactory.fromException(e);
             this._oauthUserInfo = null;
             this._apiUserInfo = null;
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, this._error);
+
+        } finally {
+
+            this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo);
         }
     }
 }

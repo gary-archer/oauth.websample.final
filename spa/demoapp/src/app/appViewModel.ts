@@ -1,32 +1,33 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../api/client/apiClient';
+import {ViewModelCoordinator} from '../views/utilities/viewModelCoordinator';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
+import {BaseErrorFactory, UIError} from '../plumbing/errors/lib';
 import {EventNames} from '../plumbing/events/eventNames';
-import {ReloadMainViewEvent} from '../plumbing/events/reloadMainViewEvent';
-import {ReloadUserInfoEvent} from '../plumbing/events/reloadUserInfoEvent';
-import {HttpRequestCache} from '../plumbing/http/HttpRequestCache';
+import {ReloadDataEvent} from '../plumbing/events/reloadDataEvent';
+import {HttpRequestCache} from '../plumbing/http/httpRequestCache';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainerViewModel} from '../views/companies/companiesContainerViewModel';
 import {TransactionsContainerViewModel} from '../views/transactions/transactionsContainerViewModel';
 import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
-import {ApiViewEvents} from '../views/utilities/apiViewEvents';
-import {ApiViewNames} from '../views/utilities/apiViewNames';
 
 /*
  * Global objects as input to the application view
  */
 export class AppViewModel {
 
-    // Global objects
+    // Global objects created from configuration
     private _configuration: Configuration | null;
     private _authenticator: Authenticator | null;
     private _apiClient: ApiClient | null;
-    private _httpRequestCache: HttpRequestCache;
-    private _eventBus: EventBus;
-    private _apiViewEvents: ApiViewEvents;
+
+    // Other global objects
+    private readonly _httpRequestCache: HttpRequestCache;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
+    private readonly _eventBus: EventBus;
 
     // Child view models
     private _companiesViewModel: CompaniesContainerViewModel | null;
@@ -34,6 +35,7 @@ export class AppViewModel {
     private _userInfoViewModel: UserInfoViewModel | null;
 
     // State flags
+    private _error: UIError | null;
     private _isInitialised: boolean;
 
     /*
@@ -45,23 +47,19 @@ export class AppViewModel {
         this._configuration = null;
         this._authenticator = null;
         this._apiClient = null;
-        this._httpRequestCache = new HttpRequestCache();
 
-        // Create the event bus for communicating between views
+        // Create objects used for managing communication across views
         this._eventBus = new EventBus();
-
-        // Create a helper class to notify us about views that make API calls
-        // This will enable us to only trigger any login redirects once, after all views have tried to load
-        this._apiViewEvents = new ApiViewEvents(this._eventBus);
-        this._apiViewEvents.addView(ApiViewNames.Main);
-        this._apiViewEvents.addView(ApiViewNames.UserInfo);
+        this._httpRequestCache = new HttpRequestCache();
+        this._viewModelCoordinator = new ViewModelCoordinator(this._httpRequestCache, this._eventBus);
 
         // Child view models
         this._companiesViewModel = null;
         this._transactionsViewModel = null;
         this._userInfoViewModel = null;
 
-        // Flags
+        // Other state
+        this._error = null;
         this._isInitialised = false;
         this._setupCallbacks();
     }
@@ -74,29 +72,46 @@ export class AppViewModel {
 
         if (!this._isInitialised) {
 
-            // Get the application configuration
-            const loader = new ConfigurationLoader();
-            this._configuration = await loader.get();
+            try {
 
-            // Create global objects for managing OAuth and API calls
-            const sessionId = SessionManager.get();
-            this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
-            this._apiClient = new ApiClient(
-                this.configuration,
-                sessionId,
-                this._authenticator,
-                this._httpRequestCache);
+                // Get the application configuration
+                this._error = null;
+                const loader = new ConfigurationLoader();
+                this._configuration = await loader.get();
 
-            // Update state
-            this._isInitialised = true;
+                // Create an API session ID
+                const sessionId = SessionManager.get();
+
+                // Create an authentication for OAuth operations
+                this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
+
+                // Create a client for calling the API
+                this._apiClient = new ApiClient(
+                    this.configuration,
+                    sessionId,
+                    this._authenticator,
+                    this._httpRequestCache);
+
+                // Update state
+                this._isInitialised = true;
+
+            } catch (e: any) {
+
+                // Render startup errors
+                this._error = BaseErrorFactory.fromException(e);
+            }
         }
     }
 
     /*
-     * Return other details to the view
+     * Property accessors
      */
     public get isInitialised(): boolean {
         return this._isInitialised;
+    }
+
+    public get error(): UIError | null {
+        return this._error;
     }
 
     public get configuration(): Configuration {
@@ -115,10 +130,6 @@ export class AppViewModel {
         return this._eventBus;
     }
 
-    public get apiViewEvents(): ApiViewEvents {
-        return this._apiViewEvents;
-    }
-
     /*
      * Return child view models when requested
      */
@@ -129,7 +140,7 @@ export class AppViewModel {
             this._companiesViewModel = new CompaniesContainerViewModel(
                 this._apiClient!,
                 this._eventBus,
-                this._apiViewEvents,
+                this._viewModelCoordinator,
             );
         }
 
@@ -144,7 +155,7 @@ export class AppViewModel {
             (
                 this._apiClient!,
                 this._eventBus,
-                this._apiViewEvents,
+                this._viewModelCoordinator,
             );
         }
 
@@ -159,7 +170,7 @@ export class AppViewModel {
                 this.authenticator!,
                 this._apiClient!,
                 this._eventBus,
-                this._apiViewEvents,
+                this._viewModelCoordinator,
             );
         }
 
@@ -170,24 +181,41 @@ export class AppViewModel {
      * Ask all views to get updated data from the API
      */
     public reloadData(causeError: boolean): void {
-
-        this._apiViewEvents.clearState();
-        this._eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(causeError));
-        this._eventBus.emit(EventNames.ReloadUserInfo, null, new ReloadUserInfoEvent(causeError));
+        this._eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }
 
     /*
-     * Reload only the main view
+     * Reload data after an error
      */
-    public reloadMainView(): void {
-        this._eventBus.emit(EventNames.ReloadMainView, null, new ReloadMainViewEvent(false));
+    public reloadDataOnError(): void {
+
+        if (this._viewModelCoordinator.hasErrors()) {
+            this.reloadData(false);
+        }
     }
 
     /*
-     * Reload only user info
+     * For reliability testing, ask the OAuth agent to make the access token act expired, and handle errors
      */
-    public reloadUserInfo(): void {
-        this._eventBus.emit(EventNames.ReloadUserInfo, null, new ReloadUserInfoEvent(false));
+    public async expireAccessToken(): Promise<void> {
+
+        try {
+            await this._authenticator?.expireAccessToken();
+        } catch (e: any) {
+            this._error = BaseErrorFactory.fromException(e);
+        }
+    }
+
+    /*
+     * For reliability testing, ask the OAuth agent to make the refresh token act expired, and handle errors
+     */
+    public async expireRefreshToken(): Promise<void> {
+
+        try {
+            await this._authenticator?.expireRefreshToken();
+        } catch (e: any) {
+            this._error = BaseErrorFactory.fromException(e);
+        }
     }
 
     /*
@@ -195,6 +223,5 @@ export class AppViewModel {
      */
     private _setupCallbacks() {
         this.reloadData = this.reloadData.bind(this);
-        this.reloadMainView = this.reloadMainView.bind(this);
     }
 }

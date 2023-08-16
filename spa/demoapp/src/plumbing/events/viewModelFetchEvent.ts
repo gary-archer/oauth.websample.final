@@ -1,7 +1,7 @@
 /*
- * An event to move between a loaded state when we have data and an unloaded state otherwise
+ * An event sent when a view model fetches data
  */
-export class DataStatusEvent {
+export class ViewModelFetchEvent {
 
     private readonly _loaded: boolean;
 
