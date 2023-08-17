@@ -85,9 +85,8 @@ export class ApiClient {
         dataToSend: any,
         context: HttpClientContext): Promise<any> {
 
-        // Get the URL and pass it back in the context
+        // Get the URL
         const url = `${this._apiBaseUrl}${path}`;
-        context.url = url;
 
         // Remove the item from the cache when a reload is requested
         if (context.forceReload) {
@@ -103,7 +102,15 @@ export class ApiClient {
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
         cacheItem = this._httpRequestCache.createItem(url);
 
+        // Inform the caller that a URL is being called
+        context.addUrl(url);
+
         try {
+
+            // Avoid the overhead of an API request when it will immediately fail
+            if (!this._authenticator.isLoggedIn()) {
+                throw ErrorFactory.fromLoginRequired();
+            }
 
             // Call the API and return data on success
             const data1 = await this._callApiWithCredential(url, method, dataToSend, context);
@@ -157,11 +164,6 @@ export class ApiClient {
         method: string,
         dataToSend: any,
         context: HttpClientContext): Promise<any> {
-
-        // Avoid the overhead of an API request when it will immediately fail
-        if (!this._authenticator.isLoggedIn()) {
-            throw ErrorFactory.fromLoginRequired();
-        }
 
         // Set options and send the secure cookie to the API origin
         const options = {

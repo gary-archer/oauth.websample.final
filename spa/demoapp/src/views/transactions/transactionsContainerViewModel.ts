@@ -58,14 +58,14 @@ export class TransactionsContainerViewModel {
             const result = await this._apiClient.getCompanyTransactions(id, context);
             if (result) {
                 this._transactions = result;
-                this._viewModelCoordinator.onViewLoaded(ViewNames.Main, [context.url]);
+                this._viewModelCoordinator.onViewLoaded(ViewNames.Main, context.urls);
             }
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._transactions = null;
-            this._viewModelCoordinator.onViewLoaded(ViewNames.Main, [context.url]);
+            this._viewModelCoordinator.onViewLoaded(ViewNames.Main, context.urls);
         }
     }
 

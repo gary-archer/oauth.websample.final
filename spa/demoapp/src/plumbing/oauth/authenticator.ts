@@ -1,4 +1,5 @@
 import {AxiosRequestConfig} from 'axios';
+import {HttpClientContext} from '../http/httpClientContext';
 import {OAuthUserInfo} from './oauthUserInfo';
 
 /*
@@ -25,7 +26,7 @@ export interface Authenticator {
     synchronizedRefresh(): Promise<void>
 
     // Get identity attributes to the UI
-    getUserInfo(): Promise<OAuthUserInfo>;
+    getUserInfo(context: HttpClientContext): Promise<OAuthUserInfo>;
 
     // Call the OAuth agent to make the access token cookie act expired
     expireAccessToken(): Promise<void>;

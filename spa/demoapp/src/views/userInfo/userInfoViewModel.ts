@@ -66,7 +66,7 @@ export class UserInfoViewModel {
         try {
 
             // The UI gets OAuth user info from the authorization server
-            const oauthUserInfoPromise = this._authenticator.getUserInfo();
+            const oauthUserInfoPromise = this._authenticator.getUserInfo(context);
 
             // The UI gets domain specific user attributes from its API
             const apiUserInfoPromise = this._apiClient.getUserInfo(context);
@@ -80,10 +80,13 @@ export class UserInfoViewModel {
             if (oauthUserInfo) {
                 this._oauthUserInfo = oauthUserInfo;
             }
-
             if (apiUserInfo) {
                 this._apiUserInfo = apiUserInfo;
-                this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo, [context.url]);
+            }
+
+            // Send the view loaded event if any HTTP requests were sent
+            if (oauthUserInfo || apiUserInfo) {
+                this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo, context.urls);
             }
 
         } catch (e: any) {
@@ -92,7 +95,7 @@ export class UserInfoViewModel {
             this._error = BaseErrorFactory.fromException(e);
             this._oauthUserInfo = null;
             this._apiUserInfo = null;
-            this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo, [context.url]);
+            this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo, context.urls);
         }
     }
 }

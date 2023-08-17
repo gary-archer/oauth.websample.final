@@ -44,6 +44,8 @@ export class AppViewModel {
      */
     public constructor() {
 
+        this._setupCallbacks();
+
         // Objects that need configuration are initially null
         this._configuration = null;
         this._authenticator = null;
@@ -63,7 +65,6 @@ export class AppViewModel {
         this._error = null;
         this._isLoading = false;
         this._isLoaded = false;
-        this._setupCallbacks();
     }
 
     /*
@@ -90,7 +91,10 @@ export class AppViewModel {
             const sessionId = SessionManager.get();
 
             // Create an authentication for OAuth operations
-            this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
+            this._authenticator = new AuthenticatorImpl(
+                this._configuration,
+                this._httpRequestCache,
+                sessionId);
 
             // Create a client for calling the API
             this._apiClient = new ApiClient(

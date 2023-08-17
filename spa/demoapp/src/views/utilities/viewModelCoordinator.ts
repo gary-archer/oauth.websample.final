@@ -21,10 +21,11 @@ export class ViewModelCoordinator {
      */
     public constructor(httpRequestCache: HttpRequestCache, eventBus: EventBus) {
 
+        this._setupCallbacks();
+
         this._httpRequestCache = httpRequestCache;
         this._eventBus = eventBus;
         this._urls = [];
-        this._setupCallbacks();
     }
 
     /*
@@ -84,7 +85,7 @@ export class ViewModelCoordinator {
      */
     private _triggerLoginIfRequired(): void {
 
-        // The SPA makes two API requests, for the main view and for user info
+        // The UI calls three API endpoints concurrently
         if (this._urls.length === 3) {
             if (this._calculateIsLoginRequired()) {
                 this._eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
