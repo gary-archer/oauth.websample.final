@@ -38,6 +38,13 @@ export class ApiClient {
     }
 
     /*
+     * TODO: perhaps use some kind of URL registrar
+     */
+    public getExtraUrls(): string[] {
+        return [`${this._apiBaseUrl}userinfo`];
+    }
+
+    /*
      * Get a list of companies
      */
     public async getCompanyList(context: HttpClientContext)

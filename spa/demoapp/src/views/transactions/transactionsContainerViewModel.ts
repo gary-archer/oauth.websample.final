@@ -4,7 +4,6 @@ import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {HttpClientContext} from '../../plumbing/http/httpClientContext';
-import {ViewNames} from '../utilities/viewNames';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
@@ -50,7 +49,7 @@ export class TransactionsContainerViewModel {
      */
     public async callApi(id: string, context: HttpClientContext): Promise<void> {
 
-        this._viewModelCoordinator.onViewLoading(ViewNames.Main);
+        this._viewModelCoordinator.onMainViewModelLoading();
         this._error = null;
 
         try {
@@ -58,14 +57,14 @@ export class TransactionsContainerViewModel {
             const result = await this._apiClient.getCompanyTransactions(id, context);
             if (result) {
                 this._transactions = result;
-                this._viewModelCoordinator.onViewLoaded(ViewNames.Main, context.urls);
+                this._viewModelCoordinator.onMainViewModelLoaded(context.url);
             }
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._transactions = null;
-            this._viewModelCoordinator.onViewLoaded(ViewNames.Main, context.urls);
+            this._viewModelCoordinator.onMainViewModelLoaded(context.url);
         }
     }
 

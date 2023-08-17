@@ -3,7 +3,6 @@ import {ApiClient} from '../../api/client/apiClient';
 import {Company} from '../../api/entities/company';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {HttpClientContext} from '../../plumbing/http/httpClientContext';
-import {ViewNames} from '../utilities/viewNames';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
@@ -49,7 +48,7 @@ export class CompaniesContainerViewModel {
      */
     public async callApi(context: HttpClientContext): Promise<void> {
 
-        this._viewModelCoordinator.onViewLoading(ViewNames.Main);
+        this._viewModelCoordinator.onMainViewModelLoading();
         this._error = null;
 
         try {
@@ -57,14 +56,14 @@ export class CompaniesContainerViewModel {
             const result = await this._apiClient.getCompanyList(context);
             if (result) {
                 this._companies = result;
-                this._viewModelCoordinator.onViewLoaded(ViewNames.Main, context.urls);
+                this._viewModelCoordinator.onMainViewModelLoaded(context.url);
             }
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._companies = [];
-            this._viewModelCoordinator.onViewLoaded(ViewNames.Main, context.urls);
+            this._viewModelCoordinator.onMainViewModelLoaded(context.url);
         }
     }
 }

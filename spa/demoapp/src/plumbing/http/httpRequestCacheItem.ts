@@ -24,6 +24,7 @@ export class HttpRequestCacheItem {
     }
 
     public set data(value: any) {
+        this._isLoading = false;
         this._data = value;
     }
 
@@ -32,6 +33,7 @@ export class HttpRequestCacheItem {
     }
 
     public set error(value: UIError | null) {
+        this._isLoading = false;
         this._error = value;
     }
 }

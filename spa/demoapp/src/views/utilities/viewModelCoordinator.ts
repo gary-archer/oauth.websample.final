@@ -1,10 +1,10 @@
 import EventBus from 'js-event-bus';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
+import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
 import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
-import {ViewNames} from '../../views/utilities/viewNames';
 
 /*
  * Coordinates API requests from multiple views, and notifies once all API calls are complete
@@ -14,45 +14,50 @@ export class ViewModelCoordinator {
 
     private readonly _httpRequestCache: HttpRequestCache;
     private readonly _eventBus: EventBus;
-    private _urls: string[];
+    private _mainApiUrl: string;
+    private readonly _extraApiUrls: string[];
 
     /*
      * Set the initial state
      */
-    public constructor(httpRequestCache: HttpRequestCache, eventBus: EventBus) {
+    public constructor(httpRequestCache: HttpRequestCache, eventBus: EventBus, extraApiUrls: string[]) {
 
         this._setupCallbacks();
 
         this._httpRequestCache = httpRequestCache;
         this._eventBus = eventBus;
-        this._urls = [];
+        this._mainApiUrl = '';
+        this._extraApiUrls = extraApiUrls;
     }
 
     /*
-     * Handle loading notifications by sending an event
+     * This is called when the companies or transactions view model start sending API requests
+     * Send an event so that a subscriber can show a UI effect, such as disabling header buttons
      */
-    public onViewLoading(name: string): void {
-
-        // A subscriber can then show a UI effect such as disabling header buttons
-        if (name === ViewNames.Main) {
-            this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(false));
-        }
+    public onMainViewModelLoading(): void {
+        this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(false));
     }
 
     /*
-     * Handle loaded notifications by sending an event
+     * This is called when the companies or transactions view model finish sending API requests
      */
-    public onViewLoaded(name: string, urls: string[]): void {
+    public onMainViewModelLoaded(mainApiUrl: string): void {
 
-        // A subscriber can then show a UI effect such as enabling header buttons
-        if (name === ViewNames.Main) {
-            this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
-        }
+        // Send an event so that a subscriber can show a UI effect such as enabling header buttons
+        this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
 
-        // Store the URLs of API requests sent from the view model
-        urls.forEach((u) => this._urls.push(u));
+        // Record the URL so that we can look up its result
+        this._mainApiUrl = mainApiUrl;
 
-        // If all views have loaded then see if we need to trigger a login redirect
+        // If all views have loaded, see if we need to trigger a login redirect
+        this._triggerLoginIfRequired();
+    }
+
+    /*
+     * This is called when fixed views finish sending API requests
+     * If all views have loaded, see if we need to trigger a login redirect
+     */
+    public onViewModelLoaded(): void {
         this._triggerLoginIfRequired();
     }
 
@@ -60,24 +65,14 @@ export class ViewModelCoordinator {
      * Return true if there were any load errors
      */
     public hasErrors(): boolean {
-
-        let result = false;
-        this._urls.forEach((u) => {
-
-            const found = this._httpRequestCache.getItem(u);
-            if (found?.error) {
-                result = true;
-            }
-        });
-
-        return result;
+        return this._getLoadErrors().length > 0;
     }
 
     /*
      * Reset state when the Reload Data button is clicked
      */
     public resetState(): void {
-        this._urls = [];
+        this._mainApiUrl = '';
     }
 
     /*
@@ -85,36 +80,68 @@ export class ViewModelCoordinator {
      */
     private _triggerLoginIfRequired(): void {
 
-        // The UI calls three API endpoints concurrently
-        if (this._urls.length === 3) {
-            if (this._calculateIsLoginRequired()) {
+        if (this._allViewsLoaded()) {
+
+            const errors = this._getLoadErrors();
+            const found = errors.find((e) => e.errorCode === ErrorCodes.loginRequired);
+            if (found) {
                 this._eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
             }
         }
     }
 
     /*
-     * Record if any API requests returned a login required result
+     * See if all API requests have completed
      */
-    private _calculateIsLoginRequired(): boolean {
+    private _allViewsLoaded(): boolean {
 
-        let result = false;
-        this._urls.forEach((u) => {
+        if (!this._mainApiUrl) {
+            return false;
+        }
+
+        let count = 0;
+        this._extraApiUrls.forEach((u) => {
 
             const found = this._httpRequestCache.getItem(u);
-            if (found?.error?.errorCode === ErrorCodes.loginRequired) {
-                result = true;
+            if (found && !found?.isLoading) {
+                count++;
             }
         });
 
-        return result;
+        return count === this._extraApiUrls.length;
+    }
+
+    /*
+     * Get the result of loading all views
+     */
+    private _getLoadErrors(): UIError[] {
+
+        const errors: UIError[] = [];
+        if (this._mainApiUrl) {
+
+            const foundMain = this._httpRequestCache.getItem(this._mainApiUrl);
+            if (foundMain?.error) {
+                errors.push(foundMain.error);
+            }
+        }
+
+        this._extraApiUrls.forEach((u) => {
+
+            const found = this._httpRequestCache.getItem(u);
+            if (found?.error) {
+                errors.push(found.error)
+            }
+        });
+
+        return errors;
     }
 
     /*
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
     private _setupCallbacks(): void {
-        this.onViewLoading = this.onViewLoading.bind(this);
-        this.onViewLoaded = this.onViewLoaded.bind(this);
+        this.onMainViewModelLoading = this.onMainViewModelLoading.bind(this);
+        this.onMainViewModelLoaded = this.onMainViewModelLoaded.bind(this);
+        this.onViewModelLoaded = this.onViewModelLoaded.bind(this);
     }
 }

@@ -33,4 +33,7 @@ export interface Authenticator {
 
     // Call the OAuth agent to make the refresh token cookie act expired
     expireRefreshToken(): Promise<void>;
+
+    // TODO: perhaps use some kind of URL registrar
+    getExtraUrls(): string[];
 }

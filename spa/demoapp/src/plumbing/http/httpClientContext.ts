@@ -5,12 +5,12 @@ export class HttpClientContext {
 
     private _forceReload: boolean;
     private _causeError: boolean;
-    private _urls: string[];
+    private _url: string;
 
     public constructor() {
         this._forceReload = false;
         this._causeError = false;
-        this._urls = [];
+        this._url = '';
     }
 
     public get forceReload(): boolean {
@@ -29,11 +29,11 @@ export class HttpClientContext {
         this._causeError = value;
     }
 
-    public get urls(): string[] {
-        return this._urls;
+    public get url(): string {
+        return this._url;
     }
 
     public addUrl(value: string) {
-        this._urls.push(value);
+        this._url = value;
     }
 }

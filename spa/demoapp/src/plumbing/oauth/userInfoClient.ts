@@ -54,9 +54,6 @@ export class UserInfoClient {
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
         cacheItem = this._httpRequestCache.createItem(url);
 
-        // Inform the caller that a URL is being called
-        context.addUrl(url);
-
         try {
 
             // Avoid the overhead of an API request when it will immediately fail

@@ -5,7 +5,6 @@ import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {HttpClientContext} from '../../plumbing/http/httpClientContext';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
-import {ViewNames} from '../utilities/viewNames';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
@@ -60,12 +59,10 @@ export class UserInfoViewModel {
      */
     public async callApi(context: HttpClientContext): Promise<void> {
 
-        this._viewModelCoordinator.onViewLoading(ViewNames.UserInfo);
-        this._error = null;
-
         try {
 
             // The UI gets OAuth user info from the authorization server
+            this._error = null;
             const oauthUserInfoPromise = this._authenticator.getUserInfo(context);
 
             // The UI gets domain specific user attributes from its API
@@ -86,7 +83,7 @@ export class UserInfoViewModel {
 
             // Send the view loaded event if any HTTP requests were sent
             if (oauthUserInfo || apiUserInfo) {
-                this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo, context.urls);
+                this._viewModelCoordinator.onViewModelLoaded();
             }
 
         } catch (e: any) {
@@ -95,7 +92,7 @@ export class UserInfoViewModel {
             this._error = BaseErrorFactory.fromException(e);
             this._oauthUserInfo = null;
             this._apiUserInfo = null;
-            this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo, context.urls);
+            this._viewModelCoordinator.onViewModelLoaded();
         }
     }
 }

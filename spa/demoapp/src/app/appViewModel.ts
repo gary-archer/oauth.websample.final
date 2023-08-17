@@ -23,11 +23,11 @@ export class AppViewModel {
     private _configuration: Configuration | null;
     private _authenticator: Authenticator | null;
     private _apiClient: ApiClient | null;
+    private _viewModelCoordinator: ViewModelCoordinator | null;
 
-    // Global objects used for coordination
+    // Other infrastructure
     private readonly _eventBus: EventBus;
     private readonly _httpRequestCache: HttpRequestCache;
-    private readonly _viewModelCoordinator: ViewModelCoordinator;
 
     // Child view models
     private _companiesViewModel: CompaniesContainerViewModel | null;
@@ -50,11 +50,11 @@ export class AppViewModel {
         this._configuration = null;
         this._authenticator = null;
         this._apiClient = null;
+        this._viewModelCoordinator = null;
 
         // Create objects used for coordination
         this._eventBus = new EventBus();
         this._httpRequestCache = new HttpRequestCache();
-        this._viewModelCoordinator = new ViewModelCoordinator(this._httpRequestCache, this._eventBus);
 
         // Child view models
         this._companiesViewModel = null;
@@ -90,7 +90,7 @@ export class AppViewModel {
             // Create an API session ID
             const sessionId = SessionManager.get();
 
-            // Create an authentication for OAuth operations
+            // Create an object to manage OAuth related operations
             this._authenticator = new AuthenticatorImpl(
                 this._configuration,
                 this._httpRequestCache,
@@ -102,6 +102,15 @@ export class AppViewModel {
                 this._authenticator,
                 this._httpRequestCache,
                 sessionId);
+
+            const extraApiUrls = [
+                ...this._apiClient.getExtraUrls(),
+                ...this._authenticator.getExtraUrls(),
+            ];
+            this._viewModelCoordinator = new ViewModelCoordinator(
+                this._httpRequestCache,
+                this._eventBus,
+                extraApiUrls);
 
             // Update state, to prevent model recreation if the view is recreated
             this._isLoaded = true;
@@ -154,7 +163,7 @@ export class AppViewModel {
             this._companiesViewModel = new CompaniesContainerViewModel(
                 this._apiClient!,
                 this._eventBus,
-                this._viewModelCoordinator,
+                this._viewModelCoordinator!,
             );
         }
 
@@ -169,7 +178,7 @@ export class AppViewModel {
             (
                 this._apiClient!,
                 this._eventBus,
-                this._viewModelCoordinator,
+                this._viewModelCoordinator!,
             );
         }
 
@@ -184,7 +193,7 @@ export class AppViewModel {
                 this.authenticator!,
                 this._apiClient!,
                 this._eventBus,
-                this._viewModelCoordinator,
+                this._viewModelCoordinator!,
             );
         }
 
@@ -195,7 +204,7 @@ export class AppViewModel {
      * Ask all views to get updated data from the API
      */
     public reloadData(causeError: boolean): void {
-        this._viewModelCoordinator.resetState();
+        this._viewModelCoordinator!.resetState();
         this._eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }
 
@@ -204,7 +213,7 @@ export class AppViewModel {
      */
     public reloadDataOnError(): void {
 
-        if (this._viewModelCoordinator.hasErrors()) {
+        if (this._viewModelCoordinator!.hasErrors()) {
             this.reloadData(false);
         }
     }

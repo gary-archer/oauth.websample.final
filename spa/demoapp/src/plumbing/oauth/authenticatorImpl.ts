@@ -135,6 +135,13 @@ export class AuthenticatorImpl implements Authenticator {
     }
 
     /*
+     * TODO: perhaps use some kind of URL registrar
+     */
+    public getExtraUrls(): string[] {
+        return [`${this._oauthAgentBaseUrl}/userinfo`];
+    }
+
+    /*
      * Do the work of asking the token handler API to refresh the access token stored in the secure cookie
      */
     private async _performTokenRefresh(): Promise<void> {
