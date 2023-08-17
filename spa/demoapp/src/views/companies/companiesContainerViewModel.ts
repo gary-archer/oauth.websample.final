@@ -55,17 +55,15 @@ export class CompaniesContainerViewModel {
         try {
 
             const result = await this._apiClient.getCompanyList(context);
-            if (result && result.length > 0) {
+            if (result) {
                 this._companies = result;
+                this._viewModelCoordinator.onViewLoaded(ViewNames.Main, [context.url]);
             }
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._companies = [];
-
-        } finally {
-
             this._viewModelCoordinator.onViewLoaded(ViewNames.Main, [context.url]);
         }
     }

@@ -89,34 +89,6 @@ export class ApiClient {
         const url = `${this._apiBaseUrl}${path}`;
         context.url = url;
 
-        try {
-            // Call the API
-            return await this._callApiWithCredential(url, method, dataToSend, context);
-
-        } catch (e: any) {
-
-            // Report Ajax errors if this is not a 401
-            if (e.statusCode !== 401) {
-                throw e;
-            }
-
-            // Refresh the access token cookie
-            await this._authenticator.synchronizedRefresh();
-
-            // Call the API again with the rewritten access token cookie
-            return await this._callApiWithCredential(url, method, dataToSend, context);
-        }
-    }
-
-    /*
-     * Do the work of calling the API
-     */
-    private async _callApiWithCredential(
-        url: string,
-        method: string,
-        dataToSend: any,
-        context: HttpClientContext): Promise<any> {
-
         // Remove the item from the cache when a reload is requested
         if (context.forceReload) {
             this._httpRequestCache.removeItem(url);
@@ -133,38 +105,82 @@ export class ApiClient {
 
         try {
 
-            // Avoid the overhead of an API request when it will immediately fail
-            if (!this._authenticator.isLoggedIn()) {
-                throw ErrorFactory.fromLoginRequired();
+            // Call the API and return data on success
+            const data1 = await this._callApiWithCredential(url, method, dataToSend, context);
+            cacheItem.data = data1;
+            return data1;
+
+        } catch (e1: any) {
+
+            const error1 = BaseErrorFactory.fromHttpError(e1, url, 'web API');
+            if (error1.statusCode !== 401) {
+
+                // Report errors if this is not a 401
+                cacheItem.error = error1;
+                throw error1;
             }
 
-            // Set options and send the secure cookie to the API origin
-            const options = {
-                url,
-                method,
-                data: dataToSend,
-                headers: this._getHeaders(context),
-                withCredentials: true,
-            } as AxiosRequestConfig;
+            try {
+                // Try to refresh the access token cookie
+                await this._authenticator.synchronizedRefresh();
 
-            // Add an anti forgery token on data changing commands
-            this._authenticator.addAntiForgeryToken(options);
+            } catch (e2: any) {
 
-            // Make the API request
-            const response = await axios.request(options);
-            AxiosUtils.checkJson(response.data);
+                // Save refresh errors
+                const error2 = BaseErrorFactory.fromHttpError(e2, url, 'web API');
+                cacheItem.error = error2;
+                throw error2;
+            }
 
-            // Update the cache and return the result
-            cacheItem.data = response.data;
-            return response.data;
+            try {
 
-        } catch (e: any) {
+                // Call the API again with the rewritten access token cookie
+                const data2 = await this._callApiWithCredential(url, method, dataToSend, context);
+                cacheItem.data = data2;
+                return data2;
 
-            // Get the error and save it to the cache
-            const error = BaseErrorFactory.fromHttpError(e, url, 'web API');
-            cacheItem.error = error;
-            throw error;
+            }  catch (e3: any) {
+
+                // Save retry errors
+                const error3 = BaseErrorFactory.fromHttpError(e3, url, 'web API');
+                cacheItem.error = error3;
+                throw error3;
+            }
         }
+    }
+
+    /*
+     * Do the work of calling the API
+     */
+    private async _callApiWithCredential(
+        url: string,
+        method: string,
+        dataToSend: any,
+        context: HttpClientContext): Promise<any> {
+
+        // Avoid the overhead of an API request when it will immediately fail
+        if (!this._authenticator.isLoggedIn()) {
+            throw ErrorFactory.fromLoginRequired();
+        }
+
+        // Set options and send the secure cookie to the API origin
+        const options = {
+            url,
+            method,
+            data: dataToSend,
+            headers: this._getHeaders(context),
+            withCredentials: true,
+        } as AxiosRequestConfig;
+
+        // Add an anti forgery token on data changing commands
+        this._authenticator.addAntiForgeryToken(options);
+
+        // Make the API request
+        const response = await axios.request(options);
+        AxiosUtils.checkJson(response.data);
+
+        // Update the cache and return the result
+        return response.data;
     }
 
     /*

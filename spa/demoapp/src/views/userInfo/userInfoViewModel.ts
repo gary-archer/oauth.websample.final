@@ -80,8 +80,10 @@ export class UserInfoViewModel {
             if (oauthUserInfo) {
                 this._oauthUserInfo = oauthUserInfo;
             }
+
             if (apiUserInfo) {
                 this._apiUserInfo = apiUserInfo;
+                this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo, [context.url]);
             }
 
         } catch (e: any) {
@@ -90,9 +92,6 @@ export class UserInfoViewModel {
             this._error = BaseErrorFactory.fromException(e);
             this._oauthUserInfo = null;
             this._apiUserInfo = null;
-
-        } finally {
-
             this._viewModelCoordinator.onViewLoaded(ViewNames.UserInfo, [context.url]);
         }
     }
