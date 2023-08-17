@@ -91,18 +91,18 @@ export function App(props: AppProps): JSX.Element {
     async function onHome(): Promise<void> {
 
         // If there is a startup error then reinitialise the app when home is pressed
-        if (!model.isInitialised) {
-            cleanup();
-            await startup();
+        if (!model.isLoaded) {
+            await model.initialise();
         }
 
-        // Otherwise navigate home
-        if (model.isInitialised) {
+        if (model.isLoaded) {
+
+            // Navigate home
             navigate('/');
-        }
 
-        // Trigger a reload if recovering from errors
-        model.reloadDataOnError();
+            // Trigger a reload if recovering from errors
+            model.reloadDataOnError();
+        }
     }
 
     /*
@@ -267,7 +267,7 @@ export function App(props: AppProps): JSX.Element {
         );
     }
 
-    if (!model.isInitialised) {
+    if (!model.isLoaded) {
         return renderInitialScreen();
     } else {
         return renderMain();

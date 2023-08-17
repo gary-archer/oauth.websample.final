@@ -24,10 +24,10 @@ export class AppViewModel {
     private _authenticator: Authenticator | null;
     private _apiClient: ApiClient | null;
 
-    // Other global objects
+    // Global objects used for coordination
+    private readonly _eventBus: EventBus;
     private readonly _httpRequestCache: HttpRequestCache;
     private readonly _viewModelCoordinator: ViewModelCoordinator;
-    private readonly _eventBus: EventBus;
 
     // Child view models
     private _companiesViewModel: CompaniesContainerViewModel | null;
@@ -36,7 +36,8 @@ export class AppViewModel {
 
     // State flags
     private _error: UIError | null;
-    private _isInitialised: boolean;
+    private _isLoading: boolean;
+    private _isLoaded: boolean;
 
     /*
      * Set the initial state when the app starts
@@ -48,7 +49,7 @@ export class AppViewModel {
         this._authenticator = null;
         this._apiClient = null;
 
-        // Create objects used for managing communication across views
+        // Create objects used for coordination
         this._eventBus = new EventBus();
         this._httpRequestCache = new HttpRequestCache();
         this._viewModelCoordinator = new ViewModelCoordinator(this._httpRequestCache, this._eventBus);
@@ -60,7 +61,8 @@ export class AppViewModel {
 
         // Other state
         this._error = null;
-        this._isInitialised = false;
+        this._isLoading = false;
+        this._isLoaded = false;
         this._setupCallbacks();
     }
 
@@ -70,44 +72,52 @@ export class AppViewModel {
      */
     public async initialise(): Promise<void> {
 
-        if (!this._isInitialised) {
+        if (this._isLoaded || this._isLoading) {
+            return;
+        }
 
-            try {
+        try {
 
-                // Get the application configuration
-                this._error = null;
-                const loader = new ConfigurationLoader();
-                this._configuration = await loader.get();
+            // Initialize state, and the loading flag prevents re-entrancy when strict mode is used
+            this._isLoading = true;
+            this._error = null;
 
-                // Create an API session ID
-                const sessionId = SessionManager.get();
+            // Get the application configuration
+            const loader = new ConfigurationLoader();
+            this._configuration = await loader.get();
 
-                // Create an authentication for OAuth operations
-                this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
+            // Create an API session ID
+            const sessionId = SessionManager.get();
 
-                // Create a client for calling the API
-                this._apiClient = new ApiClient(
-                    this.configuration,
-                    sessionId,
-                    this._authenticator,
-                    this._httpRequestCache);
+            // Create an authentication for OAuth operations
+            this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
 
-                // Update state
-                this._isInitialised = true;
+            // Create a client for calling the API
+            this._apiClient = new ApiClient(
+                this.configuration,
+                this._authenticator,
+                this._httpRequestCache,
+                sessionId);
 
-            } catch (e: any) {
+            // Update state, to prevent model recreation if the view is recreated
+            this._isLoaded = true;
 
-                // Render startup errors
-                this._error = BaseErrorFactory.fromException(e);
-            }
+        } catch (e: any) {
+
+            // Render startup errors
+            this._error = BaseErrorFactory.fromException(e);
+
+        } finally {
+
+            this._isLoading = false;
         }
     }
 
     /*
      * Property accessors
      */
-    public get isInitialised(): boolean {
-        return this._isInitialised;
+    public get isLoaded(): boolean {
+        return this._isLoaded;
     }
 
     public get error(): UIError | null {
@@ -181,13 +191,12 @@ export class AppViewModel {
      * Ask all views to get updated data from the API
      */
     public reloadData(causeError: boolean): void {
-
         this._viewModelCoordinator.resetState();
         this._eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }
 
     /*
-     * Reload data after an error
+     * If there were load errors, try to reload data when Home is pressed
      */
     public reloadDataOnError(): void {
 

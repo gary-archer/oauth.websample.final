@@ -23,9 +23,9 @@ export class ApiClient {
 
     public constructor(
         configuration: Configuration,
-        sessionId: string,
         authenticator: Authenticator,
-        httpRequestCache: HttpRequestCache) {
+        httpRequestCache: HttpRequestCache,
+        sessionId: string) {
 
         this._apiBaseUrl = configuration.apiBaseUrl;
         if (!this._apiBaseUrl.endsWith('/')) {
