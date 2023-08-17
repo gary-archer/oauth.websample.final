@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
-import {ApiClientContext} from '../../api/client/apiClientContext';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
+import {HttpClientContext} from '../../plumbing/http/httpClientContext';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
@@ -36,7 +36,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     async function startup(): Promise<void> {
         model.eventBus.on(EventNames.ReloadData, onReload);
-        await loadData(new ApiClientContext());
+        await loadData(new HttpClientContext());
     }
 
     /*
@@ -51,7 +51,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     function onReload(event: ReloadDataEvent): void {
 
-        const context = new ApiClientContext();
+        const context = new HttpClientContext();
         context.forceReload = true;
         context.causeError = event.causeError,
         loadData(context);
@@ -60,7 +60,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     /*
      * Get data from the API and update state
      */
-    async function loadData(context: ApiClientContext): Promise<void> {
+    async function loadData(context: HttpClientContext): Promise<void> {
 
         await model.callApi(companyId, context);
 

@@ -1,8 +1,8 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
-import {ApiClientContext} from '../../api/client/apiClientContext';
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
+import {HttpClientContext} from '../../plumbing/http/httpClientContext';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
 import {ViewNames} from '../utilities/viewNames';
@@ -58,7 +58,7 @@ export class UserInfoViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(context: ApiClientContext): Promise<void> {
+    public async callApi(context: HttpClientContext): Promise<void> {
 
         this._viewModelCoordinator.onViewLoading(ViewNames.UserInfo);
         this._error = null;

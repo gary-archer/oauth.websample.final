@@ -1,9 +1,9 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
-import {ApiClientContext} from '../../api/client/apiClientContext';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
+import {HttpClientContext} from '../../plumbing/http/httpClientContext';
 import {ViewNames} from '../utilities/viewNames';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
@@ -48,7 +48,7 @@ export class TransactionsContainerViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(id: string, context: ApiClientContext): Promise<void> {
+    public async callApi(id: string, context: HttpClientContext): Promise<void> {
 
         this._viewModelCoordinator.onViewLoading(ViewNames.Main);
         this._error = null;

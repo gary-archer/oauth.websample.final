@@ -44,6 +44,7 @@ export class ViewModelCoordinator {
     public onViewLoaded(name: string, urls: string[]): void {
 
         // A subscriber can then show a UI effect such as enabling header buttons
+        console.log('*** VIEW LOADED');
         if (name === ViewNames.Main) {
             this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
         }
@@ -85,7 +86,9 @@ export class ViewModelCoordinator {
     private _triggerLoginIfRequired(): void {
 
         // The SPA makes two API requests, for the main view and for user info
+        console.log(`*** URLS LENGTHS IS ${this._urls.length}`);
         if (this._urls.length === 2) {
+            console.log('*** ALL VIEWS LOADED');
             if (this._calculateIsLoginRequired()) {
                 this._eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
             }

@@ -6,10 +6,10 @@ import {CompanyTransactions} from '../entities/companyTransactions';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {BaseErrorFactory} from '../../plumbing/errors/lib';
+import {HttpClientContext} from '../../plumbing/http/httpClientContext';
 import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
-import {ApiClientContext} from './apiClientContext';
 
 /*
  * A high level class used by the rest of the SPA to trigger API calls
@@ -40,7 +40,7 @@ export class ApiClient {
     /*
      * Get a list of companies
      */
-    public async getCompanyList(context: ApiClientContext)
+    public async getCompanyList(context: HttpClientContext)
         : Promise<Company[] | null> {
 
         return this._callApi(
@@ -53,7 +53,7 @@ export class ApiClient {
     /*
      * Get a list of transactions for a single company
      */
-    public async getCompanyTransactions(id: string, context: ApiClientContext)
+    public async getCompanyTransactions(id: string, context: HttpClientContext)
         : Promise<CompanyTransactions | null> {
 
         return this._callApi(
@@ -66,7 +66,7 @@ export class ApiClient {
     /*
      * Download user attributes the UI needs that are not stored in the authorization server
      */
-    public async getUserInfo(context: ApiClientContext)
+    public async getUserInfo(context: HttpClientContext)
         : Promise<ApiUserInfo | null> {
 
         return this._callApi(
@@ -83,7 +83,7 @@ export class ApiClient {
         path: string,
         method: string,
         dataToSend: any,
-        context: ApiClientContext): Promise<any> {
+        context: HttpClientContext): Promise<any> {
 
         // Get the URL and pass it back in the context
         const url = `${this._apiBaseUrl}${path}`;
@@ -115,7 +115,7 @@ export class ApiClient {
         url: string,
         method: string,
         dataToSend: any,
-        context: ApiClientContext): Promise<any> {
+        context: HttpClientContext): Promise<any> {
 
         // Remove the item from the cache when a reload is requested
         if (context.forceReload) {
@@ -170,7 +170,7 @@ export class ApiClient {
     /*
      * Add headers for logging and advanced testing purposes
      */
-    private _getHeaders(context: ApiClientContext): any {
+    private _getHeaders(context: HttpClientContext): any {
 
         const headers: any = {
 

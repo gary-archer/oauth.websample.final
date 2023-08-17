@@ -1,7 +1,7 @@
 /*
- * Input and output when making an API request
+ * Input and output when making an HTTP request
  */
-export class ApiClientContext {
+export class HttpClientContext {
 
     private _forceReload: boolean;
     private _causeError: boolean;
