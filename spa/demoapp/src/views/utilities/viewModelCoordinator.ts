@@ -46,11 +46,14 @@ export class ViewModelCoordinator {
      */
     public onMainViewModelLoaded(cacheKey: string): void {
 
-        // Send an event so that a subscriber can show a UI effect such as enabling header buttons
-        this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
-
         // Record the URL so that we can look up its result later
         this._mainCacheKey = cacheKey;
+
+        // On success, send an event so that a subscriber can show a UI effect such as enabling header buttons
+        const found = this._fetchCache.getItem(cacheKey);
+        if (!found?.error) {
+            this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
+        }
 
         // If all views have loaded, see if we need to trigger a login redirect
         this._triggerLoginIfRequired();
