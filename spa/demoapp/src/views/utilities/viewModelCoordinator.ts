@@ -129,7 +129,7 @@ export class ViewModelCoordinator {
 
             const found = this._httpRequestCache.getItem(u);
             if (found?.error) {
-                errors.push(found.error)
+                errors.push(found.error);
             }
         });
 

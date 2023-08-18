@@ -4,14 +4,10 @@ import {Configuration} from '../../configuration/configuration';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {CurrentLocation} from '../../views/utilities/currentLocation';
 import {ErrorFactory} from '../errors/errorFactory';
-import {HttpClientContext} from '../http/httpClientContext';
-import {HttpRequestCache} from '../http/httpRequestCache';
 import {AxiosUtils} from '../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {Authenticator} from './authenticator';
-import {OAuthUserInfo} from './oauthUserInfo';
-import {UserInfoClient} from './userInfoClient';
 
 /*
  * The authenticator implementation
@@ -20,21 +16,14 @@ export class AuthenticatorImpl implements Authenticator {
 
     private readonly _oauthAgentBaseUrl: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
-    private readonly _userInfoClient: UserInfoClient;
     private readonly _sessionId: string;
 
-    public constructor(configuration: Configuration, httpRequestCache: HttpRequestCache, sessionId: string) {
-
-        this._setupCallbacks();
+    public constructor(configuration: Configuration, sessionId: string) {
 
         this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
         this._sessionId = sessionId;
         this._concurrencyHandler = new ConcurrentActionHandler();
-        this._userInfoClient = new UserInfoClient(
-            configuration,
-            this,
-            httpRequestCache,
-            sessionId);
+        this._setupCallbacks();
     }
 
     /*
@@ -66,13 +55,6 @@ export class AuthenticatorImpl implements Authenticator {
      */
     public onLoggedOut(): void {
         location.href = `${location.origin}/loggedout`;
-    }
-
-    /*
-     * Use a utility client to get user info from the authorization server
-     */
-    public async getUserInfo(context: HttpClientContext): Promise<OAuthUserInfo> {
-        return await this._userInfoClient.getUserInfo(context);
     }
 
     /*
@@ -132,13 +114,6 @@ export class AuthenticatorImpl implements Authenticator {
                 throw ErrorFactory.fromTestExpiryError(e, 'refresh');
             }
         }
-    }
-
-    /*
-     * TODO: perhaps use some kind of URL registrar
-     */
-    public getExtraUrls(): string[] {
-        return [`${this._oauthAgentBaseUrl}/userinfo`];
     }
 
     /*

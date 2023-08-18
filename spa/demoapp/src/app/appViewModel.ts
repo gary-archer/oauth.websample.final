@@ -91,10 +91,7 @@ export class AppViewModel {
             const sessionId = SessionManager.get();
 
             // Create an object to manage OAuth related operations
-            this._authenticator = new AuthenticatorImpl(
-                this._configuration,
-                this._httpRequestCache,
-                sessionId);
+            this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
 
             // Create a client for calling the API
             this._apiClient = new ApiClient(
@@ -103,14 +100,10 @@ export class AppViewModel {
                 this._httpRequestCache,
                 sessionId);
 
-            const extraApiUrls = [
-                ...this._apiClient.getExtraUrls(),
-                ...this._authenticator.getExtraUrls(),
-            ];
             this._viewModelCoordinator = new ViewModelCoordinator(
                 this._httpRequestCache,
                 this._eventBus,
-                extraApiUrls);
+                this._apiClient.getExtraUrls());
 
             // Update state, to prevent model recreation if the view is recreated
             this._isLoaded = true;
@@ -190,7 +183,6 @@ export class AppViewModel {
         if (!this._userInfoViewModel) {
 
             this._userInfoViewModel = new UserInfoViewModel(
-                this.authenticator!,
                 this._apiClient!,
                 this._eventBus,
                 this._viewModelCoordinator!,

@@ -1,8 +1,9 @@
-import axios, {AxiosRequestConfig} from 'axios';
+import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
 import {Company} from '../entities/company';
 import {ApiUserInfo} from '../entities/apiUserInfo';
 import {CompanyTransactions} from '../entities/companyTransactions';
+import {OAuthUserInfo} from '../entities/oauthUserInfo';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {BaseErrorFactory} from '../../plumbing/errors/lib';
@@ -12,11 +13,11 @@ import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 
 /*
- * A high level class used by the rest of the SPA to trigger API calls
+ * A high level class used by the rest of the SPA to fetch cacheable secured data
  */
 export class ApiClient {
 
-    private readonly _apiBaseUrl: string;
+    private readonly _configuration: Configuration;
     private readonly _sessionId: string;
     private readonly _authenticator: Authenticator;
     private readonly _httpRequestCache: HttpRequestCache;
@@ -27,73 +28,74 @@ export class ApiClient {
         httpRequestCache: HttpRequestCache,
         sessionId: string) {
 
-        this._apiBaseUrl = configuration.apiBaseUrl;
-        if (!this._apiBaseUrl.endsWith('/')) {
-            this._apiBaseUrl += '/';
-        }
-
+        this._configuration = configuration;
         this._sessionId = sessionId;
         this._authenticator = authenticator;
         this._httpRequestCache = httpRequestCache;
     }
 
     /*
-     * TODO: perhaps use some kind of URL registrar
+     * TODO: delete
      */
     public getExtraUrls(): string[] {
-        return [`${this._apiBaseUrl}userinfo`];
+        return [
+            `${this._configuration.oauthAgentBaseUrl}/userinfo`,
+            `${this._configuration.apiBaseUrl}/userinfo`
+        ];
     }
 
     /*
      * Get a list of companies
      */
-    public async getCompanyList(context: HttpClientContext)
-        : Promise<Company[] | null> {
+    public async getCompanyList(context: HttpClientContext) : Promise<Company[] | null> {
 
-        return this._callApi(
-            'companies',
-            'GET',
-            null,
-            context);
+        const url = `${this._configuration.apiBaseUrl}/companies`;
+        return this._callApi('GET', url, context);
     }
 
     /*
      * Get a list of transactions for a single company
      */
-    public async getCompanyTransactions(id: string, context: HttpClientContext)
-        : Promise<CompanyTransactions | null> {
+    public async getCompanyTransactions(id: string, context: HttpClientContext) : Promise<CompanyTransactions | null> {
 
-        return this._callApi(
-            `companies/${id}/transactions`,
-            'GET',
-            null,
-            context);
+        const url = `${this._configuration.apiBaseUrl}/companies/${id}/transactions`;
+        return this._callApi('GET', url, context);
+    }
+
+    /*
+     * Get user information from the authorization server
+     */
+    public async getOAuthUserInfo(context: HttpClientContext) : Promise<OAuthUserInfo | null> {
+
+        const url = `${this._configuration.oauthAgentBaseUrl}/userinfo`;
+        const data = await this._callApi('GET', url, context);
+        if (!data) {
+            return null;
+        }
+        
+        return {
+            givenName: data['given_name'] || '',
+            familyName: data['family_name'] || '',
+        };
     }
 
     /*
      * Download user attributes the UI needs that are not stored in the authorization server
      */
-    public async getUserInfo(context: HttpClientContext)
-        : Promise<ApiUserInfo | null> {
+    public async getApiUserInfo(context: HttpClientContext) : Promise<ApiUserInfo | null> {
 
-        return this._callApi(
-            'userinfo',
-            'GET',
-            null,
-            context);
+        const url = `${this._configuration.apiBaseUrl}/userinfo`;
+        return this._callApi('GET', url, context);
     }
 
     /*
      * A parameterized method containing application specific logic for managing API calls
      */
     private async _callApi(
-        path: string,
-        method: string,
-        dataToSend: any,
-        context: HttpClientContext): Promise<any> {
-
-        // Get the URL
-        const url = `${this._apiBaseUrl}${path}`;
+        method: Method,
+        url: string,
+        context: HttpClientContext,
+        dataToSend: any = null): Promise<any> {
 
         // Remove the item from the cache when a reload is requested
         if (context.forceReload) {
@@ -120,7 +122,7 @@ export class ApiClient {
             }
 
             // Call the API and return data on success
-            const data1 = await this._callApiWithCredential(url, method, dataToSend, context);
+            const data1 = await this._callApiWithCredential(method, url, dataToSend, context);
             cacheItem.data = data1;
             return data1;
 
@@ -149,7 +151,7 @@ export class ApiClient {
             try {
 
                 // Call the API again with the rewritten access token cookie
-                const data2 = await this._callApiWithCredential(url, method, dataToSend, context);
+                const data2 = await this._callApiWithCredential(method, url, dataToSend, context);
                 cacheItem.data = data2;
                 return data2;
 
@@ -167,8 +169,8 @@ export class ApiClient {
      * Do the work of calling the API
      */
     private async _callApiWithCredential(
+        method: Method,
         url: string,
-        method: string,
         dataToSend: any,
         context: HttpClientContext): Promise<any> {
 

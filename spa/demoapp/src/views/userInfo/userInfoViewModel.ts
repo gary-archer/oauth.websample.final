@@ -1,10 +1,9 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
+import {OAuthUserInfo} from '../../api/entities/oauthUserInfo';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
 import {HttpClientContext} from '../../plumbing/http/httpClientContext';
-import {Authenticator} from '../../plumbing/oauth/authenticator';
-import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
@@ -12,7 +11,6 @@ import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
  */
 export class UserInfoViewModel {
 
-    private readonly _authenticator: Authenticator;
     private readonly _apiClient: ApiClient;
     private readonly _eventBus: EventBus;
     private readonly _viewModelCoordinator: ViewModelCoordinator;
@@ -21,12 +19,10 @@ export class UserInfoViewModel {
     private _error: UIError | null;
 
     public constructor(
-        authenticator: Authenticator,
         apiClient: ApiClient,
         eventBus: EventBus,
         viewModelCoordinator: ViewModelCoordinator,
     ) {
-        this._authenticator = authenticator;
         this._apiClient = apiClient;
         this._eventBus = eventBus;
         this._viewModelCoordinator = viewModelCoordinator;
@@ -61,12 +57,10 @@ export class UserInfoViewModel {
 
         try {
 
-            // The UI gets OAuth user info from the authorization server
+            // Set up promises for the two sources of user info
             this._error = null;
-            const oauthUserInfoPromise = this._authenticator.getUserInfo(context);
-
-            // The UI gets domain specific user attributes from its API
-            const apiUserInfoPromise = this._apiClient.getUserInfo(context);
+            const oauthUserInfoPromise = this._apiClient.getOAuthUserInfo(context);
+            const apiUserInfoPromise = this._apiClient.getApiUserInfo(context);
 
             // Run the tasks in parallel
             const results = await Promise.all([oauthUserInfoPromise, apiUserInfoPromise]);
@@ -76,13 +70,10 @@ export class UserInfoViewModel {
             // Update data
             if (oauthUserInfo) {
                 this._oauthUserInfo = oauthUserInfo;
+                this._viewModelCoordinator.onViewModelLoaded();
             }
             if (apiUserInfo) {
                 this._apiUserInfo = apiUserInfo;
-            }
-
-            // Send the view loaded event if any HTTP requests were sent
-            if (oauthUserInfo || apiUserInfo) {
                 this._viewModelCoordinator.onViewModelLoaded();
             }
 

@@ -33,7 +33,7 @@ export class HttpClientContext {
         return this._url;
     }
 
-    public addUrl(value: string) {
+    public addUrl(value: string): void {
         this._url = value;
     }
 }
