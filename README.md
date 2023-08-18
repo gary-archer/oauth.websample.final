@@ -64,7 +64,8 @@ Next configure [Browser SSL Trust](https://authguidance.com/2017/11/11/developer
 ./certs/authsamples-dev.ca.pem
 ```
 
-Then run this script to run a simple web host that serves static content:
+Then run this script in another terminal window to run a simple web host that serves static content.\
+You can then edit the demo apps's React code and view updates, in a pure SPA manner.
 
 ```bash
 ./run.sh

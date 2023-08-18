@@ -1,7 +1,5 @@
 .DS_Store
 node_modules
-spa/demoapp/build
-spa/demoapp/src/plumbing/errors/lib
 dist
 resources
 certs
