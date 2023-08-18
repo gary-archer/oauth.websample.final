@@ -1,10 +1,10 @@
 /*
- * Produce the final bootstrap.min.css from the classes referenced in app.bundle.js
+ * Produce the final bootstrap.min.css
  * This produces a CSS solution without adding too much technical noise to the project
  * It also avoids needing to add style-src 'unsafe-inline' to the content security policy
  */
 module.exports = {
-    content: ['dist/app.bundle.js'],
+    content: ['dist/index.mjs'],
     css: ['bootstrap.min.css'],
     
     // This prevents some required elements from being removed

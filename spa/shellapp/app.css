@@ -6,22 +6,6 @@
 {
     width: 20%;
 }
-.largetext
-{
-    font-size: larger;
-}
-.valuecolor
-{
-    color: blue;
-}
-.highlightcolor
-{
-    color:green;
-}
-.errorcolor
-{
-    color:red;
-}
 
 /* Reduce browser text size when the view is reduced, so that text fits */
 @media all and (max-width: 992px)

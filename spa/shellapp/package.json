@@ -1,7 +1,7 @@
 {
   "name": "shellspa",
   "version": "1.0.0",
-  "description": "The micro-UI shell application, which implements API driven OpenID Connect for other micro-UIs",
+  "description": "The micro-UI shell application, to demonstrate micro-UI based deployment",
   "main": "index.tsx",
   "keywords": [],
   "author": "Gary Archer",
@@ -11,43 +11,11 @@
     "node": ">=18"
   },
   "scripts": {
-    "lint": "npx eslint . --ext .ts,.tsx",
-    "start": "npm run webpackWatch",
-    "build": "./build.sh",
+    "start": "./build.sh",
     "buildRelease": "./build.sh RELEASE",
-    "webpackDebug": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config build/webpack.config.dev.ts",
-    "webpackWatch": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config build/webpack.config.dev.ts --watch",
-    "webpackRelease": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config build/webpack.config.prod.ts",
     "purgecss": "purgecss -c purgecss.config.cjs -o dist"
   },
-  "dependencies": {
-    "axios": "^1.4.0",
-    "guid-typescript": "^1.0.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-modal": "^3.16.1",
-    "react-router-dom": "^6.9.0",
-    "url-parse": "^1.5.10"
-  },
   "devDependencies": {
-    "@types/node": "^18.16.19",
-    "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.9",
-    "@types/react-modal": "^3.13.1",
-    "@types/url-parse": "^1.4.8",
-    "@typescript-eslint/eslint-plugin": "^5.61.0",
-    "@typescript-eslint/parser": "^5.61.0",
-    "eslint": "^8.44.0",
-    "eslint-plugin-react": "^7.32.2",
-    "purgecss": "^5.0.0",
-    "ts-loader": "^9.4.2",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.5",
-    "webpack": "^5.76.0",
-    "webpack-cli": "^5.0.1",
-    "webpack-merge": "^5.8.0"
-  },
-  "overrides": {
-    "semver": "7.5.2"
+    "purgecss": "^5.0.0"
   }
 }
