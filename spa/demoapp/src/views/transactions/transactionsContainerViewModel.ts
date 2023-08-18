@@ -1,33 +1,46 @@
 import EventBus from 'js-event-bus';
-import {ApiClient} from '../../api/client/apiClient';
+import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
+import {FetchClient} from '../../api/client/fetchClient';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
-import {ApiViewEvents} from '../utilities/apiViewEvents';
-import {ApiViewNames} from '../utilities/apiViewNames';
+import {ViewLoadOptions} from '../utilities/viewLoadOptions';
+import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
  * The view model for the transactions container view
  */
 export class TransactionsContainerViewModel {
 
-    private readonly _apiClient: ApiClient;
+    private readonly _apiClient: FetchClient;
     private readonly _eventBus: EventBus;
-    private readonly _apiViewEvents: ApiViewEvents;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
+    private _transactions: CompanyTransactions | null;
+    private _error: UIError | null;
 
     public constructor(
-        apiClient: ApiClient,
+        apiClient: FetchClient,
         eventBus: EventBus,
-        apiViewEvents: ApiViewEvents,
+        viewModelCoordinator: ViewModelCoordinator,
     ) {
         this._apiClient = apiClient;
         this._eventBus = eventBus;
-        this._apiViewEvents = apiViewEvents;
+        this._viewModelCoordinator = viewModelCoordinator;
+        this._transactions = null;
+        this._error = null;
     }
 
     /*
      * Property accessors
      */
+    public get transactions(): CompanyTransactions | null {
+        return this._transactions;
+    }
+
+    public get error(): UIError | null {
+        return this._error;
+    }
+
     public get eventBus(): EventBus {
         return this._eventBus;
     }
@@ -35,45 +48,51 @@ export class TransactionsContainerViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(
-        id: string,
-        onSuccess: (transactions: CompanyTransactions) => void,
-        onError: (isExpected: boolean, error: UIError) => void,
-        causeError: boolean): Promise<void> {
+    public async callApi(id: string, options?: ViewLoadOptions): Promise<void> {
+
+        const fetchOptions = {
+            cacheKey: `${FetchCacheKeys.Transactions}-${id}`,
+            forceReload: options?.forceReload || false,
+            causeError: options?.causeError || false,
+        };
+
+        this._viewModelCoordinator.onMainViewModelLoading(fetchOptions.cacheKey);
+        this._error = null;
 
         try {
 
-            this._apiViewEvents.onViewLoading(ApiViewNames.Main);
-
-            const transactions = await this._apiClient.getCompanyTransactions(id, {causeError});
-
-            this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
-            onSuccess(transactions);
+            const result = await this._apiClient.getCompanyTransactions(id, fetchOptions);
+            if (result) {
+                this._transactions = result;
+                this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
+            }
 
         } catch (e: any) {
 
-            const error = BaseErrorFactory.fromException(e);
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
-            onError(this._isExpectedApiError(error), error);
+            this._error = BaseErrorFactory.fromException(e);
+            this._transactions = null;
+            this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
     }
 
     /*
      * Handle 'business errors' received from the API
      */
-    private _isExpectedApiError(error: UIError): boolean {
+    public isExpectedApiError(): boolean {
 
-        if (error.statusCode === 404 && error.errorCode === ErrorCodes.companyNotFound) {
+        if(this._error) {
 
-            // User typed an id value outside of allowed company ids
-            return true;
+            if (this._error.statusCode === 404 && this._error.errorCode === ErrorCodes.companyNotFound) {
 
-        }
+                // User typed an id value outside of allowed company ids
+                return true;
+            }
 
-        if (error.statusCode === 400 && error.errorCode === ErrorCodes.invalidCompanyId) {
+            if (this._error.statusCode === 400 && this._error.errorCode === ErrorCodes.invalidCompanyId) {
 
-            // User typed an invalid id such as 'abc'
-            return true;
+                // User typed an invalid id such as 'abc'
+                return true;
+            }
         }
 
         return false;

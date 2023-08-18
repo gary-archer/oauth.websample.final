@@ -1,5 +1,6 @@
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
-import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
+import {OAuthUserInfo} from '../../api/entities/oauthUserInfo';
+import {UIError} from '../../plumbing/errors/lib';
 
 /*
  * State managed by the user info view
@@ -7,4 +8,5 @@ import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
 export interface UserInfoViewState {
     oauthUserInfo: OAuthUserInfo | null;
     apiUserInfo: ApiUserInfo | null;
+    error: UIError | null;
 }

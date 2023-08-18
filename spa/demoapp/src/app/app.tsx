@@ -1,20 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {BaseErrorFactory, ErrorConsoleReporter} from '../plumbing/errors/lib';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
-import {SetErrorEvent} from '../plumbing/events/setErrorEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CallbackView} from '../views/callback/callbackView';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
+import {ErrorSummaryViewProps} from '../views/errors/errorSummaryViewProps';
 import {HeaderButtonsView} from '../views/headings/headerButtonsView';
+import {HeaderButtonsViewProps} from '../views/headings/headerButtonsViewProps';
 import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
-import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
 import {AppState} from './appState';
 
@@ -28,14 +27,15 @@ export function App(props: AppProps): JSX.Element {
 
     // The view is re-rendered when any of these state properties change
     const [state, setState] = useState<AppState>({
-        isInitialised: model.isInitialised,
         isMobileLayout: isMobileLayoutNeeded(),
+        error: null,
     });
 
     // Startup runs only once
     useEffect(() => {
         startup();
         return () => cleanup();
+
     }, []);
 
     // Set up React Router navigation
@@ -49,30 +49,19 @@ export function App(props: AppProps): JSX.Element {
         // Initialise the modal dialog system used for error popups
         Modal.setAppElement('#root');
 
-        try {
+        // Load the main view model
+        await model.initialise();
+        setState((s) => {
+            return {
+                ...s,
+                error: model.error,
+            };
+        });
 
-            // Initialise view models
-            await model.initialise();
-            setError(null);
-
-            // Subscribe to application and window events
-            model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
-            window.onresize = onResize;
-            window.onstorage = onStorage;
-
-            // Update state
-            setState((s) => {
-                return {
-                    ...s,
-                    isInitialised: true,
-                };
-            });
-
-        } catch (e: any) {
-
-            // Render startup errors
-            setError(e);
-        }
+        // Subscribe to application and window events
+        model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
+        window.onresize = onResize;
+        window.onstorage = onStorage;
     }
 
     /*
@@ -102,28 +91,17 @@ export function App(props: AppProps): JSX.Element {
     async function onHome(): Promise<void> {
 
         // If there is a startup error then reinitialise the app when home is pressed
-        if (!state.isInitialised) {
-            cleanup();
-            await startup();
+        if (!model.isLoaded) {
+            await model.initialise();
         }
 
-        if (state.isInitialised) {
+        if (model.isLoaded) {
 
-            if (CurrentLocation.path === '/') {
+            // Navigate home
+            navigate('/');
 
-                // Force a reload of the main view if we are already in the home view
-                model.reloadMainView();
-
-            } else {
-
-                // Otherwise navigate home
-                navigate('/');
-            }
-
-            // Also reload user info if we are recovering from an error
-            if (model.apiViewEvents.hasLoadError()) {
-                model.reloadUserInfo();
-            }
+            // Trigger a reload if recovering from errors
+            model.reloadDataOnError();
         }
     }
 
@@ -139,17 +117,14 @@ export function App(props: AppProps): JSX.Element {
      */
     async function onExpireAccessToken(): Promise<void> {
 
-        try {
+        await model.expireAccessToken();
+        setState((s) => {
+            return {
+                ...s,
+                error: model.error,
+            };
+        });
 
-            // Try the operation
-            await model.authenticator.expireAccessToken();
-
-        } catch (e: any) {
-
-            // Write technical error details to the console
-            const error = BaseErrorFactory.fromException(e);
-            ErrorConsoleReporter.output(error);
-        }
     }
 
     /*
@@ -157,17 +132,13 @@ export function App(props: AppProps): JSX.Element {
      */
     async function onExpireRefreshToken(): Promise<void> {
 
-        try {
-
-            // Try the operation
-            await model.authenticator.expireRefreshToken();
-
-        } catch (e: any) {
-
-            // Write technical error details to the console
-            const error = BaseErrorFactory.fromException(e);
-            ErrorConsoleReporter.output(error);
-        }
+        await model.expireRefreshToken();
+        setState((s) => {
+            return {
+                ...s,
+                error: model.error,
+            };
+        });
     }
 
     /*
@@ -203,10 +174,33 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * A shared subroutine to set error state
+     * Return the header props
      */
-    function setError(e: any): void {
-        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('main', e));
+    function getErrorProps(): ErrorSummaryViewProps {
+
+        return {
+            error: state.error!,
+            errorsToIgnore: [],
+            containingViewName: 'main',
+            hyperlinkMessage: 'Problem Encountered',
+            dialogTitle: 'Demo Application Error',
+            centred: true,
+        };
+    }
+
+    /*
+     * Return header button props
+     */
+    function getHeaderButtonProps(): HeaderButtonsViewProps {
+
+        return {
+            eventBus: model.eventBus,
+            handleHomeClick: onHome,
+            handleExpireAccessTokenClick: onExpireAccessToken,
+            handleExpireRefreshTokenClick: onExpireRefreshToken,
+            handleReloadDataClick: model.reloadData,
+            handleLogoutClick: onLogout,
+        };
     }
 
     /*
@@ -218,29 +212,11 @@ export function App(props: AppProps): JSX.Element {
             userInfo: null,
         };
 
-        const headerButtonProps = {
-            eventBus: model.eventBus,
-            handleHomeClick: onHome,
-            handleExpireAccessTokenClick: onExpireAccessToken,
-            handleExpireRefreshTokenClick: onExpireRefreshToken,
-            handleReloadDataClick: model.reloadData,
-            handleLogoutClick: onLogout,
-        };
-
-        const errorProps = {
-            errorsToIgnore: [],
-            eventBus: model.eventBus,
-            containingViewName: 'main',
-            hyperlinkMessage: 'Problem Encountered',
-            dialogTitle: 'Demo Application Error',
-            centred: true,
-        };
-
         return (
             <>
                 <TitleView {...titleProps} />
-                <HeaderButtonsView {...headerButtonProps} />
-                <ErrorSummaryView {...errorProps} />
+                <HeaderButtonsView {...getHeaderButtonProps()} />
+                <ErrorSummaryView {...getErrorProps()} />
             </>
         );
     }
@@ -254,24 +230,6 @@ export function App(props: AppProps): JSX.Element {
             userInfo: {
                 viewModel: model.getUserInfoViewModel(),
             },
-        };
-
-        const headerButtonProps = {
-            eventBus: model.eventBus,
-            handleHomeClick: onHome,
-            handleExpireAccessTokenClick: onExpireAccessToken,
-            handleExpireRefreshTokenClick: onExpireRefreshToken,
-            handleReloadDataClick: model.reloadData,
-            handleLogoutClick: onLogout,
-        };
-
-        const errorProps = {
-            errorsToIgnore: [],
-            eventBus: model.eventBus,
-            containingViewName: 'main',
-            hyperlinkMessage: 'Problem Encountered',
-            dialogTitle: 'Demo Application Error',
-            centred: true,
         };
 
         const sessionProps = {
@@ -297,8 +255,8 @@ export function App(props: AppProps): JSX.Element {
         return (
             <>
                 <TitleView {...titleProps} />
-                <HeaderButtonsView {...headerButtonProps} />
-                <ErrorSummaryView {...errorProps} />
+                <HeaderButtonsView {...getHeaderButtonProps()} />
+                <ErrorSummaryView {...getErrorProps()} />
                 <SessionView {...sessionProps} />
                 <Routes>
                     <Route path='/callback'      element={<CallbackView {...callbackProps} />} />
@@ -309,7 +267,7 @@ export function App(props: AppProps): JSX.Element {
         );
     }
 
-    if (!state.isInitialised) {
+    if (!model.isLoaded) {
         return renderInitialScreen();
     } else {
         return renderMain();

@@ -8,7 +8,6 @@ import {AxiosUtils} from '../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {Authenticator} from './authenticator';
-import {OAuthUserInfo} from './oauthUserInfo';
 
 /*
  * The authenticator implementation
@@ -16,8 +15,8 @@ import {OAuthUserInfo} from './oauthUserInfo';
 export class AuthenticatorImpl implements Authenticator {
 
     private readonly _oauthAgentBaseUrl: string;
-    private readonly _sessionId: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
+    private readonly _sessionId: string;
 
     public constructor(configuration: Configuration, sessionId: string) {
 
@@ -73,34 +72,6 @@ export class AuthenticatorImpl implements Authenticator {
     }
 
     /*
-     * Get user info from the authorization server and retry 401s
-     */
-    public async getUserInfo(): Promise<OAuthUserInfo> {
-
-        if (!this.isLoggedIn()) {
-            throw ErrorFactory.fromLoginRequired();
-        }
-
-        try {
-
-            return await this._makeUserInfoRequest();
-
-        } catch (e: any) {
-
-            // Report Ajax errors if this is not a 401
-            if (e.statusCode !== 401) {
-                throw e;
-            }
-
-            // Refresh the access token cookie
-            await this.synchronizedRefresh();
-
-            // Then retry the user info request with the new access token
-            return await this._makeUserInfoRequest();
-        }
-    }
-
-    /*
      * Synchronize a refresh call to the OAuth agent, which will rewrite cookies
      */
     public async synchronizedRefresh(): Promise<void> {
@@ -143,18 +114,6 @@ export class AuthenticatorImpl implements Authenticator {
                 throw ErrorFactory.fromTestExpiryError(e, 'refresh');
             }
         }
-    }
-
-    /*
-     * Make a user info request to the authorization server
-     */
-    private async _makeUserInfoRequest(): Promise<OAuthUserInfo> {
-
-        const data = await this._callOAuthAgent('GET', '/userinfo', null);
-        return {
-            givenName: data['given_name'] || '',
-            familyName: data['family_name'] || '',
-        };
     }
 
     /*
@@ -238,6 +197,7 @@ export class AuthenticatorImpl implements Authenticator {
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
     private _setupCallbacks(): void {
+        this._callOAuthAgent = this._callOAuthAgent.bind(this);
         this._performTokenRefresh = this._performTokenRefresh.bind(this);
     }
 }

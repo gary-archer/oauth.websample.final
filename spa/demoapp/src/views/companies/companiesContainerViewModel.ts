@@ -1,32 +1,45 @@
 import EventBus from 'js-event-bus';
-import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
-import {ApiClient} from '../../api/client/apiClient';
+import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
+import {FetchClient} from '../../api/client/fetchClient';
 import {Company} from '../../api/entities/company';
-import {ApiViewEvents} from '../utilities/apiViewEvents';
-import {ApiViewNames} from '../utilities/apiViewNames';
+import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
+import {ViewLoadOptions} from '../utilities/viewLoadOptions';
+import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
  * The view model for the companies container view
  */
 export class CompaniesContainerViewModel {
 
-    private readonly _apiClient: ApiClient;
+    private readonly _apiClient: FetchClient;
     private readonly _eventBus: EventBus;
-    private readonly _apiViewEvents: ApiViewEvents;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
+    private _companies: Company[];
+    private _error: UIError | null;
 
     public constructor(
-        apiClient: ApiClient,
+        apiClient: FetchClient,
         eventBus: EventBus,
-        apiViewEvents: ApiViewEvents,
+        viewModelCoordinator: ViewModelCoordinator,
     ) {
         this._apiClient = apiClient;
         this._eventBus = eventBus;
-        this._apiViewEvents = apiViewEvents;
+        this._viewModelCoordinator = viewModelCoordinator;
+        this._companies = [];
+        this._error = null;
     }
 
     /*
      * Property accessors
      */
+    public get companies(): Company[] {
+        return this._companies;
+    }
+
+    public get error(): UIError | null {
+        return this._error;
+    }
+
     public get eventBus(): EventBus {
         return this._eventBus;
     }
@@ -34,25 +47,30 @@ export class CompaniesContainerViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(
-        onSuccess: (companies: Company[]) => void,
-        onError: (error: UIError) => void,
-        causeError: boolean): Promise<void> {
+    public async callApi(options?: ViewLoadOptions): Promise<void> {
+
+        const fetchOptions = {
+            cacheKey: FetchCacheKeys.Companies,
+            forceReload: options?.forceReload || false,
+            causeError: options?.causeError || false,
+        };
+
+        this._viewModelCoordinator.onMainViewModelLoading(fetchOptions.cacheKey);
+        this._error = null;
 
         try {
 
-            this._apiViewEvents.onViewLoading(ApiViewNames.Main);
-
-            const companies = await this._apiClient.getCompanyList({causeError});
-
-            this._apiViewEvents.onViewLoaded(ApiViewNames.Main);
-            onSuccess(companies);
+            const result = await this._apiClient.getCompanyList(fetchOptions);
+            if (result) {
+                this._companies = result;
+                this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
+            }
 
         } catch (e: any) {
 
-            const error = BaseErrorFactory.fromException(e);
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.Main, error);
-            onError(error);
+            this._error = BaseErrorFactory.fromException(e);
+            this._companies = [];
+            this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
     }
 }

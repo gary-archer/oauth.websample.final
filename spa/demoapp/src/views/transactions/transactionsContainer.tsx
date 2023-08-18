@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
-import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
+import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
+import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
+import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
 import {TransactionsView} from './transactionsView';
@@ -21,7 +20,8 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     const params = useParams();
     const companyId = params.id!;
     const [state, setState] = useState<TransactionsContainerState>({
-        data: null,
+        data: model.transactions,
+        error: null,
     });
 
     useEffect(() => {
@@ -32,67 +32,70 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     CurrentLocation.path = useLocation().pathname;
 
     /*
-     * Load data then listen for the reload event
+     * Subscribe for reload events and then do the initial load of data
      */
     async function startup(): Promise<void> {
-
-        // Subscribe for reload events
-        model.eventBus.on(EventNames.ReloadMainView, onReload);
-
-        // Do the initial load of data
-        await loadData(false);
+        model.eventBus.on(EventNames.ReloadData, onReload);
+        await loadData();
     }
 
     /*
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        model.eventBus.detach(EventNames.ReloadMainView, onReload);
+        model.eventBus.detach(EventNames.ReloadData, onReload);
     }
 
     /*
      * Receive the reload event
      */
-    function onReload(event: ReloadMainViewEvent): void {
-        loadData(event.causeError);
+    function onReload(event: ReloadDataEvent): void {
+
+        const options = {
+            forceReload: true,
+            causeError: event.causeError
+        };
+        loadData(options);
     }
 
     /*
      * Get data from the API and update state
      */
-    async function loadData(causeError: boolean): Promise<void> {
+    async function loadData(options?: ViewLoadOptions): Promise<void> {
 
-        const onSuccess = (data: CompanyTransactions) => {
+        await model.callApi(companyId, options);
 
+        if (model.error && model.isExpectedApiError()) {
+
+            // For 'expected' errors, return to the home view
+            props.navigate('/');
+
+        } else {
+
+            // Otherwise update state
             setState((s) => {
                 return {
                     ...s,
-                    data,
+                    data: model.transactions,
+                    error: model.error,
                 };
             });
+        }
+    }
+
+    /*
+     * Return error props when there is an error to render
+     */
+    function getErrorProps(): ErrorSummaryViewProps {
+
+        return {
+            error: state.error!,
+            errorsToIgnore: [ErrorCodes.loginRequired],
+            containingViewName: 'transactions',
+            hyperlinkMessage: 'Problem Encountered in Transactions View',
+            dialogTitle: 'Transactions View Error',
+            centred: true,
         };
-
-        const onError = (isExpected: boolean, error: UIError) => {
-
-            if (isExpected) {
-
-                // For 'expected' errors, return to the home view
-                props.navigate('/');
-
-            } else {
-
-                model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', error));
-                setState((s) => {
-                    return {
-                        ...s,
-                        data: null,
-                    };
-                });
-            }
-        };
-
-        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('transactions', null));
-        model.callApi(companyId, onSuccess, onError, causeError);
     }
 
     /*
@@ -114,23 +117,14 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
         return  (
             <>
-                {state.data && <TransactionsView {...childProps}/>}
+                <TransactionsView {...childProps}/>
             </>
         );
     }
 
-    const errorProps = {
-        errorsToIgnore: [ErrorCodes.loginRequired],
-        eventBus: model.eventBus,
-        containingViewName: 'transactions',
-        hyperlinkMessage: 'Problem Encountered in Transactions View',
-        dialogTitle: 'Transactions View Error',
-        centred: true,
-    };
-
     return  (
         <>
-            <ErrorSummaryView {...errorProps}/>
+            {state.error && <ErrorSummaryView {...getErrorProps()}/>}
             {renderTransactionsView()}
         </>
     );

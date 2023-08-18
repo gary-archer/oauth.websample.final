@@ -1,15 +1,15 @@
-import EventBus from 'js-event-bus';
+import {UIError} from '../../plumbing/errors/lib';
 
 /*
  * Input to the error summary view
  */
 export interface ErrorSummaryViewProps {
 
+    // The error
+    error: UIError;
+
     // Any errors to ignore
     errorsToIgnore: string[];
-
-    // The bus via which the view receives error updates
-    eventBus: EventBus;
 
     // The containing view
     containingViewName: string;

@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ReactModal from 'react-modal';
-import {BaseErrorFactory} from '../../plumbing/errors/lib';
-import {EventNames} from '../../plumbing/events/eventNames';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
 import {ErrorDetailsView} from './errorDetailsView';
 import {ErrorSummaryViewProps} from './errorSummaryViewProps';
 import {ErrorSummaryViewState} from './errorSummaryViewState';
@@ -14,55 +11,8 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
 
     const [state, setState] = useState<ErrorSummaryViewState>({
         showDetails: false,
-        error: null,
+        error: props.error,
     });
-
-    useEffect(() => {
-        startup();
-        return () => cleanup();
-    }, []);
-
-    /*
-     * Subscribe to events and then do the initial load of data
-     */
-    async function startup(): Promise<void> {
-        props.eventBus.on(EventNames.SetError, onSetError);
-    }
-
-    /*
-     * Unsubscribe when we unload
-     */
-    function cleanup(): void {
-        props.eventBus.detach(EventNames.SetError, onSetError);
-    }
-
-    /*
-     * Update state when we receive an error from the parent
-     */
-    function onSetError(event: SetErrorEvent): void {
-
-        if (props.containingViewName === event.containingViewName) {
-
-            if (event.error) {
-
-                setState((s) => {
-                    return {
-                        ...s,
-                        error: BaseErrorFactory.fromException(event.error),
-                    };
-                });
-
-            } else {
-
-                setState((s) => {
-                    return {
-                        ...s,
-                        error: null,
-                    };
-                });
-            }
-        }
-    }
 
     /*
      * Return the markup for the hyperlink

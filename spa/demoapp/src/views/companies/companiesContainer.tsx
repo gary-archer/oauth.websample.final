@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
-import {Company} from '../../api/entities/company';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {ReloadMainViewEvent} from '../../plumbing/events/reloadMainViewEvent';
-import {SetErrorEvent} from '../../plumbing/events/setErrorEvent';
+import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
+import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
+import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {CompaniesContainerProps} from './companiesContainerProps';
 import {CompaniesContainerState} from './companiesContainerState';
 import {CompaniesDesktopView} from './companiesDesktopView';
@@ -20,7 +19,8 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
 
     const model = props.viewModel;
     const [state, setState] = useState<CompaniesContainerState>({
-        companies: [],
+        companies: model.companies,
+        error: model.error,
     });
 
     useEffect(() => {
@@ -31,90 +31,74 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     CurrentLocation.path = useLocation().pathname;
 
     /*
-     * Load data then listen for the reload event
+     * Subscribe for reload events and then do the initial load of data
      */
     async function startup(): Promise<void> {
-
-        // Subscribe for reload events
-        model.eventBus.on(EventNames.ReloadMainView, onReload);
-
-        // Do the initial load of data
-        await loadData(false);
+        model.eventBus.on(EventNames.ReloadData, onReload);
+        await loadData();
     }
 
     /*
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        model.eventBus.detach(EventNames.ReloadMainView, onReload);
+        model.eventBus.detach(EventNames.ReloadData, onReload);
     }
 
     /*
      * Receive the reload event
      */
-    function onReload(event: ReloadMainViewEvent): void {
-        loadData(event.causeError);
+    function onReload(event: ReloadDataEvent): void {
+
+        const options = {
+            forceReload: true,
+            causeError: event.causeError
+        };
+        loadData(options);
     }
 
     /*
      * Get data from the API and update state
      */
-    async function loadData(causeError: boolean): Promise<void> {
+    async function loadData(options?: ViewLoadOptions): Promise<void> {
 
-        const onSuccess = (companies: Company[]) => {
+        await model.callApi(options);
+        setState((s) => {
+            return {
+                ...s,
+                companies: model.companies,
+                error: model.error,
+            };
+        });
+    }
 
-            setState((s) => {
-                return {
-                    ...s,
-                    companies,
-                };
-            });
+    /*
+     * Return error props when there is an error to render
+     */
+    function getErrorProps(): ErrorSummaryViewProps {
+
+        return {
+            error: state.error!,
+            errorsToIgnore: [ErrorCodes.loginRequired],
+            containingViewName: 'companies',
+            hyperlinkMessage: 'Problem Encountered in Companies View',
+            dialogTitle: 'Companies View Error',
+            centred: true,
         };
-
-        const onError = (error: UIError) => {
-
-            model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', error));
-            setState((s) => {
-                return {
-                    ...s,
-                    companies: [],
-                };
-            });
-        };
-
-        model.eventBus.emit(EventNames.SetError, null, new SetErrorEvent('companies', null));
-        model.callApi(onSuccess, onError, causeError);
     }
 
     const childProps = {
         companies: state.companies,
     };
 
-    const errorProps = {
-        errorsToIgnore: [ErrorCodes.loginRequired],
-        eventBus: model.eventBus,
-        containingViewName: 'companies',
-        hyperlinkMessage: 'Problem Encountered in Companies View',
-        dialogTitle: 'Companies View Error',
-        centred: true,
-    };
+    return  (
+        <>
+            {state.error && <ErrorSummaryView {...getErrorProps()}/>}
 
-    if (props.isMobileLayout) {
+            {state.companies.length > 0 && (props.isMobileLayout ?
+                <CompaniesMobileView {...childProps}/> :
+                <CompaniesDesktopView {...childProps}/>)}
 
-        return  (
-            <>
-                <ErrorSummaryView {...errorProps}/>
-                {state.companies.length > 0 && <CompaniesMobileView {...childProps}/>}
-            </>
-        );
-
-    } else {
-
-        return  (
-            <>
-                <ErrorSummaryView {...errorProps}/>
-                {state.companies.length > 0 && <CompaniesDesktopView {...childProps}/>}
-            </>
-        );
-    }
+        </>
+    );
 }

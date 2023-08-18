@@ -1,5 +1,4 @@
 import {AxiosRequestConfig} from 'axios';
-import {OAuthUserInfo} from './oauthUserInfo';
 
 /*
  * An interface to represent authentication related operations for a micro UI
@@ -23,9 +22,6 @@ export interface Authenticator {
 
     // Call the OAuth agent to refresh the access token and rewrite cookies
     synchronizedRefresh(): Promise<void>
-
-    // Get identity attributes to the UI
-    getUserInfo(): Promise<OAuthUserInfo>;
 
     // Call the OAuth agent to make the access token cookie act expired
     expireAccessToken(): Promise<void>;

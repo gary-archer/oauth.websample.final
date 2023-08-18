@@ -1,38 +1,52 @@
 import EventBus from 'js-event-bus';
-import {ApiClient} from '../../api/client/apiClient';
+import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
+import {FetchClient} from '../../api/client/fetchClient';
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
+import {OAuthUserInfo} from '../../api/entities/oauthUserInfo';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
-import {Authenticator} from '../../plumbing/oauth/authenticator';
-import {OAuthUserInfo} from '../../plumbing/oauth/oauthUserInfo';
-import {ApiViewEvents} from '../utilities/apiViewEvents';
-import {ApiViewNames} from '../utilities/apiViewNames';
-import {UserInfoLoadOptions}  from './userInfoLoadOptions';
+import {ViewLoadOptions} from '../utilities/viewLoadOptions';
+import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
  * The view model for the user info view
  */
 export class UserInfoViewModel {
 
-    private readonly _authenticator: Authenticator;
-    private readonly _apiClient: ApiClient;
+    private readonly _apiClient: FetchClient;
     private readonly _eventBus: EventBus;
-    private readonly _apiViewEvents: ApiViewEvents;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
+    private _oauthUserInfo: OAuthUserInfo | null;
+    private _apiUserInfo: ApiUserInfo | null;
+    private _error: UIError | null;
 
     public constructor(
-        authenticator: Authenticator,
-        apiClient: ApiClient,
+        apiClient: FetchClient,
         eventBus: EventBus,
-        apiViewEvents: ApiViewEvents,
+        viewModelCoordinator: ViewModelCoordinator,
     ) {
-        this._authenticator = authenticator;
         this._apiClient = apiClient;
         this._eventBus = eventBus;
-        this._apiViewEvents = apiViewEvents;
+        this._viewModelCoordinator = viewModelCoordinator;
+        this._oauthUserInfo = null;
+        this._apiUserInfo = null;
+        this._error = null;
     }
 
     /*
      * Property accessors
      */
+    public get oauthUserInfo(): OAuthUserInfo | null {
+        return this._oauthUserInfo;
+    }
+
+    public get apiUserInfo(): ApiUserInfo | null {
+        return this._apiUserInfo;
+    }
+
+    public get error(): UIError | null {
+        return this._error;
+    }
+
     public get eventBus(): EventBus {
         return this._eventBus;
     }
@@ -40,37 +54,54 @@ export class UserInfoViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(
-        onSuccess: (oauthUserInfo: OAuthUserInfo, apiUserInfo: ApiUserInfo) => void,
-        onError: (error: UIError) => void,
-        options: UserInfoLoadOptions): Promise<void> {
+    public async callApi(options?: ViewLoadOptions): Promise<void> {
+
+        const oauthFetchOptions = {
+            cacheKey: FetchCacheKeys.OAuthUserInfo,
+            forceReload: options?.forceReload || false,
+            causeError: options?.causeError || false,
+        };
+
+        const apiFetchOptions = {
+            cacheKey: FetchCacheKeys.ApiUserInfo,
+            forceReload: options?.forceReload || false,
+            causeError: options?.causeError || false,
+        };
 
         try {
 
-            this._apiViewEvents.onViewLoading(ApiViewNames.UserInfo);
-            const requestOptions = {causeError: options.causeError};
-
-            // The UI gets OAuth user info from the authorization server
-            const oauthUserInfoPromise = this._authenticator.getUserInfo();
-
-            // The UI gets domain specific user attributes from its API
-            const apiUserInfoPromise = this._apiClient.getUserInfo(requestOptions);
+            // Set up promises for the two sources of user info
+            this._error = null;
+            const oauthUserInfoPromise = this._apiClient.getOAuthUserInfo(oauthFetchOptions);
+            const apiUserInfoPromise = this._apiClient.getApiUserInfo(apiFetchOptions);
 
             // Run the tasks in parallel
             const results = await Promise.all([oauthUserInfoPromise, apiUserInfoPromise]);
             const oauthUserInfo = results[0];
             const apiUserInfo = results[1];
 
-            // Update views
-            this._apiViewEvents.onViewLoaded(ApiViewNames.UserInfo);
-            onSuccess(oauthUserInfo, apiUserInfo);
+            // Update data
+            if (oauthUserInfo) {
+                this._oauthUserInfo = oauthUserInfo;
+            }
+            if (apiUserInfo) {
+                this._apiUserInfo = apiUserInfo;
+            }
+
+            // Update the load state
+            if (oauthUserInfo || apiUserInfo) {
+                this._viewModelCoordinator.onViewModelLoaded();
+            }
 
         } catch (e: any) {
 
             // Report errors
-            const error = BaseErrorFactory.fromException(e);
-            this._apiViewEvents.onViewLoadFailed(ApiViewNames.UserInfo, error);
-            onError(error);
+            this._error = BaseErrorFactory.fromException(e);
+            this._oauthUserInfo = null;
+            this._apiUserInfo = null;
+
+            // Notify so that a login can be triggered when needed
+            this._viewModelCoordinator.onViewModelLoaded();
         }
     }
 }
