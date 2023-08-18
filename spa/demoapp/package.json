@@ -12,7 +12,7 @@
   },
   "scripts": {
     "lint": "npx eslint . --ext .ts,.tsx",
-    "start": "npm run webpackWatch",
+    "start": "npm run webpackDebug",
     "build": "./build.sh",
     "buildRelease": "./build.sh RELEASE",
     "webpackDebug": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config build/webpack.config.dev.ts --watch",

@@ -4,7 +4,8 @@ import {FetchClient} from '../api/client/fetchClient';
 import {ViewModelCoordinator} from '../views/utilities/viewModelCoordinator';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
-import {BaseErrorFactory, UIError} from '../plumbing/errors/lib';
+import {ErrorFactory} from '../plumbing/errors/errorFactory';
+import {UIError} from '../plumbing/errors/uiError';
 import {EventNames} from '../plumbing/events/eventNames';
 import {ReloadDataEvent} from '../plumbing/events/reloadDataEvent';
 import {Authenticator} from '../plumbing/oauth/authenticator';
@@ -105,7 +106,7 @@ export class AppViewModel {
         } catch (e: any) {
 
             // Render startup errors
-            this._error = BaseErrorFactory.fromException(e);
+            this._error = ErrorFactory.fromException(e);
 
         } finally {
 
@@ -187,6 +188,13 @@ export class AppViewModel {
     }
 
     /*
+     * Trigger a login and update error state if required
+     */
+    public login(): void {
+        this._error = ErrorFactory.fromLoginRequired();
+    }
+
+    /*
      * Ask all views to get updated data from the API
      */
     public reloadData(causeError: boolean): void {
@@ -212,7 +220,7 @@ export class AppViewModel {
         try {
             await this._authenticator?.expireAccessToken();
         } catch (e: any) {
-            this._error = BaseErrorFactory.fromException(e);
+            this._error = ErrorFactory.fromException(e);
         }
     }
 
@@ -224,7 +232,7 @@ export class AppViewModel {
         try {
             await this._authenticator?.expireRefreshToken();
         } catch (e: any) {
-            this._error = BaseErrorFactory.fromException(e);
+            this._error = ErrorFactory.fromException(e);
         }
     }
 

@@ -3,7 +3,8 @@ import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
+import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {UIError} from '../../plumbing/errors/uiError';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
@@ -69,7 +70,7 @@ export class TransactionsContainerViewModel {
 
         } catch (e: any) {
 
-            this._error = BaseErrorFactory.fromException(e);
+            this._error = ErrorFactory.fromException(e);
             this._transactions = null;
             this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }

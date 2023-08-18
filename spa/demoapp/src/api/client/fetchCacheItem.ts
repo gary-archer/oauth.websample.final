@@ -1,4 +1,5 @@
-import {UIError} from '../../plumbing/errors/lib';
+import {UIError} from '../../plumbing/errors/uiError';
+
 
 /*
  * The state of request data mapped to a URL

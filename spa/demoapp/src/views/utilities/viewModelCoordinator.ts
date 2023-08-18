@@ -2,7 +2,7 @@ import EventBus from 'js-event-bus';
 import {FetchCache} from '../../api/client/fetchCache';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {UIError} from '../../plumbing/errors/lib';
+import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
@@ -91,6 +91,7 @@ export class ViewModelCoordinator {
             const errors = this._getLoadErrors();
             const found = errors.find((e) => e.errorCode === ErrorCodes.loginRequired);
             if (found) {
+                console.log('*** COORDINATOR RAISING LOGIN REQUIRED');
                 this._eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
             }
         }

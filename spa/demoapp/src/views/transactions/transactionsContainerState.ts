@@ -1,5 +1,5 @@
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
-import {UIError} from '../../plumbing/errors/lib';
+import {UIError} from '../../plumbing/errors/uiError';
 
 /*
  * UI state presented by the transactions container

@@ -6,7 +6,6 @@ import {CompanyTransactions} from '../entities/companyTransactions';
 import {OAuthUserInfo} from '../entities/oauthUserInfo';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {BaseErrorFactory} from '../../plumbing/errors/lib';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {FetchCache} from './fetchCache';
@@ -115,7 +114,7 @@ export class FetchClient {
 
         } catch (e1: any) {
 
-            const error1 = BaseErrorFactory.fromHttpError(e1, url, 'web API');
+            const error1 = ErrorFactory.fromHttpError(e1, url, 'web API');
             if (error1.statusCode !== 401) {
 
                 // Report errors if this is not a 401
@@ -130,7 +129,7 @@ export class FetchClient {
             } catch (e2: any) {
 
                 // Save refresh errors
-                const error2 = BaseErrorFactory.fromHttpError(e2, url, 'web API');
+                const error2 = ErrorFactory.fromHttpError(e2, url, 'web API');
                 cacheItem.error = error2;
                 throw error2;
             }
@@ -145,7 +144,7 @@ export class FetchClient {
             }  catch (e3: any) {
 
                 // Save retry errors
-                const error3 = BaseErrorFactory.fromHttpError(e3, url, 'web API');
+                const error3 = ErrorFactory.fromHttpError(e3, url, 'web API');
                 cacheItem.error = error3;
                 throw error3;
             }

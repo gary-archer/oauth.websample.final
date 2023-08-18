@@ -1,9 +1,9 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
 import {Configuration} from '../../configuration/configuration';
-import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
+import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {UIError} from '../../plumbing/errors/uiError';
 import {CurrentLocation} from '../../views/utilities/currentLocation';
-import {ErrorFactory} from '../errors/errorFactory';
 import {AxiosUtils} from '../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
@@ -179,7 +179,7 @@ export class AuthenticatorImpl implements Authenticator {
 
         } catch (e: any) {
 
-            throw BaseErrorFactory.fromHttpError(e, url, 'OAuth agent');
+            throw ErrorFactory.fromHttpError(e, url, 'OAuth agent');
         }
     }
 

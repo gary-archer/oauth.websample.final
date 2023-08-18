@@ -1,5 +1,5 @@
 import {Company} from '../../api/entities/company';
-import {UIError} from '../../plumbing/errors/lib';
+import {UIError} from '../../plumbing/errors/uiError';
 
 /*
  * Data managed by the companies container

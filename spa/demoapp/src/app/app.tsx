@@ -83,8 +83,13 @@ export function App(props: AppProps): JSX.Element {
     /* eslint-disable @typescript-eslint/no-unused-vars */
     function onLoginRequired(_event: LoginRequiredEvent): void {
 
-        // model.authenticator.login();
-        console.log('*** LOGIN REQUIRED ***');
+        model.login();
+        setState((s) => {
+            return {
+                ...s,
+                error: model.error,
+            };
+        });
     }
 
     /*
@@ -126,7 +131,6 @@ export function App(props: AppProps): JSX.Element {
                 error: model.error,
             };
         });
-
     }
 
     /*
@@ -218,7 +222,7 @@ export function App(props: AppProps): JSX.Element {
             <>
                 <TitleView {...titleProps} />
                 <HeaderButtonsView {...getHeaderButtonProps()} />
-                <ErrorSummaryView {...getErrorProps()} />
+                {state.error && <ErrorSummaryView {...getErrorProps()} />}
             </>
         );
     }
@@ -258,7 +262,7 @@ export function App(props: AppProps): JSX.Element {
             <>
                 <TitleView {...titleProps} />
                 <HeaderButtonsView {...getHeaderButtonProps()} />
-                <ErrorSummaryView {...getErrorProps()} />
+                {state.error && <ErrorSummaryView {...getErrorProps()} />}
                 <SessionView {...sessionProps} />
                 <Routes>
                     <Route path='/callback'      element={<CallbackView {...callbackProps} />} />

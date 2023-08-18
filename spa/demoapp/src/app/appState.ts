@@ -1,4 +1,4 @@
-import {UIError} from '../plumbing/errors/lib';
+import {UIError} from '../plumbing/errors/uiError';
 
 /*
  * Application level state used for rendering

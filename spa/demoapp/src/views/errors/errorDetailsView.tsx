@@ -1,5 +1,6 @@
 import React from 'react';
-import {ErrorLine, ErrorFormatter} from '../../plumbing/errors/lib';
+import {ErrorLine} from '../../plumbing/errors/errorLine';
+import {ErrorFormatter} from '../../plumbing/errors/errorFormatter';
 import {ErrorDetailsViewProps} from './errorDetailsViewProps';
 
 /*

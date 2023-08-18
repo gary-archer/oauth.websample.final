@@ -3,7 +3,8 @@ import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
 import {OAuthUserInfo} from '../../api/entities/oauthUserInfo';
-import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
+import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {UIError} from '../../plumbing/errors/uiError';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
@@ -96,7 +97,7 @@ export class UserInfoViewModel {
         } catch (e: any) {
 
             // Report errors
-            this._error = BaseErrorFactory.fromException(e);
+            this._error = ErrorFactory.fromException(e);
             this._oauthUserInfo = null;
             this._apiUserInfo = null;
 

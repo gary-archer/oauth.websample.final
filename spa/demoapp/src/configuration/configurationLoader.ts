@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {BaseErrorFactory} from '../plumbing/errors/lib';
+import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {AxiosUtils} from '../plumbing/utilities/axiosUtils';
 import {Configuration} from './configuration';
 import {productionCloudNativeConfiguration, productionServerlessConfiguration} from './productionConfiguration';
@@ -41,7 +41,7 @@ export class ConfigurationLoader {
         } catch (xhr) {
 
             // Capture error details
-            throw BaseErrorFactory.fromHttpError(xhr, fileName, 'web host');
+            throw ErrorFactory.fromHttpError(xhr, fileName, 'web host');
         }
     }
 }
