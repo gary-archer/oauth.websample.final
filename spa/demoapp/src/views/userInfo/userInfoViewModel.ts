@@ -70,10 +70,13 @@ export class UserInfoViewModel {
             // Update data
             if (oauthUserInfo) {
                 this._oauthUserInfo = oauthUserInfo;
-                this._viewModelCoordinator.onViewModelLoaded();
             }
             if (apiUserInfo) {
                 this._apiUserInfo = apiUserInfo;
+            }
+
+            // Update the load state
+            if (oauthUserInfo || apiUserInfo) {
                 this._viewModelCoordinator.onViewModelLoaded();
             }
 
@@ -83,6 +86,8 @@ export class UserInfoViewModel {
             this._error = BaseErrorFactory.fromException(e);
             this._oauthUserInfo = null;
             this._apiUserInfo = null;
+            
+            // Notify so that a login can be triggered when needed
             this._viewModelCoordinator.onViewModelLoaded();
         }
     }
