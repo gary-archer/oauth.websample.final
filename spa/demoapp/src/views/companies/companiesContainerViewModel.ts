@@ -56,7 +56,7 @@ export class CompaniesContainerViewModel {
             causeError: options?.causeError || false,
         };
 
-        this._viewModelCoordinator.onMainViewModelLoading(fetchOptions.cacheKey);
+        this._viewModelCoordinator.onMainViewModelLoading();
         this._error = null;
 
         try {

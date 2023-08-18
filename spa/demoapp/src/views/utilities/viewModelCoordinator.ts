@@ -15,6 +15,8 @@ export class ViewModelCoordinator {
 
     private readonly _eventBus: EventBus;
     private readonly _fetchCache: FetchCache;
+    private _mainLoading: boolean;
+    private _userInfoLoading: boolean;
     private _mainCacheKey: string;
 
     /*
@@ -24,21 +26,22 @@ export class ViewModelCoordinator {
 
         this._eventBus = eventBus;
         this._fetchCache = fetchCache;
+        this._mainLoading = false;
+        this._userInfoLoading = false;
         this._mainCacheKey = '';
         this._setupCallbacks();
     }
 
     /*
      * This is called when the companies or transactions view model start sending API requests
-     * Send an event so that a subscriber can show a UI effect, such as disabling header buttons
      */
-    public onMainViewModelLoading(cacheKey: string): void {
+    public onMainViewModelLoading(): void {
 
         // Send an event so that a subscriber can show a UI effect, such as disabling header buttons
-        this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(false));
-
-        // Record the URL so that we can look up its result later
-        this._mainCacheKey = cacheKey;
+        if (!this._mainLoading) {
+            this._mainLoading = true;
+            this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(false));
+        }
     }
 
     /*
@@ -46,7 +49,8 @@ export class ViewModelCoordinator {
      */
     public onMainViewModelLoaded(cacheKey: string): void {
 
-        // Record the URL so that we can look up its result later
+        // Record the cache key so that we can look up its result later
+        this._mainLoading = false;
         this._mainCacheKey = cacheKey;
 
         // On success, send an event so that a subscriber can show a UI effect such as enabling header buttons
@@ -60,10 +64,19 @@ export class ViewModelCoordinator {
     }
 
     /*
+     * I need to do something here, though loading fires for the real request and also strict mode
+     */
+    public onUserInfoViewModelLoading(): void {
+        this._userInfoLoading = true;
+    }
+
+    /*
      * This is called when fixed views finish sending API requests
      * If all views have loaded, see if we need to trigger a login redirect
      */
-    public onViewModelLoaded(): void {
+    public onUserInfoViewModelLoaded(): void {
+
+        this._userInfoLoading = false;
         this._triggerLoginIfRequired();
     }
 
@@ -78,6 +91,8 @@ export class ViewModelCoordinator {
      * Reset state when the Reload Data button is clicked
      */
     public resetState(): void {
+        this._mainLoading = false;
+        this._userInfoLoading = false;
         this._mainCacheKey = '';
     }
 
@@ -91,7 +106,6 @@ export class ViewModelCoordinator {
             const errors = this._getLoadErrors();
             const found = errors.find((e) => e.errorCode === ErrorCodes.loginRequired);
             if (found) {
-                console.log('*** COORDINATOR RAISING LOGIN REQUIRED');
                 this._eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
             }
         }
@@ -101,22 +115,7 @@ export class ViewModelCoordinator {
      * See if all API requests have completed, and there are only 3 in the demo app
      */
     private _allViewsLoaded(): boolean {
-
-        if (!this._mainCacheKey) {
-            return false;
-        }
-
-        const keys = [this._mainCacheKey, FetchCacheKeys.OAuthUserInfo, FetchCacheKeys.ApiUserInfo];
-        let loadedCount = 0;
-        keys.forEach((k) => {
-
-            const found = this._fetchCache.getItem(k);
-            if (found && !found?.isLoading) {
-                loadedCount++;
-            }
-        });
-
-        return loadedCount === keys.length;
+        return !this._mainLoading && !this._userInfoLoading;
     }
 
     /*
@@ -150,6 +149,7 @@ export class ViewModelCoordinator {
     private _setupCallbacks(): void {
         this.onMainViewModelLoading = this.onMainViewModelLoading.bind(this);
         this.onMainViewModelLoaded = this.onMainViewModelLoaded.bind(this);
-        this.onViewModelLoaded = this.onViewModelLoaded.bind(this);
+        this.onUserInfoViewModelLoading = this.onUserInfoViewModelLoading.bind(this);
+        this.onUserInfoViewModelLoaded = this.onUserInfoViewModelLoaded.bind(this);
     }
 }

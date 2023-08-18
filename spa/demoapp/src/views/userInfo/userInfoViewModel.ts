@@ -69,6 +69,8 @@ export class UserInfoViewModel {
             causeError: options?.causeError || false,
         };
 
+        this._viewModelCoordinator.onUserInfoViewModelLoading();
+
         try {
 
             // Set up promises for the two sources of user info
@@ -89,9 +91,9 @@ export class UserInfoViewModel {
                 this._apiUserInfo = apiUserInfo;
             }
 
-            // Update the load state
+            // Send a notification if any data loaded
             if (oauthUserInfo || apiUserInfo) {
-                this._viewModelCoordinator.onViewModelLoaded();
+                this._viewModelCoordinator.onUserInfoViewModelLoaded();
             }
 
         } catch (e: any) {
@@ -101,8 +103,8 @@ export class UserInfoViewModel {
             this._oauthUserInfo = null;
             this._apiUserInfo = null;
 
-            // Notify so that a login can be triggered when needed
-            this._viewModelCoordinator.onViewModelLoaded();
+            // Send a notification if there was an error
+            this._viewModelCoordinator.onUserInfoViewModelLoaded();
         }
     }
 }

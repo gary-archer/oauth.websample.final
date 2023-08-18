@@ -8,18 +8,18 @@ import {FetchCacheItem} from './fetchCacheItem';
 export class FetchCache {
 
     // A map of URLs to the result
-    private readonly _requests: { [url: string]: FetchCacheItem } = {};
+    private readonly _requests: { [key: string]: FetchCacheItem } = {};
 
     /*
      * Create an item when an API request is triggered
      */
-    public createItem(url: string): FetchCacheItem {
+    public createItem(key: string): FetchCacheItem {
 
-        let item = this.getItem(url);
+        let item = this.getItem(key);
         if (!item) {
 
             item = new FetchCacheItem();
-            this._requests[url] = item;
+            this._requests[key] = item;
         }
 
         return item;
@@ -28,17 +28,17 @@ export class FetchCache {
     /*
      * Get an item if it exists
      */
-    public getItem(url: string): FetchCacheItem | null {
-        return this._requests[url];
+    public getItem(key: string): FetchCacheItem | null {
+        return this._requests[key];
     }
 
     /*
      * Remove an item if it exists
      */
-    public removeItem(url: string): void {
+    public removeItem(key: string): void {
 
-        if (this._requests[url]) {
-            delete this._requests[url];
+        if (this._requests[key]) {
+            delete this._requests[key];
         }
     }
 }

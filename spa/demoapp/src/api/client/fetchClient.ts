@@ -92,6 +92,7 @@ export class FetchClient {
         }
 
         // Return existing data from the memory cache when available
+        // If a view is created whiles its API requests are in flight, this returns null to the view model
         let cacheItem = this._fetchCache.getItem(options.cacheKey);
         if (cacheItem && !cacheItem.error) {
             return cacheItem.data;
@@ -100,12 +101,13 @@ export class FetchClient {
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
         cacheItem = this._fetchCache.createItem(options.cacheKey);
 
-        try {
+        // Avoid the overhead of API requests when they will definitely fail
+        if (!this._authenticator.isLoggedIn()) {
+            cacheItem.error = ErrorFactory.fromLoginRequired();
+            return null;
+        }
 
-            // Avoid the overhead of an API request when it will immediately fail
-            if (!this._authenticator.isLoggedIn()) {
-                throw ErrorFactory.fromLoginRequired();
-            }
+        try {
 
             // Call the API and return data on success
             const data1 = await this._callApiWithCredential(method, url, dataToSend, options);
