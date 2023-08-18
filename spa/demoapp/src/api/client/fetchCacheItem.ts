@@ -1,9 +1,9 @@
-import {UIError} from '../errors/lib';
+import {UIError} from '../../plumbing/errors/lib';
 
 /*
  * The state of request data mapped to a URL
  */
-export class HttpRequestCacheItem {
+export class FetchCacheItem {
 
     private _isLoading: boolean;
     private _data: any;

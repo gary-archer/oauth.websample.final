@@ -1,9 +1,10 @@
 import EventBus from 'js-event-bus';
-import {ApiClient} from '../../api/client/apiClient';
+import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
+import {FetchClient} from '../../api/client/fetchClient';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
-import {HttpClientContext} from '../../plumbing/http/httpClientContext';
+import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
@@ -11,14 +12,14 @@ import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
  */
 export class TransactionsContainerViewModel {
 
-    private readonly _apiClient: ApiClient;
+    private readonly _apiClient: FetchClient;
     private readonly _eventBus: EventBus;
     private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _transactions: CompanyTransactions | null;
     private _error: UIError | null;
 
     public constructor(
-        apiClient: ApiClient,
+        apiClient: FetchClient,
         eventBus: EventBus,
         viewModelCoordinator: ViewModelCoordinator,
     ) {
@@ -47,24 +48,30 @@ export class TransactionsContainerViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(id: string, context: HttpClientContext): Promise<void> {
+    public async callApi(id: string, options?: ViewLoadOptions): Promise<void> {
 
-        this._viewModelCoordinator.onMainViewModelLoading();
+        const fetchOptions = {
+            cacheKey: `${FetchCacheKeys.Transactions}-${id}`,
+            forceReload: options?.forceReload || false,
+            causeError: options?.causeError || false,
+        };
+
+        this._viewModelCoordinator.onMainViewModelLoading(fetchOptions.cacheKey);
         this._error = null;
 
         try {
 
-            const result = await this._apiClient.getCompanyTransactions(id, context);
+            const result = await this._apiClient.getCompanyTransactions(id, fetchOptions);
             if (result) {
                 this._transactions = result;
-                this._viewModelCoordinator.onMainViewModelLoaded(context.url);
+                this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
             }
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._transactions = null;
-            this._viewModelCoordinator.onMainViewModelLoaded(context.url);
+            this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
     }
 

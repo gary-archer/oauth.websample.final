@@ -3,10 +3,10 @@ import {useLocation, useParams} from 'react-router-dom';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
-import {HttpClientContext} from '../../plumbing/http/httpClientContext';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
+import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
 import {TransactionsView} from './transactionsView';
@@ -36,7 +36,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     async function startup(): Promise<void> {
         model.eventBus.on(EventNames.ReloadData, onReload);
-        await loadData(new HttpClientContext());
+        await loadData();
     }
 
     /*
@@ -51,18 +51,19 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     function onReload(event: ReloadDataEvent): void {
 
-        const context = new HttpClientContext();
-        context.forceReload = true;
-        context.causeError = event.causeError,
-        loadData(context);
+        const options = {
+            forceReload: true,
+            causeError: event.causeError
+        };
+        loadData(options);
     }
 
     /*
      * Get data from the API and update state
      */
-    async function loadData(context: HttpClientContext): Promise<void> {
+    async function loadData(options?: ViewLoadOptions): Promise<void> {
 
-        await model.callApi(companyId, context);
+        await model.callApi(companyId, options);
 
         if (model.error && model.isExpectedApiError()) {
 

@@ -1,10 +1,11 @@
 import EventBus from 'js-event-bus';
+import {FetchCache} from '../../api/client/fetchCache';
+import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/lib';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
-import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
 
 /*
  * Coordinates API requests from multiple views, and notifies once all API calls are complete
@@ -12,42 +13,44 @@ import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
  */
 export class ViewModelCoordinator {
 
-    private readonly _httpRequestCache: HttpRequestCache;
     private readonly _eventBus: EventBus;
-    private _mainApiUrl: string;
-    private readonly _extraApiUrls: string[];
+    private readonly _fetchCache: FetchCache;
+    private _mainCacheKey: string;
 
     /*
      * Set the initial state
      */
-    public constructor(httpRequestCache: HttpRequestCache, eventBus: EventBus, extraApiUrls: string[]) {
+    public constructor(eventBus: EventBus, fetchCache: FetchCache) {
 
-        this._setupCallbacks();
-
-        this._httpRequestCache = httpRequestCache;
         this._eventBus = eventBus;
-        this._mainApiUrl = '';
-        this._extraApiUrls = extraApiUrls;
+        this._fetchCache = fetchCache;
+        this._mainCacheKey = '';
+        this._setupCallbacks();
     }
 
     /*
      * This is called when the companies or transactions view model start sending API requests
      * Send an event so that a subscriber can show a UI effect, such as disabling header buttons
      */
-    public onMainViewModelLoading(): void {
+    public onMainViewModelLoading(cacheKey: string): void {
+
+        // Send an event so that a subscriber can show a UI effect, such as disabling header buttons
         this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(false));
+
+        // Record the URL so that we can look up its result later
+        this._mainCacheKey = cacheKey;
     }
 
     /*
      * This is called when the companies or transactions view model finish sending API requests
      */
-    public onMainViewModelLoaded(mainApiUrl: string): void {
+    public onMainViewModelLoaded(cacheKey: string): void {
 
         // Send an event so that a subscriber can show a UI effect such as enabling header buttons
         this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
 
-        // Record the URL so that we can look up its result
-        this._mainApiUrl = mainApiUrl;
+        // Record the URL so that we can look up its result later
+        this._mainCacheKey = cacheKey;
 
         // If all views have loaded, see if we need to trigger a login redirect
         this._triggerLoginIfRequired();
@@ -72,7 +75,7 @@ export class ViewModelCoordinator {
      * Reset state when the Reload Data button is clicked
      */
     public resetState(): void {
-        this._mainApiUrl = '';
+        this._mainCacheKey = '';
     }
 
     /*
@@ -91,24 +94,25 @@ export class ViewModelCoordinator {
     }
 
     /*
-     * See if all API requests have completed
+     * See if all API requests have completed, and there are only 3 in the demo app
      */
     private _allViewsLoaded(): boolean {
 
-        if (!this._mainApiUrl) {
+        if (!this._mainCacheKey) {
             return false;
         }
 
-        let count = 0;
-        this._extraApiUrls.forEach((u) => {
+        const keys = [this._mainCacheKey, FetchCacheKeys.OAuthUserInfo, FetchCacheKeys.ApiUserInfo];
+        let loadedCount = 0;
+        keys.forEach((k) => {
 
-            const found = this._httpRequestCache.getItem(u);
+            const found = this._fetchCache.getItem(k);
             if (found && !found?.isLoading) {
-                count++;
+                loadedCount++;
             }
         });
 
-        return count === this._extraApiUrls.length;
+        return loadedCount === keys.length;
     }
 
     /*
@@ -117,17 +121,17 @@ export class ViewModelCoordinator {
     private _getLoadErrors(): UIError[] {
 
         const errors: UIError[] = [];
-        if (this._mainApiUrl) {
 
-            const foundMain = this._httpRequestCache.getItem(this._mainApiUrl);
-            if (foundMain?.error) {
-                errors.push(foundMain.error);
-            }
+        const keys = [];
+        if (this._mainCacheKey) {
+            keys.push(this._mainCacheKey);
         }
+        keys.push(FetchCacheKeys.OAuthUserInfo);
+        keys.push(FetchCacheKeys.ApiUserInfo);
 
-        this._extraApiUrls.forEach((u) => {
+        keys.forEach((k) => {
 
-            const found = this._httpRequestCache.getItem(u);
+            const found = this._fetchCache.getItem(k);
             if (found?.error) {
                 errors.push(found.error);
             }

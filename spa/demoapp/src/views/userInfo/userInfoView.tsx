@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
-import {HttpClientContext} from '../../plumbing/http/httpClientContext';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
+import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {UserInfoViewProps} from './userInfoViewProps';
 import {UserInfoViewState} from './userInfoViewState';
 
@@ -30,7 +30,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     async function startup(): Promise<void> {
         model.eventBus.on(EventNames.ReloadData, onReload);
-        await loadData(new HttpClientContext());
+        await loadData();
     }
 
     /*
@@ -45,10 +45,11 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     function onReload(event: ReloadDataEvent): void {
 
-        const context = new HttpClientContext();
-        context.forceReload = true;
-        context.causeError = event.causeError,
-        loadData(context);
+        const options = {
+            forceReload: true,
+            causeError: event.causeError
+        };
+        loadData(options);
     }
 
     /*
@@ -72,9 +73,9 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     /*
      * Ask the model to load data, then update state
      */
-    async function loadData(context: HttpClientContext): Promise<void> {
+    async function loadData(options?: ViewLoadOptions): Promise<void> {
 
-        await model.callApi(context);
+        await model.callApi(options);
         setState((s) => {
             return {
                 ...s,

@@ -7,72 +7,62 @@ import {OAuthUserInfo} from '../entities/oauthUserInfo';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {BaseErrorFactory} from '../../plumbing/errors/lib';
-import {HttpClientContext} from '../../plumbing/http/httpClientContext';
-import {HttpRequestCache} from '../../plumbing/http/httpRequestCache';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
+import {FetchCache} from './fetchCache';
+import {FetchOptions} from './fetchOptions';
 
 /*
  * A high level class used by the rest of the SPA to fetch cacheable secured data
  */
-export class ApiClient {
+export class FetchClient {
 
     private readonly _configuration: Configuration;
-    private readonly _sessionId: string;
+    private readonly _fetchCache: FetchCache;
     private readonly _authenticator: Authenticator;
-    private readonly _httpRequestCache: HttpRequestCache;
+    private readonly _sessionId: string;
 
     public constructor(
         configuration: Configuration,
+        fetchCache: FetchCache,
         authenticator: Authenticator,
-        httpRequestCache: HttpRequestCache,
         sessionId: string) {
 
         this._configuration = configuration;
-        this._sessionId = sessionId;
+        this._fetchCache = fetchCache;
         this._authenticator = authenticator;
-        this._httpRequestCache = httpRequestCache;
-    }
-
-    /*
-     * TODO: delete
-     */
-    public getExtraUrls(): string[] {
-        return [
-            `${this._configuration.oauthAgentBaseUrl}/userinfo`,
-            `${this._configuration.apiBaseUrl}/userinfo`
-        ];
+        this._sessionId = sessionId;
     }
 
     /*
      * Get a list of companies
      */
-    public async getCompanyList(context: HttpClientContext) : Promise<Company[] | null> {
+    public async getCompanyList(options: FetchOptions) : Promise<Company[] | null> {
 
         const url = `${this._configuration.apiBaseUrl}/companies`;
-        return this._callApi('GET', url, context);
+        return this._callApi('GET', url, options);
     }
 
     /*
      * Get a list of transactions for a single company
      */
-    public async getCompanyTransactions(id: string, context: HttpClientContext) : Promise<CompanyTransactions | null> {
+    public async getCompanyTransactions(id: string, options: FetchOptions) : Promise<CompanyTransactions | null> {
 
         const url = `${this._configuration.apiBaseUrl}/companies/${id}/transactions`;
-        return this._callApi('GET', url, context);
+        return this._callApi('GET', url, options);
     }
 
     /*
      * Get user information from the authorization server
      */
-    public async getOAuthUserInfo(context: HttpClientContext) : Promise<OAuthUserInfo | null> {
+    public async getOAuthUserInfo(options: FetchOptions) : Promise<OAuthUserInfo | null> {
 
         const url = `${this._configuration.oauthAgentBaseUrl}/userinfo`;
-        const data = await this._callApi('GET', url, context);
+        const data = await this._callApi('GET', url, options);
         if (!data) {
             return null;
         }
-        
+
         return {
             givenName: data['given_name'] || '',
             familyName: data['family_name'] || '',
@@ -82,10 +72,10 @@ export class ApiClient {
     /*
      * Download user attributes the UI needs that are not stored in the authorization server
      */
-    public async getApiUserInfo(context: HttpClientContext) : Promise<ApiUserInfo | null> {
+    public async getApiUserInfo(options: FetchOptions) : Promise<ApiUserInfo | null> {
 
         const url = `${this._configuration.apiBaseUrl}/userinfo`;
-        return this._callApi('GET', url, context);
+        return this._callApi('GET', url, options);
     }
 
     /*
@@ -94,25 +84,22 @@ export class ApiClient {
     private async _callApi(
         method: Method,
         url: string,
-        context: HttpClientContext,
+        options: FetchOptions,
         dataToSend: any = null): Promise<any> {
 
         // Remove the item from the cache when a reload is requested
-        if (context.forceReload) {
-            this._httpRequestCache.removeItem(url);
+        if (options.forceReload) {
+            this._fetchCache.removeItem(options.cacheKey);
         }
 
         // Return existing data from the memory cache when available
-        let cacheItem = this._httpRequestCache.getItem(url);
+        let cacheItem = this._fetchCache.getItem(options.cacheKey);
         if (cacheItem && !cacheItem.error) {
             return cacheItem.data;
         }
 
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
-        cacheItem = this._httpRequestCache.createItem(url);
-
-        // Inform the caller that a URL is being called
-        context.addUrl(url);
+        cacheItem = this._fetchCache.createItem(options.cacheKey);
 
         try {
 
@@ -122,7 +109,7 @@ export class ApiClient {
             }
 
             // Call the API and return data on success
-            const data1 = await this._callApiWithCredential(method, url, dataToSend, context);
+            const data1 = await this._callApiWithCredential(method, url, dataToSend, options);
             cacheItem.data = data1;
             return data1;
 
@@ -151,7 +138,7 @@ export class ApiClient {
             try {
 
                 // Call the API again with the rewritten access token cookie
-                const data2 = await this._callApiWithCredential(method, url, dataToSend, context);
+                const data2 = await this._callApiWithCredential(method, url, dataToSend, options);
                 cacheItem.data = data2;
                 return data2;
 
@@ -172,22 +159,22 @@ export class ApiClient {
         method: Method,
         url: string,
         dataToSend: any,
-        context: HttpClientContext): Promise<any> {
+        fetchOptions: FetchOptions): Promise<any> {
 
         // Set options and send the secure cookie to the API origin
-        const options = {
+        const requestOptions = {
             url,
             method,
             data: dataToSend,
-            headers: this._getHeaders(context),
+            headers: this._getHeaders(fetchOptions),
             withCredentials: true,
         } as AxiosRequestConfig;
 
         // Add an anti forgery token on data changing commands
-        this._authenticator.addAntiForgeryToken(options);
+        this._authenticator.addAntiForgeryToken(requestOptions);
 
         // Make the API request
-        const response = await axios.request(options);
+        const response = await axios.request(requestOptions);
         AxiosUtils.checkJson(response.data);
 
         // Update the cache and return the result
@@ -197,18 +184,18 @@ export class ApiClient {
     /*
      * Add headers for logging and advanced testing purposes
      */
-    private _getHeaders(context: HttpClientContext): any {
+    private _getHeaders(options: FetchOptions): any {
 
         const headers: any = {
 
-            // Context headers included in API logs
+            // options headers included in API logs
             'x-mycompany-api-client':     'FinalSPA',
             'x-mycompany-session-id':     this._sessionId,
             'x-mycompany-correlation-id': Guid.create().toString(),
         };
 
         // A special header can be sent to ask the API to throw a simulated exception
-        if (context.causeError) {
+        if (options.causeError) {
             headers['x-mycompany-test-exception'] = 'SampleApi';
         }
 

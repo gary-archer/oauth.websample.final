@@ -1,8 +1,9 @@
 import EventBus from 'js-event-bus';
-import {ApiClient} from '../../api/client/apiClient';
+import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
+import {FetchClient} from '../../api/client/fetchClient';
 import {Company} from '../../api/entities/company';
 import {BaseErrorFactory, UIError} from '../../plumbing/errors/lib';
-import {HttpClientContext} from '../../plumbing/http/httpClientContext';
+import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
@@ -10,14 +11,14 @@ import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
  */
 export class CompaniesContainerViewModel {
 
-    private readonly _apiClient: ApiClient;
+    private readonly _apiClient: FetchClient;
     private readonly _eventBus: EventBus;
     private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _companies: Company[];
     private _error: UIError | null;
 
     public constructor(
-        apiClient: ApiClient,
+        apiClient: FetchClient,
         eventBus: EventBus,
         viewModelCoordinator: ViewModelCoordinator,
     ) {
@@ -46,24 +47,30 @@ export class CompaniesContainerViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(context: HttpClientContext): Promise<void> {
+    public async callApi(options?: ViewLoadOptions): Promise<void> {
 
-        this._viewModelCoordinator.onMainViewModelLoading();
+        const fetchOptions = {
+            cacheKey: FetchCacheKeys.Companies,
+            forceReload: options?.forceReload || false,
+            causeError: options?.causeError || false,
+        };
+
+        this._viewModelCoordinator.onMainViewModelLoading(fetchOptions.cacheKey);
         this._error = null;
 
         try {
 
-            const result = await this._apiClient.getCompanyList(context);
+            const result = await this._apiClient.getCompanyList(fetchOptions);
             if (result) {
                 this._companies = result;
-                this._viewModelCoordinator.onMainViewModelLoaded(context.url);
+                this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
             }
 
         } catch (e: any) {
 
             this._error = BaseErrorFactory.fromException(e);
             this._companies = [];
-            this._viewModelCoordinator.onMainViewModelLoaded(context.url);
+            this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
     }
 }

@@ -1,12 +1,12 @@
 import EventBus from 'js-event-bus';
-import {ApiClient} from '../api/client/apiClient';
+import {FetchCache} from '../api/client/fetchCache';
+import {FetchClient} from '../api/client/fetchClient';
 import {ViewModelCoordinator} from '../views/utilities/viewModelCoordinator';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {BaseErrorFactory, UIError} from '../plumbing/errors/lib';
 import {EventNames} from '../plumbing/events/eventNames';
 import {ReloadDataEvent} from '../plumbing/events/reloadDataEvent';
-import {HttpRequestCache} from '../plumbing/http/httpRequestCache';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
@@ -22,12 +22,12 @@ export class AppViewModel {
     // Global objects created from configuration
     private _configuration: Configuration | null;
     private _authenticator: Authenticator | null;
-    private _apiClient: ApiClient | null;
-    private _viewModelCoordinator: ViewModelCoordinator | null;
+    private _apiClient: FetchClient | null;
 
     // Other infrastructure
     private readonly _eventBus: EventBus;
-    private readonly _httpRequestCache: HttpRequestCache;
+    private readonly _fetchCache: FetchCache;
+    private readonly _viewModelCoordinator: ViewModelCoordinator;
 
     // Child view models
     private _companiesViewModel: CompaniesContainerViewModel | null;
@@ -44,17 +44,15 @@ export class AppViewModel {
      */
     public constructor() {
 
-        this._setupCallbacks();
-
         // Objects that need configuration are initially null
         this._configuration = null;
         this._authenticator = null;
         this._apiClient = null;
-        this._viewModelCoordinator = null;
 
         // Create objects used for coordination
         this._eventBus = new EventBus();
-        this._httpRequestCache = new HttpRequestCache();
+        this._fetchCache = new FetchCache();
+        this._viewModelCoordinator = new ViewModelCoordinator(this._eventBus, this._fetchCache);
 
         // Child view models
         this._companiesViewModel = null;
@@ -65,6 +63,7 @@ export class AppViewModel {
         this._error = null;
         this._isLoading = false;
         this._isLoaded = false;
+        this._setupCallbacks();
     }
 
     /*
@@ -94,16 +93,11 @@ export class AppViewModel {
             this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
 
             // Create a client for calling the API
-            this._apiClient = new ApiClient(
+            this._apiClient = new FetchClient(
                 this.configuration,
+                this._fetchCache,
                 this._authenticator,
-                this._httpRequestCache,
                 sessionId);
-
-            this._viewModelCoordinator = new ViewModelCoordinator(
-                this._httpRequestCache,
-                this._eventBus,
-                this._apiClient.getExtraUrls());
 
             // Update state, to prevent model recreation if the view is recreated
             this._isLoaded = true;
@@ -138,7 +132,7 @@ export class AppViewModel {
         return this._authenticator!;
     }
 
-    public get apiClient(): ApiClient {
+    public get apiClient(): FetchClient {
         return this._apiClient!;
     }
 
@@ -156,7 +150,7 @@ export class AppViewModel {
             this._companiesViewModel = new CompaniesContainerViewModel(
                 this._apiClient!,
                 this._eventBus,
-                this._viewModelCoordinator!,
+                this._viewModelCoordinator,
             );
         }
 
@@ -171,7 +165,7 @@ export class AppViewModel {
             (
                 this._apiClient!,
                 this._eventBus,
-                this._viewModelCoordinator!,
+                this._viewModelCoordinator,
             );
         }
 
@@ -185,7 +179,7 @@ export class AppViewModel {
             this._userInfoViewModel = new UserInfoViewModel(
                 this._apiClient!,
                 this._eventBus,
-                this._viewModelCoordinator!,
+                this._viewModelCoordinator,
             );
         }
 
