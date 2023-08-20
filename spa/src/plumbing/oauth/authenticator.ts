@@ -27,9 +27,9 @@ export interface Authenticator {
     // Call the OAuth agent to refresh the access token and rewrite cookies
     synchronizedRefresh(): Promise<void>
 
-    // Call the OAuth agent to make the access token cookie act expired
+    // For testing, call the OAuth agent to make the access token cookie act expired
     expireAccessToken(): Promise<void>;
 
-    // Call the OAuth agent to make the refresh token cookie act expired
+    // For testing, call the OAuth agent to make the refresh token cookie act expired
     expireRefreshToken(): Promise<void>;
 }
