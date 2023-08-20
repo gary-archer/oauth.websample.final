@@ -1,0 +1,21 @@
+{
+  "name": "shellspa",
+  "version": "1.0.0",
+  "description": "The micro-UI shell application, to demonstrate micro-UI based deployment",
+  "main": "index.tsx",
+  "keywords": [],
+  "author": "Gary Archer",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "./build.sh",
+    "buildRelease": "./build.sh RELEASE",
+    "purgecss": "purgecss -c purgecss.config.cjs -o dist"
+  },
+  "devDependencies": {
+    "purgecss": "^5.0.0"
+  }
+}

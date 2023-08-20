@@ -1,5 +1,7 @@
 #
-# The Kubernetes resources for the Web Host, which delivers static web content
+# Kubernetes resources if deploying the web host to a Kubernetes cluster
+# I use this in local development deployments, such as for a local KIND cluster
+# My deployed environments use a content delivery network and do not use a Kubernetes web host
 #
 kind: Deployment
 apiVersion: apps/v1
@@ -25,24 +27,17 @@ spec:
             mountPath: /usr/webhost/webhost.config.json
             subPath: webhost.config.json
             readOnly: true
-          - name: shellapp-config
-            mountPath: /usr/webhost/shellapp/shellapp.config.json
-            subPath: shellapp.config.json
-            readOnly: true
-          - name: demoapp-config
-            mountPath: /usr/webhost/demoapp/demoapp.config.json
-            subPath: demoapp.config.json
+          - name: spa-config
+            mountPath: /usr/webhost/spa/spa.config.json
+            subPath: spa.config.json
             readOnly: true
       volumes:
         - name: webhost-config
           configMap:
             name: webhost-config
-        - name: shellapp-config
+        - name: spa-config
           configMap:
-            name: shellapp-config
-        - name: demoapp-config
-          configMap:
-            name: demoapp-config
+            name: spa-config
 ---
 kind: Service
 apiVersion: v1

@@ -26,34 +26,13 @@ fi
 # Build the development web host's code
 #
 cd webhost
+echo 'Building the web host ...'
 ./build.sh
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the development web host'
   exit
 fi
-cd ../spa
-
-#
-# Build the shell application, which handles login and logout
-#
-cd shellapp
-./build.sh "$BUILD_CONFIGURATION"
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the shell application'
-  exit
-fi
 cd ..
-
-#
-# Build the demo application
-#
-cd demoapp
-./build.sh "$BUILD_CONFIGURATION"
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the demo application'
-  exit
-fi
-cd ../..
 
 #
 # When connecting the SPA to a local API, build a token handler to run on the local development computer
@@ -67,9 +46,34 @@ if [ "$1" == 'LOCALAPI' ]; then
     exit
   fi
 
+  echo 'Building the local token handler ...'
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building local token handler resources'
     exit
   fi
 fi
+
+#
+# Build the minimal shell application, which acts as a second micro-UI
+#
+cd shell
+echo 'Building the shell application ...'
+./build.sh "$BUILD_CONFIGURATION"
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered building the shell application'
+  exit
+fi
+cd ..
+
+#
+# Build the SPA in watch mode, so that we can develop productively and see changes
+#
+echo 'Building the SPA ...'
+cd spa
+./build.sh "$BUILD_CONFIGURATION"
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered building the SPA'
+  exit
+fi
+cd ..

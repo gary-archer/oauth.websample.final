@@ -16,22 +16,12 @@ TAG=$(cat ./dockertag.txt)
 export DOCKER_IMAGE="webhost:$TAG"
 
 #
-# Create a configmap for the shell app's JSON configuration file
+# Create a configmap for the SPA's JSON configuration file
 #
-kubectl -n applications delete configmap shellapp-config 2>/dev/null
-kubectl -n applications create configmap shellapp-config --from-file=../environments/kubernetes-local/shellapp.config.json
+kubectl -n applications delete configmap spa-config 2>/dev/null
+kubectl -n applications create configmap spa-config --from-file=../environments/kubernetes-local/spa.config.json
 if [ $? -ne 0 ]; then
-  echo '*** Problem encountered creating the shell app configmap'
-  exit 1
-fi
-
-#
-# Create a configmap for the demo app's JSON configuration file
-#
-kubectl -n applications delete configmap demoapp-config 2>/dev/null
-kubectl -n applications create configmap demoapp-config --from-file=../environments/kubernetes-local/demoapp.config.json
-if [ $? -ne 0 ]; then
-  echo '*** Problem encountered creating the demo app configmap'
+  echo '*** Problem encountered creating the SPA configmap'
   exit 1
 fi
 

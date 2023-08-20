@@ -7,7 +7,6 @@ services:
     ports:
       - 443:8000
     volumes:
-      - ../environments/docker-local/shellapp.config.json:/usr/webhost/shellapp/shellapp.config.json
-      - ../environments/docker-local/demoapp.config.json:/usr/webhost/demoapp/demoapp.config.json
+      - ../environments/docker-local/spa.config.json:/usr/webhost/spa/spa.config.json
       - ../environments/docker-local/webhost.config.json:/usr/webhost/webhost.config.json
       - ../../certs/authsamples-dev.ssl.p12:/usr/webhost/certs/authsamples-dev.ssl.p12

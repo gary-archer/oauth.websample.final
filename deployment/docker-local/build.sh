@@ -25,12 +25,12 @@ if [ $? -ne 0 ]; then
   echo 'Problem encountered building the web host'
   exit
 fi
-cd ../spa
+cd ..
 
 #
-# Build the shell app, which handles the redirect URI and logged out page
+# Build the shell application, which I use as a simple post logout landing page
 #
-cd shellapp
+cd shell
 ./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the shell application'
@@ -41,13 +41,13 @@ cd ..
 #
 # Build the React SPA's Javascript bundles
 #
-cd demoapp
+cd spa
 ./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the demo application'
+  echo 'Problem encountered building the SPA'
   exit
 fi
-cd ../..
+cd ..
 
 #
 # Build the web host into a docker image

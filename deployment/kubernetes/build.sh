@@ -29,9 +29,9 @@ fi
 cd ..
 
 #
-# Build the shell app, which handles the redirect URI and logged out page
+# Build the shell application, which I use as a simple post logout landing page
 #
-cd spa/shellapp
+cd shell
 ./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the shell application'
@@ -42,13 +42,13 @@ cd ..
 #
 # Build the SPA
 #
-cd demoapp
+cd spa
 ./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
   echo '*** SPA build problem encountered'
   exit 1
 fi
-cd ../..
+cd ..
 
 #
 # Build the Docker image

@@ -13,9 +13,9 @@ cd ../..
 ENVIRONMENT="$1"
 
 #
-# Build the shell app, which handles the redirect URI and logged out page
+# Build the shell application, which I use as a simple post logout landing page
 #
-cd spa/shellapp
+cd shell
 ./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the shell application'
@@ -24,15 +24,15 @@ fi
 cd ..
 
 #
-# Build the main demo app's Javascript bundles
+# Build the SPA's Javascript bundles
 #
-cd demoapp
+cd spa
 ./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the demo application'
+  echo 'Problem encountered building the SPA'
   exit
 fi
-cd ../..
+cd ..
 
 #
 # Build extensions to the Cloudfront web host
@@ -49,16 +49,16 @@ fi
 #
 rm -rf .package 2> /dev/null
 mkdir .package
-mkdir .package/demoapp
+mkdir .package/spa
 
 #
 # Copy HTML assets
 #
-cp ../spa/shellapp/dist/index.html  .package
-cp ../spa/shellapp/dist/*.bundle.js .package
-cp ../spa/shellapp/dist/*.css       .package
-cp ../spa/shellapp/dist/favicon.ico .package
+cp ../shell/dist/index.html  .package
+cp ../shell/dist/*.mjs       .package
+cp ../shell/dist/*.css       .package
+cp ../shell/dist/favicon.ico .package
 
-cp ../spa/demoapp/dist/index.html   .package/demoapp
-cp ../spa/demoapp/dist/*.bundle.js  .package/demoapp
-cp ../spa/demoapp/dist/*.css        .package/demoapp
+cp ../spa/dist/index.html   .package/spa
+cp ../spa/dist/*.bundle.js  .package/spa
+cp ../spa/dist/*.css        .package/spa

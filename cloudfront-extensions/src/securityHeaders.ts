@@ -54,6 +54,7 @@ function getCacheControlResponseHeader(event: any): string {
     const extensions = [
         '.js',
         '.css',
+        '.ico',
     ];
 
     const cacheableExtension = extensions.find((ext) => {
