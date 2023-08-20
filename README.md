@@ -2,8 +2,7 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f2c5ede8739440599096fc25010ab6f6)](https://www.codacy.com/gh/gary-archer/oauth.websample.final/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gary-archer/oauth.websample.final&amp;utm_campaign=Badge_Grade)
  
-[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=spa/demoapp/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=spa/demoapp/package.json)
-[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=spa/shellapp/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=spa/shellapp/package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=demoapp/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=demoapp/package.json)
 [![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=webhost/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=webhost/package.json)
 [![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=cloudfront-extensions/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=cloudfront-extensions/package.json)
 

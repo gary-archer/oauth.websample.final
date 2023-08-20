@@ -31,7 +31,7 @@ cd ..
 #
 # Build the shell app, which handles the redirect URI and logged out page
 #
-cd spa/shellapp
+cd shellapp
 ./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the shell application'

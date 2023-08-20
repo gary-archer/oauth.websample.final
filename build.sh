@@ -58,7 +58,7 @@ fi
 #
 # Build the minimal shell application, which acts as a second micro-UI
 #
-cd spa/shellapp
+cd shellapp
 echo 'Building the shell application ...'
 ./build.sh "$BUILD_CONFIGURATION"
 if [ $? -ne 0 ]; then
@@ -77,4 +77,4 @@ if [ $? -ne 0 ]; then
   echo 'Problem encountered building the demo application'
   exit
 fi
-
+cd ..

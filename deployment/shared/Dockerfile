@@ -7,15 +7,15 @@ COPY webhost/package*.json      /usr/webhost/
 RUN npm install --production
 
 # Copy the shell app's static content files
-COPY spa/shellapp/dist/*.html       /usr/webhost/shellapp/
-COPY spa/shellapp/dist/*.bundle.js  /usr/webhost/shellapp/
-COPY spa/shellapp/dist/*.css        /usr/webhost/shellapp/
-COPY spa/shellapp/dist/*.ico        /usr/webhost/shellapp/
+COPY shellapp/dist/*.html       /usr/webhost/shellapp/
+COPY shellapp/dist/*.bundle.js  /usr/webhost/shellapp/
+COPY shellapp/dist/*.css        /usr/webhost/shellapp/
+COPY shellapp/dist/*.ico        /usr/webhost/shellapp/
 
 # Copy the demo app's static content files
-COPY spa/demoapp/dist/*.html        /usr/webhost/demoapp/
-COPY spa/demoapp/dist/*.bundle.js   /usr/webhost/demoapp/
-COPY spa/demoapp/dist/*.css         /usr/webhost/demoapp/
+COPY demoapp/dist/*.html        /usr/webhost/demoapp/
+COPY demoapp/dist/*.bundle.js   /usr/webhost/demoapp/
+COPY demoapp/dist/*.css         /usr/webhost/demoapp/
 
 #  Run the web host as a low privilege user
 RUN groupadd --gid 10000 webuser \

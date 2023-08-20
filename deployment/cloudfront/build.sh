@@ -15,7 +15,7 @@ ENVIRONMENT="$1"
 #
 # Build the shell app, which handles the redirect URI and logged out page
 #
-cd spa/shellapp
+cd shellapp
 ./build.sh 'RELEASE'
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the shell application'
@@ -32,7 +32,7 @@ if [ $? -ne 0 ]; then
   echo 'Problem encountered building the demo application'
   exit
 fi
-cd ../..
+cd ..
 
 #
 # Build extensions to the Cloudfront web host
@@ -54,11 +54,11 @@ mkdir .package/demoapp
 #
 # Copy HTML assets
 #
-cp ../spa/shellapp/dist/index.html  .package
-cp ../spa/shellapp/dist/*.bundle.js .package
-cp ../spa/shellapp/dist/*.css       .package
-cp ../spa/shellapp/dist/favicon.ico .package
+cp ../shellapp/dist/index.html  .package
+cp ../shellapp/dist/*.mjs       .package
+cp ../shellapp/dist/*.css       .package
+cp ../shellapp/dist/favicon.ico .package
 
-cp ../spa/demoapp/dist/index.html   .package/demoapp
-cp ../spa/demoapp/dist/*.bundle.js  .package/demoapp
-cp ../spa/demoapp/dist/*.css        .package/demoapp
+cp ../demoapp/dist/index.html   .package/demoapp
+cp ../demoapp/dist/*.bundle.js  .package/demoapp
+cp ../demoapp/dist/*.css        .package/demoapp
