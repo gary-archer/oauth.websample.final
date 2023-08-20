@@ -1,8 +1,8 @@
 #!/bin/bash
 
-##############################################################
-# A script to build the shell app resources to the dist folder
-##############################################################
+########################################################################
+# A script to build the shell application's resources to the dist folder
+########################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 BUILD_CONFIGURATION="$1"
@@ -24,14 +24,14 @@ fi
 #
 rm -rf ./dist 2>/dev/null
 mkdir ./dist
-cp ./src/index.mjs ./dist
+cp ./index.mjs ./dist
 
 #
 # Reduce the CSS size
 #
 npm run purgecss
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered reducing CSS for the shell app'
+  echo 'Problem encountered reducing CSS for the shell application'
   exit 1
 fi
 
@@ -45,9 +45,9 @@ cp index.html app.css favicon.ico ./dist
 #
 if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
 
-  node ./build/rewriteIndexHtml.mjs
+  node ./rewriteIndexHtml.mjs
   if [ $? -ne 0 ]; then
-    echo 'Problem encountered rewriting the shell app index.html'
+    echo 'Problem encountered rewriting the shell index.html'
     exit 1
   fi
 fi

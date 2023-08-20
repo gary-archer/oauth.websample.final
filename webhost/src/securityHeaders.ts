@@ -58,6 +58,7 @@ export class SecurityHeaders {
         const extensions = [
             '.js',
             '.css',
+            '.ico',
         ];
 
         const cacheableExtension = extensions.find((ext) => {

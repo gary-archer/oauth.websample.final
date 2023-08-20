@@ -189,7 +189,7 @@ export function App(props: AppProps): JSX.Element {
             errorsToIgnore: [],
             containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
-            dialogTitle: 'Demo Application Error',
+            dialogTitle: 'SPA Error',
             centred: true,
         };
     }

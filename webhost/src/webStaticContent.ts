@@ -20,66 +20,60 @@ export class WebStaticContent {
      */
     public initialize(): void {
 
-        // Serve static files for the demo app
-        const demoAppBasePath = '/demoapp/';
-        const demoAppRoot = this._getDemoAppFilesBasePath();
-        this._express.use(demoAppBasePath, express.static(demoAppRoot));
+        // Serve static files for the main SPA
+        const spaBasePath = '/spa/';
+        const spaRoot = this._getSpaFilesBasePath();
+        this._express.use(spaBasePath, express.static(spaRoot));
 
-        // Serve static files for the shell app
-        const shellAppBasePath = '/';
-        const shellAppRoot = this._getShellAppFilesBasePath();
-        this._express.use(shellAppBasePath, express.static(shellAppRoot));
+        // Serve static files for the shell application
+        const shellBasePath = '/';
+        const shellRoot = this._getShellFilesBasePath();
+        this._express.use(shellBasePath, express.static(shellRoot));
 
         // Handle not found requests by serving the index.html for the current micro-UI
         this._express.get('*', (request, response) => {
 
             const requestPath = request.path.toLowerCase();
-            const demoAppBasePath = '/demoapp/';
-
-            if (requestPath.startsWith(demoAppBasePath)) {
-
-                const demoAppRoot = this._getDemoAppFilesBasePath();
-                response.sendFile('index.html', {root: demoAppRoot});
+            if (requestPath.startsWith(spaBasePath)) {
+                response.sendFile('index.html', {root: spaRoot});
 
             } else {
-
-                const shellAppRoot = this._getShellAppFilesBasePath();
-                response.sendFile('index.html', {root: shellAppRoot});
+                response.sendFile('index.html', {root: shellRoot});
             }
         });
     }
 
     /*
-     * Return the relative path to demo app web files
+     * Return the relative path to the main SPA's web files
      */
-    private _getDemoAppFilesBasePath(): string {
+    private _getSpaFilesBasePath(): string {
 
         if (this._configuration.mode === 'development') {
 
             // During development, point to built SPA files
-            return '../demoapp/dist';
+            return '../spa/dist';
 
         } else {
 
             // In Docker development setups, the files are packaged to a subfolder of the web host
-            return './demoapp';
+            return './spa';
         }
     }
 
     /*
-     * Return the relative path to root web files, for the shell app
+     * Return the relative path to root web files, for the shell application
      */
-    private _getShellAppFilesBasePath(): string {
+    private _getShellFilesBasePath(): string {
 
         if (this._configuration.mode === 'development') {
 
             // During development, point to built SPA files
-            return '../shellapp/dist';
+            return '../shell/dist';
 
         } else {
 
             // In Docker development setups, the files are packaged to a subfolder of the web host
-            return './shellapp';
+            return './shell';
         }
     }
 }

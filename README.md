@@ -2,7 +2,7 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f2c5ede8739440599096fc25010ab6f6)](https://www.codacy.com/gh/gary-archer/oauth.websample.final/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gary-archer/oauth.websample.final&amp;utm_campaign=Badge_Grade)
  
-[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=demoapp/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=demoapp/package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=spa/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=spa/package.json)
 [![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=webhost/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=webhost/package.json)
 [![Known Vulnerabilities](https://snyk.io/test/github/gary-archer/oauth.websample.final/badge.svg?targetFile=cloudfront-extensions/package.json)](https://snyk.io/test/github/gary-archer/oauth.websample.final?targetFile=cloudfront-extensions/package.json)
 
@@ -19,12 +19,10 @@ The final demo SPA, which aims for a [Web Architecture](https://authguidance.com
 ## Components
 
 The SPA architecture looks like this, where OAuth related components are hosted in the AWS cloud.\
+Cookies issued are issued by an OAuth agent API, rather than a local web backend.\
 This ensures that local web development is focused only on the React SPA:
 
 ![SPA Architecture](./doc/spa-architecture.png)
-
-The shell application is used to manage login and logout to the whole web domain.\
-The cookies issued are then used by the main React app, to call APIs.
 
 ## Views
 
@@ -64,13 +62,13 @@ Next configure [Browser SSL Trust](https://authguidance.com/2017/11/11/developer
 ```
 
 Then run this script in another terminal window to run a simple web host that serves static content.\
-You can then edit the demo apps's React code and view updates, in a pure SPA manner.
+You can then edit the SPA's React code and update the UI productively, in a pure SPA manner.
 
 ```bash
 ./run.sh
 ```
 
-When the browser is invoked at https://web.authsamples-dev.com/, sign in with the test account.\
+When the browser is invoked at `https://web.authsamples-dev.com/`, sign in with the test account.\
 You can then test all lifecycle operations, including expiry events, multi-tab browsing and multi-tab logout.
 
 ## Further Information

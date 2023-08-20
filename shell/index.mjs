@@ -1,5 +1,5 @@
 /*
- * The shell is a trivial app that renders a logged out view or redirects to the demo app
+ * The shell is a trivial app that renders a logged out view or redirects to the main SPA
  */
 
 function renderLoggedOutView() {
@@ -43,5 +43,5 @@ function renderLoggedOutView() {
 if (location.pathname.toLowerCase() === '/loggedout') {
     renderLoggedOutView();
 } else {
-    location.href = `${location.origin}/demoapp`;
+    location.href = `${location.origin}/spa`;
 }

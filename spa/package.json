@@ -1,7 +1,7 @@
 {
   "name": "finalspa",
   "version": "3.0.0",
-  "description": "The micro-UI demo application, which calls OAuth 2.0 secured APIs with the latest secure cookies",
+  "description": "The main SPA, which calls OAuth 2.0 secured APIs with the latest HTTP-only SameSite cookies",
   "main": "index.tsx",
   "keywords": [],
   "author": "Gary Archer",

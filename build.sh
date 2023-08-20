@@ -58,7 +58,7 @@ fi
 #
 # Build the minimal shell application, which acts as a second micro-UI
 #
-cd shellapp
+cd shell
 echo 'Building the shell application ...'
 ./build.sh "$BUILD_CONFIGURATION"
 if [ $? -ne 0 ]; then
@@ -68,13 +68,13 @@ fi
 cd ..
 
 #
-# Build the demo application in watch mode, so that we can develop and see changes
+# Build the SPA in watch mode, so that we can develop productively and see changes
 #
-echo 'Building the demo application ...'
-cd demoapp
+echo 'Building the SPA ...'
+cd spa
 ./build.sh "$BUILD_CONFIGURATION"
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the demo application'
+  echo 'Problem encountered building the SPA'
   exit
 fi
 cd ..

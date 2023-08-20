@@ -26,16 +26,16 @@ const handler = async (event: any, context: Context) => {
         return request;
     }
 
-    const demoAppBasePath = '/demoapp/';
-    if (requestUri.startsWith(demoAppBasePath)) {
+    const spaBasePath = '/spa/';
+    if (requestUri.startsWith(spaBasePath)) {
         
-        // Serve the demoapp index.html for other requests within that path
-        request.uri = `${demoAppBasePath}index.html`;
+        // Serve the SPA index.html for other requests within that path
+        request.uri = `${spaBasePath}index.html`;
         return request;
 
     } else {
 
-        // Serve the shellapp index.html for any other requests
+        // Serve the shell index.html for any other requests
         request.uri = '/index.html';
         return request;
     };

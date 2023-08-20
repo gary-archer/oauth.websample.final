@@ -112,7 +112,7 @@ export class ViewModelCoordinator {
     }
 
     /*
-     * See if all API requests have completed, and there are only 3 in the demo app
+     * See if all API requests have completed, and there are only 3 in the SPA
      */
     private _allViewsLoaded(): boolean {
         return !this._mainLoading && !this._userInfoLoading;
