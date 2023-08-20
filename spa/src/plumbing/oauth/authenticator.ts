@@ -1,4 +1,5 @@
 import {AxiosRequestConfig} from 'axios';
+import {PageLoadResult} from './pageLoadResult';
 
 /*
  * An interface to represent authentication related operations for a micro UI
@@ -8,11 +9,14 @@ export interface Authenticator {
     // Indicate whether logged in
     isLoggedIn(): boolean;
 
-    // Redirect to the shell app to begin a login
-    login(): void;
+    // Perform a login redirect
+    login(currentLocation: string): Promise<void>;
 
-    // Redirect to the shell app to begin a logout
-    logout(): void;
+    // Handle page loads and process login responses when required
+    handlePageLoad(navigateAction: (path: string) => void): Promise<PageLoadResult>;
+
+    // Perform a logout redirect
+    logout(): Promise<void>;
 
     // Handle a notification that a micro UI on another tab has logged out
     onLoggedOut(): void;

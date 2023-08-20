@@ -1,13 +1,16 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
+import urlparse from 'url-parse';
 import {Configuration} from '../../configuration/configuration';
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {UIError} from '../../plumbing/errors/uiError';
-import {CurrentLocation} from '../../views/utilities/currentLocation';
+import {ErrorCodes} from '../errors/errorCodes';
+import {ErrorFactory} from '../errors/errorFactory';
+import {UIError} from '../errors/uiError';
 import {AxiosUtils} from '../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {Authenticator} from './authenticator';
+import {EndLoginResponse} from './endLoginResponse';
+import {PageLoadResult} from './pageLoadResult';
 
 /*
  * The authenticator implementation
@@ -17,12 +20,14 @@ export class AuthenticatorImpl implements Authenticator {
     private readonly _oauthAgentBaseUrl: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
     private readonly _sessionId: string;
+    private _antiForgeryToken: string | null;
 
     public constructor(configuration: Configuration, sessionId: string) {
 
         this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
         this._sessionId = sessionId;
         this._concurrencyHandler = new ConcurrentActionHandler();
+        this._antiForgeryToken = null;
         this._setupCallbacks();
     }
 
@@ -30,28 +35,114 @@ export class AuthenticatorImpl implements Authenticator {
      * Use the anti forgery token in storage as an indicator of whether logged in
      */
     public isLoggedIn(): boolean {
-        return !!HtmlStorageHelper.antiForgeryToken;
+        return !!this._antiForgeryToken;
     }
 
     /*
-     * Login is delegated to the shell application, and the app saves its state first
-     * The callback view then receives login responses and can restore state
+     * Trigger the login redirect to the authorization server
      */
-    public login(): void {
+    public async login(currentLocation: string): Promise<void> {
 
-        HtmlStorageHelper.preLoginStore(CurrentLocation.path);
-        location.href = `${location.origin}/login`;
+        try {
+
+            // Call the API to set up the login
+            const response = await this._callOAuthAgent('POST', '/login/start');
+
+            // Store the app location and other state if required
+            HtmlStorageHelper.appState = {
+                path: currentLocation,
+            };
+
+            // Then do the redirect
+            location.href = response.authorizationRequestUri;
+
+        } catch (e) {
+
+            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginRequestFailed);
+        }
     }
 
     /*
-     * Logout is delegated to the shell application
+     * Check for and handle login responses when the page loads
      */
-    public logout(): void {
-        location.href = `${location.origin}/logout`;
+    public async handlePageLoad(navigateAction: (path: string) => void): Promise<PageLoadResult> {
+
+        try {
+
+            // Send the full URL to the Token Handler API
+            const request = {
+                url: location.href,
+            };
+            const endLoginResponse = await this._callOAuthAgent(
+                'POST',
+                '/login/end',
+                request) as EndLoginResponse;
+
+            // Store the anti forgery token here, used for data changing API requests
+            if (endLoginResponse.antiForgeryToken) {
+                this._antiForgeryToken = endLoginResponse.antiForgeryToken;
+            }
+
+            // If a login was handled then the SPA may need to return to its pre-login location
+            if (endLoginResponse.handled) {
+
+                const appState = HtmlStorageHelper.appState;
+                navigateAction(appState ? appState.path : '/spa');
+                HtmlStorageHelper.removeAppState();
+            }
+
+            // Return a result to the rest of the app
+            return {
+                isLoggedIn: endLoginResponse.isLoggedIn,
+                handled: endLoginResponse.handled
+            };
+
+        } catch (e: any) {
+
+            // When this is an OAuth response, ensure that there are no leftover details in the browser
+            const urlData = urlparse(location.href, true);
+            if (urlData.query && urlData.query.state) {
+                navigateAction('/spa');
+            }
+
+            // Session expired errors are handled by returning a default result and will lead to re-authentication
+            if (this._isSessionExpiredError(e)) {
+
+                return {
+                    isLoggedIn: false,
+                    handled: false,
+                };
+            }
+
+            // Rethrow other errors
+            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
+
+        }
     }
 
     /*
-     * When a logout occurs on another browser tab, or for another micro UI, redirect to the shell app
+     * Do the logout redirect to clear all cookie and token details
+     */
+    public async logout(): Promise<void> {
+
+        try {
+
+            const response = await this._callOAuthAgent('POST', '/logout');
+            location.href = response.endSessionRequestUri;
+
+        } catch (e) {
+
+            throw ErrorFactory.fromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
+
+        } finally {
+
+            this._antiForgeryToken = null;
+        }
+    }
+
+    /*
+     * Handle logout on another browser tab, or for another micro UI in the same origin
+     * Redirect to the shell app, which serves as the post logout landing page
      */
     public onLoggedOut(): void {
         location.href = `${location.origin}/loggedout`;
@@ -67,7 +158,7 @@ export class AuthenticatorImpl implements Authenticator {
             options.method === 'PATCH' ||
             options.method === 'DELETE') {
 
-            (options.headers as any)['x-mycompany-csrf'] = HtmlStorageHelper.antiForgeryToken;
+            (options.headers as any)['x-mycompany-csrf'] = this._antiForgeryToken;
         }
     }
 
@@ -138,7 +229,7 @@ export class AuthenticatorImpl implements Authenticator {
     /*
      * A parameterized method for calling the OAuth agent
      */
-    private async _callOAuthAgent(method: Method, operationPath: string, requestData: any): Promise<any> {
+    private async _callOAuthAgent(method: Method, operationPath: string, requestData: any = null): Promise<any> {
 
         const url = `${this._oauthAgentBaseUrl}${operationPath}`;
         try {
@@ -197,7 +288,6 @@ export class AuthenticatorImpl implements Authenticator {
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
     private _setupCallbacks(): void {
-        this._callOAuthAgent = this._callOAuthAgent.bind(this);
         this._performTokenRefresh = this._performTokenRefresh.bind(this);
     }
 }

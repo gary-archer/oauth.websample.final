@@ -5,7 +5,6 @@ import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
-import {CallbackView} from '../views/callback/callbackView';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../views/errors/errorSummaryViewProps';
@@ -265,7 +264,6 @@ export function App(props: AppProps): JSX.Element {
                 {state.error && <ErrorSummaryView {...getErrorProps()} />}
                 <SessionView {...sessionProps} />
                 <Routes>
-                    <Route path='/callback'      element={<CallbackView {...callbackProps} />} />
                     <Route path='/companies/:id' element={<TransactionsContainer {...transactionsProps} />} />
                     <Route path='/*'             element={<CompaniesContainer {...companiesProps} />} />
                 </Routes>

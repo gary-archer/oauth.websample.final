@@ -1,4 +1,4 @@
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {ErrorFactory} from '../errors/errorFactory';
 
 /*
  * Utilities related to the Axios library
