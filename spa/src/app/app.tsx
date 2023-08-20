@@ -55,7 +55,10 @@ export function App(props: AppProps): JSX.Element {
         window.onstorage = onStorage;
 
         // Initialize the main view model the first time
-        const navigateTo = await model.initialise();
+        await model.initialise();
+
+        // Handle any login responses
+        const navigateTo = await model.handlePageLoad();
 
         // Report any errors
         setState((s) => {

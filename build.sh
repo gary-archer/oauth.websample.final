@@ -46,13 +46,6 @@ if [ "$1" == 'LOCALAPI' ]; then
     exit
   fi
 
-  #
-  # TODO: delete after merge
-  #
-  cd localtokenhandler
-  git checkout feature/spa
-  cd ..
-
   echo 'Building the local token handler ...'
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then
@@ -60,7 +53,6 @@ if [ "$1" == 'LOCALAPI' ]; then
     exit
   fi
 fi
-
 
 #
 # Build the minimal shell application, which acts as a second micro-UI

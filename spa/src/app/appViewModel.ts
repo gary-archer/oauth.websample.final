@@ -75,13 +75,12 @@ export class AppViewModel {
      * Some global objects are created after initializing configuration, which is only done once
      * The app view can be created many times and will get the same instance of the model
      */
-    public async initialise(): Promise<string | null> {
+    public async initialise(): Promise<void> {
 
         if (this._isLoaded || this._isLoading) {
-            return null;
+            return;
         }
 
-        let navigateTo: string | null = null;
         try {
 
             // Initialize state, and the loading flag prevents re-entrancy when strict mode is used
@@ -105,9 +104,6 @@ export class AppViewModel {
                 this._authenticator,
                 sessionId);
 
-            // Handle any login responses
-            navigateTo = await this._authenticator!.handlePageLoad();
-
             // Update state, to prevent model recreation if the view is recreated
             this._isLoaded = true;
 
@@ -120,8 +116,39 @@ export class AppViewModel {
 
             this._isLoading = false;
         }
+    }
 
-        return navigateTo;
+    /*
+     * Set up the authenticated state and handle login responses
+     */
+    public async handlePageLoad(): Promise<string | null> {
+
+        if (!this._isLoaded || this._isHandlingPageLoad) {
+            return null;
+        }
+
+        try {
+
+            // Avoid re-entrancy due to React strict mode
+            this._isHandlingPageLoad = true;
+
+            // Handle any login responses
+            const navigateTo = await this._authenticator!.handlePageLoad();
+            if (navigateTo) {
+                return navigateTo;
+            }
+
+        } catch (e: any) {
+
+            // Render startup errors
+            this._error = ErrorFactory.fromException(e);
+
+        } finally {
+
+            this._isHandlingPageLoad = false;
+        }
+
+        return null;
     }
 
     /*
