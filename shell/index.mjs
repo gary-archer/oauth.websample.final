@@ -30,14 +30,20 @@ function renderLoggedOutView() {
                 <div class='col col-one-fifth d-flex p-1'></div>
                 <div class='col col-one-fifth d-flex p-1'>
                     <button
+                        id='btnLogin' 
                         type='button'
-                        class='btn btn-primary w-100 p-1'>Login</button>
+                        class='btn btn-primary w-100 p-1'
+                        click=>Login</button>
                 </div>
                 <div class='col col-one-fifth d-flex p-1'></div>
                 <div class='col col-one-fifth d-flex p-1'></div>
             </div>
         </div>`
     root.appendChild(main);
+
+    document.querySelector('#btnLogin')?.addEventListener(
+        'click',
+        () => location.href = `${location.origin}/spa`);
 }
 
 if (location.pathname.toLowerCase() === '/loggedout') {
