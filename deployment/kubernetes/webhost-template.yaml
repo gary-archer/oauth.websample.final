@@ -1,5 +1,7 @@
 #
-# The Kubernetes resources for the Web Host, which delivers static web content
+# Kubernetes resources if deploying the web host to a Kubernetes cluster
+# I use this in local development deployments, such as for a local KIND cluster
+# My deployed environments use a content delivery network and do not use a Kubernetes web host
 #
 kind: Deployment
 apiVersion: apps/v1
