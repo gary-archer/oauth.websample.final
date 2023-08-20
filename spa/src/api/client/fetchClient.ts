@@ -94,17 +94,19 @@ export class FetchClient {
         // Return existing data from the memory cache when available
         // If a view is created whiles its API requests are in flight, this returns null to the view model
         let cacheItem = this._fetchCache.getItem(options.cacheKey);
-        if (cacheItem && !cacheItem.error) {
+        if (cacheItem) {
             return cacheItem.data;
         }
 
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
         cacheItem = this._fetchCache.createItem(options.cacheKey);
 
-        // Avoid the overhead of API requests when they will definitely fail
+        // Avoid API requests and trigger a login redirect when we know it is needed
         if (!this._authenticator.isLoggedIn()) {
-            cacheItem.error = ErrorFactory.fromLoginRequired();
-            return null;
+
+            const loginRequiredError = ErrorFactory.fromLoginRequired();
+            cacheItem.error = loginRequiredError;
+            throw loginRequiredError;
         }
 
         try {
@@ -116,7 +118,7 @@ export class FetchClient {
 
         } catch (e1: any) {
 
-            const error1 = ErrorFactory.fromHttpError(e1, url, 'web API');
+            const error1 = ErrorFactory.fromHttpError(e1, url, 'API');
             if (error1.statusCode !== 401) {
 
                 // Report errors if this is not a 401
@@ -131,7 +133,7 @@ export class FetchClient {
             } catch (e2: any) {
 
                 // Save refresh errors
-                const error2 = ErrorFactory.fromHttpError(e2, url, 'web API');
+                const error2 = ErrorFactory.fromHttpError(e2, url, 'API');
                 cacheItem.error = error2;
                 throw error2;
             }
@@ -146,7 +148,7 @@ export class FetchClient {
             }  catch (e3: any) {
 
                 // Save retry errors
-                const error3 = ErrorFactory.fromHttpError(e3, url, 'web API');
+                const error3 = ErrorFactory.fromHttpError(e3, url, 'API');
                 cacheItem.error = error3;
                 throw error3;
             }

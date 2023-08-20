@@ -4,49 +4,32 @@
 export class HtmlStorageHelper {
 
     private static _prefix = 'finalspa.';
-    private static _appState = 'appState';
+    private static _preLoginLocation = 'preLoginLocation';
     private static _apiSessionKeyName = 'apisessionid';
     private static _loggedOutKeyName = 'loggedout';
 
     /*
+     * Store the app location before triggering a login redirect
+     */
+    public static set preLoginLocation(location: string) {
+
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._preLoginLocation}`;
+        sessionStorage.setItem(key, location);
+    }
+
+    /*
      * Get any stored app state when handling login responses
      */
-    public static get appState(): any {
+    public static getAndRemovePreLoginLocation(): string | null {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._appState}`;
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._preLoginLocation}`;
         const data = sessionStorage.getItem(key);
         if (data) {
-            return JSON.parse(data);
+            sessionStorage.removeItem(key);
+            return data;
         }
 
         return null;
-    }
-
-    /*
-     * Set app state before triggering a login redirect
-     */
-    public static set appState(data: any) {
-
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._appState}`;
-        sessionStorage.setItem(key, JSON.stringify(data));
-    }
-
-    /*
-     * Clean up app state
-     */
-    public static removeAppState(): void {
-
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._appState}`;
-        sessionStorage.removeItem(key);
-    }
-
-    /*
-     * Get the session id for API requests from this browser tab
-     */
-    public static get apiSessionId(): string {
-
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
-        return sessionStorage.getItem(key) || '';
     }
 
     /*
@@ -56,6 +39,15 @@ export class HtmlStorageHelper {
 
         const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
         sessionStorage.setItem(key, value);
+    }
+
+    /*
+     * Get the session id for API requests from this browser tab
+     */
+    public static get apiSessionId(): string {
+
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
+        return sessionStorage.getItem(key) || '';
     }
 
     /*

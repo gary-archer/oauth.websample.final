@@ -1,5 +1,4 @@
 import {AxiosRequestConfig} from 'axios';
-import {PageLoadResult} from './pageLoadResult';
 
 /*
  * An interface to represent authentication related operations for a micro UI
@@ -13,7 +12,7 @@ export interface Authenticator {
     login(currentLocation: string): Promise<void>;
 
     // Handle page loads and process login responses when required
-    handlePageLoad(navigateAction: (path: string) => void): Promise<PageLoadResult>;
+    handlePageLoad(): Promise<string | null>;
 
     // Perform a logout redirect
     logout(): Promise<void>;

@@ -10,7 +10,6 @@ import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {Authenticator} from './authenticator';
 import {EndLoginResponse} from './endLoginResponse';
-import {PageLoadResult} from './pageLoadResult';
 
 /*
  * The authenticator implementation
@@ -48,12 +47,10 @@ export class AuthenticatorImpl implements Authenticator {
             // Call the API to set up the login
             const response = await this._callOAuthAgent('POST', '/login/start');
 
-            // Store the app location and other state if required
-            HtmlStorageHelper.appState = {
-                path: currentLocation,
-            };
+            // Store the app location before the login redirect
+            HtmlStorageHelper.preLoginLocation = currentLocation;
 
-            // Then do the redirect
+            // Then redirect the main window
             location.href = response.authorizationRequestUri;
 
         } catch (e) {
@@ -65,7 +62,7 @@ export class AuthenticatorImpl implements Authenticator {
     /*
      * Check for and handle login responses when the page loads
      */
-    public async handlePageLoad(navigateAction: (path: string) => void): Promise<PageLoadResult> {
+    public async handlePageLoad(): Promise<string | null> {
 
         try {
 
@@ -78,45 +75,40 @@ export class AuthenticatorImpl implements Authenticator {
                 '/login/end',
                 request) as EndLoginResponse;
 
-            // Store the anti forgery token here, used for data changing API requests
+            // Ensure that no code in the app thinks it is logged out
+            if (endLoginResponse.isLoggedIn) {
+                HtmlStorageHelper.loggedOut = false;
+            }
+
+            // Store the anti forgery token, used for data changing API requests
             if (endLoginResponse.antiForgeryToken) {
                 this._antiForgeryToken = endLoginResponse.antiForgeryToken;
             }
 
-            // If a login was handled then the SPA may need to return to its pre-login location
+            // If a login was handled, then the SPA returns to its pre-login location
             if (endLoginResponse.handled) {
-
-                const appState = HtmlStorageHelper.appState;
-                navigateAction(appState ? appState.path : '/spa');
-                HtmlStorageHelper.removeAppState();
+                const preLoginLocation = HtmlStorageHelper.getAndRemovePreLoginLocation();
+                return preLoginLocation || '/';
             }
 
-            // Return a result to the rest of the app
-            return {
-                isLoggedIn: endLoginResponse.isLoggedIn,
-                handled: endLoginResponse.handled
-            };
+            // Return a no-op result by default
+            return null;
 
         } catch (e: any) {
 
-            // When this is an OAuth response, ensure that there are no leftover details in the browser
+            // When this is an OAuth response, return a navigate URL to ensure no leftover details in the browser
             const urlData = urlparse(location.href, true);
             if (urlData.query && urlData.query.state) {
-                navigateAction('/spa');
+                return '/';
             }
 
             // Session expired errors are handled by returning a default result and will lead to re-authentication
             if (this._isSessionExpiredError(e)) {
-
-                return {
-                    isLoggedIn: false,
-                    handled: false,
-                };
+                return null;
             }
 
             // Rethrow other errors
             throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
-
         }
     }
 

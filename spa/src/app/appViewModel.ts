@@ -39,6 +39,7 @@ export class AppViewModel {
     private _error: UIError | null;
     private _isLoading: boolean;
     private _isLoaded: boolean;
+    private _isHandlingPageLoad: boolean;
 
     /*
      * Set the initial state when the app starts
@@ -60,10 +61,13 @@ export class AppViewModel {
         this._transactionsViewModel = null;
         this._userInfoViewModel = null;
 
-        // Other state
+        // Top level error state
         this._error = null;
+
+        // State flags
         this._isLoading = false;
         this._isLoaded = false;
+        this._isHandlingPageLoad = false;
         this._setupCallbacks();
     }
 
@@ -71,12 +75,13 @@ export class AppViewModel {
      * Some global objects are created after initializing configuration, which is only done once
      * The app view can be created many times and will get the same instance of the model
      */
-    public async initialise(): Promise<void> {
+    public async initialise(): Promise<string | null> {
 
         if (this._isLoaded || this._isLoading) {
-            return;
+            return null;
         }
 
+        let navigateTo: string | null = null;
         try {
 
             // Initialize state, and the loading flag prevents re-entrancy when strict mode is used
@@ -100,6 +105,9 @@ export class AppViewModel {
                 this._authenticator,
                 sessionId);
 
+            // Handle any login responses
+            navigateTo = await this._authenticator!.handlePageLoad();
+
             // Update state, to prevent model recreation if the view is recreated
             this._isLoaded = true;
 
@@ -111,6 +119,32 @@ export class AppViewModel {
         } finally {
 
             this._isLoading = false;
+        }
+
+        return navigateTo;
+    }
+
+    /*
+     * Trigger a login and update error state if required
+     */
+    public async login(currentLocation: string): Promise<void> {
+
+        try {
+            await this._authenticator!.login(currentLocation);
+        } catch (e: any) {
+            this._error = ErrorFactory.fromException(e);
+        }
+    }
+
+    /*
+     * Trigger a logout and update error state if required
+     */
+    public async logout(): Promise<void> {
+
+        try {
+            await this._authenticator!.logout();
+        } catch (e: any) {
+            this._error = ErrorFactory.fromException(e);
         }
     }
 
@@ -185,13 +219,6 @@ export class AppViewModel {
         }
 
         return this._userInfoViewModel;
-    }
-
-    /*
-     * Trigger a login and update error state if required
-     */
-    public login(): void {
-        this._error = ErrorFactory.fromLoginRequired();
     }
 
     /*

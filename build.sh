@@ -46,6 +46,13 @@ if [ "$1" == 'LOCALAPI' ]; then
     exit
   fi
 
+  #
+  # TODO: delete after merge
+  #
+  cd localtokenhandler
+  git checkout feature/spa
+  cd ..
+
   echo 'Building the local token handler ...'
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then

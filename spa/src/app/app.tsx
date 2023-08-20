@@ -13,6 +13,7 @@ import {HeaderButtonsViewProps} from '../views/headings/headerButtonsViewProps';
 import {SessionView} from '../views/headings/sessionView';
 import {TitleView} from '../views/headings/titleView';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
+import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
 import {AppState} from './appState';
 
@@ -48,8 +49,15 @@ export function App(props: AppProps): JSX.Element {
         // Initialise the modal dialog system used for error popups
         Modal.setAppElement('#root');
 
-        // Load the main view model
-        await model.initialise();
+        // Subscribe to application and window events
+        model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
+        window.onresize = onResize;
+        window.onstorage = onStorage;
+
+        // Initialize the main view model the first time
+        const navigateTo = await model.initialise();
+
+        // Report any errors
         setState((s) => {
             return {
                 ...s,
@@ -57,10 +65,10 @@ export function App(props: AppProps): JSX.Element {
             };
         });
 
-        // Subscribe to application and window events
-        model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
-        window.onresize = onResize;
-        window.onstorage = onStorage;
+        // Navigate back to prelogin locations if applicable
+        if (navigateTo) {
+            navigate(navigateTo, { replace: true});
+        }
     }
 
     /*
@@ -80,9 +88,9 @@ export function App(props: AppProps): JSX.Element {
      * Trigger a login redirect when refresh tokens have expired and all API calls fail
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
-    function onLoginRequired(_event: LoginRequiredEvent): void {
+    async function onLoginRequired(_event: LoginRequiredEvent): Promise<void> {
 
-        model.login();
+        await model.login(CurrentLocation.path);
         setState((s) => {
             return {
                 ...s,
@@ -92,7 +100,7 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * Return home and force a reload of data
+     * Manage navigating home
      */
     async function onHome(): Promise<void> {
 
@@ -114,8 +122,8 @@ export function App(props: AppProps): JSX.Element {
     /*
      * Whenb logout is selected, redirect to the shell app, which will implement the logout details
      */
-    function onLogout(): void {
-        model.authenticator.logout();
+    async function onLogout(): Promise<void> {
+        await model.logout();
     }
 
     /*
@@ -240,10 +248,6 @@ export function App(props: AppProps): JSX.Element {
         const sessionProps = {
             sessionId: SessionManager.get(),
             eventBus: model.eventBus,
-        };
-
-        const callbackProps = {
-            navigate,
         };
 
         const companiesProps = {
