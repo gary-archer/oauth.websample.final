@@ -43,11 +43,11 @@ function renderLoggedOutView() {
 
     document.querySelector('#btnLogin')?.addEventListener(
         'click',
-        () => location.href = `${location.origin}/spa`);
+        () => location.href = `${location.origin}/spa/`);
 }
 
 if (location.pathname.toLowerCase() === '/loggedout') {
     renderLoggedOutView();
 } else {
-    location.href = `${location.origin}/spa`;
+    location.href = `${location.origin}/spa/`;
 }
