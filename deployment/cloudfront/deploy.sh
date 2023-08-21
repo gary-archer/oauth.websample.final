@@ -39,11 +39,11 @@ fi
 #
 # Upload the serverless functions used for lambda extensions
 #
-#if [ "$ENVIRONMENT" == 'serverless' ]; then
-#  npm run deployServerless
-#else
-#  npm run deployCloudnative
-#fi
+if [ "$ENVIRONMENT" == 'serverless' ]; then
+  npm run deployServerless
+else
+  npm run deployCloudnative
+fi
 if [ $? -ne 0 ]; then
   echo 'Problem encountered deploying lambda edge extensions and applying them to the cloudfront distribution'
   exit

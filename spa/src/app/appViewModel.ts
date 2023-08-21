@@ -37,9 +37,10 @@ export class AppViewModel {
 
     // State flags
     private _error: UIError | null;
+    private _isInitialising: boolean;
+    private _isInitialised: boolean;
     private _isLoading: boolean;
     private _isLoaded: boolean;
-    private _isHandlingPageLoad: boolean;
 
     /*
      * Set the initial state when the app starts
@@ -65,26 +66,27 @@ export class AppViewModel {
         this._error = null;
 
         // State flags
+        this._isInitialising = false;
+        this._isInitialised = false;
         this._isLoading = false;
         this._isLoaded = false;
-        this._isHandlingPageLoad = false;
         this._setupCallbacks();
     }
 
     /*
-     * Some global objects are created after initializing configuration, which is only done once
+     * Some global objects are created after initialising configuration, which is only done once
      * The app view can be created many times and will get the same instance of the model
      */
     public async initialise(): Promise<void> {
 
-        if (this._isLoaded || this._isLoading) {
+        if (this._isInitialised || this._isInitialising) {
             return;
         }
 
         try {
 
-            // Initialize state, and the loading flag prevents re-entrancy when strict mode is used
-            this._isLoading = true;
+            // Initialise state, and the loading flag prevents re-entrancy when strict mode is used
+            this._isInitialising = true;
             this._error = null;
 
             // Get the application configuration
@@ -105,7 +107,7 @@ export class AppViewModel {
                 sessionId);
 
             // Update state, to prevent model recreation if the view is recreated
-            this._isLoaded = true;
+            this._isInitialised = true;
 
         } catch (e: any) {
 
@@ -114,7 +116,7 @@ export class AppViewModel {
 
         } finally {
 
-            this._isLoading = false;
+            this._isInitialising = false;
         }
     }
 
@@ -123,17 +125,23 @@ export class AppViewModel {
      */
     public async handlePageLoad(): Promise<string | null> {
 
-        if (!this._isLoaded || this._isHandlingPageLoad) {
+        if (!this._isInitialised || this._isLoading) {
             return null;
         }
 
         try {
 
-            // Avoid re-entrancy due to React strict mode
-            this._isHandlingPageLoad = true;
+            // This flag prevents re-entrancy due to React strict mode
+            this._isLoading = true;
 
             // Handle any login responses
             const navigateTo = await this._authenticator!.handlePageLoad();
+
+            // Indicate loaded
+            this._isLoaded = true;
+
+            // If a login response was handled, return the pre-login location to navigate back to
+            // This also avoids leaving the authorization code in the browser URL
             if (navigateTo) {
                 return navigateTo;
             }
@@ -145,7 +153,7 @@ export class AppViewModel {
 
         } finally {
 
-            this._isHandlingPageLoad = false;
+            this._isLoading = false;
         }
 
         return null;
@@ -178,6 +186,10 @@ export class AppViewModel {
     /*
      * Property accessors
      */
+    public get isInitialised(): boolean {
+        return this._isInitialised;
+    }
+
     public get isLoaded(): boolean {
         return this._isLoaded;
     }
@@ -261,7 +273,7 @@ export class AppViewModel {
      */
     public reloadDataOnError(): void {
 
-        if (this._viewModelCoordinator!.hasErrors()) {
+        if (this._error || this._viewModelCoordinator!.hasErrors()) {
             this.reloadData(false);
         }
     }

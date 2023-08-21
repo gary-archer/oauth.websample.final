@@ -18,7 +18,7 @@ export class WebStaticContent {
     /*
      * Handle physical resources in each micro UI, then serve index.html for not found requests
      */
-    public initialize(): void {
+    public initialise(): void {
 
         // Serve static files for the main SPA
         const spaBasePath = '/spa/';

@@ -59,6 +59,7 @@ export class TransactionsContainerViewModel {
 
         this._viewModelCoordinator.onMainViewModelLoading();
         this._error = null;
+        this._transactions = null;
 
         try {
 

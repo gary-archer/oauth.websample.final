@@ -6,13 +6,17 @@ import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
+import {CompaniesContainerProps} from '../views/companies/companiesContainerProps';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../views/errors/errorSummaryViewProps';
 import {HeaderButtonsView} from '../views/headings/headerButtonsView';
 import {HeaderButtonsViewProps} from '../views/headings/headerButtonsViewProps';
 import {SessionView} from '../views/headings/sessionView';
+import {SessionViewProps} from '../views/headings/sessionViewProps';
 import {TitleView} from '../views/headings/titleView';
+import {TitleViewProps} from '../views/headings/titleViewProps';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
+import {TransactionsContainerProps} from '../views/transactions/transactionsContainerProps';
 import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
 import {AppState} from './appState';
@@ -27,6 +31,7 @@ export function App(props: AppProps): JSX.Element {
 
     // The view is re-rendered when any of these state properties change
     const [state, setState] = useState<AppState>({
+        isLoaded: false,
         isMobileLayout: isMobileLayoutNeeded(),
         error: null,
     });
@@ -54,21 +59,30 @@ export function App(props: AppProps): JSX.Element {
         window.onresize = onResize;
         window.onstorage = onStorage;
 
-        // Initialize the main view model the first time
+        // Initialise the main view model the first time
         await model.initialise();
+
+        // Next deal with the authentication state
+        await handlePageLoad();
+    }
+
+    /*
+     * Get the authentication state and deal with any login error responses
+     */
+    async function handlePageLoad(): Promise<void> {
 
         // Handle any login responses
         const navigateTo = await model.handlePageLoad();
 
-        // Report any errors
         setState((s) => {
             return {
                 ...s,
+                isLoaded: model.isLoaded,
                 error: model.error,
             };
         });
 
-        // Navigate back to prelogin locations if applicable
+        // Navigate back to pre-login locations if applicable
         if (navigateTo) {
             navigate(navigateTo, { replace: true});
         }
@@ -107,9 +121,14 @@ export function App(props: AppProps): JSX.Element {
      */
     async function onHome(): Promise<void> {
 
-        // If there is a startup error then reinitialise the app when home is pressed
-        if (!model.isLoaded) {
+        // Handle retrying initialisation
+        if (!model.isInitialised) {
             await model.initialise();
+        }
+
+        // Handle retrying page load errors
+        if (!model.isLoaded) {
+            await handlePageLoad();
         }
 
         if (model.isLoaded) {
@@ -189,24 +208,23 @@ export function App(props: AppProps): JSX.Element {
         }
     }
 
-    /*
-     * Return the header props
-     */
-    function getErrorProps(): ErrorSummaryViewProps {
+    function getTitleProps(): TitleViewProps {
 
-        return {
-            error: state.error!,
-            errorsToIgnore: [],
-            containingViewName: 'main',
-            hyperlinkMessage: 'Problem Encountered',
-            dialogTitle: 'SPA Error',
-            centred: true,
-        };
+        if (state.isLoaded) {
+
+            return {
+                userInfo: {
+                    viewModel: model.getUserInfoViewModel(),
+                },
+            };
+        } else {
+
+            return {
+                userInfo: null,
+            };
+        }
     }
 
-    /*
-     * Return header button props
-     */
     function getHeaderButtonProps(): HeaderButtonsViewProps {
 
         return {
@@ -219,68 +237,52 @@ export function App(props: AppProps): JSX.Element {
         };
     }
 
-    /*
-     * Render basic details before the view model has initialised
-     */
-    function renderInitialScreen(): JSX.Element {
+    function getErrorProps(): ErrorSummaryViewProps {
 
-        const titleProps = {
-            userInfo: null,
+        return {
+            error: state.error!,
+            errorsToIgnore: [],
+            containingViewName: 'main',
+            hyperlinkMessage: 'Problem Encountered',
+            dialogTitle: 'SPA Error',
+            centred: true,
         };
-
-        return (
-            <>
-                <TitleView {...titleProps} />
-                <HeaderButtonsView {...getHeaderButtonProps()} />
-                {state.error && <ErrorSummaryView {...getErrorProps()} />}
-            </>
-        );
     }
 
-    /*
-     * Attempt to render the entire layout, which will trigger calls to Web APIs
-     */
-    function renderMain(): JSX.Element {
+    function getSessionProps(): SessionViewProps {
 
-        const titleProps = {
-            userInfo: {
-                viewModel: model.getUserInfoViewModel(),
-            },
-        };
-
-        const sessionProps = {
+        return {
             sessionId: SessionManager.get(),
-            eventBus: model.eventBus,
         };
+    }
 
-        const companiesProps = {
+    function getCompaniesProps(): CompaniesContainerProps {
+
+        return {
             viewModel: model.getCompaniesViewModel(),
             isMobileLayout: state.isMobileLayout,
         };
+    }
 
-        const transactionsProps = {
+    function getTransactionsProps(): TransactionsContainerProps {
+
+        return {
             viewModel: model.getTransactionsViewModel(),
             navigate,
         };
-
-        // Render the tree view
-        return (
-            <>
-                <TitleView {...titleProps} />
-                <HeaderButtonsView {...getHeaderButtonProps()} />
-                {state.error && <ErrorSummaryView {...getErrorProps()} />}
-                <SessionView {...sessionProps} />
-                <Routes>
-                    <Route path='/companies/:id' element={<TransactionsContainer {...transactionsProps} />} />
-                    <Route path='/*'             element={<CompaniesContainer {...companiesProps} />} />
-                </Routes>
-            </>
-        );
     }
 
-    if (!model.isLoaded) {
-        return renderInitialScreen();
-    } else {
-        return renderMain();
-    }
+    return (
+        <>
+            <TitleView {...getTitleProps()} />
+            <HeaderButtonsView {...getHeaderButtonProps()} />
+            {state.error && <ErrorSummaryView {...getErrorProps()} />}
+            <SessionView {...getSessionProps()} />
+            {state.isLoaded &&
+            <Routes>
+                <Route path='/companies/:id' element={<TransactionsContainer {...getTransactionsProps()} />} />
+                <Route path='/*'             element={<CompaniesContainer {...getCompaniesProps()} />} />
+            </Routes>}
+        </>
+    );
 }

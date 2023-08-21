@@ -73,8 +73,11 @@ export class UserInfoViewModel {
 
         try {
 
-            // Set up promises for the two sources of user info
             this._error = null;
+            this._oauthUserInfo = null;
+            this._apiUserInfo = null;
+
+            // Set up promises for the two sources of user info
             const oauthUserInfoPromise = this._apiClient.getOAuthUserInfo(oauthFetchOptions);
             const apiUserInfoPromise = this._apiClient.getApiUserInfo(apiFetchOptions);
 

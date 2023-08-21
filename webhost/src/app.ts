@@ -17,7 +17,7 @@ import {HttpServerConfiguration} from './httpServerConfiguration.js';
     const httpServer = new HttpServerConfiguration(expressApp, configuration);
 
     // Set up web static content delivery
-    httpServer.initializeWebStaticContentHosting();
+    httpServer.initialiseWebStaticContentHosting();
 
     // Start listening for requests
     await httpServer.startListening();

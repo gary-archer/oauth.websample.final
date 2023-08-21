@@ -26,10 +26,10 @@ export class HttpServerConfiguration {
     /*
      * Set up routes for web static content, and add recommended web security headers to responses
      */
-    public initializeWebStaticContentHosting(): void {
+    public initialiseWebStaticContentHosting(): void {
 
         this._express.use('/*', this._securityHeaders.add);
-        this._webStaticContent.initialize();
+        this._webStaticContent.initialise();
     }
 
     /*

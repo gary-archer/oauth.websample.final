@@ -1,6 +1,5 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
-import urlparse from 'url-parse';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
@@ -95,12 +94,6 @@ export class AuthenticatorImpl implements Authenticator {
             return null;
 
         } catch (e: any) {
-
-            // When this is an OAuth response, return a navigate URL to ensure no leftover details in the browser
-            const urlData = urlparse(location.href, true);
-            if (urlData.query && urlData.query.state) {
-                return '/';
-            }
 
             // Session expired errors are handled by returning a default result and will lead to re-authentication
             if (this._isSessionExpiredError(e)) {

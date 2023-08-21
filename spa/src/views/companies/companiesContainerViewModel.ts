@@ -58,6 +58,7 @@ export class CompaniesContainerViewModel {
 
         this._viewModelCoordinator.onMainViewModelLoading();
         this._error = null;
+        this._companies = [];
 
         try {
 
