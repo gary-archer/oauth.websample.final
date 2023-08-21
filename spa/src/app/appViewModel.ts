@@ -85,7 +85,7 @@ export class AppViewModel {
 
         try {
 
-            // Initialise state, and the loading flag prevents re-entrancy when strict mode is used
+            // Prevent re-entrancy due to React strict mode
             this._isInitialising = true;
             this._error = null;
 
@@ -131,7 +131,7 @@ export class AppViewModel {
 
         try {
 
-            // This flag prevents re-entrancy due to React strict mode
+            // Prevent re-entrancy due to React strict mode
             this._isLoading = true;
 
             // Handle any login responses
