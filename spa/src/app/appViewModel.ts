@@ -116,6 +116,7 @@ export class AppViewModel {
 
         } finally {
 
+            // Reset to allow retries
             this._isInitialising = false;
         }
     }
