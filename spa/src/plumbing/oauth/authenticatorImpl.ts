@@ -86,8 +86,7 @@ export class AuthenticatorImpl implements Authenticator {
 
             // If a login was handled, then the SPA returns to its pre-login location
             if (endLoginResponse.handled) {
-                const preLoginLocation = HtmlStorageHelper.getAndRemovePreLoginLocation();
-                return preLoginLocation || '/';
+                return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
             }
 
             // Return a no-op result by default
