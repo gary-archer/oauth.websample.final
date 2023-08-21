@@ -95,7 +95,9 @@ export class AuthenticatorImpl implements Authenticator {
 
         } catch (e: any) {
 
-            // Session expired errors are handled by returning a default result and will lead to re-authentication
+            // Session expired errors calling the OAuth agent can be caused by cookies with an old encryption key
+            // Handle these by returning a default result that results in a loaded state
+            // API calls will then fail and a new login redirect will be triggered, to get updated cookies
             if (this._isSessionExpiredError(e)) {
                 return null;
             }

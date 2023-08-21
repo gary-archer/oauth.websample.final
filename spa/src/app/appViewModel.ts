@@ -148,11 +148,13 @@ export class AppViewModel {
 
         } catch (e: any) {
 
-            // Render startup errors
+            // Render errors and navigate home, to remove OAuth parameters from the browser URL
             this._error = ErrorFactory.fromException(e);
+            return '/';
 
         } finally {
 
+            // Reset to allow retries
             this._isLoading = false;
         }
 
