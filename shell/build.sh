@@ -20,34 +20,40 @@ if [ ! -d 'node_modules' ]; then
 fi
 
 #
-# Clean the output folder and copy the Javascript
+# Clean the output folder
 #
 rm -rf ./dist 2>/dev/null
 mkdir ./dist
-cp ./index.mjs ./dist
-
-#
-# Reduce the CSS size
-#
-npm run purgecss
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered reducing CSS for the shell application'
-  exit 1
-fi
 
 #
 # Copy HTML assets to the output folder
 #
-cp index.html app.css favicon.ico ./dist
+cp index.html index.mjs app.css favicon.ico ./dist
 
-#
-# Finally, rewrite the index.html in release builds
-#
 if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
 
+  #
+  # Reduce the CSS size
+  #
+  npm run purgecss
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered reducing CSS for the shell application'
+    exit 1
+  fi
+
+  #
+  # Rewrite the index.html with script integrity values
+  #
   node ./rewriteIndexHtml.mjs
   if [ $? -ne 0 ]; then
     echo 'Problem encountered rewriting the shell index.html'
     exit 1
   fi
+
+else
+
+  #
+  # In debug builds just copy full CSS
+  #
+  cp bootstrap.min.css ./dist
 fi

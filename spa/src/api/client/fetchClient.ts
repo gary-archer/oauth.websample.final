@@ -112,7 +112,7 @@ export class FetchClient {
         try {
 
             // Call the API and return data on success
-            const data1 = await this._callApiWithCredential(method, url, dataToSend, options);
+            const data1 = await this._callApiWithCredential(method, url, options, dataToSend);
             cacheItem.data = data1;
             return data1;
 
@@ -141,7 +141,7 @@ export class FetchClient {
             try {
 
                 // Call the API again with the rewritten access token cookie
-                const data2 = await this._callApiWithCredential(method, url, dataToSend, options);
+                const data2 = await this._callApiWithCredential(method, url, options, dataToSend);
                 cacheItem.data = data2;
                 return data2;
 
@@ -161,8 +161,8 @@ export class FetchClient {
     private async _callApiWithCredential(
         method: Method,
         url: string,
-        dataToSend: any,
-        fetchOptions: FetchOptions): Promise<any> {
+        fetchOptions: FetchOptions,
+        dataToSend: any): Promise<any> {
 
         // Set options and send the secure cookie to the API origin
         const requestOptions = {

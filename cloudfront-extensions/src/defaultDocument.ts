@@ -14,6 +14,7 @@ const handler = async (event: any, context: Context) => {
     const extensions = [
         '.html',
         '.js',
+        '.mjs',
         '.css',
         '.ico',
     ];
