@@ -2,7 +2,7 @@
  * The shell is a trivial app that renders a logged out view or redirects to the main SPA
  */
 
-function renderLoggedOutView() {
+function renderTitle() {
 
     const root = document.querySelector('#root');
 
@@ -15,6 +15,11 @@ function renderLoggedOutView() {
             </div>
         </div>`;
     root.appendChild(title);
+}
+
+function renderLoggedOutView() {
+
+    const root = document.querySelector('#root');
 
     const main = document.createElement('div');
     main.id = 'main';
@@ -46,6 +51,7 @@ function renderLoggedOutView() {
         () => location.href = `${location.origin}/spa/`);
 }
 
+renderTitle();
 if (location.pathname.toLowerCase() === '/loggedout') {
     renderLoggedOutView();
 } else {
