@@ -11,6 +11,7 @@ import {CompaniesContainerProps} from './companiesContainerProps';
 import {CompaniesContainerState} from './companiesContainerState';
 import {CompaniesDesktopView} from './companiesDesktopView';
 import {CompaniesMobileView} from './companiesMobileView';
+import {CompaniesViewProps} from './companiesViewProps';
 
 /*
  * Render the companies view to replace the existing view
@@ -72,9 +73,6 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         });
     }
 
-    /*
-     * Return error props when there is an error to render
-     */
     function getErrorProps(): ErrorSummaryViewProps {
 
         return {
@@ -87,17 +85,19 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         };
     }
 
-    const childProps = {
-        companies: state.companies,
-    };
+    function getChildProps(): CompaniesViewProps {
+
+        return {
+            companies: state.companies,
+        };
+    }
 
     return  (
         <>
             {state.error && <ErrorSummaryView {...getErrorProps()}/>}
-
             {state.companies.length > 0 && (props.isMobileLayout ?
-                <CompaniesMobileView {...childProps}/> :
-                <CompaniesDesktopView {...childProps}/>)}
+                <CompaniesMobileView {...getChildProps()}/> :
+                <CompaniesDesktopView {...getChildProps()}/>)}
 
         </>
     );

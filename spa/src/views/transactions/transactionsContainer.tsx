@@ -10,6 +10,7 @@ import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {TransactionsContainerProps} from './transactionsContainerProps';
 import {TransactionsContainerState} from './transactionsContainerState';
 import {TransactionsView} from './transactionsView';
+import {TransactionsViewProps} from './transactionsViewProps';
 
 /*
  * Render the transactions view to replace the existing view
@@ -83,9 +84,6 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
         }
     }
 
-    /*
-     * Return error props when there is an error to render
-     */
     function getErrorProps(): ErrorSummaryViewProps {
 
         return {
@@ -98,34 +96,17 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
         };
     }
 
-    /*
-     * Conditional rendering based on whether there is data yet
-     */
-    function renderTransactionsView(): JSX.Element {
+    function getChildProps(): TransactionsViewProps {
 
-        if (!state.data) {
-
-            return (
-                <>
-                </>
-            );
-        }
-
-        const childProps = {
-            data: state.data,
+        return {
+            data: state.data!,
         };
-
-        return  (
-            <>
-                <TransactionsView {...childProps}/>
-            </>
-        );
     }
 
     return  (
         <>
             {state.error && <ErrorSummaryView {...getErrorProps()}/>}
-            {renderTransactionsView()}
+            {state.data && <TransactionsView {...getChildProps()}/>}
         </>
     );
 }

@@ -86,9 +86,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         });
     }
 
-    /*
-     * Return error props when there is an error to render
-     */
     function getErrorProps(): ErrorSummaryViewProps {
 
         return {
