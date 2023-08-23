@@ -15,8 +15,8 @@
     "start": "npm run webpackDebug",
     "build": "./build.sh",
     "buildRelease": "./build.sh RELEASE",
-    "webpackDebug": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config build/webpack.config.dev.ts --watch",
-    "webpackRelease": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config build/webpack.config.prod.ts",
+    "webpackDebug": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts --watch",
+    "webpackRelease": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.prod.ts",
     "purgecss": "purgecss -c purgecss.config.cjs -o dist"
   },
   "dependencies": {
