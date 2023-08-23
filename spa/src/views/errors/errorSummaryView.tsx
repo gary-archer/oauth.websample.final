@@ -106,7 +106,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
         });
     }
 
-    // If there is no real error, do not render anything
+    // Some errors, such as login required, are not rendered
     if (isNonError()) {
         return  (
             <>
