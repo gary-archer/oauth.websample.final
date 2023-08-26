@@ -164,12 +164,25 @@ export class FetchClient {
         fetchOptions: FetchOptions,
         dataToSend: any): Promise<any> {
 
+        const headers: any = {
+
+            // options headers included in API logs
+            'x-mycompany-api-client':     'FinalSPA',
+            'x-mycompany-session-id':     this._sessionId,
+            'x-mycompany-correlation-id': Guid.create().toString(),
+        };
+
+        // A special header can be sent to ask the API to throw a simulated exception
+        if (fetchOptions.causeError) {
+            headers['x-mycompany-test-exception'] = 'SampleApi';
+        }
+
         // Set options and send the secure cookie to the API origin
         const requestOptions = {
             url,
             method,
             data: dataToSend,
-            headers: this._getHeaders(fetchOptions),
+            headers,
             withCredentials: true,
         } as AxiosRequestConfig;
 
@@ -182,26 +195,5 @@ export class FetchClient {
 
         // Update the cache and return the result
         return response.data;
-    }
-
-    /*
-     * Add headers for logging and advanced testing purposes
-     */
-    private _getHeaders(options: FetchOptions): any {
-
-        const headers: any = {
-
-            // options headers included in API logs
-            'x-mycompany-api-client':     'FinalSPA',
-            'x-mycompany-session-id':     this._sessionId,
-            'x-mycompany-correlation-id': Guid.create().toString(),
-        };
-
-        // A special header can be sent to ask the API to throw a simulated exception
-        if (options.causeError) {
-            headers['x-mycompany-test-exception'] = 'SampleApi';
-        }
-
-        return headers;
     }
 }
