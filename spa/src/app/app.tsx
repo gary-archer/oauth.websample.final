@@ -60,10 +60,25 @@ export function App(props: AppProps): JSX.Element {
         window.onstorage = onStorage;
 
         // Initialise the main view model the first time
-        await model.initialise();
+        await initialiseData();
 
         // Next deal with the authentication state
         await handlePageLoad();
+    }
+
+    /*
+     * Initialise the model on startup
+     */
+    async function initialiseData(): Promise<void> {
+
+        await model.initialise();
+        setState((s) => {
+            return {
+                ...s,
+                isInitialised: model.isInitialised,
+                error: model.error,
+            };
+        });
     }
 
     /*
@@ -73,7 +88,6 @@ export function App(props: AppProps): JSX.Element {
 
         // Handle any login responses
         const navigateTo = await model.handlePageLoad();
-
         setState((s) => {
             return {
                 ...s,
@@ -123,7 +137,7 @@ export function App(props: AppProps): JSX.Element {
 
         // Handle retrying initialisation
         if (!model.isInitialised) {
-            await model.initialise();
+            await initialiseData();
         }
 
         // Handle retrying page load errors
