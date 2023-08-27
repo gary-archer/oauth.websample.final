@@ -53,18 +53,12 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     }
 
     /*
-     * Get a name string using both OAuth user info API specific user info
+     * Get a name string using OAuth user info
      */
     function getUserNameForDisplay(): string {
 
-        if (state.oauthUserInfo && state.apiUserInfo) {
-
-            let name = `${state.oauthUserInfo.givenName} ${state.oauthUserInfo.familyName}`;
-            if (state.apiUserInfo.role === 'admin') {
-                name += ' (ADMIN)';
-            }
-
-            return name;
+        if (state.oauthUserInfo) {
+            return `${state.oauthUserInfo.givenName} ${state.oauthUserInfo.familyName}`;
         }
 
         return '';
