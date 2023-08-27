@@ -2,6 +2,6 @@
  * User attributes from the API's own data
  */
 export interface ApiUserInfo {
-    role: string;
+    title: string;
     regions: string[];
 }
