@@ -164,9 +164,8 @@ export class FetchClient {
         fetchOptions: FetchOptions,
         dataToSend: any): Promise<any> {
 
+        // Values written to API logs
         const headers: any = {
-
-            // options headers included in API logs
             'x-mycompany-api-client':     'FinalSPA',
             'x-mycompany-session-id':     this._sessionId,
             'x-mycompany-correlation-id': Guid.create().toString(),
@@ -189,11 +188,9 @@ export class FetchClient {
         // Add an anti forgery token on data changing commands
         this._authenticator.addAntiForgeryToken(requestOptions);
 
-        // Make the API request
+        // Make the API request and return the result
         const response = await axios.request(requestOptions);
         AxiosUtils.checkJson(response.data);
-
-        // Update the cache and return the result
         return response.data;
     }
 }
