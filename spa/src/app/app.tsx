@@ -156,10 +156,11 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * Whenb logout is selected, redirect to the shell app, which will implement the logout details
+     * When logout is selected, redirect to the shell app, which will implement the logout details
      */
     async function onLogout(): Promise<void> {
         await model.logout();
+        HtmlStorageHelper.loggedOut = true;
     }
 
     /*
