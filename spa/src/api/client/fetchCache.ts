@@ -7,11 +7,11 @@ import {FetchCacheItem} from './fetchCacheItem';
  */
 export class FetchCache {
 
-    // A map of URLs to the result
+    // A map of cache keys to API responses
     private readonly _requests: { [key: string]: FetchCacheItem } = {};
 
     /*
-     * Create an item when an API request is triggered
+     * Create an item with no data when an API request is triggered
      */
     public createItem(key: string): FetchCacheItem {
 
@@ -33,7 +33,7 @@ export class FetchCache {
     }
 
     /*
-     * Remove an item if it exists
+     * Remove an item when forcing a reload
      */
     public removeItem(key: string): void {
 

@@ -1,7 +1,7 @@
 import {UIError} from '../../plumbing/errors/uiError';
 
 /*
- * The state of request data mapped to a URL
+ * A cache item represents an API response
  */
 export class FetchCacheItem {
 

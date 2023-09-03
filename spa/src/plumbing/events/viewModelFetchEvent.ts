@@ -1,5 +1,5 @@
 /*
- * An event sent when a view model fetches data
+ * An event sent before and after a view model fetches API data
  */
 export class ViewModelFetchEvent {
 

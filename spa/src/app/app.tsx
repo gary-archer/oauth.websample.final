@@ -150,7 +150,7 @@ export function App(props: AppProps): JSX.Element {
             // Navigate home
             navigate('/');
 
-            // Trigger a reload if recovering from errors
+            // Force a data reload if recovering from errors
             model.reloadDataOnError();
         }
     }
