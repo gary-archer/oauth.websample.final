@@ -16,6 +16,7 @@ export class TransactionsContainerViewModel {
     private readonly _apiClient: FetchClient;
     private readonly _eventBus: EventBus;
     private readonly _viewModelCoordinator: ViewModelCoordinator;
+    private _companyId: string | null;
     private _transactions: CompanyTransactions | null;
     private _error: UIError | null;
 
@@ -27,6 +28,7 @@ export class TransactionsContainerViewModel {
         this._apiClient = apiClient;
         this._eventBus = eventBus;
         this._viewModelCoordinator = viewModelCoordinator;
+        this._companyId = null;
         this._transactions = null;
         this._error = null;
     }
@@ -36,6 +38,10 @@ export class TransactionsContainerViewModel {
      */
     public get transactions(): CompanyTransactions | null {
         return this._transactions;
+    }
+
+    public get companyId(): string {
+        return this._companyId!;
     }
 
     public get error(): UIError | null {
@@ -58,6 +64,7 @@ export class TransactionsContainerViewModel {
         };
 
         this._viewModelCoordinator.onMainViewModelLoading();
+        this._companyId = id;
         this._error = null;
         this._transactions = null;
 
@@ -75,6 +82,13 @@ export class TransactionsContainerViewModel {
             this._transactions = null;
             this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
+    }
+
+    /*
+     * Allow the view to clear data
+     */
+    public clearData(): void {
+        this._transactions = null;
     }
 
     /*

@@ -64,6 +64,19 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     async function loadData(options?: ViewLoadOptions): Promise<void> {
 
+        // When switching companies, first render empty data for a natural effect
+        if (companyId != model.companyId) {
+
+            model.clearData();
+            setState((s) => {
+                return {
+                    ...s,
+                    data: model.transactions,
+                    error: model.error,
+                };
+            });
+        }
+        
         await model.callApi(companyId, options);
 
         if (model.error && model.isExpectedApiError()) {
