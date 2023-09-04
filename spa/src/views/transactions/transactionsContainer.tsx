@@ -76,7 +76,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
                 };
             });
         }
-        
+
         await model.callApi(companyId, options);
 
         if (model.error && model.isExpectedApiError()) {
