@@ -100,7 +100,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Show the user's regions when the name is clicked
      */
     function getUserRegions(): string {
-        
+
         const regions = model.apiUserInfo?.regions.join(', ');
         return `[${regions}]`;
     }
@@ -144,9 +144,9 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
             </div>}
             {state.showUserDescription &&
             <div className='text-end'>
-                 <small>{getUserTitle()}</small>
-                 <br />
-                 <small>{getUserRegions()}</small>
+                <small>{getUserTitle()}</small>
+                <br />
+                <small>{getUserRegions()}</small>
             </div>}
         </>
     );
