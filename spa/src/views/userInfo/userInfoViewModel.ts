@@ -13,7 +13,7 @@ import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
  */
 export class UserInfoViewModel {
 
-    private readonly _apiClient: FetchClient;
+    private readonly _fetchClient: FetchClient;
     private readonly _eventBus: EventBus;
     private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _oauthUserInfo: OAuthUserInfo | null;
@@ -21,11 +21,11 @@ export class UserInfoViewModel {
     private _error: UIError | null;
 
     public constructor(
-        apiClient: FetchClient,
+        fetchClient: FetchClient,
         eventBus: EventBus,
         viewModelCoordinator: ViewModelCoordinator,
     ) {
-        this._apiClient = apiClient;
+        this._fetchClient = fetchClient;
         this._eventBus = eventBus;
         this._viewModelCoordinator = viewModelCoordinator;
         this._oauthUserInfo = null;
@@ -78,8 +78,8 @@ export class UserInfoViewModel {
             this._apiUserInfo = null;
 
             // Set up promises for the two sources of user info
-            const oauthUserInfoPromise = this._apiClient.getOAuthUserInfo(oauthFetchOptions);
-            const apiUserInfoPromise = this._apiClient.getApiUserInfo(apiFetchOptions);
+            const oauthUserInfoPromise = this._fetchClient.getOAuthUserInfo(oauthFetchOptions);
+            const apiUserInfoPromise = this._fetchClient.getApiUserInfo(apiFetchOptions);
 
             // Run the tasks in parallel
             const results = await Promise.all([oauthUserInfoPromise, apiUserInfoPromise]);

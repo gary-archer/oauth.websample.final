@@ -12,18 +12,18 @@ import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
  */
 export class CompaniesContainerViewModel {
 
-    private readonly _apiClient: FetchClient;
+    private readonly _fetchClient: FetchClient;
     private readonly _eventBus: EventBus;
     private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _companies: Company[];
     private _error: UIError | null;
 
     public constructor(
-        apiClient: FetchClient,
+        fetchClient: FetchClient,
         eventBus: EventBus,
         viewModelCoordinator: ViewModelCoordinator,
     ) {
-        this._apiClient = apiClient;
+        this._fetchClient = fetchClient;
         this._eventBus = eventBus;
         this._viewModelCoordinator = viewModelCoordinator;
         this._companies = [];
@@ -62,7 +62,7 @@ export class CompaniesContainerViewModel {
 
         try {
 
-            const result = await this._apiClient.getCompanyList(fetchOptions);
+            const result = await this._fetchClient.getCompanyList(fetchOptions);
             if (result) {
                 this._companies = result;
                 this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);

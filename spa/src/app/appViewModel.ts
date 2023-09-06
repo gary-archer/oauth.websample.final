@@ -23,7 +23,7 @@ export class AppViewModel {
     // Global objects created from configuration
     private _configuration: Configuration | null;
     private _authenticator: Authenticator | null;
-    private _apiClient: FetchClient | null;
+    private _fetchClient: FetchClient | null;
 
     // Other infrastructure
     private readonly _eventBus: EventBus;
@@ -50,7 +50,7 @@ export class AppViewModel {
         // Objects that need configuration are initially null
         this._configuration = null;
         this._authenticator = null;
-        this._apiClient = null;
+        this._fetchClient = null;
 
         // Create objects used for coordination
         this._eventBus = new EventBus();
@@ -100,7 +100,7 @@ export class AppViewModel {
             this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
 
             // Create a client for calling the API
-            this._apiClient = new FetchClient(
+            this._fetchClient = new FetchClient(
                 this.configuration,
                 this._fetchCache,
                 this._authenticator,
@@ -209,8 +209,8 @@ export class AppViewModel {
         return this._authenticator!;
     }
 
-    public get apiClient(): FetchClient {
-        return this._apiClient!;
+    public get fetchClient(): FetchClient {
+        return this._fetchClient!;
     }
 
     public get eventBus(): EventBus {
@@ -225,7 +225,7 @@ export class AppViewModel {
         if (!this._companiesViewModel) {
 
             this._companiesViewModel = new CompaniesContainerViewModel(
-                this._apiClient!,
+                this._fetchClient!,
                 this._eventBus,
                 this._viewModelCoordinator,
             );
@@ -240,7 +240,7 @@ export class AppViewModel {
 
             this._transactionsViewModel = new TransactionsContainerViewModel
             (
-                this._apiClient!,
+                this._fetchClient!,
                 this._eventBus,
                 this._viewModelCoordinator,
             );
@@ -254,7 +254,7 @@ export class AppViewModel {
         if (!this._userInfoViewModel) {
 
             this._userInfoViewModel = new UserInfoViewModel(
-                this._apiClient!,
+                this._fetchClient!,
                 this._eventBus,
                 this._viewModelCoordinator,
             );

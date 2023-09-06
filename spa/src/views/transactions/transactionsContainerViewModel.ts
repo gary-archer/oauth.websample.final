@@ -13,7 +13,7 @@ import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
  */
 export class TransactionsContainerViewModel {
 
-    private readonly _apiClient: FetchClient;
+    private readonly _fetchClient: FetchClient;
     private readonly _eventBus: EventBus;
     private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _companyId: string | null;
@@ -21,11 +21,11 @@ export class TransactionsContainerViewModel {
     private _error: UIError | null;
 
     public constructor(
-        apiClient: FetchClient,
+        fetchClient: FetchClient,
         eventBus: EventBus,
         viewModelCoordinator: ViewModelCoordinator,
     ) {
-        this._apiClient = apiClient;
+        this._fetchClient = fetchClient;
         this._eventBus = eventBus;
         this._viewModelCoordinator = viewModelCoordinator;
         this._companyId = null;
@@ -70,7 +70,7 @@ export class TransactionsContainerViewModel {
 
         try {
 
-            const result = await this._apiClient.getCompanyTransactions(id, fetchOptions);
+            const result = await this._fetchClient.getCompanyTransactions(id, fetchOptions);
             if (result) {
                 this._transactions = result;
                 this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
@@ -94,7 +94,7 @@ export class TransactionsContainerViewModel {
     /*
      * Handle 'business errors' received from the API
      */
-    public isExpectedApiError(): boolean {
+    public isForbiddenError(): boolean {
 
         if(this._error) {
 
