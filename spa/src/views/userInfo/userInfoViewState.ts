@@ -9,4 +9,5 @@ export interface UserInfoViewState {
     oauthUserInfo: OAuthUserInfo | null;
     apiUserInfo: ApiUserInfo | null;
     error: UIError | null;
+    showUserDescription: boolean;
 }

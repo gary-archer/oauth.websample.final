@@ -18,6 +18,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         oauthUserInfo: model.oauthUserInfo,
         apiUserInfo: model.apiUserInfo,
         error: null,
+        showUserDescription: false,
     });
 
     useEffect(() => {
@@ -65,6 +66,46 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     }
 
     /*
+     * Show information about the user when the name is clicked
+     */
+    function handleUsernameClick(): void {
+
+        setState((s) => {
+            return {
+                ...s,
+                showUserDescription: true,
+            };
+        });
+
+        setTimeout(() => {
+
+            setState((s) => {
+                return {
+                    ...s,
+                    showUserDescription: false,
+                };
+            });
+
+        }, 1000);
+    }
+
+    /*
+     * Show the user's title when the name is clicked
+     */
+    function getUserTitle(): string {
+        return model.apiUserInfo?.title || '';
+    }
+
+    /*
+     * Show the user's regions when the name is clicked
+     */
+    function getUserRegions(): string {
+        
+        const regions = model.apiUserInfo?.regions.join(', ');
+        return `[${regions}]`;
+    }
+
+    /*
      * Ask the model to load data, then update state
      */
     async function loadData(options?: ViewLoadOptions): Promise<void> {
@@ -99,7 +140,13 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
             </div>}
             {state.oauthUserInfo && state.apiUserInfo &&
             <div className='text-end mx-auto'>
-                <p className='fw-bold'>{`${getUserNameForDisplay()}`}</p>
+                <p onClick={handleUsernameClick} className='fw-bold'>{getUserNameForDisplay()}</p>
+            </div>}
+            {state.showUserDescription &&
+            <div className='text-end'>
+                 <small>{getUserTitle()}</small>
+                 <br />
+                 <small>{getUserRegions()}</small>
             </div>}
         </>
     );
