@@ -66,30 +66,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     }
 
     /*
-     * Show information about the user when the name is clicked
-     */
-    function handleUsernameClick(): void {
-
-        setState((s) => {
-            return {
-                ...s,
-                showUserDescription: true,
-            };
-        });
-
-        setTimeout(() => {
-
-            setState((s) => {
-                return {
-                    ...s,
-                    showUserDescription: false,
-                };
-            });
-
-        }, 1000);
-    }
-
-    /*
      * Show the user's title when the name is clicked
      */
     function getUserTitle(): string {
@@ -140,13 +116,13 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
             </div>}
             {state.oauthUserInfo && state.apiUserInfo &&
             <div className='text-end mx-auto'>
-                <p onClick={handleUsernameClick} className='fw-bold'>{getUserNameForDisplay()}</p>
-            </div>}
-            {state.showUserDescription &&
-            <div className='text-end'>
-                <small>{getUserTitle()}</small>
-                <br />
-                <small>{getUserRegions()}</small>
+                <div className='fw-bold basictooltip'>{getUserNameForDisplay()}
+                    <div className='basictooltiptext'>
+                        <small>{getUserTitle()}</small>
+                        <br />
+                        <small>{getUserRegions()}</small>
+                    </div>
+                </div>
             </div>}
         </>
     );
