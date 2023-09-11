@@ -1,0 +1,4 @@
+{
+    "apiBaseUrl": "https://api.mycluster.com/demobrand/investments",
+    "oauthAgentBaseUrl": "https://api.mycluster.com/demobrand/oauth-agent"
+}
