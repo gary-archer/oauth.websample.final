@@ -15,9 +15,9 @@ export class ViewModelCoordinator {
 
     private readonly _eventBus: EventBus;
     private readonly _fetchCache: FetchCache;
-    private _mainLoading: boolean;
-    private _userInfoLoading: boolean;
     private _mainCacheKey: string;
+    private _loadingCount: number;
+    private _loadedCount: number;
 
     /*
      * Set the initial state
@@ -26,9 +26,9 @@ export class ViewModelCoordinator {
 
         this._eventBus = eventBus;
         this._fetchCache = fetchCache;
-        this._mainLoading = false;
-        this._userInfoLoading = false;
         this._mainCacheKey = '';
+        this._loadingCount = 0;
+        this._loadedCount = 0;
         this._setupCallbacks();
     }
 
@@ -37,11 +37,11 @@ export class ViewModelCoordinator {
      */
     public onMainViewModelLoading(): void {
 
+        // Update stats
+        ++this._loadingCount;
+
         // Send an event so that a subscriber can show a UI effect, such as disabling header buttons
-        if (!this._mainLoading) {
-            this._mainLoading = true;
-            this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(false));
-        }
+        this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(false));
     }
 
     /*
@@ -49,9 +49,9 @@ export class ViewModelCoordinator {
      */
     public onMainViewModelLoaded(cacheKey: string): void {
 
-        // Record the cache key so that we can look up its result later
-        this._mainLoading = false;
+        // Increase stats
         this._mainCacheKey = cacheKey;
+        ++this._loadedCount;
 
         // On success, send an event so that a subscriber can show a UI effect such as enabling header buttons
         const found = this._fetchCache.getItem(cacheKey);
@@ -67,7 +67,7 @@ export class ViewModelCoordinator {
      * I need to do something here, though loading fires for the real request and also strict mode
      */
     public onUserInfoViewModelLoading(): void {
-        this._userInfoLoading = true;
+        ++this._loadingCount;
     }
 
     /*
@@ -75,8 +75,7 @@ export class ViewModelCoordinator {
      * If all views have loaded, see if we need to trigger a login redirect
      */
     public onUserInfoViewModelLoaded(): void {
-
-        this._userInfoLoading = false;
+        ++this._loadedCount;
         this._triggerLoginIfRequired();
     }
 
@@ -91,8 +90,8 @@ export class ViewModelCoordinator {
      * Reset state when the Reload Data button is clicked
      */
     public resetState(): void {
-        this._mainLoading = false;
-        this._userInfoLoading = false;
+        this._loadingCount = 0;
+        this._loadedCount = 0;
         this._mainCacheKey = '';
     }
 
@@ -101,7 +100,7 @@ export class ViewModelCoordinator {
      */
     private _triggerLoginIfRequired(): void {
 
-        if (this._allViewsLoaded()) {
+        if (this._loadedCount === this._loadingCount) {
 
             const errors = this._getLoadErrors();
             const found = errors.find((e) => e.errorCode === ErrorCodes.loginRequired);
@@ -109,13 +108,6 @@ export class ViewModelCoordinator {
                 this._eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
             }
         }
-    }
-
-    /*
-     * See if all API requests have completed, and there are only 3 in the SPA
-     */
-    private _allViewsLoaded(): boolean {
-        return !this._mainLoading && !this._userInfoLoading;
     }
 
     /*
