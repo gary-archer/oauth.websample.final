@@ -65,13 +65,15 @@ export class CompaniesContainerViewModel {
             const result = await this._fetchClient.getCompanyList(fetchOptions);
             if (result) {
                 this._companies = result;
-                this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
             }
 
         } catch (e: any) {
 
             this._error = ErrorFactory.fromException(e);
             this._companies = [];
+
+        } finally {
+
             this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
     }

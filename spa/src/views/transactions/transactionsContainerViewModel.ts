@@ -73,13 +73,15 @@ export class TransactionsContainerViewModel {
             const result = await this._fetchClient.getCompanyTransactions(id, fetchOptions);
             if (result) {
                 this._transactions = result;
-                this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
             }
 
         } catch (e: any) {
 
             this._error = ErrorFactory.fromException(e);
             this._transactions = null;
+
+        } finally {
+
             this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
     }

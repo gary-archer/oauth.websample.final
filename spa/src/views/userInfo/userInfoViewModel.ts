@@ -94,19 +94,14 @@ export class UserInfoViewModel {
                 this._apiUserInfo = apiUserInfo;
             }
 
-            // Send a notification if any data loaded
-            if (oauthUserInfo || apiUserInfo) {
-                this._viewModelCoordinator.onUserInfoViewModelLoaded();
-            }
-
         } catch (e: any) {
 
-            // Report errors
             this._error = ErrorFactory.fromException(e);
             this._oauthUserInfo = null;
             this._apiUserInfo = null;
 
-            // Send a notification if there was an error
+        } finally {
+
             this._viewModelCoordinator.onUserInfoViewModelLoaded();
         }
     }
