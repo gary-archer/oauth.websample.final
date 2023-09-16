@@ -19,7 +19,7 @@ The final demo SPA, which aims for a [Web Architecture](https://authguidance.com
 ## Components
 
 The SPA architecture looks like this, where OAuth related components are hosted in the AWS cloud.\
-Cookies issued are issued by an OAuth agent API, rather than a local web backend.\
+Cookies are issued by an OAuth agent API, rather than a local web backend.\
 This ensures that local web development is focused only on the React SPA:
 
 ![SPA Architecture](./doc/spa-architecture.png)
@@ -27,7 +27,7 @@ This ensures that local web development is focused only on the React SPA:
 ## Views
 
 The SPA is a simple UI with some basic navigation between views, which have a fictional investments theme.\
-The data is returned from an API that authorizes access to resources using domain specific claims.
+The data is returned from an API that authorizes access to resources using claims from multiple sources.
 
 ![SPA Views](./doc/spa-views.png)
 
@@ -74,7 +74,7 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 ## Further Information
 
 * See the [API Journey - Client Side](https://authguidance.com/api-journey-client-side/) for further information on the app's behaviour
-* Further details about the SPA are provided, starting in the [Final SPA Overview](https://authguidance.com/final-spa-overview/)
+* Further details specific to the SPA are provided, starting in the [Final SPA Overview](https://authguidance.com/final-spa-overview/)
 
 ## Programming Languages
 
