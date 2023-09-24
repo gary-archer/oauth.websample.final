@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
@@ -8,7 +8,6 @@ import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {TransactionsContainerProps} from './transactionsContainerProps';
-import {TransactionsContainerState} from './transactionsContainerState';
 import {TransactionsView} from './transactionsView';
 import {TransactionsViewProps} from './transactionsViewProps';
 
@@ -18,12 +17,10 @@ import {TransactionsViewProps} from './transactionsViewProps';
 export function TransactionsContainer(props: TransactionsContainerProps): JSX.Element {
 
     const model = props.viewModel;
+    model.useState();
+
     const params = useParams();
     const companyId = params.id!;
-    const [state, setState] = useState<TransactionsContainerState>({
-        data: model.transactions,
-        error: null,
-    });
 
     useEffect(() => {
         startup();
@@ -64,43 +61,18 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      */
     async function loadData(options?: ViewLoadOptions): Promise<void> {
 
-        // When switching companies, first render empty data for a natural effect
-        if (companyId != model.companyId) {
-
-            model.clearData();
-            setState((s) => {
-                return {
-                    ...s,
-                    data: model.transactions,
-                    error: model.error,
-                };
-            });
-        }
-
         await model.callApi(companyId, options);
 
-        if (model.error && model.isForbiddenError()) {
-
-            // For expected forbidden errors, return to the home view
+        // For expected forbidden errors, where the user edits the browser URL, return to the home view
+        if (model.isForbiddenError()) {
             props.navigate('/');
-
-        } else {
-
-            // Otherwise update state
-            setState((s) => {
-                return {
-                    ...s,
-                    data: model.transactions,
-                    error: model.error,
-                };
-            });
         }
     }
 
     function getErrorProps(): ErrorSummaryViewProps {
 
         return {
-            error: state.error!,
+            error: model.error!,
             errorsToIgnore: [ErrorCodes.loginRequired],
             containingViewName: 'transactions',
             hyperlinkMessage: 'Problem Encountered in Transactions View',
@@ -112,14 +84,14 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     function getChildProps(): TransactionsViewProps {
 
         return {
-            data: state.data!,
+            data: model.transactions!,
         };
     }
 
     return  (
         <>
-            {state.error && <ErrorSummaryView {...getErrorProps()}/>}
-            {state.data && <TransactionsView {...getChildProps()}/>}
+            {model.error && <ErrorSummaryView {...getErrorProps()}/>}
+            {model.transactions && <TransactionsView {...getChildProps()}/>}
         </>
     );
 }

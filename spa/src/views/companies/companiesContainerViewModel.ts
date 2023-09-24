@@ -1,4 +1,5 @@
 import EventBus from 'js-event-bus';
+import {Dispatch, SetStateAction, useState} from 'react';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
 import {Company} from '../../api/entities/company';
@@ -17,6 +18,8 @@ export class CompaniesContainerViewModel {
     private readonly _viewModelCoordinator: ViewModelCoordinator;
     private _companies: Company[];
     private _error: UIError | null;
+    private _setCompanies: Dispatch<SetStateAction<Company[]>> | null;
+    private _setError: Dispatch<SetStateAction<UIError | null>> | null;
 
     public constructor(
         fetchClient: FetchClient,
@@ -28,6 +31,20 @@ export class CompaniesContainerViewModel {
         this._viewModelCoordinator = viewModelCoordinator;
         this._companies = [];
         this._error = null;
+        this._setCompanies = null;
+        this._setError = null;
+    }
+
+    /*
+     * For the correct React behavior, the view initializes state every time it loads
+     */
+    public useState(): void {
+
+        const [, setCompanies] = useState(this._companies);
+        this._setCompanies = setCompanies;
+
+        const [, setError] = useState(this._error);
+        this._setError = setError;
     }
 
     /*
@@ -57,24 +74,39 @@ export class CompaniesContainerViewModel {
         };
 
         this._viewModelCoordinator.onMainViewModelLoading();
-        this._error = null;
-        this._companies = [];
+        this._updateError(null);
 
         try {
 
             const result = await this._fetchClient.getCompanyList(fetchOptions);
             if (result) {
-                this._companies = result;
+                this._updateCompanies(result);
             }
 
         } catch (e: any) {
 
-            this._error = ErrorFactory.fromException(e);
-            this._companies = [];
+            this._updateCompanies([]);
+            this._updateError(ErrorFactory.fromException(e));
 
         } finally {
 
             this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
+    }
+
+    /*
+     * Update state and the binding system
+     */
+    private _updateCompanies(companies: Company[]): void {
+        this._companies = companies;
+        this._setCompanies!(this._companies);
+    }
+
+    /*
+     * Update state and the binding system
+     */
+    private _updateError(error: UIError | null): void {
+        this._error = error;
+        this._setError!(this._error);
     }
 }

@@ -1,4 +1,5 @@
 import EventBus from 'js-event-bus';
+import {Dispatch, SetStateAction, useState} from 'react';
 import {FetchCache} from '../api/client/fetchCache';
 import {FetchClient} from '../api/client/fetchClient';
 import {ViewModelCoordinator} from '../views/utilities/viewModelCoordinator';
@@ -30,17 +31,21 @@ export class AppViewModel {
     private readonly _fetchCache: FetchCache;
     private readonly _viewModelCoordinator: ViewModelCoordinator;
 
-    // Child view models
-    private _companiesViewModel: CompaniesContainerViewModel | null;
-    private _transactionsViewModel: TransactionsContainerViewModel | null;
-    private _userInfoViewModel: UserInfoViewModel | null;
-
-    // State flags
+    // State
     private _error: UIError | null;
     private _isInitialising: boolean;
     private _isInitialised: boolean;
     private _isLoading: boolean;
     private _isLoaded: boolean;
+
+    // Child view models
+    private _companiesViewModel: CompaniesContainerViewModel | null;
+    private _transactionsViewModel: TransactionsContainerViewModel | null;
+    private _userInfoViewModel: UserInfoViewModel | null;
+
+    // Callbacks to set model properties that affect view rendering
+    private _setIsLoaded: Dispatch<SetStateAction<boolean>> | null;
+    private _setError: Dispatch<SetStateAction<UIError | null>> | null;
 
     /*
      * Set the initial state when the app starts
@@ -57,20 +62,32 @@ export class AppViewModel {
         this._fetchCache = new FetchCache();
         this._viewModelCoordinator = new ViewModelCoordinator(this._eventBus, this._fetchCache);
 
-        // Child view models
-        this._companiesViewModel = null;
-        this._transactionsViewModel = null;
-        this._userInfoViewModel = null;
-
-        // Top level error state
+        // Set initial state
         this._error = null;
-
-        // State flags
         this._isInitialising = false;
         this._isInitialised = false;
         this._isLoading = false;
         this._isLoaded = false;
+        this._setIsLoaded = null;
+        this._setError = null;
+
+        // Initialize child view models
+        this._companiesViewModel = null;
+        this._transactionsViewModel = null;
+        this._userInfoViewModel = null;
         this._setupCallbacks();
+    }
+
+    /*
+     * For the correct React behavior, the view initializes state every time it loads
+     */
+    public useState(): void {
+
+        const [, setIsLoaded] = useState(this._isLoaded);
+        this._setIsLoaded = setIsLoaded;
+
+        const [, setError] = useState(this._error);
+        this._setError = setError;
     }
 
     /*
@@ -87,7 +104,7 @@ export class AppViewModel {
 
             // Prevent re-entrancy due to React strict mode
             this._isInitialising = true;
-            this._error = null;
+            this._updateError(null);
 
             // Get the application configuration
             const loader = new ConfigurationLoader();
@@ -112,7 +129,7 @@ export class AppViewModel {
         } catch (e: any) {
 
             // Render startup errors
-            this._error = ErrorFactory.fromException(e);
+            this._updateError(ErrorFactory.fromException(e));
 
         } finally {
 
@@ -138,8 +155,8 @@ export class AppViewModel {
             // Handle any login responses
             const navigateTo = await this._authenticator!.handlePageLoad();
 
-            // Indicate loaded
-            this._isLoaded = true;
+            // Inform the view that loading is complete
+            this._updateIsLoaded(true);
 
             // If a login response was handled, return the pre-login location to navigate back to
             // This also avoids leaving the authorization code in the browser URL
@@ -150,7 +167,7 @@ export class AppViewModel {
         } catch (e: any) {
 
             // Render errors and navigate home, to remove OAuth parameters from the browser URL
-            this._error = ErrorFactory.fromException(e);
+            this._updateError(ErrorFactory.fromException(e));
             return '/';
 
         } finally {
@@ -170,7 +187,7 @@ export class AppViewModel {
         try {
             await this._authenticator!.login(currentLocation);
         } catch (e: any) {
-            this._error = ErrorFactory.fromException(e);
+            this._updateError(ErrorFactory.fromException(e));
         }
     }
 
@@ -182,7 +199,7 @@ export class AppViewModel {
         try {
             await this._authenticator!.logout();
         } catch (e: any) {
-            this._error = ErrorFactory.fromException(e);
+            this._updateError(ErrorFactory.fromException(e));
         }
     }
 
@@ -288,7 +305,7 @@ export class AppViewModel {
         try {
             await this._authenticator?.expireAccessToken();
         } catch (e: any) {
-            this._error = ErrorFactory.fromException(e);
+            this._updateError(ErrorFactory.fromException(e));
         }
     }
 
@@ -300,8 +317,24 @@ export class AppViewModel {
         try {
             await this._authenticator?.expireRefreshToken();
         } catch (e: any) {
-            this._error = ErrorFactory.fromException(e);
+            this._updateError(ErrorFactory.fromException(e));
         }
+    }
+
+    /*
+     * Update loaded state and the binding system
+     */
+    private _updateIsLoaded(isLoaded: boolean): void {
+        this._isLoaded = isLoaded;
+        this._setIsLoaded!(isLoaded);
+    }
+
+    /*
+     * Update error state and the binding system
+     */
+    private _updateError(error: UIError | null): void {
+        this._error = error;
+        this._setError!(error);
     }
 
     /*

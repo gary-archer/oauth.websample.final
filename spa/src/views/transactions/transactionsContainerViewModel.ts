@@ -1,4 +1,5 @@
 import EventBus from 'js-event-bus';
+import {Dispatch, SetStateAction, useState} from 'react';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
@@ -19,6 +20,8 @@ export class TransactionsContainerViewModel {
     private _companyId: string | null;
     private _transactions: CompanyTransactions | null;
     private _error: UIError | null;
+    private _setTransactions: Dispatch<SetStateAction<CompanyTransactions | null>> | null;
+    private _setError: Dispatch<SetStateAction<UIError | null>> | null;
 
     public constructor(
         fetchClient: FetchClient,
@@ -31,6 +34,20 @@ export class TransactionsContainerViewModel {
         this._companyId = null;
         this._transactions = null;
         this._error = null;
+        this._setTransactions = null;
+        this._setError = null;
+    }
+
+    /*
+     * For the correct React behavior, the view initializes state every time it loads
+     */
+    public useState(): void {
+
+        const [, setTransactions] = useState(this._transactions);
+        this._setTransactions = setTransactions;
+
+        const [, setError] = useState(this._error);
+        this._setError = setError;
     }
 
     /*
@@ -64,21 +81,23 @@ export class TransactionsContainerViewModel {
         };
 
         this._viewModelCoordinator.onMainViewModelLoading();
-        this._companyId = id;
-        this._error = null;
-        this._transactions = null;
+        this._updateError(null);
+        if (this._companyId !== id) {
+            this._updateTransactions(null);
+            this._companyId = id;
+        }
 
         try {
 
             const result = await this._fetchClient.getCompanyTransactions(id, fetchOptions);
             if (result) {
-                this._transactions = result;
+                this._updateTransactions(result);
             }
 
         } catch (e: any) {
 
-            this._error = ErrorFactory.fromException(e);
-            this._transactions = null;
+            this._updateError(ErrorFactory.fromException(e));
+            this._updateTransactions(null);
 
         } finally {
 
@@ -98,7 +117,7 @@ export class TransactionsContainerViewModel {
      */
     public isForbiddenError(): boolean {
 
-        if(this._error) {
+        if (this._error) {
 
             if (this._error.statusCode === 404 && this._error.errorCode === ErrorCodes.companyNotFound) {
 
@@ -114,5 +133,21 @@ export class TransactionsContainerViewModel {
         }
 
         return false;
+    }
+
+    /*
+     * Update state and the binding system
+     */
+    private _updateTransactions(transactions: CompanyTransactions | null): void {
+        this._transactions = transactions;
+        this._setTransactions!(this._transactions);
+    }
+
+    /*
+     * Update state and the binding system
+     */
+    private _updateError(error: UIError | null): void {
+        this._error = error;
+        this._setError!(this._error);
     }
 }

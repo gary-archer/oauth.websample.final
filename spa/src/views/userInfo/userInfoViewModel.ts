@@ -1,4 +1,5 @@
 import EventBus from 'js-event-bus';
+import {Dispatch, SetStateAction, useState} from 'react';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
 import {ApiUserInfo} from '../../api/entities/apiUserInfo';
@@ -19,6 +20,9 @@ export class UserInfoViewModel {
     private _oauthUserInfo: OAuthUserInfo | null;
     private _apiUserInfo: ApiUserInfo | null;
     private _error: UIError | null;
+    private _setOAuthUserInfo: Dispatch<SetStateAction<OAuthUserInfo | null>> | null;
+    private _setApiUserInfo: Dispatch<SetStateAction<ApiUserInfo | null>> | null;
+    private _setError: Dispatch<SetStateAction<UIError | null>> | null;
 
     public constructor(
         fetchClient: FetchClient,
@@ -31,6 +35,24 @@ export class UserInfoViewModel {
         this._oauthUserInfo = null;
         this._apiUserInfo = null;
         this._error = null;
+        this._setOAuthUserInfo = null;
+        this._setApiUserInfo = null;
+        this._setError = null;
+    }
+
+    /*
+     * For the correct React behavior, the view initializes state every time it loads
+     */
+    public useState(): void {
+
+        const [, setOAuthUserInfo] = useState(this._oauthUserInfo);
+        this._setOAuthUserInfo = setOAuthUserInfo;
+
+        const [, setApiUserInfo] = useState(this._apiUserInfo);
+        this._setApiUserInfo = setApiUserInfo;
+
+        const [, setError] = useState(this._error);
+        this._setError = setError;
     }
 
     /*
@@ -70,12 +92,9 @@ export class UserInfoViewModel {
         };
 
         this._viewModelCoordinator.onUserInfoViewModelLoading();
+        this._updateError(null);
 
         try {
-
-            this._error = null;
-            this._oauthUserInfo = null;
-            this._apiUserInfo = null;
 
             // Set up promises for the two sources of user info
             const oauthUserInfoPromise = this._fetchClient.getOAuthUserInfo(oauthFetchOptions);
@@ -88,21 +107,45 @@ export class UserInfoViewModel {
 
             // Update data
             if (oauthUserInfo) {
-                this._oauthUserInfo = oauthUserInfo;
+                this._updateOAuthUserInfo(oauthUserInfo);
             }
             if (apiUserInfo) {
-                this._apiUserInfo = apiUserInfo;
+                this._updateApiUserInfo(apiUserInfo);
             }
 
         } catch (e: any) {
 
-            this._error = ErrorFactory.fromException(e);
-            this._oauthUserInfo = null;
-            this._apiUserInfo = null;
+            this._updateError(ErrorFactory.fromException(e));
+            this._updateOAuthUserInfo(null);
+            this._updateApiUserInfo(null);
 
         } finally {
 
             this._viewModelCoordinator.onUserInfoViewModelLoaded();
         }
+    }
+
+    /*
+     * Update state and the binding system
+     */
+    private _updateOAuthUserInfo(oauthUserInfo: OAuthUserInfo | null): void {
+        this._oauthUserInfo = oauthUserInfo;
+        this._setOAuthUserInfo!(oauthUserInfo);
+    }
+
+    /*
+     * Update state and the binding system
+     */
+    private _updateApiUserInfo(apiUserInfo: ApiUserInfo | null): void {
+        this._apiUserInfo = apiUserInfo;
+        this._setApiUserInfo!(apiUserInfo);
+    }
+
+    /*
+     * Update state and the binding system
+     */
+    private _updateError(error: UIError | null): void {
+        this._error = error;
+        this._setError!(error);
     }
 }
