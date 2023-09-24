@@ -40,10 +40,10 @@ export class CompaniesContainerViewModel {
      */
     public useState() {
 
-        const [, setCompanies] = useState<Company[]>(this._companies);
+        const [, setCompanies] = useState(this._companies);
         this._setCompanies = setCompanies;
 
-        const [, setError] = useState<UIError | null>(this._error);
+        const [, setError] = useState(this._error);
         this._setError = setError;
     }
 
