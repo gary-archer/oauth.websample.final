@@ -43,7 +43,7 @@ export class UserInfoViewModel {
     /*
      * For the correct React behavior, the view initializes state every time it loads
      */
-    public useState() {
+    public useState(): void {
 
         const [, setOAuthUserInfo] = useState(this._oauthUserInfo);
         this._setOAuthUserInfo = setOAuthUserInfo;
@@ -139,7 +139,7 @@ export class UserInfoViewModel {
     private _updateApiUserInfo(apiUserInfo: ApiUserInfo | null): void {
         this._apiUserInfo = apiUserInfo;
         this._setApiUserInfo!(apiUserInfo);
-    }    
+    }
 
     /*
      * Update state and the binding system

@@ -38,7 +38,7 @@ export class CompaniesContainerViewModel {
     /*
      * For the correct React behavior, the view initializes state every time it loads
      */
-    public useState() {
+    public useState(): void {
 
         const [, setCompanies] = useState(this._companies);
         this._setCompanies = setCompanies;

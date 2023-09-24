@@ -19,32 +19,23 @@ import {TransactionsContainer} from '../views/transactions/transactionsContainer
 import {TransactionsContainerProps} from '../views/transactions/transactionsContainerProps';
 import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
-import {AppState} from './appState';
 
 /*
- * The application root component
+ * The application shell component
  */
 export function App(props: AppProps): JSX.Element {
 
-    // Get global data whenever the view is recreated
     const model = props.viewModel;
+    model.useState();
 
-    // The view is re-rendered when any of these state properties change
-    const [state, setState] = useState<AppState>({
-        isLoaded: false,
-        isMobileLayout: isMobileLayoutNeeded(),
-        error: null,
-    });
+    const [isMobileLayout, setMobileLayout] = useState(false);
+    const navigate = useNavigate();
 
-    // Startup runs only once
     useEffect(() => {
         startup();
         return () => cleanup();
 
     }, []);
-
-    // Set up React Router navigation
-    const navigate = useNavigate();
 
     /*
      * Run the app's startup logic
@@ -70,15 +61,7 @@ export function App(props: AppProps): JSX.Element {
      * Initialise the model on startup
      */
     async function initialiseData(): Promise<void> {
-
         await model.initialise();
-        setState((s) => {
-            return {
-                ...s,
-                isInitialised: model.isInitialised,
-                error: model.error,
-            };
-        });
     }
 
     /*
@@ -86,17 +69,8 @@ export function App(props: AppProps): JSX.Element {
      */
     async function handlePageLoad(): Promise<void> {
 
-        // Handle any login responses
+        // Handle any login responses, and navigate back to the pre-login location
         const navigateTo = await model.handlePageLoad();
-        setState((s) => {
-            return {
-                ...s,
-                isLoaded: model.isLoaded,
-                error: model.error,
-            };
-        });
-
-        // Navigate back to pre-login locations if applicable
         if (navigateTo) {
             navigate(navigateTo, { replace: true});
         }
@@ -120,14 +94,7 @@ export function App(props: AppProps): JSX.Element {
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
     async function onLoginRequired(_event: LoginRequiredEvent): Promise<void> {
-
         await model.login(CurrentLocation.path);
-        setState((s) => {
-            return {
-                ...s,
-                error: model.error,
-            };
-        });
     }
 
     /*
@@ -152,14 +119,7 @@ export function App(props: AppProps): JSX.Element {
 
             // Force a data reload if recovering from errors
             if (model.hasError()) {
-
                 await model.reloadData(false);
-                setState((s) => {
-                    return {
-                        ...s,
-                        error: model.error,
-                    };
-                });
             }
         }
     }
@@ -168,14 +128,7 @@ export function App(props: AppProps): JSX.Element {
      * Handle reloads and updating the error state
      */
     async function onReloadData(causeError: boolean): Promise<void> {
-
         await model.reloadData(causeError);
-        setState((s) => {
-            return {
-                ...s,
-                error: model.error,
-            };
-        });
     }
 
     /*
@@ -190,50 +143,22 @@ export function App(props: AppProps): JSX.Element {
      * For test purposes this makes the access token in secure cookies act expired
      */
     async function onExpireAccessToken(): Promise<void> {
-
         await model.expireAccessToken();
-        setState((s) => {
-            return {
-                ...s,
-                error: model.error,
-            };
-        });
     }
 
     /*
      * For test purposes this makes the refresh token and access token in secure cookies act expired
      */
     async function onExpireRefreshToken(): Promise<void> {
-
         await model.expireRefreshToken();
-        setState((s) => {
-            return {
-                ...s,
-                error: model.error,
-            };
-        });
     }
 
     /*
      * Handle switching between mobile and desktop browser sizes
+     * Avoid excessive re-rendering by sending a maximum of one render per 250 milliseconds
      */
     function onResize(): void {
-
-        // Avoid excessive re-rendering by sending a maximum of one render per 250 milliseconds
-        setTimeout(() =>
-            setState((s) => {
-                return {
-                    ...s,
-                    isMobileLayout: isMobileLayoutNeeded(),
-                };
-            }), 250);
-    }
-
-    /*
-     * Indicate whether the current size is that of a mobile device
-     */
-    function isMobileLayoutNeeded(): boolean {
-        return window.innerWidth < 768;
+        setTimeout(() => setMobileLayout(window.innerWidth < 768), 250);
     }
 
     /*
@@ -248,7 +173,7 @@ export function App(props: AppProps): JSX.Element {
 
     function getTitleProps(): TitleViewProps {
 
-        if (state.isLoaded) {
+        if (model.isLoaded) {
 
             return {
                 userInfo: {
@@ -278,7 +203,7 @@ export function App(props: AppProps): JSX.Element {
     function getErrorProps(): ErrorSummaryViewProps {
 
         return {
-            error: state.error!,
+            error: model.error!,
             errorsToIgnore: [],
             containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
@@ -298,7 +223,7 @@ export function App(props: AppProps): JSX.Element {
 
         return {
             viewModel: model.getCompaniesViewModel(),
-            isMobileLayout: state.isMobileLayout,
+            isMobileLayout,
         };
     }
 
@@ -314,13 +239,16 @@ export function App(props: AppProps): JSX.Element {
         <>
             <TitleView {...getTitleProps()} />
             <HeaderButtonsView {...getHeaderButtonProps()} />
-            {state.error && <ErrorSummaryView {...getErrorProps()} />}
+            {model.error &&
+                <ErrorSummaryView {...getErrorProps()} />
+            }
             <SessionView {...getSessionProps()} />
-            {state.isLoaded &&
-            <Routes>
-                <Route path='/companies/:id' element={<TransactionsContainer {...getTransactionsProps()} />} />
-                <Route path='/*'             element={<CompaniesContainer {...getCompaniesProps()} />} />
-            </Routes>}
+            {model.isLoaded &&
+                <Routes>
+                    <Route path='/companies/:id' element={<TransactionsContainer {...getTransactionsProps()} />} />
+                    <Route path='/*'             element={<CompaniesContainer {...getCompaniesProps()} />} />
+                </Routes>
+            }
         </>
     );
 }

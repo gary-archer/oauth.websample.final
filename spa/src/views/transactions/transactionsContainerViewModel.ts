@@ -41,7 +41,7 @@ export class TransactionsContainerViewModel {
     /*
      * For the correct React behavior, the view initializes state every time it loads
      */
-    public useState() {
+    public useState(): void {
 
         const [, setTransactions] = useState(this._transactions);
         this._setTransactions = setTransactions;

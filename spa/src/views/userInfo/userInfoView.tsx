@@ -100,7 +100,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     return (
         <>
-            {model.error && 
+            {model.error &&
                 <div className='text-end mx-auto'>
                     <ErrorSummaryView {...getErrorProps()}/>
                 </div>
