@@ -55,7 +55,7 @@ export class ViewModelCoordinator {
 
         // On success, send an event so that a subscriber can show a UI effect such as enabling header buttons
         const found = this._fetchCache.getItem(cacheKey);
-        if (!found?.error) {
+        if (found?.data) {
             this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
         }
 
