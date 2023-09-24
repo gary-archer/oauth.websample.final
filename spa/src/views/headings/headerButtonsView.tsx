@@ -2,16 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {HeaderButtonsViewProps} from './headerButtonsViewProps';
-import {HeaderButtonsViewState} from './headerButtonsViewState';
 
 /*
  * Render the header buttons
  */
 export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
 
-    const [state, setState] = useState<HeaderButtonsViewState>({
-        hasData: false,
-    });
+    const [hasData, setHasData] = useState(false);
 
     useEffect(() => {
         startup();
@@ -34,13 +31,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
      * The session button state changes when data starts and ends loading
      */
     function onViewModelFetch(event: ViewModelFetchEvent) {
-
-        setState((s) => {
-            return {
-                ...s,
-                hasData: event.loaded,
-            };
-        });
+        setHasData(event.loaded);
     }
 
     /*
@@ -48,7 +39,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
      */
     function handleReloadPress(): void {
 
-        if (!state.hasData) {
+        if (!hasData) {
             return;
         }
 
@@ -61,7 +52,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
      */
     function handleReloadRelease(): void {
 
-        if (!state.hasData) {
+        if (!hasData) {
             return;
         }
 
@@ -95,7 +86,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
     /*
      * Render buttons and callback the parent when clicked
      */
-    const disabled = state.hasData ? false : true;
+    const disabled = hasData ? false : true;
     return  (
         <div className='row'>
             <div className='col col-one-fifth my-2 d-flex p-1'>
