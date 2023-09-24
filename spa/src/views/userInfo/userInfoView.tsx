@@ -6,7 +6,6 @@ import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {UserInfoViewProps} from './userInfoViewProps';
-import {UserInfoViewState} from './userInfoViewState';
 
 /*
  * A simple component to render the logged in user
@@ -14,12 +13,7 @@ import {UserInfoViewState} from './userInfoViewState';
 export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     const model = props.viewModel;
-    const [state, setState] = useState<UserInfoViewState>({
-        oauthUserInfo: model.oauthUserInfo,
-        apiUserInfo: model.apiUserInfo,
-        error: null,
-        showUserDescription: false,
-    });
+    model.useState();
 
     useEffect(() => {
         startup();
@@ -58,8 +52,8 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     function getUserNameForDisplay(): string {
 
-        if (state.oauthUserInfo) {
-            return `${state.oauthUserInfo.givenName} ${state.oauthUserInfo.familyName}`;
+        if (model.oauthUserInfo) {
+            return `${model.oauthUserInfo.givenName} ${model.oauthUserInfo.familyName}`;
         }
 
         return '';
@@ -89,22 +83,13 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Ask the model to load data, then update state
      */
     async function loadData(options?: ViewLoadOptions): Promise<void> {
-
         await model.callApi(options);
-        setState((s) => {
-            return {
-                ...s,
-                oauthUserInfo: model.oauthUserInfo,
-                apiUserInfo : model.apiUserInfo,
-                error: model.error,
-            };
-        });
     }
 
     function getErrorProps(): ErrorSummaryViewProps {
 
         return {
-            error: state.error!,
+            error: model.error!,
             errorsToIgnore: [ErrorCodes.loginRequired],
             containingViewName: 'userinfo',
             hyperlinkMessage: 'Problem Encountered',
@@ -115,19 +100,22 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     return (
         <>
-            {state.error && <div className='text-end mx-auto'>
-                <ErrorSummaryView {...getErrorProps()}/>
-            </div>}
-            {state.oauthUserInfo && state.apiUserInfo &&
-            <div className='text-end mx-auto'>
-                <div className='fw-bold basictooltip'>{getUserNameForDisplay()}
-                    <div className='basictooltiptext'>
-                        <small>{getUserTitle()}</small>
-                        <br />
-                        <small>{getUserRegions()}</small>
+            {model.error && 
+                <div className='text-end mx-auto'>
+                    <ErrorSummaryView {...getErrorProps()}/>
+                </div>
+            }
+            {model.oauthUserInfo && model.apiUserInfo &&
+                <div className='text-end mx-auto'>
+                    <div className='fw-bold basictooltip'>{getUserNameForDisplay()}
+                        <div className='basictooltiptext'>
+                            <small>{getUserTitle()}</small>
+                            <br />
+                            <small>{getUserRegions()}</small>
+                        </div>
                     </div>
                 </div>
-            </div>}
+            }
         </>
     );
 }
