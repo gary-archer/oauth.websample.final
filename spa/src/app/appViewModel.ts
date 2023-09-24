@@ -192,7 +192,7 @@ export class AppViewModel {
     }
 
     /*
-     * Trigger a logout and update error state if required
+     * Try to logout and silently report errors
      */
     public async logout(): Promise<void> {
 
@@ -285,7 +285,7 @@ export class AppViewModel {
      */
     public reloadData(causeError: boolean): void {
 
-        this._error = null;
+        this._updateError(null);
         this._viewModelCoordinator!.resetState();
         this._eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }

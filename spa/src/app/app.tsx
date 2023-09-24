@@ -28,7 +28,7 @@ export function App(props: AppProps): JSX.Element {
     const model = props.viewModel;
     model.useState();
 
-    const [isMobileLayout, setMobileLayout] = useState(false);
+    const [isMobileLayout, setIsMobileLayout] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -158,7 +158,7 @@ export function App(props: AppProps): JSX.Element {
      * Avoid excessive re-rendering by sending a maximum of one render per 250 milliseconds
      */
     function onResize(): void {
-        setTimeout(() => setMobileLayout(window.innerWidth < 768), 250);
+        setTimeout(() => setIsMobileLayout(window.innerWidth < 768), 250);
     }
 
     /*
@@ -239,15 +239,15 @@ export function App(props: AppProps): JSX.Element {
         <>
             <TitleView {...getTitleProps()} />
             <HeaderButtonsView {...getHeaderButtonProps()} />
-            {model.error &&
-                <ErrorSummaryView {...getErrorProps()} />
-            }
-            <SessionView {...getSessionProps()} />
+            {model.error && <ErrorSummaryView {...getErrorProps()} />}
             {model.isLoaded &&
-                <Routes>
-                    <Route path='/companies/:id' element={<TransactionsContainer {...getTransactionsProps()} />} />
-                    <Route path='/*'             element={<CompaniesContainer {...getCompaniesProps()} />} />
-                </Routes>
+                <>
+                    <SessionView {...getSessionProps()} />
+                    <Routes>
+                        <Route path='/companies/:id' element={<TransactionsContainer {...getTransactionsProps()} />} />
+                        <Route path='/*'             element={<CompaniesContainer {...getCompaniesProps()} />} />
+                    </Routes>
+                </>
             }
         </>
     );
