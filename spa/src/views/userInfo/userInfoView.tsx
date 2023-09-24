@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';

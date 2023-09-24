@@ -2,17 +2,13 @@ import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import {ErrorDetailsView} from './errorDetailsView';
 import {ErrorSummaryViewProps} from './errorSummaryViewProps';
-import {ErrorSummaryViewState} from './errorSummaryViewState';
 
 /*
  * Manages rendering of error summary information
  */
 export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
 
-    const [state, setState] = useState<ErrorSummaryViewState>({
-        showDetails: false,
-        error: props.error,
-    });
+    const [showDetails, setShowDetails] = useState(false);
 
     /*
      * Return the markup for the hyperlink
@@ -38,11 +34,11 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
      */
     function isNonError() {
 
-        if (!state.error) {
+        if (!props.error) {
             return true;
         }
 
-        if (props.errorsToIgnore.indexOf(state.error.errorCode) !== -1) {
+        if (props.errorsToIgnore.indexOf(props.error.errorCode) !== -1) {
             return true;
         }
 
@@ -56,7 +52,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
 
         const errorDetailsProps = {
             title: props.dialogTitle,
-            error: state.error!,
+            error: props.error!,
             handleClose: handleDetailsDialogClose,
         };
 
@@ -69,7 +65,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
         return (
 
             <ReactModal
-                isOpen={state.showDetails}
+                isOpen={showDetails}
                 onRequestClose={handleDetailsDialogClose}
                 contentLabel={props.dialogTitle}
                 style={customStyles}
@@ -85,25 +81,14 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
     function handleSummaryClick(event: React.MouseEvent<HTMLAnchorElement>) {
 
         event.preventDefault();
-        setState((s) => {
-            return {
-                ...s,
-                showDetails: true,
-            };
-        });
+        setShowDetails(true);
     }
 
     /*
      * Reset state when the dialog's close button is clicked
      */
     function handleDetailsDialogClose() {
-
-        setState((s) => {
-            return {
-                ...s,
-                showDetails: false,
-            };
-        });
+        setShowDetails(false);
     }
 
     // Some errors, such as login required, are not rendered
