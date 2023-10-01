@@ -28,7 +28,7 @@ export function App(props: AppProps): JSX.Element {
     const model = props.viewModel;
     model.useState();
 
-    const [isMobileLayout, setIsMobileLayout] = useState(false);
+    const [isMobileLayout, setIsMobileLayout] = useState(isMobileLayoutRequired());
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -158,7 +158,14 @@ export function App(props: AppProps): JSX.Element {
      * Avoid excessive re-rendering by sending a maximum of one render per 250 milliseconds
      */
     function onResize(): void {
-        setTimeout(() => setIsMobileLayout(window.innerWidth < 768), 250);
+        setTimeout(() => setIsMobileLayout(isMobileLayoutRequired()), 250);
+    }
+
+    /*
+     * Calculate whether to use mobile views
+     */
+    function isMobileLayoutRequired(): boolean {
+        return window.innerWidth < 768;
     }
 
     /*
