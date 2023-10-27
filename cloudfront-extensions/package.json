@@ -23,11 +23,8 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.119",
     "@types/node": "^18.16.19",
-    "serverless": "^3.33.0",
+    "serverless": "^3.36.0",
     "serverless-lambda-edge-pre-existing-cloudfront": "^1.2.0",
-    "typescript": "^5.1.5"
-  },
-  "overrides": {
-    "semver": "7.5.2"
+    "typescript": "^5.2.0"
   }
 }

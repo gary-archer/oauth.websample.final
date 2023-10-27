@@ -100,7 +100,7 @@ export class ErrorFactory {
     /*
      * Return an error due to rendering the view
      */
-    public static fromRenderError(exception: any, componentStack?: string): UIError {
+    public static fromRenderError(exception: any, componentStack: string): UIError {
 
         // Already handled errors
         if (exception instanceof UIError) {
