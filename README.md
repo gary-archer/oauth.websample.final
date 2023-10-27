@@ -8,7 +8,7 @@
 
 ## Overview
 
-The final demo SPA, which aims for a [Web Architecture](https://authguidance.com/web-architecture-goals/) with best capabilities:
+The final demo Single Page Application, which aims for a [Web Architecture](https://authguidance.com/web-architecture-goals/) with best capabilities:
 
 - The SPA uses an API driven OpenID Connect solution via the **Token Handler Pattern**
 - Only the most secure cookies are used, with no tokens in the browser
