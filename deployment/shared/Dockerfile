@@ -1,4 +1,4 @@
-FROM node:18.15.0-bullseye
+FROM node:20-bookworm
 
 # Copy the web host application and install its dependencies
 WORKDIR /usr/webhost

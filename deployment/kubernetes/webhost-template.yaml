@@ -18,6 +18,9 @@ spec:
     metadata:
       labels:
         app: webhost
+        spiffe.io/spire-managed-identity: 'true'
+      annotations:
+        inject.istio.io/templates: 'sidecar,spire'
     spec:
       containers:
       - name: webhost
