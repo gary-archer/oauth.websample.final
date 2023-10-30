@@ -27,6 +27,7 @@ spec:
       annotations:
         inject.istio.io/templates: 'sidecar,spire'
     spec:
+      serviceAccountName: webhost
       containers:
       - name: webhost
         image: $DOCKER_IMAGE
