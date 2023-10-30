@@ -3,6 +3,11 @@
 # I use this in local development deployments, such as for a local KIND cluster
 # My deployed environments use a content delivery network and do not use a Kubernetes web host
 #
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: webhost
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
