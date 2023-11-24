@@ -10,11 +10,26 @@ const handler = async (event: any, context: Context) => {
     const request = event.Records[0].cf.request;
     const requestUri = request.uri.toLowerCase();
 
-    // First serve files for known extensions
+    // For invalid paths, redirect to the SPA
+    const spaBasePath = '/spa/';
+    if (!requestUri.startsWith(spaBasePath)) {
+
+        return {
+            status: '301',
+            statusDescription: 'Moved Permanently',
+            headers: {
+                'location': [{
+                  key: 'Location',
+                  value: spaBasePath,
+                }],
+            },
+        };
+    }
+
+    // Otherwise, first serve files for known extensions
     const extensions = [
         '.html',
-        '.js',
-        '.mjs',
+        '.js',,
         '.css',
         '.ico',
     ];
@@ -27,19 +42,9 @@ const handler = async (event: any, context: Context) => {
         return request;
     }
 
-    const spaBasePath = '/spa/';
-    if (requestUri.startsWith(spaBasePath)) {
-        
-        // Serve the SPA index.html for other requests within that path
-        request.uri = `${spaBasePath}index.html`;
-        return request;
-
-    } else {
-
-        // Serve the shell index.html for any other requests
-        request.uri = '/index.html';
-        return request;
-    };
+    // Serve the SPA index.html for other requests within that path
+    request.uri = `${spaBasePath}index.html`;
+    return request;
 };
 
 // Export the handler to serverless.yml

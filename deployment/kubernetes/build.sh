@@ -29,17 +29,6 @@ fi
 cd ..
 
 #
-# Build the shell application, which I use as a simple post logout landing page
-#
-cd shell
-./build.sh 'RELEASE'
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the shell application'
-  exit 1
-fi
-cd ..
-
-#
 # Build the SPA
 #
 cd spa

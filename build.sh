@@ -55,18 +55,6 @@ if [ "$1" == 'LOCALAPI' ]; then
 fi
 
 #
-# Build the minimal shell application, which acts as a second micro-UI
-#
-cd shell
-echo 'Building the shell application ...'
-./build.sh "$BUILD_CONFIGURATION"
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the shell application'
-  exit
-fi
-cd ..
-
-#
 # Build the SPA in watch mode, so that we can develop productively and see changes
 #
 echo 'Building the SPA ...'

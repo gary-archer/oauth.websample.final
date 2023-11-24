@@ -59,7 +59,7 @@ if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
   ## Rewrite the index.html with script integrity timestamps before deploying to a CDN
   node --loader ts-node/esm --no-warnings ./webpack/rewriteIndexHtml.ts
   if [ $? -ne 0 ]; then
-    echo 'Problem encountered rewriting the shell index.html file'
+    echo 'Problem encountered rewriting the SPA index.html file'
     exit 1
   fi
 else
