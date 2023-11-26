@@ -13,7 +13,6 @@ The final demo Single Page Application, which aims for a [Web Architecture](http
 - The SPA uses an API driven OpenID Connect solution via the **Token Handler Pattern**
 - Only the most secure cookies are used, with no tokens in the browser
 - Only client side React technology is needed to implement the SPA, for productive development
-- The SPA is split into micro-UIs, to keep the web code base manageable as it grows
 - The SPA is deployed to many global locations via a Content Delivery Network (CDN)
 
 ## Components
