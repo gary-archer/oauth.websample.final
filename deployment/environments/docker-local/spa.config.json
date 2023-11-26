@@ -1,4 +1,4 @@
 {
-    "apiBaseUrl": "https://api.authsamples-dev.com/tokenhandler/investments",
-    "oauthAgentBaseUrl": "https://api.authsamples-dev.com/tokenhandler/oauth-agent"
+    "apiBaseUrl": "https://api.authsamples-dev.com/investments",
+    "oauthAgentBaseUrl": "https://api.authsamples-dev.com/oauth-agent"
 }
