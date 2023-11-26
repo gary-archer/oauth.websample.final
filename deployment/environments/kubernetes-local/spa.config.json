@@ -1,4 +1,4 @@
 {
-    "apiBaseUrl": "https://api.mycluster.com/investments",
-    "oauthAgentBaseUrl": "https://api.mycluster.com/oauth-agent"
+    "apiBaseUrl": "https://api.mycluster.com/tokenhandler/investments",
+    "oauthAgentBaseUrl": "https://api.mycluster.com/tokenhandler/oauth-agent"
 }
