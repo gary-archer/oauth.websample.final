@@ -6,12 +6,6 @@ COPY webhost/dist               /usr/webhost/dist
 COPY webhost/package*.json      /usr/webhost/
 RUN npm install --production
 
-# Copy the shell application's static content files
-COPY shell/dist/*.html  /usr/webhost/shell/
-COPY shell/dist/*.mjs   /usr/webhost/shell/
-COPY shell/dist/*.css   /usr/webhost/shell/
-COPY shell/dist/*.ico   /usr/webhost/shell/
-
 # Copy the SPA's static content files
 COPY spa/dist/*.html        /usr/webhost/spa/
 COPY spa/dist/*.bundle.js   /usr/webhost/spa/

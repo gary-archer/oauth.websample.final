@@ -17,9 +17,6 @@ export interface Authenticator {
     // Perform a logout redirect
     logout(): Promise<void>;
 
-    // Handle a notification that a micro UI on another tab has logged out
-    onLoggedOut(): void;
-
     // Return an anti forgery token to the API for when data changing commands are sent
     addAntiForgeryToken(options: AxiosRequestConfig): void;
 

@@ -11,9 +11,11 @@ import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../views/errors/errorSummaryViewProps';
 import {HeaderButtonsView} from '../views/headings/headerButtonsView';
 import {HeaderButtonsViewProps} from '../views/headings/headerButtonsViewProps';
+import {LoginRequiredViewProps} from '../views/loginRequired/loginRequiredViewProps';
 import {SessionView} from '../views/headings/sessionView';
 import {SessionViewProps} from '../views/headings/sessionViewProps';
 import {TitleView} from '../views/headings/titleView';
+import {LoginRequiredView} from '../views/loginRequired/loginRequiredView';
 import {TitleViewProps} from '../views/headings/titleViewProps';
 import {TransactionsContainer} from '../views/transactions/transactionsContainer';
 import {TransactionsContainerProps} from '../views/transactions/transactionsContainerProps';
@@ -21,7 +23,7 @@ import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
 
 /*
- * The application shell component
+ * The entry point view
  */
 export function App(props: AppProps): JSX.Element {
 
@@ -132,7 +134,7 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * When logout is selected, redirect to the shell app, which will implement the logout details
+     * When logout is selected, clear state, then redirect to the logged out view
      */
     async function onLogout(): Promise<void> {
         await model.logout();
@@ -174,7 +176,7 @@ export function App(props: AppProps): JSX.Element {
     async function onStorage(event: StorageEvent): Promise<void> {
 
         if (HtmlStorageHelper.isLoggedOutEvent(event)) {
-            await model.authenticator.onLoggedOut();
+            navigate('/loggedout');
         }
     }
 
@@ -223,6 +225,7 @@ export function App(props: AppProps): JSX.Element {
 
         return {
             sessionId: SessionManager.get(),
+            eventBus: model.eventBus,
         };
     }
 
@@ -242,6 +245,14 @@ export function App(props: AppProps): JSX.Element {
         };
     }
 
+    function getLoginRequiredProps(): LoginRequiredViewProps {
+
+        return {
+            eventBus: model.eventBus,
+            navigate,
+        };
+    }
+
     return (
         <>
             <TitleView {...getTitleProps()} />
@@ -252,6 +263,7 @@ export function App(props: AppProps): JSX.Element {
                     <SessionView {...getSessionProps()} />
                     <Routes>
                         <Route path='/companies/:id' element={<TransactionsContainer {...getTransactionsProps()} />} />
+                        <Route path='/loggedout'     element={<LoginRequiredView {...getLoginRequiredProps()} />} />
                         <Route path='/*'             element={<CompaniesContainer {...getCompaniesProps()} />} />
                     </Routes>
                 </>

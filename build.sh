@@ -46,6 +46,13 @@ if [ "$1" == 'LOCALAPI' ]; then
     exit
   fi
 
+  #
+  # TOOD: delete after merge
+  #
+  cd localtokenhandler
+  git checkout feature/simplify
+  cd ..
+
   echo 'Building the local token handler ...'
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then
@@ -53,18 +60,6 @@ if [ "$1" == 'LOCALAPI' ]; then
     exit
   fi
 fi
-
-#
-# Build the minimal shell application, which acts as a second micro-UI
-#
-cd shell
-echo 'Building the shell application ...'
-./build.sh "$BUILD_CONFIGURATION"
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the shell application'
-  exit
-fi
-cd ..
 
 #
 # Build the SPA in watch mode, so that we can develop productively and see changes

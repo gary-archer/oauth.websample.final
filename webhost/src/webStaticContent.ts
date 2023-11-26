@@ -25,20 +25,19 @@ export class WebStaticContent {
         const spaRoot = this._getSpaFilesBasePath();
         this._express.use(spaBasePath, express.static(spaRoot));
 
-        // Serve static files for the shell application
-        const shellBasePath = '/';
-        const shellRoot = this._getShellFilesBasePath();
-        this._express.use(shellBasePath, express.static(shellRoot));
-
-        // Handle not found requests by serving the index.html for the current micro-UI
+        // Handle not found requests
         this._express.get('*', (request, response) => {
 
             const requestPath = request.path.toLowerCase();
             if (requestPath.startsWith(spaBasePath)) {
+
+                // Within the SPA serve the defeault document
                 response.sendFile('index.html', {root: spaRoot});
 
             } else {
-                response.sendFile('index.html', {root: shellRoot});
+
+                // For other paths, redirect to the SPA
+                response.redirect(spaBasePath);
             }
         });
     }
@@ -57,23 +56,6 @@ export class WebStaticContent {
 
             // In Docker development setups, the files are packaged to a subfolder of the web host
             return './spa';
-        }
-    }
-
-    /*
-     * Return the relative path to root web files, for the shell application
-     */
-    private _getShellFilesBasePath(): string {
-
-        if (this._configuration.mode === 'development') {
-
-            // During development, point to built SPA files
-            return '../shell/dist';
-
-        } else {
-
-            // In Docker development setups, the files are packaged to a subfolder of the web host
-            return './shell';
         }
     }
 }

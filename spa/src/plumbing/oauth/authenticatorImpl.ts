@@ -127,14 +127,6 @@ export class AuthenticatorImpl implements Authenticator {
     }
 
     /*
-     * Handle logout on another browser tab, or for another micro UI in the same origin
-     * Redirect to the shell app, which serves as the post logout landing page
-     */
-    public onLoggedOut(): void {
-        location.href = `${location.origin}/loggedout`;
-    }
-
-    /*
      * Add an anti forgery token when sending data changing commands to APIs or the OAuth agent
      */
     public addAntiForgeryToken(options: AxiosRequestConfig): void {
