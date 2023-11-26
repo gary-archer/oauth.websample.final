@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
+import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
 import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
@@ -33,6 +34,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
      * Subscribe for reload events and then do the initial load of data
      */
     async function startup(): Promise<void> {
+        model.eventBus.emit(EventNames.Navigated, null, new NavigatedEvent(true));
         model.eventBus.on(EventNames.ReloadData, onReload);
         await loadData();
     }

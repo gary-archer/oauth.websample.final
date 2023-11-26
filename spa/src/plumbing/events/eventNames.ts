@@ -6,6 +6,9 @@ export class EventNames {
     // Raised when a view model fetches data
     public static ViewModelFetch = 'ViewModelFetch';
 
+    // Raised when the main view changes
+    public static Navigated  = 'Navigated';
+
     // Raised when the SPA must trigger an OpenID Connect flow
     public static LoginRequired  = 'LoginRequired';
 

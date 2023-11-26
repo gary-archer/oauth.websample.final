@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
+import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
 import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
@@ -25,7 +26,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     async function startup(): Promise<void> {
         model.eventBus.on(EventNames.ReloadData, onReload);
-        await loadData();
+        model.eventBus.on(EventNames.Navigated, onNavigate);
     }
 
     /*
@@ -33,6 +34,19 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     function cleanup(): void {
         model.eventBus.detach(EventNames.ReloadData, onReload);
+        model.eventBus.on(EventNames.Navigated, onNavigate);
+    }
+
+    /*
+     * Load or unload data based on navigation events
+     */
+    async function onNavigate(event: NavigatedEvent): Promise<void> {
+
+        if (!event.isMainView) {
+            model.unload();
+        } else {
+            await loadData();
+        }
     }
 
     /*
