@@ -43,6 +43,7 @@ mkdir .package/spa
 #
 # Copy HTML assets
 #
+cp ../spa/favicon.ico       .package
 cp ../spa/dist/index.html   .package/spa
 cp ../spa/dist/*.bundle.js  .package/spa
 cp ../spa/dist/*.css        .package/spa

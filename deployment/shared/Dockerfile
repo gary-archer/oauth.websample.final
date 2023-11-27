@@ -7,6 +7,7 @@ COPY webhost/package*.json      /usr/webhost/
 RUN npm install --production
 
 # Copy the SPA's static content files
+COPY spa/favicon.ico        /usr/webhost/
 COPY spa/dist/*.html        /usr/webhost/spa/
 COPY spa/dist/*.bundle.js   /usr/webhost/spa/
 COPY spa/dist/*.css         /usr/webhost/spa/

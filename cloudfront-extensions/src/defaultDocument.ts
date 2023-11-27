@@ -10,6 +10,11 @@ const handler = async (event: any, context: Context) => {
     const request = event.Records[0].cf.request;
     const requestUri = request.uri.toLowerCase();
 
+    // Handle the request for favicon.ico
+    if (requestUri === '/favicon.ico') {
+        return request;
+    }
+
     // For invalid paths, redirect to the SPA
     const spaBasePath = '/spa/';
     if (!requestUri.startsWith(spaBasePath)) {
@@ -26,12 +31,11 @@ const handler = async (event: any, context: Context) => {
         };
     }
 
-    // Otherwise, first serve files for known extensions
+    // Otherwise, serve files for known extensions
     const extensions = [
         '.html',
         '.js',,
-        '.css',
-        '.ico',
+        '.css'
     ];
 
     const knownExtension = extensions.find((ext) => {
