@@ -8,7 +8,7 @@ import {FetchCacheItem} from './fetchCacheItem';
 export class FetchCache {
 
     // A map of cache keys to API responses
-    private readonly _requests: Record<string, FetchCacheItem> = {};
+    private _requests: Record<string, FetchCacheItem> = {};
 
     /*
      * Create an item with no data when an API request is triggered
@@ -40,5 +40,12 @@ export class FetchCache {
         if (this._requests[key]) {
             delete this._requests[key];
         }
+    }
+
+    /*
+     * Clear the cache after a logout on another browser tab
+     */
+    public clearAll(): void {
+        this._requests = {};
     }
 }

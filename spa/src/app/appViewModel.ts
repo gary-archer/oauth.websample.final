@@ -8,6 +8,7 @@ import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {UIError} from '../plumbing/errors/uiError';
 import {EventNames} from '../plumbing/events/eventNames';
+import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ReloadDataEvent} from '../plumbing/events/reloadDataEvent';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
@@ -192,15 +193,29 @@ export class AppViewModel {
     }
 
     /*
-     * Try to logout and silently report errors
+     * Try to logout and swallow any errors
      */
-    public async logout(): Promise<void> {
+    public async logout(): Promise<boolean> {
 
         try {
             await this._authenticator!.logout();
+            return true;
+
         } catch (e: any) {
-            this._updateError(ErrorFactory.fromException(e));
+
+            ErrorConsoleReporter.output(ErrorFactory.fromException(e));
+            return false;
         }
+    }
+
+    /*
+     * Clean up state after a logout on another browser tab
+     */
+    public onLoggedOut(): void {
+
+        this._fetchCache.clearAll();
+        this._viewModelCoordinator.resetState();
+        this._updateError(null);
     }
 
     /*

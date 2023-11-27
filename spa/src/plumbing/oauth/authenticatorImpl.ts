@@ -1,5 +1,6 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Guid} from 'guid-typescript';
+import urlparse from 'url-parse';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
@@ -18,14 +19,12 @@ export class AuthenticatorImpl implements Authenticator {
     private readonly _oauthAgentBaseUrl: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
     private readonly _sessionId: string;
-    private _antiForgeryToken: string | null;
 
     public constructor(configuration: Configuration, sessionId: string) {
 
         this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
         this._sessionId = sessionId;
         this._concurrencyHandler = new ConcurrentActionHandler();
-        this._antiForgeryToken = null;
         this._setupCallbacks();
     }
 
@@ -33,7 +32,7 @@ export class AuthenticatorImpl implements Authenticator {
      * Use the anti forgery token in storage as an indicator of whether logged in
      */
     public isLoggedIn(): boolean {
-        return !!this._antiForgeryToken;
+        return !!HtmlStorageHelper.antiForgeryToken;
     }
 
     /*
@@ -63,47 +62,51 @@ export class AuthenticatorImpl implements Authenticator {
      */
     public async handlePageLoad(): Promise<string | null> {
 
-        try {
+        // If the page loads with a state query parameter we classify it as an OAuth response
+        const urlData = urlparse(location.href, true);
+        if (urlData.query && urlData.query.state) {
 
-            // Send the full URL to the Token Handler API
-            const request = {
-                url: location.href,
-            };
-            const endLoginResponse = await this._callOAuthAgent(
-                'POST',
-                '/login/end',
-                request) as EndLoginResponse;
+            try {
+                // Send the full URL to the Token Handler API
+                const request = {
+                    url: location.href,
+                };
+                const endLoginResponse = await this._callOAuthAgent(
+                    'POST',
+                    '/login/end',
+                    request) as EndLoginResponse;
 
-            // Ensure that no code in the app thinks it is logged out
-            if (endLoginResponse.isLoggedIn) {
-                HtmlStorageHelper.loggedOut = false;
+                // Store the anti forgery token, used for data changing API requests
+                if (endLoginResponse.antiForgeryToken) {
+                    HtmlStorageHelper.antiForgeryToken = endLoginResponse.antiForgeryToken;
+                }
+
+                // Ensure that other tabs know they are no longer logged out
+                if (endLoginResponse.isLoggedIn) {
+                    HtmlStorageHelper.loggedOut = false;
+                }
+
+                // If a login was handled, then the SPA returns to its pre-login location
+                if (endLoginResponse.handled) {
+                    return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
+                }
+
+            } catch (e: any) {
+
+                // Session expired errors calling the OAuth agent can be caused by cookies with an old encryption key
+                // Handle these by returning a default result
+                // API calls will then fail and a new login redirect will be triggered, to get updated cookies
+                if (this._isSessionExpiredError(e)) {
+                    return null;
+                }
+
+                // Rethrow other errors
+                throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
             }
-
-            // Store the anti forgery token, used for data changing API requests
-            if (endLoginResponse.antiForgeryToken) {
-                this._antiForgeryToken = endLoginResponse.antiForgeryToken;
-            }
-
-            // If a login was handled, then the SPA returns to its pre-login location
-            if (endLoginResponse.handled) {
-                return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
-            }
-
-            // Return a no-op result by default
-            return null;
-
-        } catch (e: any) {
-
-            // Session expired errors calling the OAuth agent can be caused by cookies with an old encryption key
-            // Handle these by returning a default result that results in a loaded state
-            // API calls will then fail and a new login redirect will be triggered, to get updated cookies
-            if (this._isSessionExpiredError(e)) {
-                return null;
-            }
-
-            // Rethrow other errors
-            throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
         }
+
+        // Return a no-op result by default
+        return null;
     }
 
     /*
@@ -122,7 +125,7 @@ export class AuthenticatorImpl implements Authenticator {
 
         } finally {
 
-            this._antiForgeryToken = null;
+            HtmlStorageHelper.clearAntiForgeryToken();
         }
     }
 
@@ -136,7 +139,7 @@ export class AuthenticatorImpl implements Authenticator {
             options.method === 'PATCH' ||
             options.method === 'DELETE') {
 
-            (options.headers as any)['x-mycompany-csrf'] = this._antiForgeryToken;
+            (options.headers as any)['x-mycompany-csrf'] = HtmlStorageHelper.antiForgeryToken;
         }
     }
 

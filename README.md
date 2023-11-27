@@ -10,7 +10,7 @@
 
 The final demo Single Page Application, which aims for a [Web Architecture](https://authguidance.com/web-architecture-goals/) with best capabilities:
 
-- The SPA uses an API driven OpenID Connect solution via the **Token Handler Pattern**
+- The SPA uses an API driven OpenID Connect solution via the [Token Handler Pattern](https://github.com/curityio/spa-using-token-handler)
 - Only the most secure cookies are used, with no tokens in the browser
 - Only client side React technology is needed to implement the SPA, for productive development
 - The SPA is deployed to many global locations via a Content Delivery Network (CDN)

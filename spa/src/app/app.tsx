@@ -137,8 +137,22 @@ export function App(props: AppProps): JSX.Element {
      * When logout is selected, clear state, then redirect to the logged out view
      */
     async function onLogout(): Promise<void> {
-        await model.logout();
+
+        // Inform other tabs that we are logged out
         HtmlStorageHelper.loggedOut = true;
+
+        // Try to logout, which could fail due to activity on other tab, in which case move to a logged out state
+        if (!await model.logout()) {
+            onLoggedOut();
+        }
+    }
+
+    /*
+     * A shared routine to move to a logged out state
+     */
+    function onLoggedOut(): void {
+        model.onLoggedOut();
+        navigate('/loggedout');
     }
 
     /*
@@ -176,7 +190,7 @@ export function App(props: AppProps): JSX.Element {
     async function onStorage(event: StorageEvent): Promise<void> {
 
         if (HtmlStorageHelper.isLoggedOutEvent(event)) {
-            navigate('/loggedout');
+            onLoggedOut();
         }
     }
 

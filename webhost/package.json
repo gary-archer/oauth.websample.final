@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A web host used for local development setups",
   "author": "Gary Archer",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "type": "module",
   "engines": {
     "node": ">=18"

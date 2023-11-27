@@ -6,6 +6,7 @@ export class HtmlStorageHelper {
     private static _prefix = 'finalspa.';
     private static _preLoginLocation = 'preLoginLocation';
     private static _apiSessionKeyName = 'apisessionid';
+    private static _antiForgeryToken = 'antiForgeryToken';
     private static _loggedOutKeyName = 'loggedout';
 
     /*
@@ -39,6 +40,33 @@ export class HtmlStorageHelper {
 
         const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
         sessionStorage.setItem(key, value);
+    }
+
+    /*
+     * Get the anti forgery token, sent with data changing API requests
+     */
+    public static get antiForgeryToken(): string {
+
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._antiForgeryToken}`;
+        return localStorage.getItem(key) || '';
+    }
+
+    /*
+     * Set the anti forgery token, sent with data changing API requests
+     */
+    public static set antiForgeryToken(value: string) {
+
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._antiForgeryToken}`;
+        localStorage.setItem(key, value);
+    }
+
+    /*
+     * Clear the anti forgery token, sent with data changing API requests
+     */
+    public static clearAntiForgeryToken(): void {
+
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._antiForgeryToken}`;
+        localStorage.removeItem(key);
     }
 
     /*

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {HeaderButtonsViewProps} from './headerButtonsViewProps';
+import { NavigatedEvent } from '../../plumbing/events/navigatedEvent';
 
 /*
  * Render the header buttons
@@ -17,10 +18,12 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
 
     function startup() {
         props.eventBus.on(EventNames.ViewModelFetch, onViewModelFetch);
+        props.eventBus.on(EventNames.Navigated, onNavigated);
     }
 
     function cleanup() {
         props.eventBus.detach(EventNames.ViewModelFetch, onViewModelFetch);
+        props.eventBus.detach(EventNames.Navigated, onNavigated);
     }
 
     // Settings related to button long clicks
@@ -32,6 +35,15 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
      */
     function onViewModelFetch(event: ViewModelFetchEvent) {
         setHasData(event.loaded);
+    }
+
+    /*
+     * Handle logout navigation on another browser tab
+     */
+    function onNavigated(event: NavigatedEvent) {
+        if (!event.isMainView) {
+            setHasData(false);
+        }
     }
 
     /*
