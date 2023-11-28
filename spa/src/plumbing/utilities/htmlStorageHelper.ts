@@ -7,7 +7,7 @@ export class HtmlStorageHelper {
     private static _preLoginLocation = 'preLoginLocation';
     private static _apiSessionKeyName = 'apisessionid';
     private static _antiForgeryToken = 'antiForgeryToken';
-    private static _loggedOutKeyName = 'loggedout';
+    private static _loggedOutEventKeyName = 'loggedoutEvent';
 
     /*
      * Store the app location before triggering a login redirect
@@ -79,21 +79,12 @@ export class HtmlStorageHelper {
     }
 
     /*
-     * Get the logged out value from session storage
+     * Raise the logged out value to local storage, to enable multi tab logout
      */
-    public static get loggedOut(): boolean {
+    public static raiseLoggedOutEvent(): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutKeyName}`;
-        return localStorage.getItem(key) === 'true';
-    }
-
-    /*
-     * Set the logged out value in session storage, used to achieve multi tab logout
-     */
-    public static set loggedOut(value: boolean) {
-
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutKeyName}`;
-        localStorage.setItem(key, String(value));
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutEventKeyName}`;
+        localStorage.setItem(key, 'raised');
     }
 
     /*
@@ -103,10 +94,19 @@ export class HtmlStorageHelper {
 
         if (event.storageArea === localStorage) {
 
-            const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutKeyName}`;
-            return event.key === key && event.newValue === 'true';
+            const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutEventKeyName}`;
+            return event.key === key && event.newValue === 'raised';
         }
 
         return false;
+    }
+
+    /*
+     * Clear the event data from local storage
+     */
+    public static clearLoggedOutEvent(): void {
+
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutEventKeyName}`;
+        localStorage.removeItem(key);
     }
 }

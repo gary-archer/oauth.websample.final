@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
+import {HtmlStorageHelper} from '../../plumbing/utilities/htmlStorageHelper';
 import {CurrentLocation} from '../utilities/currentLocation';
 import {LoginRequiredViewProps} from './loginRequiredViewProps';
 
@@ -18,6 +19,9 @@ export function LoginRequiredView(props: LoginRequiredViewProps): JSX.Element {
 
     function startup() {
         props.eventBus.emit(EventNames.Navigated, null, new NavigatedEvent(false));
+        setTimeout(() => {
+            HtmlStorageHelper.clearLoggedOutEvent();
+        }, 250);
     }
 
     return  (

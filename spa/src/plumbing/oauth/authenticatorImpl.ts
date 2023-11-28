@@ -81,11 +81,6 @@ export class AuthenticatorImpl implements Authenticator {
                     HtmlStorageHelper.antiForgeryToken = endLoginResponse.antiForgeryToken;
                 }
 
-                // Ensure that other tabs know they are no longer logged out
-                if (endLoginResponse.isLoggedIn) {
-                    HtmlStorageHelper.loggedOut = false;
-                }
-
                 // If a login was handled, then the SPA returns to its pre-login location
                 if (endLoginResponse.handled) {
                     return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';

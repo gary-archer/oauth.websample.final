@@ -138,11 +138,21 @@ export function App(props: AppProps): JSX.Element {
      */
     async function onLogout(): Promise<void> {
 
-        // Inform other tabs that we are logged out
-        HtmlStorageHelper.loggedOut = true;
+        // Inform other tabs that we are logged out, by writing a local storage item for a short time
+        HtmlStorageHelper.raiseLoggedOutEvent();
 
         // Try to logout, which could fail due to activity on other tab, in which case move to a logged out state
         if (!await model.logout()) {
+            onLoggedOut();
+        }
+    }
+
+    /*
+     * When there is a logout on another tab, a local storage update is made and we move to the login screen
+     */
+    async function onStorage(event: StorageEvent): Promise<void> {
+
+        if (HtmlStorageHelper.isLoggedOutEvent(event)) {
             onLoggedOut();
         }
     }
@@ -182,16 +192,6 @@ export function App(props: AppProps): JSX.Element {
      */
     function isMobileLayoutRequired(): boolean {
         return window.innerWidth < 768;
-    }
-
-    /*
-     * When there is a logout on another tab, a local storage update is made and we move to the login screen
-     */
-    async function onStorage(event: StorageEvent): Promise<void> {
-
-        if (HtmlStorageHelper.isLoggedOutEvent(event)) {
-            onLoggedOut();
-        }
     }
 
     function getTitleProps(): TitleViewProps {
