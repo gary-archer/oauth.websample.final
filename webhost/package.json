@@ -10,7 +10,7 @@
   },
   "scripts": {
     "lint": "npx eslint . --ext .ts",
-    "start": "node --loader ts-node/esm --no-warnings src/app.ts",
+    "start": "tsx src/app.ts",
     "buildRelease": "tsc --sourceMap false",
     "startRelease": "node ./dist/app.js"
   },
@@ -25,7 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "eslint": "^8.52.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.0"
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
   }
 }

@@ -57,7 +57,7 @@ if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
   fi
 
   ## Write the final index.html before deploying to a CDN
-  node --loader ts-node/esm --no-warnings ./webpack/rewriteIndexHtml.ts
+  npx tsx ./webpack/rewriteIndexHtml.ts
   if [ $? -ne 0 ]; then
     echo 'Problem encountered rewriting the SPA index.html file'
     exit 1

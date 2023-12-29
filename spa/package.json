@@ -15,8 +15,8 @@
     "start": "npm run webpackDebug",
     "build": "./build.sh",
     "buildRelease": "./build.sh RELEASE",
-    "webpackDebug": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.dev.ts --watch",
-    "webpackRelease": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --config webpack/webpack.config.prod.ts",
+    "webpackDebug": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.dev.ts --watch",
+    "webpackRelease": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.prod.ts",
     "purgecss": "purgecss -c purgecss.config.cjs -o dist"
   },
   "dependencies": {
@@ -41,8 +41,8 @@
     "eslint-plugin-react": "^7.32.2",
     "purgecss": "^5.0.0",
     "ts-loader": "^9.5.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^5.10.0"
