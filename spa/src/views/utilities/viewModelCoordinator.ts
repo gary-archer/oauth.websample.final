@@ -116,9 +116,8 @@ export class ViewModelCoordinator {
 
             // In normal conditions the following errors are likely to be OAuth configuration errors
             const oauthConfigurationError = errors.find((e) =>
-                (e.statusCode === 401 && e.errorCode === ErrorCodes.invalidToken)      ||
-                (e.statusCode === 403 && e.errorCode === ErrorCodes.insufficientScope) ||
-                (e.statusCode === 400 && e.errorCode === ErrorCodes.claimsFailure));
+                (e.statusCode === 401 && e.errorCode === ErrorCodes.invalidToken) ||
+                (e.statusCode === 403 && e.errorCode === ErrorCodes.insufficientScope));
 
             // The sample's user behavior is to present an error, after which clicking Home runs a new login redirect
             // This allows the frontend application to get new tokens, which may fix the problem in some cases
