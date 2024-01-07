@@ -6,6 +6,7 @@ import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
+import {Authenticator} from '../../plumbing/oauth/authenticator';
 
 /*
  * Coordinates API requests from multiple views, and notifies once all API calls are complete
@@ -15,6 +16,7 @@ export class ViewModelCoordinator {
 
     private readonly _eventBus: EventBus;
     private readonly _fetchCache: FetchCache;
+    private readonly _authenticator: Authenticator;
     private _mainCacheKey: string;
     private _loadingCount: number;
     private _loadedCount: number;
@@ -22,10 +24,11 @@ export class ViewModelCoordinator {
     /*
      * Set the initial state
      */
-    public constructor(eventBus: EventBus, fetchCache: FetchCache) {
+    public constructor(eventBus: EventBus, fetchCache: FetchCache, authenticator: Authenticator) {
 
         this._eventBus = eventBus;
         this._fetchCache = fetchCache;
+        this._authenticator = authenticator;
         this._mainCacheKey = '';
         this._loadingCount = 0;
         this._loadedCount = 0;
@@ -59,8 +62,8 @@ export class ViewModelCoordinator {
             this._eventBus.emit(EventNames.ViewModelFetch, null, new ViewModelFetchEvent(true));
         }
 
-        // If all views have loaded, see if we need to trigger a login redirect
-        this._triggerLoginIfRequired();
+        // Perform error logic after all views have loaded
+        this._handleErrorsAfterLoad();
     }
 
     /*
@@ -75,7 +78,7 @@ export class ViewModelCoordinator {
      */
     public onUserInfoViewModelLoaded(): void {
         ++this._loadedCount;
-        this._triggerLoginIfRequired();
+        this._handleErrorsAfterLoad();
     }
 
     /*
@@ -95,16 +98,33 @@ export class ViewModelCoordinator {
     }
 
     /*
-     * If all views are loaded and one or more has reported login required, then trigger a redirect
+     * Handle OAuth related errors
      */
-    private _triggerLoginIfRequired(): void {
+    private _handleErrorsAfterLoad(): void {
 
         if (this._loadedCount === this._loadingCount) {
 
             const errors = this._getLoadErrors();
-            const found = errors.find((e) => e.errorCode === ErrorCodes.loginRequired);
-            if (found) {
+
+            // Login required errors occur when there are no tokens yet or when token refresh fails
+            // The sample's user behavior is to automatically redirect the user to login
+            const loginRequired = errors.find((e) => e.errorCode === ErrorCodes.loginRequired);
+            if (loginRequired) {
                 this._eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
+                return;
+            }
+
+            // In normal conditions the following errors are likely to be OAuth configuration errors
+            const oauthConfigurationError = errors.find((e) =>
+                (e.statusCode === 401 && e.errorCode === ErrorCodes.invalidToken)      ||
+                (e.statusCode === 403 && e.errorCode === ErrorCodes.insufficientScope) ||
+                (e.statusCode === 400 && e.errorCode === ErrorCodes.claimsFailure));
+
+            // The sample's user behavior is to present an error, after which clicking Home runs a new login redirect
+            // This allows the frontend application to get new tokens, which may fix the problem in some cases
+            if (oauthConfigurationError) {
+                this._authenticator.clearLoginState();
+                return;
             }
         }
     }

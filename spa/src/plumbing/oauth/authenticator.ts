@@ -17,6 +17,9 @@ export interface Authenticator {
     // Perform a logout redirect
     logout(): Promise<void>;
 
+    // Allow the app to clear its login state after certain errors
+    clearLoginState(): void;
+
     // Return an anti forgery token to the API for when data changing commands are sent
     addAntiForgeryToken(options: AxiosRequestConfig): void;
 

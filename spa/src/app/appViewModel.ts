@@ -26,11 +26,11 @@ export class AppViewModel {
     private _configuration: Configuration | null;
     private _authenticator: Authenticator | null;
     private _fetchClient: FetchClient | null;
+    private _viewModelCoordinator: ViewModelCoordinator | null;
 
     // Other infrastructure
     private readonly _eventBus: EventBus;
     private readonly _fetchCache: FetchCache;
-    private readonly _viewModelCoordinator: ViewModelCoordinator;
 
     // State
     private _error: UIError | null;
@@ -57,11 +57,11 @@ export class AppViewModel {
         this._configuration = null;
         this._authenticator = null;
         this._fetchClient = null;
+        this._viewModelCoordinator = null;
 
         // Create objects used for coordination
         this._eventBus = new EventBus();
         this._fetchCache = new FetchCache();
-        this._viewModelCoordinator = new ViewModelCoordinator(this._eventBus, this._fetchCache);
 
         // Set initial state
         this._error = null;
@@ -123,6 +123,12 @@ export class AppViewModel {
                 this._fetchCache,
                 this._authenticator,
                 sessionId);
+
+            // Create an object used to deal with API responses across multiple views
+            this._viewModelCoordinator = new ViewModelCoordinator(
+                this._eventBus,
+                this._fetchCache,
+                this._authenticator!);
 
             // Update state, to prevent model recreation if the view is recreated
             this._isInitialised = true;
@@ -214,7 +220,8 @@ export class AppViewModel {
     public onLoggedOut(): void {
 
         this._fetchCache.clearAll();
-        this._viewModelCoordinator.resetState();
+        this._viewModelCoordinator!.resetState();
+        this._authenticator!.clearLoginState();
         this._updateError(null);
     }
 
@@ -259,7 +266,7 @@ export class AppViewModel {
             this._companiesViewModel = new CompaniesContainerViewModel(
                 this._fetchClient!,
                 this._eventBus,
-                this._viewModelCoordinator,
+                this._viewModelCoordinator!,
             );
         }
 
@@ -274,7 +281,7 @@ export class AppViewModel {
             (
                 this._fetchClient!,
                 this._eventBus,
-                this._viewModelCoordinator,
+                this._viewModelCoordinator!,
             );
         }
 
@@ -288,7 +295,7 @@ export class AppViewModel {
             this._userInfoViewModel = new UserInfoViewModel(
                 this._fetchClient!,
                 this._eventBus,
-                this._viewModelCoordinator,
+                this._viewModelCoordinator!,
             );
         }
 

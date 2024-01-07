@@ -112,16 +112,20 @@ export class AuthenticatorImpl implements Authenticator {
         try {
 
             const response = await this._callOAuthAgent('POST', '/logout');
+            this.clearLoginState();
             location.href = response.endSessionRequestUri;
 
         } catch (e) {
 
             throw ErrorFactory.fromLogoutOperation(e, ErrorCodes.logoutRequestFailed);
-
-        } finally {
-
-            HtmlStorageHelper.clearAntiForgeryToken();
         }
+    }
+
+    /*
+     * Allow the login state to be cleared when required
+     */
+    public clearLoginState(): void {
+        HtmlStorageHelper.clearAntiForgeryToken();
     }
 
     /*
@@ -146,7 +150,7 @@ export class AuthenticatorImpl implements Authenticator {
     }
 
     /*
-     * This method is for testing only, so that the SPA can receive expired access token responses
+     * This method is for testing only, so that the SPA can simulate expired access tokens
      */
     public async expireAccessToken(): Promise<void> {
 
@@ -165,7 +169,7 @@ export class AuthenticatorImpl implements Authenticator {
     }
 
     /*
-     * This method is for testing only, so that the SPA can receive expired refresh token responses
+     * This method is for testing only, so that the SPA can simulate expired refresh tokens
      */
     public async expireRefreshToken(): Promise<void> {
 
@@ -195,6 +199,7 @@ export class AuthenticatorImpl implements Authenticator {
         } catch (e: any) {
 
             if (e.statusCode === 401) {
+                this.clearLoginState();
                 throw ErrorFactory.fromLoginRequired();
             }
 
