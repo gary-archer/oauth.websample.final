@@ -67,7 +67,7 @@ export class AuthenticatorImpl implements Authenticator {
         if (urlData.query && urlData.query.state) {
 
             try {
-                // Send the full URL to the Token Handler API
+                // Send the full URL to the OAuth agent API
                 const request = {
                     url: location.href,
                 };
@@ -188,7 +188,7 @@ export class AuthenticatorImpl implements Authenticator {
     }
 
     /*
-     * Do the work of asking the token handler API to refresh the access token stored in the secure cookie
+     * Do the work of asking the OAuth agent API to refresh the access token stored in the secure cookie
      */
     private async _performTokenRefresh(): Promise<void> {
 
@@ -234,7 +234,7 @@ export class AuthenticatorImpl implements Authenticator {
             // Add the anti forgery token
             this.addAntiForgeryToken(options);
 
-            // Supply headers for the Token Handler API to write to logs
+            // Supply headers for the OAuth agent API to write to logs
             options.headers['x-mycompany-api-client'] = 'FinalSPA';
             options.headers['x-mycompany-session-id'] = this._sessionId;
             options.headers['x-mycompany-correlation-id'] = Guid.create().toString();

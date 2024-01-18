@@ -20,7 +20,7 @@ export interface Authenticator {
     // Allow the app to clear its login state after certain errors
     clearLoginState(): void;
 
-    // Return an anti forgery token to the API for when data changing commands are sent
+    // Send an anti forgery token to the API as a cross site request forgery prevention best practice
     addAntiForgeryToken(options: AxiosRequestConfig): void;
 
     // Call the OAuth agent to refresh the access token and rewrite cookies

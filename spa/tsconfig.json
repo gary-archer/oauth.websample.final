@@ -12,7 +12,7 @@
   },
   "include": [
     "./src",
-    "./build"
+    "./webpack"
   ],
   "exclude": [
     "node_modules"
