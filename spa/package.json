@@ -26,8 +26,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
-    "react-router-dom": "^6.9.0",
-    "url-parse": "^1.5.10"
+    "react-router-dom": "^6.9.0"
   },
   "devDependencies": {
     "@types/node": "^18.16.19",
