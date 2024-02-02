@@ -86,6 +86,6 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 * AWS Cloudfront is used to distribute web static content globally, for equal web performance
 * AWS Certificate Manager is used to manage and auto renew the Web Host's SSL certificate
 * AWS Cognito is used as the default Authorization Server
-* [AWS Serverless](https://github.com/gary-archer/oauth.apisample.serverless) or Kubernetes API Hosting is used to host remote API endpoints used by the SPA
+* [AWS Serverless](https://github.com/gary-archer/oauth.apisample.serverless) or Kubernetes is used to host remote API endpoints used by the SPA
 * Token handler components are used to implement API driven cookie issuing on behalf of the SPA
 
