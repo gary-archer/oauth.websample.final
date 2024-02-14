@@ -42,7 +42,8 @@ Login at https://web.authsamples.com/ with this AWS Cognito test account:
 
 ## Local Development Quick Start
 
-Build code locally via this command, which runs `npm install` and `npm start`:
+First ensure that Node.js 20+ is installed.\
+Then build code locally via this command, which runs `npm install` and `npm start`:
 
 ```bash
 ./build.sh
