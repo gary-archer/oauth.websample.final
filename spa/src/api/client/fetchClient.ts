@@ -39,7 +39,7 @@ export class FetchClient {
     public async getCompanyList(options: FetchOptions) : Promise<Company[] | null> {
 
         const url = `${this._configuration.apiBaseUrl}/companies`;
-        return this._callApi('GET', url, options);
+        return this._getDataFromApi(url, options);
     }
 
     /*
@@ -48,7 +48,7 @@ export class FetchClient {
     public async getCompanyTransactions(id: string, options: FetchOptions) : Promise<CompanyTransactions | null> {
 
         const url = `${this._configuration.apiBaseUrl}/companies/${id}/transactions`;
-        return this._callApi('GET', url, options);
+        return this._getDataFromApi(url, options);
     }
 
     /*
@@ -57,7 +57,7 @@ export class FetchClient {
     public async getOAuthUserInfo(options: FetchOptions) : Promise<OAuthUserInfo | null> {
 
         const url = `${this._configuration.oauthAgentBaseUrl}/userinfo`;
-        const data = await this._callApi('GET', url, options);
+        const data = await this._getDataFromApi(url, options);
         if (!data) {
             return null;
         }
@@ -74,17 +74,13 @@ export class FetchClient {
     public async getApiUserInfo(options: FetchOptions) : Promise<ApiUserInfo | null> {
 
         const url = `${this._configuration.apiBaseUrl}/userinfo`;
-        return this._callApi('GET', url, options);
+        return this._getDataFromApi(url, options);
     }
 
     /*
      * A parameterized method containing application specific logic for managing API calls
      */
-    private async _callApi(
-        method: Method,
-        url: string,
-        options: FetchOptions,
-        dataToSend: any = null): Promise<any> {
+    private async _getDataFromApi(url: string, options: FetchOptions): Promise<any> {
 
         // Remove the item from the cache when a reload is requested
         if (options.forceReload) {
@@ -112,7 +108,7 @@ export class FetchClient {
         try {
 
             // Call the API and return data on success
-            const data1 = await this._callApiWithCredential(method, url, options, dataToSend);
+            const data1 = await this._callApiWithCredential('GET', url, options);
             cacheItem.data = data1;
             return data1;
 
@@ -141,7 +137,7 @@ export class FetchClient {
             try {
 
                 // Call the API again with the rewritten access token cookie
-                const data2 = await this._callApiWithCredential(method, url, options, dataToSend);
+                const data2 = await this._callApiWithCredential('GET', url, options);
                 cacheItem.data = data2;
                 return data2;
 
@@ -162,7 +158,7 @@ export class FetchClient {
         method: Method,
         url: string,
         fetchOptions: FetchOptions,
-        dataToSend: any): Promise<any> {
+        dataToSend: any = null): Promise<any> {
 
         // Values written to API logs
         const headers: any = {
