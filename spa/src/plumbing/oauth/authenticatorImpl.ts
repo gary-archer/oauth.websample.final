@@ -78,7 +78,9 @@ export class AuthenticatorImpl implements Authenticator {
                         '/login/end',
                         request) as EndLoginResponse;
 
-                    // Store the anti forgery token, used for data changing API requests
+                    // Store the anti forgery token as part of CSRF defense in depth for data changing commands
+                    // This makes the anti forgery token available to all browser tabs
+                    // A CSRF attack cannot exploit the local storage value
                     if (endLoginResponse.antiForgeryToken) {
                         HtmlStorageHelper.antiForgeryToken = endLoginResponse.antiForgeryToken;
                     }

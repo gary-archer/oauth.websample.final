@@ -74,7 +74,7 @@ export function App(props: AppProps): JSX.Element {
         // Handle any login responses, and navigate back to the pre-login location
         const navigateTo = await model.handlePageLoad();
         if (navigateTo) {
-            navigate(navigateTo, { replace: true});
+            navigate(navigateTo, { replace: true });
         }
     }
 
@@ -96,6 +96,7 @@ export function App(props: AppProps): JSX.Element {
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
     async function onLoginRequired(_event: LoginRequiredEvent): Promise<void> {
+
         await model.login(CurrentLocation.path);
     }
 
@@ -121,16 +122,9 @@ export function App(props: AppProps): JSX.Element {
 
             // Force a data reload if recovering from errors
             if (model.hasError()) {
-                await model.reloadData(false);
+                model.reloadData(false);
             }
         }
-    }
-
-    /*
-     * Handle reloads and updating the error state
-     */
-    async function onReloadData(causeError: boolean): Promise<void> {
-        await model.reloadData(causeError);
     }
 
     /*
@@ -218,7 +212,7 @@ export function App(props: AppProps): JSX.Element {
             handleHomeClick: onHome,
             handleExpireAccessTokenClick: onExpireAccessToken,
             handleExpireRefreshTokenClick: onExpireRefreshToken,
-            handleReloadDataClick: onReloadData,
+            handleReloadDataClick: model.reloadData,
             handleLogoutClick: onLogout,
         };
     }
