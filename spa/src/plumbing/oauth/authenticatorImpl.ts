@@ -48,7 +48,7 @@ export class AuthenticatorImpl implements Authenticator {
             HtmlStorageHelper.preLoginLocation = currentLocation;
 
             // Then redirect the main window
-            location.href = response.authorizationRequestUri;
+            location.href = response.authorizationRequestUrl;
 
         } catch (e) {
 
@@ -73,6 +73,7 @@ export class AuthenticatorImpl implements Authenticator {
                     const request = {
                         url: location.href,
                     };
+                    console.log('*** ' + location.href);
                     const endLoginResponse = await this._callOAuthAgent(
                         'POST',
                         '/login/end',
@@ -81,8 +82,8 @@ export class AuthenticatorImpl implements Authenticator {
                     // Store the anti forgery token as part of CSRF defense in depth for data changing commands
                     // This makes the anti forgery token available to all browser tabs
                     // A CSRF attack cannot exploit the local storage value
-                    if (endLoginResponse.antiForgeryToken) {
-                        HtmlStorageHelper.antiForgeryToken = endLoginResponse.antiForgeryToken;
+                    if (endLoginResponse.csrfToken) {
+                        HtmlStorageHelper.antiForgeryToken = endLoginResponse.csrfToken;
                     }
 
                     // If a login was handled, then the SPA returns to its pre-login location
