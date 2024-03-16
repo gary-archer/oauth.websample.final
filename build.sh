@@ -35,18 +35,18 @@ fi
 cd ..
 
 #
-# When connecting the SPA to a local API, build a token handler to run on the local development computer
+# When connecting the SPA to a local API, run token handler components on the local development computer
 #
 if [ "$1" == 'LOCALAPI' ]; then
 
   rm -rf localtokenhandler 2>/dev/null
-  git clone https://github.com/gary-archer/oauth.tokenhandler.docker localtokenhandler
+  git clone https://github.com/gary-archer/oauth-agent-node-express localtokenhandler
   if [ $? -ne 0 ]; then
     echo 'Problem encountered downloading local token handler resources'
     exit
   fi
 
-  echo 'Building the local token handler ...'
+  echo 'Building local token handler components ...'
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building local token handler resources'
