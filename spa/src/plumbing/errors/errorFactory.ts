@@ -157,6 +157,17 @@ export class ErrorFactory {
     }
 
     /*
+     * Handle any invalid login responses from the OAuth agent, to prevent redirect loops
+     */
+    public static fromInvalidLoginResponse(): UIError {
+
+        return new UIError(
+            'Login',
+            ErrorCodes.loginResponseFailed,
+            'An unexpected login response was received');
+    }
+
+    /*
      * Handle errors during token operations
      */
     public static fromTokenRefreshError(exception: any): UIError {

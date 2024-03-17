@@ -3,12 +3,12 @@
  */
 export interface EndLoginResponse {
 
-    // True if there are valid cookies
-    isLoggedIn: boolean;
-
     // True if an authorization response has just been handled
     handled: boolean;
 
+    // True if there are valid cookies
+    isLoggedIn: boolean;
+
     // A new value is generated for each authenticated user session, then used across all browser tabs
-    antiForgeryToken: string | null;
+    csrf: string | null;
 }

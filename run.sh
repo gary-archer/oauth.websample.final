@@ -28,21 +28,13 @@ esac
 if [ "$1" == 'LOCALAPI' ]; then
 
   #
-  # When connecting the SPA to a local API, deploy a token handler to run in Docker on the local development computer
+  # When connecting the SPA to a local API, deploy local token handler components in Docker
   #
   ./localtokenhandler/deployment/docker-local/deploy.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered deploying the local token handler'
     exit
   fi
-
-  #
-  # Get OAuth agent logs to the local computer, for local setups that use log shipping
-  #
-  if [ ! -d './localtokenhandler/logs' ]; then
-    mkdir './localtokenhandler/logs'
-  fi
-  docker compose --project-name tokenhandler logs -f --no-log-prefix oauthagent >> ./localtokenhandler/logs/oauthagent.log &
 fi
 
 #
