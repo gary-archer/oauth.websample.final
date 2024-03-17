@@ -24,7 +24,7 @@ if [ "$1" == 'cloudnative' ]; then
 fi
 
 #
-# Upload the SPA's packaged files to S3
+# Deploy the SPA's static content to the upload point for distribution
 #
 if [ "$ENVIRONMENT" == 'serverless' ]; then
   aws s3 cp .package s3://web.authsamples.com --recursive
@@ -37,7 +37,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Upload the serverless functions used for lambda extensions
+# Also upload the serverless functions used to customize the CDN logic for static content requests
 #
 if [ "$ENVIRONMENT" == 'serverless' ]; then
   npm run deployServerless
@@ -50,7 +50,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# For our simple deployment, invalidate all files in the distribution
+# For our simple deployment, invalidate all files in the CDN to force global redistribution
 #
 if [ "$ENVIRONMENT" == 'serverless' ]; then
   aws cloudfront create-invalidation --distribution-id=E1P4XPOL1PNE6Z --paths '/*'
