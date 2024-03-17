@@ -69,27 +69,27 @@ export class AuthenticatorImpl implements Authenticator {
             if (state) {
 
                 try {
+
                     // Send the full URL to the OAuth agent API
                     const request = {
-                        url: location.href,
+                        pageUrl: location.href,
                     };
-                    console.log('*** ' + location.href);
-                    const endLoginResponse = await this._callOAuthAgent(
+                    const response = await this._callOAuthAgent(
                         'POST',
                         '/login/end',
                         request) as EndLoginResponse;
 
-                    // Store the anti forgery token as part of CSRF defense in depth for data changing commands
-                    // This makes the anti forgery token available to all browser tabs
-                    // A CSRF attack cannot exploit the local storage value
-                    if (endLoginResponse.csrfToken) {
-                        HtmlStorageHelper.antiForgeryToken = endLoginResponse.csrfToken;
+                    // Check for expected data in the response
+                    if (!response.handled || !response.csrf) {
+                        throw ErrorFactory.fromInvalidLoginResponse();
                     }
 
-                    // If a login was handled, then the SPA returns to its pre-login location
-                    if (endLoginResponse.handled) {
-                        return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
-                    }
+                    // Store the anti forgery token in local storage, which a CSRF attack cannot exploit
+                    // The anti forgery token is available to all browser tabs
+                    HtmlStorageHelper.antiForgeryToken = response.csrf;
+
+                    // Teturns to the pre-login location
+                    return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
 
                 } catch (e: any) {
 
@@ -119,7 +119,7 @@ export class AuthenticatorImpl implements Authenticator {
 
             const response = await this._callOAuthAgent('POST', '/logout');
             this.clearLoginState();
-            location.href = response.endSessionRequestUri;
+            location.href = response.url;
 
         } catch (e) {
 

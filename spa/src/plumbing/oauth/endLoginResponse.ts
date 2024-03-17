@@ -10,5 +10,5 @@ export interface EndLoginResponse {
     isLoggedIn: boolean;
 
     // A new value is generated for each authenticated user session, then used across all browser tabs
-    csrfToken: string | null;
+    csrf: string | null;
 }
