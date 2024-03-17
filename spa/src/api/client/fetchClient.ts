@@ -181,8 +181,8 @@ export class FetchClient {
             withCredentials: true,
         } as AxiosRequestConfig;
 
-        // Add an anti forgery token on data changing commands
-        this._authenticator.addAntiForgeryToken(requestOptions);
+        // Add the CSRF token on data changing commands
+        this._authenticator.addCsrfToken(requestOptions);
 
         // Make the API request and return the result
         const response = await axios.request(requestOptions);

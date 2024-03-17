@@ -28,10 +28,10 @@ export class AuthenticatorImpl implements Authenticator {
     }
 
     /*
-     * Use the anti forgery token in storage as an indicator of whether logged in
+     * Use the CSRF token in storage as an indicator of whether logged in
      */
     public isLoggedIn(): boolean {
-        return !!HtmlStorageHelper.antiForgeryToken;
+        return !!HtmlStorageHelper.csrfToken;
     }
 
     /*
@@ -84,11 +84,11 @@ export class AuthenticatorImpl implements Authenticator {
                         throw ErrorFactory.fromInvalidLoginResponse();
                     }
 
-                    // Store the anti forgery token in local storage, which a CSRF attack cannot exploit
-                    // The anti forgery token is available to all browser tabs
-                    HtmlStorageHelper.antiForgeryToken = response.csrf;
+                    // I store the CSRF token in local storage, which a CSRF attack cannot exploit
+                    // This reduces requests when using multi-tab browsing
+                    HtmlStorageHelper.csrfToken = response.csrf;
 
-                    // Teturns to the pre-login location
+                    // Once login is complete, return the SPA to the pre-login location
                     return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
 
                 } catch (e: any) {
@@ -135,16 +135,16 @@ export class AuthenticatorImpl implements Authenticator {
     }
 
     /*
-     * Add an anti forgery token when sending data changing commands to APIs or the OAuth agent
+     * Add the CSRF token when sending data changing commands to APIs or the OAuth agent
      */
-    public addAntiForgeryToken(options: AxiosRequestConfig): void {
+    public addCsrfToken(options: AxiosRequestConfig): void {
 
         if (options.method === 'POST'  ||
             options.method === 'PUT'   ||
             options.method === 'PATCH' ||
             options.method === 'DELETE') {
 
-            (options.headers as any)['x-mycompany-csrf'] = HtmlStorageHelper.antiForgeryToken;
+            (options.headers as any)['x-mycompany-csrf'] = HtmlStorageHelper.csrfToken;
         }
     }
 
@@ -237,8 +237,8 @@ export class AuthenticatorImpl implements Authenticator {
                 options.headers['content-type'] = 'application/json';
             }
 
-            // Add the anti forgery token
-            this.addAntiForgeryToken(options);
+            // Add the CSRF token
+            this.addCsrfToken(options);
 
             // Supply headers for the OAuth agent API to write to logs
             options.headers['x-mycompany-api-client'] = 'FinalSPA';

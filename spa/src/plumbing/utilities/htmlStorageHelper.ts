@@ -6,7 +6,7 @@ export class HtmlStorageHelper {
     private static _prefix = 'finalspa.';
     private static _preLoginLocation = 'preLoginLocation';
     private static _apiSessionKeyName = 'apisessionid';
-    private static _antiForgeryToken = 'antiForgeryToken';
+    private static _csrfToken = 'csrfToken';
     private static _loggedOutEventKeyName = 'loggedoutEvent';
 
     /*
@@ -43,29 +43,29 @@ export class HtmlStorageHelper {
     }
 
     /*
-     * Get the anti forgery token, sent with data changing API requests
+     * Get the CSRF token, sent with data changing API requests
      */
-    public static get antiForgeryToken(): string {
+    public static get csrfToken(): string {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._antiForgeryToken}`;
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._csrfToken}`;
         return localStorage.getItem(key) || '';
     }
 
     /*
-     * Set the anti forgery token, sent with data changing API requests
+     * Set the CSRF token, sent with data changing API requests
      */
-    public static set antiForgeryToken(value: string) {
+    public static set csrfToken(value: string) {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._antiForgeryToken}`;
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._csrfToken}`;
         localStorage.setItem(key, value);
     }
 
     /*
-     * Clear the anti forgery token, sent with data changing API requests
+     * Clear the CSRF token, sent with data changing API requests
      */
     public static clearAntiForgeryToken(): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._antiForgeryToken}`;
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._csrfToken}`;
         localStorage.removeItem(key);
     }
 
