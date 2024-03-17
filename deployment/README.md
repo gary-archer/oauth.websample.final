@@ -11,7 +11,7 @@ A number of local development configurations are used when running on the local 
 | dev | Local development of the SPA, running the web host on a development domain |
 | dev-localapi | Local development of the SPA against a local API |
 | docker-local | Used to test standalone Docker deployment of the Web Host and SPA |
-| kubernetes-local | An end-to-end deployment of SPA, API and token handler components that runs in a KIND cluster |
+| kubernetes-local | Used when deploying the Web Host and SPA to a local KIND cluster |
 
 ## Cloud Environments
 
@@ -22,13 +22,9 @@ The real deployments instead use a content delivery network, and two separate CD
 | serverless | A deployed cloudfront distribution for which the SPA connects to AWS APIs that use Serverless hosting |
 | cloudnative | A deployed cloudfront distribution for which the SPA connects to AWS APIs that use Kubernetes hosting |
 
-## Shared
-
-The shared resources include the Dockerfile and are used in multiple local deployment scenarios.
-
 ## Docker Local
 
-Scripts for local standalone Docker deployment of this component:
+I use these commands to test local Docker deployment of the web host and SPA:
 
 ```bash
 cd deployment/docker-local
@@ -36,11 +32,6 @@ cd deployment/docker-local
 ./deploy.sh
 ./teardown.sh
 ```
-
-## Kubernetes Local
-
-Scripts invoked using parent scripts from a **Cloud Native Local** project.\
-This runs an end-to-end SPA and API setup in a local Kubernetes in Docker (KIND) cluster.
 
 ## Cloudfront Deployment
 
