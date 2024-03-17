@@ -162,8 +162,8 @@ export class AuthenticatorImpl implements Authenticator {
 
         try {
 
-            // Try to rewrite the refresh token within the cookie, using existing cookies as the request credential
-            await this._callOAuthAgent('POST', '/expire', {type: 'access'});
+            // Rewrite the access token within the cookie, using existing cookies as the request credential
+            await this._callOAuthAgent('POST', '/access/expire');
 
         } catch (e: any) {
 
@@ -181,8 +181,8 @@ export class AuthenticatorImpl implements Authenticator {
 
         try {
 
-            // Try to rewrite the access token within the cookie, using the existing cookies as the request credential
-            await this._callOAuthAgent('POST', '/expire', {type: 'refresh'});
+            // Rewrite the refresh token within the cookie, using the existing cookies as the request credential
+            await this._callOAuthAgent('POST', '/refresh/expire');
 
         } catch (e: any) {
 
