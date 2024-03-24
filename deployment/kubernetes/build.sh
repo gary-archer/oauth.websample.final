@@ -51,7 +51,7 @@ fi
 #
 # Load it into kind's Docker registry
 #
-kind load docker-image "$DOCKER_IMAGE" --name oauth
+kind load docker-image "$DOCKER_IMAGE" --name $CLUSTER_NAME
 if [ $? -ne 0 ]; then
   echo '*** Web Host docker deploy problem encountered'
   exit 1
