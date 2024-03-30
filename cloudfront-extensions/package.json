@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Web host extensions deployed to the AWS cloudfront content delivery network",
   "author": "Gary Archer",
-  "license": "Apache-2.0",
+  "license": "SPA",
   "type": "module",
   "engines": {
     "node": ">=20"
