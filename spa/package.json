@@ -1,7 +1,7 @@
 {
   "name": "finalspa",
   "version": "3.0.0",
-  "description": "The main SPA, which calls OAuth 2.0 secured APIs with the latest HTTP-only SameSite cookies",
+  "description": "An SPA that sends tokens to OAuth 2.0 secured APIs using HTTP-only SameSite cookies",
   "main": "index.tsx",
   "keywords": [],
   "author": "Gary Archer",
