@@ -1,9 +1,9 @@
 {
   "name": "webhost",
   "version": "1.0.0",
-  "description": "A web host used for local development setups",
+  "description": "A web host for serving SPA static content in local development setups",
   "author": "Gary Archer",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=20"
