@@ -5,7 +5,7 @@
   "main": "index.tsx",
   "keywords": [],
   "author": "Gary Archer",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=20"
