@@ -2,9 +2,9 @@ import {NextFunction, Request, Response} from 'express';
 import {Configuration} from './configuration.js';
 
 /*
- * Add standard web security headers to the response to improve default browser security
+ * Add standard web headers to the response to improve security and performance
  */
-export class SecurityHeaders {
+export class ResponseHeaders {
 
     private readonly _configuration: Configuration;
 
@@ -15,7 +15,7 @@ export class SecurityHeaders {
     }
 
     /*
-     * Add the headers including a content security policy
+     * Do the work of adding headers
      */
     public add(request: Request, response: Response, next: NextFunction): any {
 
@@ -32,7 +32,7 @@ export class SecurityHeaders {
         policy += " base-uri 'self';";
         policy += " form-action 'self'";
 
-        // Add standard headers, including the content security policy
+        // Add standard security headers, including the content security policy
         response.setHeader('content-security-policy', policy);
         response.setHeader('strict-transport-security', 'max-age=31536000; includeSubdomains; preload');
         response.setHeader('x-frame-options', 'DENY');
@@ -40,7 +40,7 @@ export class SecurityHeaders {
         response.setHeader('x-content-type-options', 'nosniff');
         response.setHeader('referrer-policy', 'same-origin');
 
-        // Also set the cache control header, for best performance
+        // Also set the cache control header, for best browser performance
         if (this._configuration.mode === 'deployed') {
             response.setHeader('cache-control', this._getCacheControlResponseHeader(request));
         }
