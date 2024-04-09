@@ -1,6 +1,0 @@
-#
-# This represents a deployment where the SPA connects to Serverless APIs
-#
-settings:
-  stage: 'serverless'
-  distributionId: 'E1P4XPOL1PNE6Z'

@@ -5,7 +5,7 @@
 #########################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
-cd ../../cloudfront-extensions
+cd ../..
 
 #
 # Check that packaging has been run first
@@ -33,19 +33,6 @@ else
 fi
 if [ $? -ne 0 ]; then
   echo 'Problem encountered uploading web static content to S3'
-  exit
-fi
-
-#
-# Also upload the serverless functions used to customize the CDN logic for static content requests
-#
-if [ "$ENVIRONMENT" == 'serverless' ]; then
-  npm run deployServerless
-else
-  npm run deployCloudnative
-fi
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered deploying lambda edge extensions and applying them to the cloudfront distribution'
   exit
 fi
 

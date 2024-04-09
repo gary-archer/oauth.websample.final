@@ -5,6 +5,3 @@ exclude_paths:
   - 'deployment/**'
   - 'spa/*'
   - 'webhost/*'
-  - 'cloudfront-extensions/*'
-  - 'cloudfront-extensions/environments/**'
-  - 'cloudfront-extensions/test/**'
