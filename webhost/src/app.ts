@@ -3,22 +3,16 @@ import fs from 'fs-extra';
 import {Configuration} from './configuration.js';
 import {HttpServerConfiguration} from './httpServerConfiguration.js';
 
-/*
- * The web host entry point
- */
-(async () => {
+// First load configuration
+const configurationBuffer = await fs.readFile('webhost.config.json');
+const configuration =  JSON.parse(configurationBuffer.toString()) as Configuration;
 
-    // First load configuration
-    const configurationBuffer = await fs.readFile('webhost.config.json');
-    const configuration =  JSON.parse(configurationBuffer.toString()) as Configuration;
+// Create the web host
+const expressApp = express();
+const httpServer = new HttpServerConfiguration(expressApp, configuration);
 
-    // Create the web host
-    const expressApp = express();
-    const httpServer = new HttpServerConfiguration(expressApp, configuration);
+// Set up web static content delivery
+httpServer.initialiseWebStaticContentHosting();
 
-    // Set up web static content delivery
-    httpServer.initialiseWebStaticContentHosting();
-
-    // Start listening for requests
-    await httpServer.startListening();
-})();
+// Start listening for requests
+await httpServer.startListening();
