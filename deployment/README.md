@@ -35,7 +35,7 @@ cd deployment/docker-local
 
 ## Cloudfront Deployment
 
-See the [Cloud Web Content Delivery](https://authguidance.com/2018/12/02/spa-content-deployment/) blog post for details on the final web deployment.\
+See the [Web Content Delivery](https://apisandclients.com/posts/cdn-static-content-delivery) blog post for details on the final web deployment.\
 The following commands deploy resources to AWS S3 and Cloudfront for the SPA that runs at https://web.authsamples.com/spa. \
 This SPA then calls from the browser to APIs running in AWS using Serverless hosting:
 

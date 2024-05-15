@@ -7,7 +7,7 @@
 
 ## Overview
 
-The final demo Single Page Application, which aims for a [Web Architecture](https://authguidance.com/web-architecture-goals/) with best capabilities:
+The final demo Single Page Application, which aims for a [Web Architecture](https://apisandclients.com/posts/web-architecture-goals) with best capabilities:
 
 - The SPA uses an API driven OpenID Connect solution based on the [Token Handler Example](https://github.com/curityio/spa-using-token-handler)
 - Only the most secure cookies are used, with no tokens in the browser
@@ -54,7 +54,7 @@ Custom development domains are used so you must add this DNS entry to your hosts
 127.0.0.1 localhost web.authsamples-dev.com
 ```
 
-Next configure [Browser SSL Trust](https://authguidance.com/2017/11/11/developer-ssl-setup#browser) for the SSL root certificate:
+Next configure [Browser SSL Trust](https://apisandclients.com/posts/developer-ssl-setup) for the SSL root certificate:
 
 ```
 ./certs/authsamples-dev.ca.pem
@@ -72,8 +72,8 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 
 ## Further Information
 
-* See the [API Journey - Client Side](https://authguidance.com/api-journey-client-side/) for further information on the app's behaviour
-* Further details specific to the SPA are provided, starting in the [Final SPA Overview](https://authguidance.com/final-spa-overview/)
+* See the [API Journey - Client Side](https://apisandclients.com/posts/api-journey-client-side) for further information on the app's behaviour
+* Further details specific to the SPA are provided, starting in the [Final SPA Overview](https://apisandclients.com/posts/final-spa-overview)
 
 ## Programming Languages
 
