@@ -34,7 +34,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     function cleanup(): void {
         model.eventBus.detach(EventNames.ReloadData, onReload);
-        model.eventBus.on(EventNames.Navigated, onNavigate);
+        model.eventBus.detach(EventNames.Navigated, onNavigate);
     }
 
     /*
