@@ -28,7 +28,7 @@ export function SessionView(props: SessionViewProps): JSX.Element {
      * The session button state becomes disabled when the login required view is active
      */
     function onNavigate(event: NavigatedEvent) {
-        setIsVisible(event.isMainView);
+        setIsVisible(event.isAuthenticatedView);
     }
 
     return  (

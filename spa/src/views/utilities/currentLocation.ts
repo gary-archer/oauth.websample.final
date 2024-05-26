@@ -1,6 +1,6 @@
 /*
- * Keeps track of the current location, since React Router does not allow us to access it
+ * Keep track of the current location and default to the root view
  */
 export class CurrentLocation {
-    public static path = '';
+    public static path = '/';
 }

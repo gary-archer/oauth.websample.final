@@ -1,15 +1,15 @@
 /*
- * An event to notify when main view navigation occurs
+ * An event to notify when the main view changes
  */
 export class NavigatedEvent {
 
-    private readonly _mainView: boolean;
+    private readonly _authenticatedView: boolean;
 
-    public constructor(mainView: boolean) {
-        this._mainView = mainView;
+    public constructor(authenticatedView: boolean) {
+        this._authenticatedView = authenticatedView;
     }
 
-    public get isMainView(): boolean {
-        return this._mainView;
+    public get isAuthenticatedView(): boolean {
+        return this._authenticatedView;
     }
 }

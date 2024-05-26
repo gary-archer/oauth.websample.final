@@ -42,7 +42,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     async function onNavigate(event: NavigatedEvent): Promise<void> {
 
-        if (!event.isMainView) {
+        if (!event.isAuthenticatedView) {
             model.unload();
         } else {
             await loadData();

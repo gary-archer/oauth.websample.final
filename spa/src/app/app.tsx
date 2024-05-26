@@ -92,16 +92,15 @@ export function App(props: AppProps): JSX.Element {
     }
 
     /*
-     * Trigger a login redirect when refresh tokens have expired and all API calls fail
+     * Move to the login required view if there is no access token or if the session has expired
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
     async function onLoginRequired(_event: LoginRequiredEvent): Promise<void> {
-
-        await model.login(CurrentLocation.path);
+        navigate('/loggedout');
     }
 
     /*
-     * Manage navigating home
+     * The home button either initiates a login or navigates home
      */
     async function onHome(): Promise<void> {
 
@@ -117,12 +116,20 @@ export function App(props: AppProps): JSX.Element {
 
         if (model.isLoaded) {
 
-            // Navigate home
-            navigate('/');
+            if (!model.authenticator.isLoggedIn()) {
 
-            // Force a data reload if recovering from errors
-            if (model.hasError()) {
-                model.reloadData(false);
+                // Trigger a login if required
+                await model.authenticator.login(CurrentLocation.path);
+
+            } else {
+
+                // Otherwise navigate home
+                navigate('/');
+
+                // Force a data reload if there were errors last time
+                if (model.hasError()) {
+                    model.reloadData(false);
+                }
             }
         }
     }

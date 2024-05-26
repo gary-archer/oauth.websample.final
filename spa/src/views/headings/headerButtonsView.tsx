@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {HeaderButtonsViewProps} from './headerButtonsViewProps';
-import { NavigatedEvent } from '../../plumbing/events/navigatedEvent';
+import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
 
 /*
  * Render the header buttons
@@ -10,6 +10,7 @@ import { NavigatedEvent } from '../../plumbing/events/navigatedEvent';
 export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
 
     const [hasData, setHasData] = useState(false);
+    const [homeTitle, setHomeTitle] = useState('');
 
     useEffect(() => {
         startup();
@@ -38,10 +39,17 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
     }
 
     /*
-     * Handle logout navigation on another browser tab
+     * Update different text and buttons depending on whether in an authenticated view
      */
     function onNavigated(event: NavigatedEvent) {
-        if (!event.isMainView) {
+
+        if (event.isAuthenticatedView) {
+
+            setHomeTitle('Home');
+
+        } else {
+
+            setHomeTitle('Sign in');
             setHasData(false);
         }
     }
@@ -107,7 +115,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                     className='btn btn-primary w-100 p-1'
                     type='button'
                 >
-                    <small>Home</small>
+                    <small>{homeTitle}</small>
                 </button>
             </div>
             <div
@@ -152,7 +160,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                     disabled={disabled}
                     type='button'
                 >
-                    <small>Logout</small>
+                    <small>Sign out</small>
                 </button>
             </div>
         </div>

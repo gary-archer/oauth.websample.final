@@ -1,9 +1,7 @@
 import React, {useEffect} from 'react';
-import {useLocation} from 'react-router-dom';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
 import {HtmlStorageHelper} from '../../plumbing/utilities/htmlStorageHelper';
-import {CurrentLocation} from '../utilities/currentLocation';
 import {LoginRequiredViewProps} from './loginRequiredViewProps';
 
 /*
@@ -14,8 +12,6 @@ export function LoginRequiredView(props: LoginRequiredViewProps): JSX.Element {
     useEffect(() => {
         startup();
     }, []);
-
-    CurrentLocation.path = useLocation().pathname;
 
     function startup() {
         props.eventBus.emit(EventNames.Navigated, null, new NavigatedEvent(false));
@@ -28,7 +24,7 @@ export function LoginRequiredView(props: LoginRequiredViewProps): JSX.Element {
         <>
             <div className='row'>
                 <div className='col-12 text-center mx-auto'>
-                    <h6>You are logged out - click HOME to sign in ...</h6>
+                    <h6>You are signed out - sign in to access the demo app ...</h6>
                 </div>
             </div>
         </>
