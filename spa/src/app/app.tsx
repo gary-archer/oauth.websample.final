@@ -119,7 +119,7 @@ export function App(props: AppProps): JSX.Element {
             if (!model.authenticator.isLoggedIn()) {
 
                 // Trigger a login if required
-                await model.authenticator.login(CurrentLocation.path);
+                await model.login(CurrentLocation.path);
 
             } else {
 
