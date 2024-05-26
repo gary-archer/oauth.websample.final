@@ -162,6 +162,8 @@ export function App(props: AppProps): JSX.Element {
      * A shared routine to move to a logged out state
      */
     function onLoggedOut(): void {
+
+        CurrentLocation.path = '/';
         model.onLoggedOut();
         navigate('/loggedout');
     }
