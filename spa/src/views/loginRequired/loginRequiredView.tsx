@@ -24,7 +24,7 @@ export function LoginRequiredView(props: LoginRequiredViewProps): JSX.Element {
         <>
             <div className='row'>
                 <div className='col-12 text-center mx-auto'>
-                    <h6>You are signed out - sign in to access the demo app ...</h6>
+                    <h6>You are signed out - sign in to access the app ...</h6>
                 </div>
             </div>
         </>

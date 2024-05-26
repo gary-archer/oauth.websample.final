@@ -20,20 +20,23 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
 
     const model = props.viewModel;
     model.useState();
+    CurrentLocation.path = useLocation().pathname;
 
     useEffect(() => {
         startup();
         return () => cleanup();
     }, []);
 
-    CurrentLocation.path = useLocation().pathname;
-
     /*
-     * Subscribe for reload events and then do the initial load of data
+     * View startup logic
      */
     async function startup(): Promise<void> {
+
+        // Subscribe for reload events
         model.eventBus.emit(EventNames.Navigated, null, new NavigatedEvent(true));
         model.eventBus.on(EventNames.ReloadData, onReload);
+
+        // Do the initial load of data
         await loadData();
     }
 

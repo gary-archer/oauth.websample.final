@@ -22,20 +22,23 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
     const params = useParams();
     const companyId = params.id!;
+    CurrentLocation.path = useLocation().pathname;
 
     useEffect(() => {
         startup();
         return () => cleanup();
     }, [companyId]);
 
-    CurrentLocation.path = useLocation().pathname;
-
     /*
-     * Subscribe for reload events and then do the initial load of data
+     * View startup logic
      */
     async function startup(): Promise<void> {
+
+        // Subscribe for reload events
         model.eventBus.emit(EventNames.Navigated, null, new NavigatedEvent(true));
         model.eventBus.on(EventNames.ReloadData, onReload);
+
+        // Do the initial load of data
         await loadData();
     }
 
