@@ -10,7 +10,7 @@ import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
 export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
 
     const [hasData, setHasData] = useState(false);
-    const [homeTitle, setHomeTitle] = useState('');
+    const [homeTitle, setHomeTitle] = useState('Home');
 
     useEffect(() => {
         startup();
