@@ -95,6 +95,7 @@ export class ViewModelCoordinator {
         this._loadingCount = 0;
         this._loadedCount = 0;
         this._mainCacheKey = '';
+        this._fetchCache.clearAll();
     }
 
     /*
@@ -110,6 +111,7 @@ export class ViewModelCoordinator {
             // The sample's user behavior is to automatically redirect the user to login
             const loginRequired = errors.find((e) => e.errorCode === ErrorCodes.loginRequired);
             if (loginRequired) {
+                this.resetState();
                 this._eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
                 return;
             }

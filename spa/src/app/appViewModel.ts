@@ -219,7 +219,6 @@ export class AppViewModel {
      */
     public onLoggedOut(): void {
 
-        this._fetchCache.clearAll();
         this._viewModelCoordinator!.resetState();
         this._authenticator!.clearLoginState();
         this._updateError(null);
