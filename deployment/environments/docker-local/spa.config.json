@@ -1,4 +1,3 @@
 {
-    "apiBaseUrl": "https://bff.authsamples-dev.com/investments",
-    "oauthAgentBaseUrl": "https://bff.authsamples-dev.com/oauth-agent"
+    "bffBaseUrl": "https://bff.authsamples-dev.com"
 }

@@ -38,7 +38,7 @@ export class FetchClient {
      */
     public async getCompanyList(options: FetchOptions) : Promise<Company[] | null> {
 
-        const url = `${this._configuration.apiBaseUrl}/companies`;
+        const url = `${this._configuration.bffBaseUrl}/investments/companies`;
         return this._getDataFromApi(url, options);
     }
 
@@ -47,7 +47,7 @@ export class FetchClient {
      */
     public async getCompanyTransactions(id: string, options: FetchOptions) : Promise<CompanyTransactions | null> {
 
-        const url = `${this._configuration.apiBaseUrl}/companies/${id}/transactions`;
+        const url = `${this._configuration.bffBaseUrl}/investments/companies/${id}/transactions`;
         return this._getDataFromApi(url, options);
     }
 
@@ -56,7 +56,7 @@ export class FetchClient {
      */
     public async getOAuthUserInfo(options: FetchOptions) : Promise<OAuthUserInfo | null> {
 
-        const url = `${this._configuration.oauthAgentBaseUrl}/userinfo`;
+        const url = `${this._configuration.bffBaseUrl}/oauth-agent/userinfo`;
         const data = await this._getDataFromApi(url, options);
         if (!data) {
             return null;
@@ -73,7 +73,7 @@ export class FetchClient {
      */
     public async getApiUserInfo(options: FetchOptions) : Promise<ApiUserInfo | null> {
 
-        const url = `${this._configuration.apiBaseUrl}/userinfo`;
+        const url = `${this._configuration.bffBaseUrl}/investments/userinfo`;
         return this._getDataFromApi(url, options);
     }
 

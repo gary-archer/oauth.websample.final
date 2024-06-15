@@ -1,7 +1,6 @@
 /*
- * Configuration settings for this micro UI
+ * Configuration settings for this SPA
  */
 export interface Configuration {
-    apiBaseUrl: string;
-    oauthAgentBaseUrl: string;
+    bffBaseUrl: string;
 }

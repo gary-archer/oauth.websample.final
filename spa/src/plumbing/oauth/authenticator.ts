@@ -1,7 +1,7 @@
 import {AxiosRequestConfig} from 'axios';
 
 /*
- * An interface to represent authentication related operations for a micro UI
+ * An interface to represent authentication related operations for the SPA
  */
 export interface Authenticator {
 

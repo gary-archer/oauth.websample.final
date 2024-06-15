@@ -16,7 +16,7 @@ export class WebStaticContent {
     }
 
     /*
-     * Handle physical resources in each micro UI, then serve index.html for not found requests
+     * Handle physical resources for SPAs, then serve index.html for not found requests
      */
     public initialise(): void {
 

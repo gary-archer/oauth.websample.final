@@ -14,12 +14,12 @@ import {EndLoginResponse} from './endLoginResponse';
  */
 export class AuthenticatorImpl implements Authenticator {
 
-    private readonly _oauthAgentBaseUrl: string;
+    private readonly _configuration: Configuration;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
 
     public constructor(configuration: Configuration) {
 
-        this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
+        this._configuration = configuration;
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();
     }
@@ -39,7 +39,7 @@ export class AuthenticatorImpl implements Authenticator {
         try {
 
             // Call the API to set up the login
-            const response = await this._callOAuthAgent('POST', '/login/start');
+            const response = await this._callOAuthAgent('POST', 'login/start');
 
             // Store the app location before the login redirect
             HtmlStorageHelper.preLoginLocation = currentLocation;
@@ -73,7 +73,7 @@ export class AuthenticatorImpl implements Authenticator {
                     };
                     const response = await this._callOAuthAgent(
                         'POST',
-                        '/login/end',
+                        'login/end',
                         request) as EndLoginResponse;
 
                     // Check for expected data in the response
@@ -114,7 +114,7 @@ export class AuthenticatorImpl implements Authenticator {
 
         try {
 
-            const response = await this._callOAuthAgent('POST', '/logout');
+            const response = await this._callOAuthAgent('POST', 'logout');
             this.clearLoginState();
             location.href = response.url;
 
@@ -162,7 +162,7 @@ export class AuthenticatorImpl implements Authenticator {
         try {
 
             // Rewrite the access token within the cookie, using existing cookies as the request credential
-            await this._callOAuthAgent('POST', '/access/expire');
+            await this._callOAuthAgent('POST', 'access/expire');
 
         } catch (e: any) {
 
@@ -181,7 +181,7 @@ export class AuthenticatorImpl implements Authenticator {
         try {
 
             // Rewrite the refresh token within the cookie, using the existing cookies as the request credential
-            await this._callOAuthAgent('POST', '/refresh/expire');
+            await this._callOAuthAgent('POST', 'refresh/expire');
 
         } catch (e: any) {
 
@@ -199,7 +199,7 @@ export class AuthenticatorImpl implements Authenticator {
 
         try {
 
-            await this._callOAuthAgent('POST', '/refresh', null);
+            await this._callOAuthAgent('POST', 'refresh', null);
 
         } catch (e: any) {
 
@@ -217,7 +217,7 @@ export class AuthenticatorImpl implements Authenticator {
      */
     private async _callOAuthAgent(method: Method, operationPath: string, requestData: any = null): Promise<any> {
 
-        const url = `${this._oauthAgentBaseUrl}${operationPath}`;
+        const url = `${this._configuration.bffBaseUrl}/oauth-agent/${operationPath}`;
         try {
 
             // Same site cookies are also cross origin so the withCredentials flag is needed
