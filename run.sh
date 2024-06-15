@@ -5,7 +5,7 @@
 #################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
-WEB_ORIGIN='https://web.authsamples-dev.com'
+WEB_ORIGIN='https://www.authsamples-dev.com'
 
 #
 # Get the platform

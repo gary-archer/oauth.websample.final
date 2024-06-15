@@ -32,7 +32,7 @@ The data is returned from an API that authorizes access to resources using claim
 ## Online System
 
 The online version uses the AWS Cloudfront CDN to deliver static content to the browser.\
-Login at https://web.authsamples.com/ with this AWS Cognito test account:
+Login at https://www.authsamples.com/ with this AWS Cognito test account:
 
 ```text
 - User: guestuser@mycompany.com
@@ -51,7 +51,7 @@ Then build code locally via this command, which runs `npm install` and `npm star
 Custom development domains are used so you must add this DNS entry to your hosts file:
 
 ```bash
-127.0.0.1 localhost web.authsamples-dev.com
+127.0.0.1 localhost www.authsamples-dev.com
 ```
 
 Next configure [Browser SSL Trust](https://apisandclients.com/posts/developer-ssl-setup) for the SSL root certificate:
@@ -67,7 +67,7 @@ You can then edit the SPA's React code and update the UI productively, in a pure
 ./run.sh
 ```
 
-When the browser is invoked at `https://web.authsamples-dev.com/`, sign in with the test account.\
+When the browser is invoked at `https://www.authsamples-dev.com/`, sign in with the test account.\
 You can then test all lifecycle operations, including expiry events, multi-tab browsing and multi-tab logout.
 
 ## Further Information

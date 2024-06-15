@@ -12,11 +12,11 @@ export class ConfigurationLoader {
     public async get(): Promise<Configuration> {
 
         // Production configurations are coded into the app
-        if (location.origin.toLowerCase() === 'https://web.authsamples.com') {
+        if (location.origin.toLowerCase() === 'https://www.authsamples.com') {
             return productionServerlessConfiguration;
         }
 
-        if (location.origin.toLowerCase() === 'https://web.authsamples-k8s.com') {
+        if (location.origin.toLowerCase() === 'https://www.authsamples-k8s.com') {
             return productionCloudNativeConfiguration;
         }
 

@@ -27,9 +27,9 @@ fi
 # Deploy the SPA's static content to the upload point for distribution
 #
 if [ "$ENVIRONMENT" == 'serverless' ]; then
-  aws s3 cp .package s3://web.authsamples.com --recursive
+  aws s3 cp .package s3://www.authsamples.com --recursive
 else
-  aws s3 cp .package s3://web.authsamples-k8s.com --recursive
+  aws s3 cp .package s3://www.authsamples-k8s.com --recursive
 fi
 if [ $? -ne 0 ]; then
   echo 'Problem encountered uploading web static content to S3'

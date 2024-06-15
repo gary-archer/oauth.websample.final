@@ -3,7 +3,7 @@ services:
 
   webhost:
     image: webhost:latest
-    hostname: web.authsamples-dev.com
+    hostname: www.authsamples-dev.com
     ports:
       - 443:8000
     volumes:

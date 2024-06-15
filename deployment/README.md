@@ -36,7 +36,7 @@ cd deployment/docker-local
 ## Cloudfront Deployment
 
 See the [Web Content Delivery](https://apisandclients.com/posts/cdn-static-content-delivery) blog post for details on the final web deployment.\
-The following commands deploy resources to AWS S3 and Cloudfront for the SPA that runs at https://web.authsamples.com/spa. \
+The following commands deploy resources to AWS S3 and Cloudfront for the SPA that runs at https://www.authsamples.com/spa. \
 This SPA then calls from the browser to APIs running in AWS using Serverless hosting:
 
 ```bash
@@ -45,7 +45,7 @@ cd deployment/cloudfront
 ./deploy.sh serverless
 ```
 
-The following commands deploy resources to S3 and Cloudfront for the SPA that runs at https://web.authsamples-k8s.com/spa. \
+The following commands deploy resources to S3 and Cloudfront for the SPA that runs at https://www.authsamples-k8s.com/spa. \
 This SPA then calls from the browser to APIs running in an AWS Kubernetes cluster:
 
 ```bash
