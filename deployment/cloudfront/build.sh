@@ -8,11 +8,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 cd ../..
 
 #
-# Two scenarios are supported, where the SPA connects to APIs that use either Serverless or Kubernetes hosting
-#
-ENVIRONMENT="$1"
-
-#
 # Build the SPA's Javascript bundles
 #
 cd spa
