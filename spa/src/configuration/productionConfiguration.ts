@@ -11,5 +11,5 @@ export const productionServerlessConfiguration = {
  * This deployment points to APIs running a Kubernetes cluster
  */
 export const productionCloudNativeConfiguration = {
-    bffBaseUrl: 'https://bff.authsamples-k8s.com/investments',
+    bffBaseUrl: 'https://bff.authsamples-k8s.com',
 } as Configuration;

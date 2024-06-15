@@ -2,6 +2,6 @@
     "port": 8000,
     "sslCertificateFileName": "",
     "sslCertificatePassword": "",
-    "trustedHosts": ["https://api.mycluster.com"],
+    "trustedHosts": ["https://bff.mycluster.com"],
     "mode": "deployed"
 }
