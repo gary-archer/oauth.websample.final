@@ -1,4 +1,4 @@
-FROM node:20-bookworm
+FROM node:20-bookworm-slim
 
 # Copy the web host application and install its dependencies
 WORKDIR /usr/webhost
