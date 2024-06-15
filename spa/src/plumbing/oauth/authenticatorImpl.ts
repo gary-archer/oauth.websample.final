@@ -17,12 +17,10 @@ export class AuthenticatorImpl implements Authenticator {
 
     private readonly _oauthAgentBaseUrl: string;
     private readonly _concurrencyHandler: ConcurrentActionHandler;
-    private readonly _sessionId: string;
 
-    public constructor(configuration: Configuration, sessionId: string) {
+    public constructor(configuration: Configuration) {
 
         this._oauthAgentBaseUrl = configuration.oauthAgentBaseUrl;
-        this._sessionId = sessionId;
         this._concurrencyHandler = new ConcurrentActionHandler();
         this._setupCallbacks();
     }
@@ -144,7 +142,9 @@ export class AuthenticatorImpl implements Authenticator {
             options.method === 'PATCH' ||
             options.method === 'DELETE') {
 
-            (options.headers as any)['x-mycompany-csrf'] = HtmlStorageHelper.csrfToken;
+            if (HtmlStorageHelper.csrfToken) {
+                (options.headers as any)['x-mycompany-csrf'] = HtmlStorageHelper.csrfToken;
+            }
         }
     }
 
@@ -239,11 +239,6 @@ export class AuthenticatorImpl implements Authenticator {
 
             // Add the CSRF token
             this.addCsrfToken(options);
-
-            // Supply headers for the OAuth agent API to write to logs
-            options.headers['x-mycompany-api-client'] = 'FinalSPA';
-            options.headers['x-mycompany-session-id'] = this._sessionId;
-            options.headers['x-mycompany-correlation-id'] = Guid.create().toString();
 
             // Make the request and return the response
             const response = await axios.request(options as AxiosRequestConfig);

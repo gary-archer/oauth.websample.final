@@ -115,7 +115,7 @@ export class AppViewModel {
             const sessionId = SessionManager.get();
 
             // Create an object to manage OAuth related operations
-            this._authenticator = new AuthenticatorImpl(this._configuration, sessionId);
+            this._authenticator = new AuthenticatorImpl(this._configuration);
 
             // Create a client for calling the API
             this._fetchClient = new FetchClient(
