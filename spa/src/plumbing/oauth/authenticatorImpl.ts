@@ -1,5 +1,4 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
-import {Guid} from 'guid-typescript';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
