@@ -66,7 +66,7 @@ metadata:
   name: webhost-virtual-service
 spec:
   hosts:
-  - www.mycluster.com
+  - www.authsamples-k8s-dev.com
   gateways:
   - istio-system/istio-ingress-gateway
   http:
