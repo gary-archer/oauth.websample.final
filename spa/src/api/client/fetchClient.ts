@@ -162,14 +162,14 @@ export class FetchClient {
 
         // Values written to API logs
         const headers: any = {
-            'x-mycompany-api-client':     'FinalSPA',
-            'x-mycompany-session-id':     this._sessionId,
-            'x-mycompany-correlation-id': Guid.create().toString(),
+            'x-authsamples-api-client':     'FinalSPA',
+            'x-authsamples-session-id':     this._sessionId,
+            'x-authsamples-correlation-id': Guid.create().toString(),
         };
 
         // A special header can be sent to ask the API to throw a simulated exception
         if (fetchOptions.causeError) {
-            headers['x-mycompany-test-exception'] = 'SampleApi';
+            headers['x-authsamples-test-exception'] = 'SampleApi';
         }
 
         // Set options and send the secure cookie to the API origin

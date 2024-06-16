@@ -142,7 +142,7 @@ export class AuthenticatorImpl implements Authenticator {
             options.method === 'DELETE') {
 
             if (HtmlStorageHelper.csrfToken) {
-                (options.headers as any)['x-mycompany-csrf'] = HtmlStorageHelper.csrfToken;
+                (options.headers as any)['x-authsamples-csrf'] = HtmlStorageHelper.csrfToken;
             }
         }
     }
