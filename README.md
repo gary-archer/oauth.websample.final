@@ -35,7 +35,7 @@ The online version uses the AWS Cloudfront CDN to deliver static content to the 
 Login at https://www.authsamples.com/ with this AWS Cognito test account:
 
 ```text
-- User: guestuser@mycompany.com
+- User: guestuser@example.com
 - Password: GuestPassword1
 ```
 
