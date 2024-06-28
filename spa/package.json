@@ -11,7 +11,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "lint": "npx eslint . --ext .ts,.tsx",
+    "lint": "npx eslint ./src",
     "start": "npm run webpackDebug",
     "build": "./build.sh",
     "buildRelease": "./build.sh RELEASE",
@@ -20,7 +20,7 @@
     "purgecss": "purgecss -c purgecss.config.cjs -o dist"
   },
   "dependencies": {
-    "axios": "^1.6.8",
+    "axios": "^1.7.2",
     "guid-typescript": "^1.0.9",
     "js-event-bus": "^1.1.1",
     "react": "^18.3.1",
@@ -29,19 +29,24 @@
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "@types/eslint__js": "^8.42.3",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "@types/react-modal": "^3.16.3",
-    "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
     "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.34.1",
-    "purgecss": "^5.0.0",
+    "purgecss": "^6.0.0",
     "ts-loader": "^9.5.0",
-    "tsx": "^4.7.1",
-    "typescript": "^5.4.3",
+    "tsx": "^4.15.7",
+    "typescript": "^5.5.2",
+    "typescript-eslint": "^7.14.1",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^5.10.0"
+  },
+  "overrides": {
+    "eslint": {
+      "file-entry-cache": "8.x"
+    }
   }
 }

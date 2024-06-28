@@ -9,7 +9,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "lint": "npx eslint . --ext .ts",
+    "lint": "npx eslint ./src",
     "start": "tsx src/app.ts",
     "buildRelease": "tsc --sourceMap false",
     "startRelease": "node ./dist/app.js"
@@ -19,13 +19,19 @@
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "@types/eslint__js": "^8.42.3",
     "@types/express": "^4.17.21",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.11.30",
-    "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
     "eslint": "^8.57.0",
-    "tsx": "^4.7.1",
-    "typescript": "^5.4.3"
+    "tsx": "^4.15.7",
+    "typescript": "^5.5.2",
+    "typescript-eslint": "^7.14.1"
+  },
+  "overrides": {
+    "eslint": {
+      "file-entry-cache": "8.x"
+    }
   }
 }
