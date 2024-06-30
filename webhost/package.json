@@ -9,7 +9,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "lint": "npx eslint ./src",
+    "lint": "npx eslint . --ignore-pattern dist",
     "start": "tsx src/app.ts",
     "buildRelease": "tsc --sourceMap false",
     "startRelease": "node ./dist/app.js"

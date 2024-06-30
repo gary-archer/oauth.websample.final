@@ -58,7 +58,7 @@ export class TransactionsContainerViewModel {
     }
 
     public get companyId(): string {
-        return this._companyId!;
+        return this._companyId || '';
     }
 
     public get error(): UIError | null {
@@ -139,15 +139,21 @@ export class TransactionsContainerViewModel {
      * Update state and the binding system
      */
     private _updateTransactions(transactions: CompanyTransactions | null): void {
+
         this._transactions = transactions;
-        this._setTransactions!(this._transactions);
+        if (this._setTransactions) {
+            this._setTransactions(this._transactions);
+        }
     }
 
     /*
      * Update state and the binding system
      */
     private _updateError(error: UIError | null): void {
+
         this._error = error;
-        this._setError!(this._error);
+        if (this._setError) {
+            this._setError(this._error);
+        }
     }
 }

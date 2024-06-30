@@ -145,23 +145,32 @@ export class UserInfoViewModel {
      * Update state and the binding system
      */
     private _updateOAuthUserInfo(oauthUserInfo: OAuthUserInfo | null): void {
+
         this._oauthUserInfo = oauthUserInfo;
-        this._setOAuthUserInfo!(oauthUserInfo);
+        if (this._setOAuthUserInfo) {
+            this._setOAuthUserInfo(oauthUserInfo);
+        }
     }
 
     /*
      * Update state and the binding system
      */
     private _updateApiUserInfo(apiUserInfo: ApiUserInfo | null): void {
+
         this._apiUserInfo = apiUserInfo;
-        this._setApiUserInfo!(apiUserInfo);
+        if (this._setApiUserInfo) {
+            this._setApiUserInfo(apiUserInfo);
+        }
     }
 
     /*
      * Update state and the binding system
      */
     private _updateError(error: UIError | null): void {
+
         this._error = error;
-        this._setError!(error);
+        if (this._setError) {
+            this._setError(error);
+        }
     }
 }

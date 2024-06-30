@@ -102,6 +102,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     function getErrorProps(): ErrorSummaryViewProps {
 
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
             error: model.error!,
             errorsToIgnore: [ErrorCodes.loginRequired],

@@ -23,10 +23,10 @@ import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
 export class AppViewModel {
 
     // Global objects created from configuration
-    private _configuration: Configuration | null;
-    private _authenticator: Authenticator | null;
-    private _fetchClient: FetchClient | null;
-    private _viewModelCoordinator: ViewModelCoordinator | null;
+    private _configuration!: Configuration;
+    private _authenticator!: Authenticator;
+    private _fetchClient!: FetchClient;
+    private _viewModelCoordinator!: ViewModelCoordinator;
 
     // Other infrastructure
     private readonly _eventBus: EventBus;
@@ -52,12 +52,6 @@ export class AppViewModel {
      * Set the initial state when the app starts
      */
     public constructor() {
-
-        // Objects that need configuration are initially null
-        this._configuration = null;
-        this._authenticator = null;
-        this._fetchClient = null;
-        this._viewModelCoordinator = null;
 
         // Create objects used for coordination
         this._eventBus = new EventBus();
@@ -128,7 +122,7 @@ export class AppViewModel {
             this._viewModelCoordinator = new ViewModelCoordinator(
                 this._eventBus,
                 this._fetchCache,
-                this._authenticator!);
+                this._authenticator);
 
             // Update state, to prevent model recreation if the view is recreated
             this._isInitialised = true;
@@ -160,7 +154,7 @@ export class AppViewModel {
             this._isLoading = true;
 
             // Handle any login responses
-            const navigateTo = await this._authenticator!.handlePageLoad();
+            const navigateTo = await this._authenticator.handlePageLoad();
 
             // Inform the view that loading is complete
             this._updateIsLoaded(true);
@@ -192,7 +186,7 @@ export class AppViewModel {
     public async login(currentLocation: string): Promise<void> {
 
         try {
-            await this._authenticator!.login(currentLocation);
+            await this._authenticator.login(currentLocation);
         } catch (e: any) {
             this._updateError(ErrorFactory.fromException(e));
         }
@@ -204,7 +198,7 @@ export class AppViewModel {
     public async logout(): Promise<boolean> {
 
         try {
-            await this._authenticator!.logout();
+            await this._authenticator.logout();
             return true;
 
         } catch (e: any) {
@@ -219,8 +213,8 @@ export class AppViewModel {
      */
     public onLoggedOut(): void {
 
-        this._viewModelCoordinator!.resetState();
-        this._authenticator!.clearLoginState();
+        this._viewModelCoordinator.resetState();
+        this._authenticator.clearLoginState();
         this._updateError(null);
     }
 
@@ -240,15 +234,15 @@ export class AppViewModel {
     }
 
     public get configuration(): Configuration {
-        return this._configuration!;
+        return this._configuration;
     }
 
     public get authenticator(): Authenticator {
-        return this._authenticator!;
+        return this._authenticator;
     }
 
     public get fetchClient(): FetchClient {
-        return this._fetchClient!;
+        return this._fetchClient;
     }
 
     public get eventBus(): EventBus {
@@ -263,9 +257,9 @@ export class AppViewModel {
         if (!this._companiesViewModel) {
 
             this._companiesViewModel = new CompaniesContainerViewModel(
-                this._fetchClient!,
+                this._fetchClient,
                 this._eventBus,
-                this._viewModelCoordinator!,
+                this._viewModelCoordinator,
             );
         }
 
@@ -278,9 +272,9 @@ export class AppViewModel {
 
             this._transactionsViewModel = new TransactionsContainerViewModel
             (
-                this._fetchClient!,
+                this._fetchClient,
                 this._eventBus,
-                this._viewModelCoordinator!,
+                this._viewModelCoordinator,
             );
         }
 
@@ -292,9 +286,9 @@ export class AppViewModel {
         if (!this._userInfoViewModel) {
 
             this._userInfoViewModel = new UserInfoViewModel(
-                this._fetchClient!,
+                this._fetchClient,
                 this._eventBus,
-                this._viewModelCoordinator!,
+                this._viewModelCoordinator,
             );
         }
 
@@ -307,7 +301,7 @@ export class AppViewModel {
     public reloadData(causeError: boolean): void {
 
         this._updateError(null);
-        this._viewModelCoordinator!.resetState();
+        this._viewModelCoordinator.resetState();
         this._eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }
 
@@ -315,7 +309,7 @@ export class AppViewModel {
      * See if there are any errors
      */
     public hasError(): boolean {
-        return !!this._error || this._viewModelCoordinator!.hasErrors();
+        return !!this._error || this._viewModelCoordinator.hasErrors();
     }
 
     /*
@@ -324,7 +318,7 @@ export class AppViewModel {
     public async expireAccessToken(): Promise<void> {
 
         try {
-            await this._authenticator?.expireAccessToken();
+            await this._authenticator.expireAccessToken();
         } catch (e: any) {
             this._updateError(ErrorFactory.fromException(e));
         }
@@ -336,7 +330,7 @@ export class AppViewModel {
     public async expireRefreshToken(): Promise<void> {
 
         try {
-            await this._authenticator?.expireRefreshToken();
+            await this._authenticator.expireRefreshToken();
         } catch (e: any) {
             this._updateError(ErrorFactory.fromException(e));
         }
@@ -346,16 +340,22 @@ export class AppViewModel {
      * Update loaded state and the binding system
      */
     private _updateIsLoaded(isLoaded: boolean): void {
+
         this._isLoaded = isLoaded;
-        this._setIsLoaded!(isLoaded);
+        if (this._setIsLoaded) {
+            this._setIsLoaded(isLoaded);
+        }
     }
 
     /*
      * Update error state and the binding system
      */
     private _updateError(error: UIError | null): void {
+
         this._error = error;
-        this._setError!(error);
+        if (this._setError) {
+            this._setError(error);
+        }
     }
 
     /*

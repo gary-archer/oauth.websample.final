@@ -35,6 +35,7 @@ export class FetchCache {
     /*
      * Remove an item when forcing a reload
      */
+    /* eslint-disable @typescript-eslint/no-dynamic-delete */
     public removeItem(key: string): void {
 
         if (this._requests[key]) {

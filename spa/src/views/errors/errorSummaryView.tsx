@@ -52,7 +52,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
 
         const errorDetailsProps = {
             title: props.dialogTitle,
-            error: props.error!,
+            error: props.error,
             handleClose: handleDetailsDialogClose,
         };
 

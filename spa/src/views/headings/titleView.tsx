@@ -8,14 +8,14 @@ import {TitleViewProps} from './titleViewProps';
  */
 export function TitleView(props: TitleViewProps): JSX.Element {
 
-    return  (
+    return (
         <div className='row'>
             <div className='col-8 my-auto'>
                 <HeadingView />
             </div>
             {props.userInfo &&
                 <div className='col-4 my-auto'>
-                    <UserInfoView {...props.userInfo}/>
+                    <UserInfoView {...props.userInfo} />
                 </div>
             }
         </div>

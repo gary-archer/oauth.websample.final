@@ -68,6 +68,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
 
     function getErrorProps(): ErrorSummaryViewProps {
 
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
             error: model.error!,
             errorsToIgnore: [ErrorCodes.loginRequired],

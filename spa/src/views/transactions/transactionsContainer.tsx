@@ -21,7 +21,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
     model.useState();
 
     const params = useParams();
-    const companyId = params.id!;
+    const companyId = params.id || '';
     CurrentLocation.path = useLocation().pathname;
 
     useEffect(() => {
@@ -76,6 +76,7 @@ export function TransactionsContainer(props: TransactionsContainerProps): JSX.El
 
     function getErrorProps(): ErrorSummaryViewProps {
 
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
             error: model.error!,
             errorsToIgnore: [ErrorCodes.loginRequired],
