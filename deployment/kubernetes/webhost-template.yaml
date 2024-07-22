@@ -68,7 +68,7 @@ spec:
   hosts:
   - www.authsamples-k8s-dev.com
   gateways:
-  - istio-system/istio-ingress-gateway
+  - istio-system/default-gateway
   http:
   - route:
     - destination:
