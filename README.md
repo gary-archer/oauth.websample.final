@@ -57,7 +57,7 @@ Custom development domains are used so you must add this DNS entry to your hosts
 Next configure [Browser SSL Trust](https://apisandclients.com/posts/developer-ssl-setup) for the SSL root certificate:
 
 ```
-./certs/authsamples-dev.ca.pem
+./certs/authsamples-dev.ca.crt
 ```
 
 Then run this script in another terminal window to run a simple web host that serves static content.\
