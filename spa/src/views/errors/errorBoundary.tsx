@@ -33,6 +33,7 @@ export class ErrorBoundary extends React.Component<any, ErrorBoundaryState> {
 
         // Render children by default
         if (!this.state.error) {
+            /* eslint-disable react/prop-types */
             return this.props.children;
         }
 
