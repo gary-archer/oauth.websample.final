@@ -20,14 +20,14 @@ The SPA architecture looks like this, where OAuth related components are hosted 
 Cookies are issued by an OAuth agent API, rather than a local web backend.\
 This ensures that local web development is focused only on the React SPA:
 
-![SPA Architecture](./doc/spa-architecture.png)
+![SPA Architecture](./images/spa-architecture.png)
 
 ## Views
 
 The SPA is a simple UI with some basic navigation between views, which have a fictional investments theme.\
 The data is returned from an API that authorizes access to resources using claims from multiple sources.
 
-![SPA Views](./doc/spa-views.png)
+![SPA Views](./images/spa-views.png)
 
 ## Online System
 

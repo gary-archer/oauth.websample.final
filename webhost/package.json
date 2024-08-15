@@ -15,7 +15,7 @@
     "startRelease": "node ./dist/app.js"
   },
   "dependencies": {
-    "express": "^4.19.0",
+    "express": "^4.19.2",
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
@@ -25,8 +25,8 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.11.30",
     "eslint": "^9.8.0",
-    "tsx": "^4.15.7",
-    "typescript": "^5.5.2",
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.0"
   }
 }
