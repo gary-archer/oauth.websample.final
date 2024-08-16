@@ -204,19 +204,19 @@ export class AuthenticatorImpl implements Authenticator {
         try {
 
             // Same site cookies are also cross origin so the withCredentials flag is needed
-            const options: any = {
+            const options: AxiosRequestConfig = {
                 url,
                 method,
                 headers: {
-                    'token-handler-verson': '1',
+                    'token-handler-version': '1',
                 },
                 withCredentials: true,
             };
 
             // Post data unless the payload is empty
             if (requestData) {
+                (options.headers as any)['content-type'] = 'application/json';
                 options.data = requestData;
-                options.headers['content-type'] = 'application/json';
             }
 
             // Make the request and return the response

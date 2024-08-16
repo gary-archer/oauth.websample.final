@@ -160,9 +160,9 @@ export class FetchClient {
         fetchOptions: FetchOptions,
         dataToSend: any = null): Promise<any> {
 
-        // Values written to API logs
+        // Custom headers, including those written to API logs
         const headers: any = {
-            'token-handler-verson':         '1',
+            'token-handler-version':        '1',
             'x-authsamples-api-client':     'FinalSPA',
             'x-authsamples-session-id':     this._sessionId,
             'x-authsamples-correlation-id': Guid.create().toString(),
