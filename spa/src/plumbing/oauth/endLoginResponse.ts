@@ -8,7 +8,4 @@ export interface EndLoginResponse {
 
     // True if there are valid cookies
     isLoggedIn: boolean;
-
-    // A new value is generated for each authenticated user session, then used across all browser tabs
-    csrf: string | null;
 }

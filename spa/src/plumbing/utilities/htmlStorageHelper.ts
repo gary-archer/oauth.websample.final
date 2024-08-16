@@ -6,7 +6,7 @@ export class HtmlStorageHelper {
     private static _prefix = 'finalspa.';
     private static _preLoginLocation = 'preLoginLocation';
     private static _apiSessionKeyName = 'apisessionid';
-    private static _csrfToken = 'csrfToken';
+    private static _isLoggedIn = 'isLoggedIn';
     private static _loggedOutEventKeyName = 'loggedoutEvent';
 
     /*
@@ -43,29 +43,29 @@ export class HtmlStorageHelper {
     }
 
     /*
-     * Get the CSRF token, sent with data changing API requests
+     * Check whether logged in
      */
-    public static get csrfToken(): string {
+    public static get isLoggedIn(): boolean {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._csrfToken}`;
-        return localStorage.getItem(key) || '';
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._isLoggedIn}`;
+        return localStorage.getItem(key) == 'true';
     }
 
     /*
-     * Set the CSRF token, sent with data changing API requests
+     * Set whether logged in, to prevent extra calls to the OAuth Agent when we open a new browser tab
      */
-    public static set csrfToken(value: string) {
+    public static set isLoggedIn(value: boolean) {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._csrfToken}`;
-        localStorage.setItem(key, value);
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._isLoggedIn}`;
+        localStorage.setItem(key, String(value));
     }
 
     /*
-     * Clear the CSRF token, sent with data changing API requests
+     * Clear the isLoggedIn flag when we log out
      */
-    public static clearAntiForgeryToken(): void {
+    public static clearIsLoggedIn(): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._csrfToken}`;
+        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._isLoggedIn}`;
         localStorage.removeItem(key);
     }
 

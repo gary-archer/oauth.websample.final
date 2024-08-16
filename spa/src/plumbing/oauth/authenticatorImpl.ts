@@ -25,10 +25,10 @@ export class AuthenticatorImpl implements Authenticator {
     }
 
     /*
-     * Use the CSRF token in storage as an indicator of whether logged in
+     * Use the value in storage as an indicator of whether logged in
      */
     public isLoggedIn(): boolean {
-        return !!HtmlStorageHelper.csrfToken;
+        return !!HtmlStorageHelper.isLoggedIn;
     }
 
     /*
@@ -77,13 +77,12 @@ export class AuthenticatorImpl implements Authenticator {
                         request) as EndLoginResponse;
 
                     // Check for expected data in the response
-                    if (!response.handled || !response.csrf) {
+                    if (!response.handled) {
                         throw ErrorFactory.fromInvalidLoginResponse();
                     }
 
-                    // I store the CSRF token in local storage, which a CSRF attack cannot exploit
-                    // This reduces requests when using multi-tab browsing
-                    HtmlStorageHelper.csrfToken = response.csrf;
+                    // Store a flag to indicate the logged in state
+                    HtmlStorageHelper.isLoggedIn = true;
 
                     // Once login is complete, return the SPA to the pre-login location
                     return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
@@ -128,23 +127,7 @@ export class AuthenticatorImpl implements Authenticator {
      * Allow the login state to be cleared when required
      */
     public clearLoginState(): void {
-        HtmlStorageHelper.clearAntiForgeryToken();
-    }
-
-    /*
-     * Add the CSRF token when sending data changing commands to APIs or the OAuth agent
-     */
-    public addCsrfToken(options: AxiosRequestConfig): void {
-
-        if (options.method === 'POST'  ||
-            options.method === 'PUT'   ||
-            options.method === 'PATCH' ||
-            options.method === 'DELETE') {
-
-            if (HtmlStorageHelper.csrfToken) {
-                (options.headers as any)['x-authsamples-csrf'] = HtmlStorageHelper.csrfToken;
-            }
-        }
+        HtmlStorageHelper.clearIsLoggedIn();
     }
 
     /*
@@ -225,7 +208,7 @@ export class AuthenticatorImpl implements Authenticator {
                 url,
                 method,
                 headers: {
-                    accept: 'application/json',
+                    'token-handler-verson': '1',
                 },
                 withCredentials: true,
             };
@@ -235,9 +218,6 @@ export class AuthenticatorImpl implements Authenticator {
                 options.data = requestData;
                 options.headers['content-type'] = 'application/json';
             }
-
-            // Add the CSRF token
-            this.addCsrfToken(options);
 
             // Make the request and return the response
             const response = await axios.request(options as AxiosRequestConfig);

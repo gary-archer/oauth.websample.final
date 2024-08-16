@@ -162,6 +162,7 @@ export class FetchClient {
 
         // Values written to API logs
         const headers: any = {
+            'token-handler-verson':         '1',
             'x-authsamples-api-client':     'FinalSPA',
             'x-authsamples-session-id':     this._sessionId,
             'x-authsamples-correlation-id': Guid.create().toString(),
@@ -180,9 +181,6 @@ export class FetchClient {
             headers,
             withCredentials: true,
         } as AxiosRequestConfig;
-
-        // Add the CSRF token on data changing commands
-        this._authenticator.addCsrfToken(requestOptions);
 
         // Make the API request and return the result
         const response = await axios.request(requestOptions);

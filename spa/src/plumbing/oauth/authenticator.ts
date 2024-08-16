@@ -1,5 +1,3 @@
-import {AxiosRequestConfig} from 'axios';
-
 /*
  * An interface to represent authentication related operations for the SPA
  */
@@ -19,9 +17,6 @@ export interface Authenticator {
 
     // Allow the app to clear its login state after certain errors
     clearLoginState(): void;
-
-    // Send a CSRF token to the API as part of the defense in depth
-    addCsrfToken(options: AxiosRequestConfig): void;
 
     // Call the OAuth agent to refresh the access token and rewrite cookies
     synchronizedRefresh(): Promise<void>
