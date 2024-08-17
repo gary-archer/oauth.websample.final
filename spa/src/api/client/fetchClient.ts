@@ -160,7 +160,8 @@ export class FetchClient {
         fetchOptions: FetchOptions,
         dataToSend: any = null): Promise<any> {
 
-        // Custom headers, including those written to API logs
+        // Add the token-handler-version custom header, which is required to trigger CORS preflights
+        // The other custom headers are written to API logs
         const headers: any = {
             'token-handler-version':        '1',
             'x-authsamples-api-client':     'FinalSPA',
@@ -173,7 +174,7 @@ export class FetchClient {
             headers['x-authsamples-test-exception'] = 'SampleApi';
         }
 
-        // Set options and send the secure cookie to the API origin
+        // Set options and send the secure cookie to the backend for frontend origin
         const requestOptions = {
             url,
             method,

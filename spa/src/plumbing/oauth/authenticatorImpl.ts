@@ -203,7 +203,8 @@ export class AuthenticatorImpl implements Authenticator {
         const url = `${this._configuration.bffBaseUrl}/oauth-agent/${operationPath}`;
         try {
 
-            // Same site cookies are also cross origin so the withCredentials flag is needed
+            // Add the token-handler-version custom header, which is required to trigger CORS preflights
+            // Also send the secure cookie to the backend for frontend origin
             const options: AxiosRequestConfig = {
                 url,
                 method,
