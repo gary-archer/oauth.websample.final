@@ -46,10 +46,6 @@ if [ "$1" == 'LOCALAPI' ]; then
     exit
   fi
 
-  cd localtokenhandler
-  git checkout feature/simplify
-  cd ..
-
   echo 'Building local token handler components ...'
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then
