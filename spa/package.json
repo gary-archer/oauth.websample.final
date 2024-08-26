@@ -1,0 +1,48 @@
+{
+  "name": "finalspa",
+  "version": "3.0.0",
+  "description": "An SPA that sends tokens to OAuth 2.0 secured APIs using HTTP-only SameSite cookies",
+  "main": "index.tsx",
+  "keywords": [],
+  "author": "Gary Archer",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "npx eslint . --ignore-pattern dist",
+    "start": "npm run webpackDebug",
+    "build": "./build.sh",
+    "buildRelease": "./build.sh RELEASE",
+    "webpackDebug": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.dev.ts --watch",
+    "webpackRelease": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.prod.ts",
+    "purgecss": "purgecss -c purgecss.config.cjs -o dist"
+  },
+  "dependencies": {
+    "axios": "^1.7.4",
+    "guid-typescript": "^1.0.9",
+    "js-event-bus": "^1.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.23.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-modal": "^3.16.3",
+    "eslint": "^9.8.0",
+    "eslint-plugin-react": "^7.35.0",
+    "purgecss": "^6.0.0",
+    "ts-loader": "^9.5.0",
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.0.0",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^6.0.1"
+  }
+}

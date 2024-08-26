@@ -1,0 +1,7 @@
+{
+    "port": 8000,
+    "sslCertificateFileName": "",
+    "sslCertificatePassword": "",
+    "trustedHosts": ["https://bff.authsamples-k8s-dev.com"],
+    "mode": "deployed"
+}

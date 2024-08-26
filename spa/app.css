@@ -1,0 +1,91 @@
+.row
+{
+    margin-top: 5px;
+}
+.listRow
+{
+    height: 80px;
+}
+.mobileHeaderRow
+{
+    height: 60px;
+}
+.mobileRow
+{
+    height: 40px;
+}
+.col-one-fifth
+{
+    width: 20%;
+    float: left;
+}
+.valuecolor
+{
+    color: blue;
+}
+.highlightcolor
+{
+    color:green;
+}
+.largetext
+{
+    font-size: larger;
+}
+.errorcolor
+{
+    color:red;
+}
+.errorlinecolor
+{
+    color:darkblue;
+}
+.sessionid
+{
+    margin-top: 10px;
+}
+
+/* A basic tooltip: https://www.w3schools.com/css/css_tooltip.asp */
+.basictooltip
+{
+    position: relative;
+    display: inline-block;
+ }
+  
+.basictooltip .basictooltiptext
+{
+    visibility: hidden;
+    width: 150px;
+    background-color: gray;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -100px;
+}
+  
+.basictooltip:hover .basictooltiptext
+{
+    visibility: visible;
+}
+
+/* Reduce browser text size when the view is reduced, so that text fits */
+@media all and (max-width: 992px)
+{
+    body
+    {
+        font-size: 0.85em;
+    }
+}
+
+/* Mobile views also use a smaller heading size */
+@media all and (max-width: 768px)
+{
+    h2
+    {
+        font-size: 1.5em;
+    }
+}

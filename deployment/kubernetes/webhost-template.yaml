@@ -1,0 +1,89 @@
+#
+# Kubernetes resources if deploying the web host to a Kubernetes cluster
+# I use this in local development deployments, such as for a local KIND cluster
+# My deployed environments use a content delivery network and do not use a Kubernetes web host
+#
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: webhost
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: webhost
+  labels:
+    app: webhost
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webhost
+  template:
+    metadata:
+      labels:
+        app: webhost
+        sidecar.istio.io/inject: 'true'
+        spire-managed-identity: 'true'
+      annotations:
+        inject.istio.io/templates: 'sidecar,spire'
+    spec:
+      serviceAccountName: webhost
+      containers:
+      - name: webhost
+        image: $DOCKER_IMAGE
+        volumeMounts:
+          - name: webhost-config
+            mountPath: /usr/webhost/webhost.config.json
+            subPath: webhost.config.json
+            readOnly: true
+          - name: spa-config
+            mountPath: /usr/webhost/spa/spa.config.json
+            subPath: spa.config.json
+            readOnly: true
+      volumes:
+        - name: webhost-config
+          configMap:
+            name: webhost-config
+        - name: spa-config
+          configMap:
+            name: spa-config
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: webhost-svc
+spec:
+  selector:
+    app: webhost
+  ports:
+  - name: http
+    protocol: "TCP"
+    port: 8000
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: webhost-mtls
+spec:
+  selector:
+    matchLabels:
+      name: webhost
+  mtls:
+    mode: STRICT
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: webhost-virtual-service
+spec:
+  hosts:
+  - www.authsamples-k8s-dev.com
+  gateways:
+  - istio-system/default-gateway
+  http:
+  - route:
+    - destination:
+        host: webhost-svc
+        port:
+          number: 8000

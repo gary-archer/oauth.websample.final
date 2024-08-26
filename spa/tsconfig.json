@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2017",
+    "lib": ["ES2023", "DOM"],
+    "jsx": "react",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "outDir": "dist",
+    "sourceMap": true
+  },
+  "include": [
+    "./src",
+    "./webpack"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
