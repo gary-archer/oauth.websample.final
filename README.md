@@ -12,7 +12,7 @@ The `Token Handler Pattern` enables the following main behaviors:
 
 - The SPA uses the most secure cookies with no tokens in the browser, to limit the impact of XSS exploits.
 - The SPA uses modern productive development with only client side React technology.
-- The SPA static content is distributed to ~400 locations by a content delivery network.
+- The SPA static content is distributed to ~400 locations by a CDN for best web performance.
   
 ## Components
 
