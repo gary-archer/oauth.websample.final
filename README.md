@@ -30,7 +30,7 @@ The SPA uses user attributes from both the OpenID Connect userinfo endpoint and 
 
 ## Online System
 
-The online version uses the AWS Cloudfront CDN to deliver static content to the browser.\
+The online version uses the AWS Cloudfront content delivery network to deliver static content to the browser.\
 Login at https://www.authsamples.com/ with this AWS Cognito test account:
 
 ```text
