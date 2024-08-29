@@ -16,7 +16,7 @@ The `Token Handler Pattern` enables the following main behaviors:
   
 ## Components
 
-Cookies are managed solely by OAuth Agent and OAuth Proxy utility components on the API side of the architecture:
+Cookies are managed solely by OAuth Agent and OAuth Proxy utilities on the API side of the architecture:
 
 ![SPA Architecture](./images/spa-architecture.png)
 
