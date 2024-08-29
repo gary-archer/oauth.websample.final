@@ -72,7 +72,7 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 ## Further Information
 
 * See the [API Journey - Client Side](https://apisandclients.com/posts/api-journey-client-side) for further information on the app's behaviour.
-* See blog posts for further details specific to the, starting in the [Final SPA Overview](https://apisandclients.com/posts/final-spa-overview).
+* See blog posts for further details specific to the SPA, starting in the [Final SPA Overview](https://apisandclients.com/posts/final-spa-overview).
 
 ## Programming Languages
 
