@@ -23,7 +23,7 @@ cd ../..
 cd webhost
 ./build.sh
 if [ $? -ne 0 ]; then
-  echo '*** Web Host build problem encountered'
+  echo 'Web host build problem encountered'
   exit 1
 fi
 cd ..
@@ -32,9 +32,10 @@ cd ..
 # Build the SPA
 #
 cd spa
-./build.sh 'RELEASE'
+export BUILD_CONFIGURATION='RELEASE'
+./build.sh
 if [ $? -ne 0 ]; then
-  echo '*** SPA build problem encountered'
+  echo 'SPA build problem encountered'
   exit 1
 fi
 cd ..
@@ -44,7 +45,7 @@ cd ..
 #
 docker build --no-cache -f deployment/shared/Dockerfile -t "$DOCKER_IMAGE" .
 if [ $? -ne 0 ]; then
-  echo '*** Web Host docker build problem encountered'
+  echo 'Web host docker build problem encountered'
   exit 1
 fi
 
@@ -53,6 +54,6 @@ fi
 #
 kind load docker-image "$DOCKER_IMAGE" --name oauth
 if [ $? -ne 0 ]; then
-  echo '*** Web Host docker deploy problem encountered'
+  echo 'Web host docker deploy problem encountered'
   exit 1
 fi

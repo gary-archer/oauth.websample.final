@@ -25,7 +25,7 @@ case "$(uname -s)" in
 	;;
 esac
 
-if [ "$1" == 'LOCALAPI' ]; then
+if [ "$LOCALAPI" == 'true' ]; then
 
   #
   # When connecting the SPA to a local API, deploy local token handler components in Docker
@@ -40,7 +40,7 @@ fi
 #
 # Ensure that web components point to the correct API components
 #
-if [ "$1" == 'LOCALAPI' ]; then
+if [ "$LOCALAPI" == 'true' ]; then
 
   cp deployment/environments/dev-localapi/spa.config.json  spa/dist/spa.config.json
   cp deployment/environments/dev-localapi/webhost.config.json  webhost/webhost.config.json

@@ -31,7 +31,7 @@ cd ..
 # Build the React SPA's Javascript bundles
 #
 cd spa
-./build.sh 'RELEASE'
+export BUILD_CONFIGURATION='RELEASE'
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   exit

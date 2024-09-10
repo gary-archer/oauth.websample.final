@@ -7,12 +7,22 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Get the build configuration
+# Get the platform
 #
-BUILD_CONFIGURATION="$1"
-if [ "$BUILD_CONFIGURATION" != 'RELEASE' ]; then
-  BUILD_CONFIGURATION='DEBUG'
-fi
+case "$(uname -s)" in
+
+  Darwin)
+    PLATFORM="MACOS"
+ 	;;
+
+  MINGW64*)
+    PLATFORM="WINDOWS"
+	;;
+
+  Linux)
+    PLATFORM="LINUX"
+	;;
+esac
 
 #
 # Download development SSL certificates
@@ -26,7 +36,7 @@ fi
 # Build the development web host's code
 #
 cd webhost
-echo 'Building the web host ...'
+echo 'Building the development web host ...'
 ./build.sh
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the development web host'
@@ -37,7 +47,7 @@ cd ..
 #
 # When connecting the SPA to a local API, run token handler components on the local development computer
 #
-if [ "$1" == 'LOCALAPI' ]; then
+if [ "$LOCALAPI" == 'true' ]; then
 
   rm -rf localtokenhandler 2>/dev/null
   git clone https://github.com/gary-archer/oauth-agent-node-express localtokenhandler
@@ -58,10 +68,16 @@ fi
 # Build the SPA in watch mode, so that we can develop productively and see changes
 #
 echo 'Building the SPA ...'
-cd spa
-./build.sh "$BUILD_CONFIGURATION"
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the SPA'
-  exit
+if [ "$PLATFORM" == 'MACOS' ]; then
+
+  open -a Terminal ./spa/build.sh
+
+elif [ "$PLATFORM" == 'WINDOWS' ]; then
+
+  GIT_BASH="C:\Program Files\Git\git-bash.exe"
+  "$GIT_BASH" -c ./spa/build.sh &
+
+elif [ "$PLATFORM" == 'LINUX' ]; then
+
+  gnome-terminal -- ./spa/build.sh
 fi
-cd ..

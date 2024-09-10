@@ -6,6 +6,6 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-if [ "$1" == 'LOCALAPI' ]; then
+if [ "$(docker ps | grep oauthagent)" != '' ]; then
   ./localtokenhandler/deployment/docker-local/teardown.sh
 fi

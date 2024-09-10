@@ -7,7 +7,13 @@
 ##########################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
-BUILD_CONFIGURATION="$1"
+
+#
+# Get the build configuration
+#
+if [ "$BUILD_CONFIGURATION" != 'RELEASE' ]; then
+  BUILD_CONFIGURATION='DEBUG'
+fi
 
 #
 # Install dependencies

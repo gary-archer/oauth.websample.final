@@ -11,7 +11,7 @@ cd ../..
 # Check that packaging has been run first
 #
 if [ ! -d '.package' ]; then
-  echo '*** Please run the build.sh script before the deploy.sh script'
+  echo 'Please run the build.sh script before the deploy.sh script'
   exit
 fi
 
