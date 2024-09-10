@@ -59,7 +59,7 @@ Next, configure [Browser SSL Trust](https://apisandclients.com/posts/developer-s
 ./certs/authsamples-dev.ca.crt
 ```
 
-Then run this script in another terminal window to run a simple web host that serves static content.\
+Then run this script to run a simple web host that serves static content.\
 You can edit the SPA's React code and update the UI productively, in a pure SPA manner.
 
 ```bash
