@@ -23,6 +23,7 @@ if [ ! -d 'node_modules' ]; then
   npm install
   if [ $? -ne 0 ]; then
     echo 'Problem encountered installing SPA dependencies'
+    read -n 1
     exit 1
   fi
 fi
@@ -39,6 +40,7 @@ mkdir ./dist
 npm run lint
 if [ $? -ne 0 ]; then
   echo 'SPA code quality checks failed'
+  read -n 1
   exit 1
 fi
 
@@ -52,6 +54,7 @@ if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
   npm run webpackRelease
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building the SPA'
+    read -n 1
     exit 1
   fi
 
@@ -59,6 +62,7 @@ if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
   npm run purgecss
   if [ $? -ne 0 ]; then
     echo 'Problem encountered reducing CSS for the SPA'
+    read -n 1
     exit 1
   fi
 
@@ -66,6 +70,7 @@ if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
   npx tsx ./webpack/rewriteIndexHtml.ts
   if [ $? -ne 0 ]; then
     echo 'Problem encountered rewriting the SPA index.html file'
+    read -n 1
     exit 1
   fi
 else
@@ -77,6 +82,7 @@ else
   npm run webpackDebug
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building the SPA'
+    read -n 1
     exit 1
   fi
 fi

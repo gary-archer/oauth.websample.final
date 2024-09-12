@@ -20,7 +20,7 @@
     "purgecss": "purgecss -c purgecss.config.cjs -o dist"
   },
   "dependencies": {
-    "axios": "^1.7.4",
+    "axios": "^1.7.7",
     "guid-typescript": "^1.0.9",
     "js-event-bus": "^1.1.1",
     "react": "^18.3.1",
@@ -29,19 +29,18 @@
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.5.0",
-    "@types/eslint__js": "^8.42.3",
+    "@eslint/js": "^9.10.0",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "@types/react-modal": "^3.16.3",
-    "eslint": "^9.8.0",
-    "eslint-plugin-react": "^7.35.0",
+    "eslint": "^9.10.0",
+    "eslint-plugin-react": "7.35.2",
     "purgecss": "^6.0.0",
     "ts-loader": "^9.5.0",
-    "tsx": "^4.17.0",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.0.0",
-    "webpack": "^5.93.0",
+    "tsx": "^4.19.1",
+    "typescript": "5.5.4",
+    "typescript-eslint": "^8.5.0",
+    "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^6.0.1"
   }
