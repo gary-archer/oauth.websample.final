@@ -171,7 +171,7 @@ export class FetchClient {
 
         // A special header can be sent to ask the API to throw a simulated exception
         if (fetchOptions.causeError) {
-            headers['x-authsamples-test-exception'] = 'SampleApi';
+            headers['x-authsamples-test-exception'] = 'FinalApi';
         }
 
         // Set options and send the secure cookie to the backend for frontend origin
