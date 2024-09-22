@@ -78,7 +78,7 @@ else
   # In debug builds copy the full CSS to the dist folder
   cp bootstrap.min.css ./dist
 
-  # Do a webpack build in watch mode, and develop with a pure SPA development model
+  # Change this to 'npm run webpackDebugWatch' when you want to develop in watch mode
   npm run webpackDebug
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building the SPA'
