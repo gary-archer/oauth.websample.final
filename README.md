@@ -7,7 +7,7 @@
 
 ## Overview
 
-The final demo Single Page Application, which aims to meet some [Web Architecture Goals](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/web-architecture-goals).\
+The final demo Single Page Application, which aims to meet some [Web Architecture Goals](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/web-architecture-goals.mdx).\
 The `Token Handler Pattern` enables the following main behaviors:
 
 - The SPA uses the most secure cookies with no tokens in the browser, to limit the impact of XSS exploits.
