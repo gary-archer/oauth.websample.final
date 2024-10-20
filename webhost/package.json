@@ -15,17 +15,17 @@
     "startRelease": "node ./dist/app.js"
   },
   "dependencies": {
-    "express": "^4.21.0",
+    "express": "^5.0.1",
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.10.0",
-    "@types/express": "^4.17.21",
+    "@eslint/js": "^9.13.0",
+    "@types/express": "^5.0.0",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^20.11.30",
-    "eslint": "^9.10.0",
+    "@types/node": "^20.16.13",
+    "eslint": "^9.13.0",
     "tsx": "^4.19.1",
-    "typescript": "5.5.4",
-    "typescript-eslint": "^8.5.0"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.10.0"
   }
 }

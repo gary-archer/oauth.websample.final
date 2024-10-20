@@ -3,11 +3,11 @@ import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config({
-    files: ['**/*.ts'],
     extends: [
-        eslint.configs.strict,
+        eslint.configs.recommended,
         ...tseslint.configs.strict,
     ],
+    files: ['**/*.ts'],
     rules: {
         '@typescript-eslint/explicit-module-boundary-types': ['error', {
             'allowArgumentsExplicitlyTypedAsAny': true,

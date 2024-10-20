@@ -26,7 +26,7 @@ export class WebStaticContent {
         this._express.use(spaBasePath, express.static(spaRoot));
 
         // Handle not found requests
-        this._express.get('*', (request, response) => {
+        this._express.get('*_', (request, response) => {
 
             const requestPath = request.path.toLowerCase();
             if (requestPath === '/favicon.ico') {

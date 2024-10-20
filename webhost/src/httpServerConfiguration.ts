@@ -28,7 +28,7 @@ export class HttpServerConfiguration {
      */
     public initialiseWebStaticContentHosting(): void {
 
-        this._express.use('/*', this._responseHeaders.add);
+        this._express.use('/*_', this._responseHeaders.add);
         this._webStaticContent.initialise();
     }
 

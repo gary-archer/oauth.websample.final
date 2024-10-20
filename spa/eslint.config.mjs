@@ -4,21 +4,16 @@ import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config({
+    extends: [
+        eslint.configs.recommended,
+        ...tseslint.configs.strict,
+    ],
     files: [
         '**/*.ts','**/*.tsx',
     ],
     plugins: {
         react,
     },
-    settings: {
-        react: {
-            version: 'detect',
-        },
-    },
-    extends: [
-        eslint.configs.strict,
-        ...tseslint.configs.strict,
-    ],
     rules: {
         '@typescript-eslint/explicit-module-boundary-types': ['error', {
             'allowArgumentsExplicitlyTypedAsAny': true,
@@ -33,5 +28,10 @@ export default tseslint.config({
         'quotes': ['error', 'single', { 'avoidEscape': true }],
         'semi': 'error',
         ...react.configs.recommended.rules,
+    },
+    settings: {
+        react: {
+            version: 'detect',
+        },
     },
 });
