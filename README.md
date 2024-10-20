@@ -7,7 +7,7 @@
 
 ## Overview
 
-The final demo Single Page Application, which aims to meet some [Web Architecture Goals](https://apisandclients.com/posts/web-architecture-goals).\
+The final demo Single Page Application, which aims to meet some [Web Architecture Goals](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/web-architecture-goals).\
 The `Token Handler Pattern` enables the following main behaviors:
 
 - The SPA uses the most secure cookies with no tokens in the browser, to limit the impact of XSS exploits.
@@ -53,7 +53,7 @@ You must use custom development domains and add this DNS entry to your hosts fil
 127.0.0.1 localhost www.authsamples-dev.com
 ```
 
-Next, configure [Browser SSL Trust](https://apisandclients.com/posts/developer-ssl-setup#trust-a-root-certificate-in-browsers) for the SSL root certificate:
+Next, configure [Browser SSL Trust](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/developer-ssl-setup.mdx#trust-a-root-certificate-in-browsers) for the SSL root certificate:
 
 ```
 ./certs/authsamples-dev.ca.crt
@@ -71,8 +71,8 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 
 ## Further Information
 
-* See the [API Journey - Client Side](https://apisandclients.com/posts/api-journey-client-side) for further information on the app's behaviour.
-* See blog posts for further details specific to the SPA, starting in the [Final SPA Overview](https://apisandclients.com/posts/final-spa-overview).
+* See the [API Journey - Client Side](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/api-journey-client-side.mdx) for further information on the app's behaviour.
+* See blog posts for further details specific to the SPA, starting in the [Final SPA Overview](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/final-spa-overview.mdx).
 
 ## Programming Languages
 
