@@ -24,7 +24,7 @@ export class ErrorFactory {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorFactory._getExceptionMessage(exception);
+        error.setDetails(ErrorFactory.getExceptionMessage(exception));
         return error;
     }
 
@@ -64,7 +64,7 @@ export class ErrorFactory {
                 ErrorCodes.networkError,
                 `A network problem occurred when the UI called the ${source}`,
                 exception.stack);
-            error.details = ErrorFactory._getExceptionMessage(exception);
+            error.setDetails(ErrorFactory.getExceptionMessage(exception));
 
         } else if (statusCode >= 200 && statusCode <= 299) {
 
@@ -74,7 +74,7 @@ export class ErrorFactory {
                 ErrorCodes.jsonDataError,
                 `'A technical problem occurred parsing data from the ${source}`,
                 exception.stack);
-            error.details = ErrorFactory._getExceptionMessage(exception);
+            error.setDetails(ErrorFactory.getExceptionMessage(exception));
 
         } else {
 
@@ -84,16 +84,16 @@ export class ErrorFactory {
                 ErrorCodes.responseError,
                 `An error response was returned from the ${source}`,
                 exception.stack);
-            error.details = ErrorFactory._getExceptionMessage(exception);
+            error.setDetails(ErrorFactory.getExceptionMessage(exception));
 
             // Override the default with a server response when received and CORS allows us to read it
             if (exception.response && exception.response.data && typeof exception.response.data === 'object') {
-                ErrorFactory._updateFromApiErrorResponse(error, exception.response.data);
+                ErrorFactory.updateFromApiErrorResponse(error, exception.response.data);
             }
         }
 
-        error.statusCode = statusCode;
-        error.url = url;
+        error.setStatusCode(statusCode);
+        error.setUrl(url);
         return error;
     }
 
@@ -115,9 +115,9 @@ export class ErrorFactory {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorFactory._getExceptionMessage(exception);
+        error.setDetails(ErrorFactory.getExceptionMessage(exception));
         if (componentStack) {
-            error.details += ` : ${componentStack}`;
+            error.setDetails(`${error.getDetails()} : ${componentStack}`);
         }
 
         return error;
@@ -152,7 +152,7 @@ export class ErrorFactory {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorFactory._getExceptionMessage(exception);
+        error.setDetails(ErrorFactory.getExceptionMessage(exception));
         return error;
     }
 
@@ -185,7 +185,7 @@ export class ErrorFactory {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorFactory._getExceptionMessage(exception);
+        error.setDetails(ErrorFactory.getExceptionMessage(exception));
         return error;
     }
 
@@ -207,7 +207,7 @@ export class ErrorFactory {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorFactory._getExceptionMessage(exception);
+        error.setDetails(ErrorFactory.getExceptionMessage(exception));
         return error;
     }
 
@@ -232,15 +232,15 @@ export class ErrorFactory {
     /*
      * Try to update the default API error with response details
      */
-    private static _updateFromApiErrorResponse(error: UIError, apiError: any): void {
+    private static updateFromApiErrorResponse(error: UIError, apiError: any): void {
 
         // Attempt to read the API error response
         if (apiError) {
 
             // Set the code and message, returned for both 4xx and 5xx errors
             if (apiError.code && apiError.message) {
-                error.errorCode = apiError.code;
-                error.details = apiError.message;
+                error.setErrorCode(apiError.code);
+                error.setDetails(apiError.message);
             }
 
             // Set extra details returned for 5xx errors
@@ -253,7 +253,7 @@ export class ErrorFactory {
     /*
      * Get the message from an exception and avoid returning [object Object]
      */
-    private static _getExceptionMessage(exception: any): string {
+    private static getExceptionMessage(exception: any): string {
 
         if (exception.message) {
             return exception.message;

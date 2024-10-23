@@ -14,30 +14,30 @@ import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
  */
 export class UserInfoViewModel {
 
-    private readonly _fetchClient: FetchClient;
-    private readonly _eventBus: EventBus;
-    private readonly _viewModelCoordinator: ViewModelCoordinator;
-    private _oauthUserInfo: OAuthUserInfo | null;
-    private _apiUserInfo: ApiUserInfo | null;
-    private _error: UIError | null;
-    private _setOAuthUserInfo: Dispatch<SetStateAction<OAuthUserInfo | null>> | null;
-    private _setApiUserInfo: Dispatch<SetStateAction<ApiUserInfo | null>> | null;
-    private _setError: Dispatch<SetStateAction<UIError | null>> | null;
+    private readonly fetchClient: FetchClient;
+    private readonly eventBus: EventBus;
+    private readonly viewModelCoordinator: ViewModelCoordinator;
+    private oauthUserInfo: OAuthUserInfo | null;
+    private apiUserInfo: ApiUserInfo | null;
+    private error: UIError | null;
+    private setOAuthUserInfo: Dispatch<SetStateAction<OAuthUserInfo | null>> | null;
+    private setApiUserInfo: Dispatch<SetStateAction<ApiUserInfo | null>> | null;
+    private setError: Dispatch<SetStateAction<UIError | null>> | null;
 
     public constructor(
         fetchClient: FetchClient,
         eventBus: EventBus,
         viewModelCoordinator: ViewModelCoordinator,
     ) {
-        this._fetchClient = fetchClient;
-        this._eventBus = eventBus;
-        this._viewModelCoordinator = viewModelCoordinator;
-        this._oauthUserInfo = null;
-        this._apiUserInfo = null;
-        this._error = null;
-        this._setOAuthUserInfo = null;
-        this._setApiUserInfo = null;
-        this._setError = null;
+        this.fetchClient = fetchClient;
+        this.eventBus = eventBus;
+        this.viewModelCoordinator = viewModelCoordinator;
+        this.oauthUserInfo = null;
+        this.apiUserInfo = null;
+        this.error = null;
+        this.setOAuthUserInfo = null;
+        this.setApiUserInfo = null;
+        this.setError = null;
     }
 
     /*
@@ -45,33 +45,33 @@ export class UserInfoViewModel {
      */
     public useState(): void {
 
-        const [, setOAuthUserInfo] = useState(this._oauthUserInfo);
-        this._setOAuthUserInfo = setOAuthUserInfo;
+        const [, setOAuthUserInfo] = useState(this.oauthUserInfo);
+        this.setOAuthUserInfo = setOAuthUserInfo;
 
-        const [, setApiUserInfo] = useState(this._apiUserInfo);
-        this._setApiUserInfo = setApiUserInfo;
+        const [, setApiUserInfo] = useState(this.apiUserInfo);
+        this.setApiUserInfo = setApiUserInfo;
 
-        const [, setError] = useState(this._error);
-        this._setError = setError;
+        const [, setError] = useState(this.error);
+        this.setError = setError;
     }
 
     /*
      * Property accessors
      */
-    public get oauthUserInfo(): OAuthUserInfo | null {
-        return this._oauthUserInfo;
+    public getOAuthUserInfo(): OAuthUserInfo | null {
+        return this.oauthUserInfo;
     }
 
-    public get apiUserInfo(): ApiUserInfo | null {
-        return this._apiUserInfo;
+    public getApiUserInfo(): ApiUserInfo | null {
+        return this.apiUserInfo;
     }
 
-    public get error(): UIError | null {
-        return this._error;
+    public getError(): UIError | null {
+        return this.error;
     }
 
-    public get eventBus(): EventBus {
-        return this._eventBus;
+    public getEventBus(): EventBus {
+        return this.eventBus;
     }
 
     /*
@@ -91,14 +91,14 @@ export class UserInfoViewModel {
             causeError: options?.causeError || false,
         };
 
-        this._viewModelCoordinator.onUserInfoViewModelLoading();
-        this._updateError(null);
+        this.viewModelCoordinator.onUserInfoViewModelLoading();
+        this.updateError(null);
 
         try {
 
             // Set up promises for the two sources of user info
-            const oauthUserInfoPromise = this._fetchClient.getOAuthUserInfo(oauthFetchOptions);
-            const apiUserInfoPromise = this._fetchClient.getApiUserInfo(apiFetchOptions);
+            const oauthUserInfoPromise = this.fetchClient.getOAuthUserInfo(oauthFetchOptions);
+            const apiUserInfoPromise = this.fetchClient.getApiUserInfo(apiFetchOptions);
 
             // Run the tasks in parallel
             const results = await Promise.all([oauthUserInfoPromise, apiUserInfoPromise]);
@@ -107,21 +107,21 @@ export class UserInfoViewModel {
 
             // Update data
             if (oauthUserInfo) {
-                this._updateOAuthUserInfo(oauthUserInfo);
+                this.updateOAuthUserInfo(oauthUserInfo);
             }
             if (apiUserInfo) {
-                this._updateApiUserInfo(apiUserInfo);
+                this.updateApiUserInfo(apiUserInfo);
             }
 
         } catch (e: any) {
 
-            this._updateError(ErrorFactory.fromException(e));
-            this._updateOAuthUserInfo(null);
-            this._updateApiUserInfo(null);
+            this.updateError(ErrorFactory.fromException(e));
+            this.updateOAuthUserInfo(null);
+            this.updateApiUserInfo(null);
 
         } finally {
 
-            this._viewModelCoordinator.onUserInfoViewModelLoaded();
+            this.viewModelCoordinator.onUserInfoViewModelLoaded();
         }
     }
 
@@ -129,9 +129,9 @@ export class UserInfoViewModel {
      * Unload when the user navigates to login required
      */
     public unload(): void {
-        this._updateOAuthUserInfo(null);
-        this._updateApiUserInfo(null);
-        this._updateError(null);
+        this.updateOAuthUserInfo(null);
+        this.updateApiUserInfo(null);
+        this.updateError(null);
     }
 
     /*
@@ -144,33 +144,33 @@ export class UserInfoViewModel {
     /*
      * Update state and the binding system
      */
-    private _updateOAuthUserInfo(oauthUserInfo: OAuthUserInfo | null): void {
+    private updateOAuthUserInfo(oauthUserInfo: OAuthUserInfo | null): void {
 
-        this._oauthUserInfo = oauthUserInfo;
-        if (this._setOAuthUserInfo) {
-            this._setOAuthUserInfo(oauthUserInfo);
+        this.oauthUserInfo = oauthUserInfo;
+        if (this.setOAuthUserInfo) {
+            this.setOAuthUserInfo(oauthUserInfo);
         }
     }
 
     /*
      * Update state and the binding system
      */
-    private _updateApiUserInfo(apiUserInfo: ApiUserInfo | null): void {
+    private updateApiUserInfo(apiUserInfo: ApiUserInfo | null): void {
 
-        this._apiUserInfo = apiUserInfo;
-        if (this._setApiUserInfo) {
-            this._setApiUserInfo(apiUserInfo);
+        this.apiUserInfo = apiUserInfo;
+        if (this.setApiUserInfo) {
+            this.setApiUserInfo(apiUserInfo);
         }
     }
 
     /*
      * Update state and the binding system
      */
-    private _updateError(error: UIError | null): void {
+    private updateError(error: UIError | null): void {
 
-        this._error = error;
-        if (this._setError) {
-            this._setError(error);
+        this.error = error;
+        if (this.setError) {
+            this.setError(error);
         }
     }
 }

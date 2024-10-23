@@ -3,13 +3,13 @@
  */
 export class ReloadDataEvent {
 
-    private readonly _causeError: boolean;
+    private readonly causeError: boolean;
 
     public constructor(causeError: boolean) {
-        this._causeError= causeError;
+        this.causeError= causeError;
     }
 
-    public get causeError(): boolean {
-        return this._causeError;
+    public getCauseError(): boolean {
+        return this.causeError;
     }
 }

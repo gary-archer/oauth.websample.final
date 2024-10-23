@@ -8,10 +8,10 @@ type ErrorCallback = (error: any) => void;
  */
 export class ConcurrentActionHandler {
 
-    private _callbacks: [SuccessCallback, ErrorCallback][];
+    private callbacks: [SuccessCallback, ErrorCallback][];
 
     public constructor() {
-        this._callbacks = [];
+        this.callbacks = [];
     }
 
     /*
@@ -30,11 +30,11 @@ export class ConcurrentActionHandler {
                 reject(error);
             };
 
-            this._callbacks.push([onSuccess, onError]);
+            this.callbacks.push([onSuccess, onError]);
         });
 
         // Only do the work for the first UI view that calls us
-        const performAction = this._callbacks.length === 1;
+        const performAction = this.callbacks.length === 1;
         if (performAction) {
 
             try {
@@ -43,20 +43,20 @@ export class ConcurrentActionHandler {
                 await action();
 
                 // On success resolve all promises
-                this._callbacks.forEach((c) => {
+                this.callbacks.forEach((c) => {
                     c[0]();
                 });
 
             } catch (e: any) {
 
                 // On failure resolve all promises with the same error
-                this._callbacks.forEach((c) => {
+                this.callbacks.forEach((c) => {
                     c[1](e);
                 });
             }
 
             // Reset once complete
-            this._callbacks = [];
+            this.callbacks = [];
         }
 
         // Return the promise

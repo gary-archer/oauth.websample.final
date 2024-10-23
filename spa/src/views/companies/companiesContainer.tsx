@@ -33,8 +33,8 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     async function startup(): Promise<void> {
 
         // Subscribe for reload events
-        model.eventBus.emit(EventNames.Navigated, null, new NavigatedEvent(true));
-        model.eventBus.on(EventNames.ReloadData, onReload);
+        model.getEventBus().emit(EventNames.Navigated, null, new NavigatedEvent(true));
+        model.getEventBus().on(EventNames.ReloadData, onReload);
 
         // Do the initial load of data
         await loadData();
@@ -44,7 +44,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        model.eventBus.detach(EventNames.ReloadData, onReload);
+        model.getEventBus().detach(EventNames.ReloadData, onReload);
     }
 
     /*
@@ -54,7 +54,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
 
         const options = {
             forceReload: true,
-            causeError: event.causeError
+            causeError: event.getCauseError(),
         };
         loadData(options);
     }
@@ -70,7 +70,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
 
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
-            error: model.error!,
+            error: model.getError()!,
             errorsToIgnore: [ErrorCodes.loginRequired],
             containingViewName: 'companies',
             hyperlinkMessage: 'Problem Encountered in Companies View',
@@ -82,14 +82,14 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
     function getChildProps(): CompaniesViewProps {
 
         return {
-            companies: model.companies,
+            companies: model.getCompanies(),
         };
     }
 
     return  (
         <>
-            {model.error && <ErrorSummaryView {...getErrorProps()}/>}
-            {model.companies.length > 0 && (props.isMobileLayout ?
+            {model.getError() && <ErrorSummaryView {...getErrorProps()}/>}
+            {model.getCompanies().length > 0 && (props.isMobileLayout ?
                 <CompaniesMobileView {...getChildProps()}/> :
                 <CompaniesDesktopView {...getChildProps()}/>)}
 

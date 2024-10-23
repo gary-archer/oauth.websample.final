@@ -6,12 +6,12 @@ import {Configuration} from './configuration.js';
  */
 export class ResponseHeaders {
 
-    private readonly _configuration: Configuration;
+    private readonly configuration: Configuration;
 
     public constructor(configuration: Configuration) {
 
-        this._configuration = configuration;
-        this._setupCallbacks();
+        this.configuration = configuration;
+        this.setupCallbacks();
     }
 
     /*
@@ -20,7 +20,7 @@ export class ResponseHeaders {
     public add(request: Request, response: Response, next: NextFunction): any {
 
         // Prevent external sites being able to abuse the SPA's web origin
-        const trustedHosts = this._configuration.trustedHosts.join(' ');
+        const trustedHosts = this.configuration.trustedHosts.join(' ');
         let policy = "default-src 'none';";
         policy += " script-src 'self';";
         policy += ` connect-src 'self' ${trustedHosts};`;
@@ -41,8 +41,8 @@ export class ResponseHeaders {
         response.setHeader('referrer-policy', 'same-origin');
 
         // Also set the cache control header, for best browser performance
-        if (this._configuration.mode === 'deployed') {
-            response.setHeader('cache-control', this._getCacheControlResponseHeader(request));
+        if (this.configuration.mode === 'deployed') {
+            response.setHeader('cache-control', this.getCacheControlResponseHeader(request));
         }
 
         next();
@@ -51,7 +51,7 @@ export class ResponseHeaders {
     /*
      * Tell the browser to cache child assets that use cache busting timestamps, but not cache HTML files
      */
-    private _getCacheControlResponseHeader(request: Request): string {
+    private getCacheControlResponseHeader(request: Request): string {
 
         const fullUrl = `${request.protocol}://${request.hostname}${request.originalUrl.toLowerCase()}`;
         const path = new URL(fullUrl).pathname;
@@ -75,7 +75,7 @@ export class ResponseHeaders {
     /*
      * Make the this parameter available in callbacks
      */
-    private _setupCallbacks(): void {
+    private setupCallbacks(): void {
         this.add = this.add.bind(this);
     }
 }

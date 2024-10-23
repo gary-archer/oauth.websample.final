@@ -11,11 +11,11 @@ export class SessionManager {
      */
     public static get(): string {
 
-        let sessionId = HtmlStorageHelper.apiSessionId;
+        let sessionId = HtmlStorageHelper.getApiSessionId();
         if (!sessionId) {
 
             sessionId = Guid.create().toString();
-            HtmlStorageHelper.apiSessionId = sessionId;
+            HtmlStorageHelper.setApiSessionId(sessionId);
         }
 
         return sessionId;

@@ -8,7 +8,7 @@ import {FetchCacheItem} from './fetchCacheItem';
 export class FetchCache {
 
     // A map of cache keys to API responses
-    private _requests: Record<string, FetchCacheItem> = {};
+    private requests: Record<string, FetchCacheItem> = {};
 
     /*
      * Create an item with no data when an API request is triggered
@@ -19,7 +19,7 @@ export class FetchCache {
         if (!item) {
 
             item = new FetchCacheItem();
-            this._requests[key] = item;
+            this.requests[key] = item;
         }
 
         return item;
@@ -29,7 +29,7 @@ export class FetchCache {
      * Get an item if it exists
      */
     public getItem(key: string): FetchCacheItem | null {
-        return this._requests[key];
+        return this.requests[key];
     }
 
     /*
@@ -38,8 +38,8 @@ export class FetchCache {
     /* eslint-disable @typescript-eslint/no-dynamic-delete */
     public removeItem(key: string): void {
 
-        if (this._requests[key]) {
-            delete this._requests[key];
+        if (this.requests[key]) {
+            delete this.requests[key];
         }
     }
 
@@ -47,6 +47,6 @@ export class FetchCache {
      * Clear the cache after a logout on another browser tab
      */
     public clearAll(): void {
-        this._requests = {};
+        this.requests = {};
     }
 }

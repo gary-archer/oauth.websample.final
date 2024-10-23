@@ -25,16 +25,16 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Subscribe for reload events and then do the initial load of data
      */
     async function startup(): Promise<void> {
-        model.eventBus.on(EventNames.ReloadData, onReload);
-        model.eventBus.on(EventNames.Navigated, onNavigate);
+        model.getEventBus().on(EventNames.ReloadData, onReload);
+        model.getEventBus().on(EventNames.Navigated, onNavigate);
     }
 
     /*
      * Unsubscribe when we unload
      */
     function cleanup(): void {
-        model.eventBus.detach(EventNames.ReloadData, onReload);
-        model.eventBus.detach(EventNames.Navigated, onNavigate);
+        model.getEventBus().detach(EventNames.ReloadData, onReload);
+        model.getEventBus().detach(EventNames.Navigated, onNavigate);
     }
 
     /*
@@ -56,7 +56,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
         const options = {
             forceReload: true,
-            causeError: event.causeError
+            causeError: event.getCauseError(),
         };
         loadData(options);
     }
@@ -66,8 +66,9 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     function getUserNameForDisplay(): string {
 
-        if (model.oauthUserInfo) {
-            return `${model.oauthUserInfo.givenName} ${model.oauthUserInfo.familyName}`;
+        const oauthUserInfo = model.getOAuthUserInfo();
+        if (oauthUserInfo) {
+            return `${oauthUserInfo.givenName} ${oauthUserInfo.familyName}`;
         }
 
         return '';
@@ -77,7 +78,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Show the user's title when the name is clicked
      */
     function getUserTitle(): string {
-        return model.apiUserInfo?.title || '';
+        return model.getApiUserInfo()?.title || '';
     }
 
     /*
@@ -85,11 +86,12 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     function getUserRegions(): string {
 
-        if (!model.apiUserInfo?.regions || model.apiUserInfo.regions.length == 0) {
+        const apiUserInfo = model.getApiUserInfo();
+        if (!apiUserInfo?.regions || apiUserInfo.regions.length == 0) {
             return '';
         }
 
-        const regions = model.apiUserInfo.regions.join(', ');
+        const regions = apiUserInfo.regions.join(', ');
         return `[${regions}]`;
     }
 
@@ -104,7 +106,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
-            error: model.error!,
+            error: model.getError()!,
             errorsToIgnore: [ErrorCodes.loginRequired],
             containingViewName: 'userinfo',
             hyperlinkMessage: 'Problem Encountered',
@@ -115,12 +117,12 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     return (
         <>
-            {model.error &&
+            {model.getError() &&
                 <div className='text-end mx-auto'>
                     <ErrorSummaryView {...getErrorProps()}/>
                 </div>
             }
-            {model.oauthUserInfo && model.apiUserInfo &&
+            {model.getOAuthUserInfo() && model.getApiUserInfo() &&
                 <div className='text-end mx-auto'>
                     <div className='fw-bold basictooltip'>{getUserNameForDisplay()}
                         <div className='basictooltiptext'>

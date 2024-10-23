@@ -3,18 +3,18 @@
  */
 export class HtmlStorageHelper {
 
-    private static _prefix = 'finalspa.';
-    private static _preLoginLocation = 'preLoginLocation';
-    private static _apiSessionKeyName = 'apisessionid';
-    private static _isLoggedIn = 'isLoggedIn';
-    private static _loggedOutEventKeyName = 'loggedoutEvent';
+    private static prefix = 'finalspa.';
+    private static preLoginLocation = 'preLoginLocation';
+    private static apiSessionKeyName = 'apisessionid';
+    private static isLoggedIn = 'isLoggedIn';
+    private static loggedOutEventKeyName = 'loggedoutEvent';
 
     /*
      * Store the app location before triggering a login redirect
      */
-    public static set preLoginLocation(location: string) {
+    public static setPreLoginLocation(location: string): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._preLoginLocation}`;
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.preLoginLocation}`;
         sessionStorage.setItem(key, location);
     }
 
@@ -23,7 +23,7 @@ export class HtmlStorageHelper {
      */
     public static getAndRemovePreLoginLocation(): string | null {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._preLoginLocation}`;
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.preLoginLocation}`;
         const data = sessionStorage.getItem(key);
         if (data) {
             sessionStorage.removeItem(key);
@@ -36,27 +36,27 @@ export class HtmlStorageHelper {
     /*
      * Record a session id to be sent to the API for requests from this browser tab
      */
-    public static set apiSessionId(value: string) {
+    public static setApiSessionId(value: string): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.apiSessionKeyName}`;
         sessionStorage.setItem(key, value);
     }
 
     /*
      * Check whether logged in
      */
-    public static get isLoggedIn(): boolean {
+    public static getIsLoggedIn(): boolean {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._isLoggedIn}`;
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.isLoggedIn}`;
         return localStorage.getItem(key) == 'true';
     }
 
     /*
      * Set whether logged in, to prevent extra calls to the OAuth Agent when we open a new browser tab
      */
-    public static set isLoggedIn(value: boolean) {
+    public static setIsLoggedIn(value: boolean): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._isLoggedIn}`;
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.isLoggedIn}`;
         localStorage.setItem(key, String(value));
     }
 
@@ -65,16 +65,16 @@ export class HtmlStorageHelper {
      */
     public static clearIsLoggedIn(): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._isLoggedIn}`;
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.isLoggedIn}`;
         localStorage.removeItem(key);
     }
 
     /*
      * Get the session id for API requests from this browser tab
      */
-    public static get apiSessionId(): string {
+    public static getApiSessionId(): string {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._apiSessionKeyName}`;
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.apiSessionKeyName}`;
         return sessionStorage.getItem(key) || '';
     }
 
@@ -83,7 +83,7 @@ export class HtmlStorageHelper {
      */
     public static raiseLoggedOutEvent(): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutEventKeyName}`;
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.loggedOutEventKeyName}`;
         localStorage.setItem(key, 'raised');
     }
 
@@ -94,7 +94,7 @@ export class HtmlStorageHelper {
 
         if (event.storageArea === localStorage) {
 
-            const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutEventKeyName}`;
+            const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.loggedOutEventKeyName}`;
             return event.key === key && event.newValue === 'raised';
         }
 
@@ -106,7 +106,7 @@ export class HtmlStorageHelper {
      */
     public static clearLoggedOutEvent(): void {
 
-        const key = `${HtmlStorageHelper._prefix}${HtmlStorageHelper._loggedOutEventKeyName}`;
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.loggedOutEventKeyName}`;
         localStorage.removeItem(key);
     }
 }

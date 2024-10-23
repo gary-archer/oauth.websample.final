@@ -6,13 +6,13 @@ import {Configuration} from './configuration.js';
  */
 export class WebStaticContent {
 
-    private readonly _express: Application;
-    private readonly _configuration: Configuration;
+    private readonly express: Application;
+    private readonly configuration: Configuration;
 
     public constructor(expressApp: Application, configuration: Configuration) {
 
-        this._express = expressApp;
-        this._configuration = configuration;
+        this.express = expressApp;
+        this.configuration = configuration;
     }
 
     /*
@@ -22,17 +22,17 @@ export class WebStaticContent {
 
         // Serve static files for the main SPA
         const spaBasePath = '/spa/';
-        const spaRoot = this._getSpaFilesBasePath();
-        this._express.use(spaBasePath, express.static(spaRoot));
+        const spaRoot = this.getSpaFilesBasePath();
+        this.express.use(spaBasePath, express.static(spaRoot));
 
         // Handle not found requests
-        this._express.get('*_', (request, response) => {
+        this.express.get('*_', (request, response) => {
 
             const requestPath = request.path.toLowerCase();
             if (requestPath === '/favicon.ico') {
 
                 // Serve the root level favico.ico file
-                const root = this._getRootFilesBasePath();
+                const root = this.getRootFilesBasePath();
                 response.sendFile('favicon.ico', {root});
 
             } else if (requestPath.startsWith(spaBasePath)) {
@@ -51,9 +51,9 @@ export class WebStaticContent {
     /*
      * Return the relative path to the root folder containing the favicon.ico file
      */
-    private _getRootFilesBasePath(): string {
+    private getRootFilesBasePath(): string {
 
-        if (this._configuration.mode === 'development') {
+        if (this.configuration.mode === 'development') {
 
             // During development, point to built SPA files
             return '../spa';
@@ -68,9 +68,9 @@ export class WebStaticContent {
     /*
      * Return the relative path to the main SPA's web files
      */
-    private _getSpaFilesBasePath(): string {
+    private getSpaFilesBasePath(): string {
 
-        if (this._configuration.mode === 'development') {
+        if (this.configuration.mode === 'development') {
 
             // During development, point to built SPA files
             return '../spa/dist';

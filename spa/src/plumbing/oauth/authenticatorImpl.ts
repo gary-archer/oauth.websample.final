@@ -14,21 +14,21 @@ import {EndLoginResponse} from './endLoginResponse';
  */
 export class AuthenticatorImpl implements Authenticator {
 
-    private readonly _configuration: Configuration;
-    private readonly _concurrencyHandler: ConcurrentActionHandler;
+    private readonly configuration: Configuration;
+    private readonly concurrencyHandler: ConcurrentActionHandler;
 
     public constructor(configuration: Configuration) {
 
-        this._configuration = configuration;
-        this._concurrencyHandler = new ConcurrentActionHandler();
-        this._setupCallbacks();
+        this.configuration = configuration;
+        this.concurrencyHandler = new ConcurrentActionHandler();
+        this.setupCallbacks();
     }
 
     /*
      * Use the value in storage as an indicator of whether logged in
      */
     public isLoggedIn(): boolean {
-        return !!HtmlStorageHelper.isLoggedIn;
+        return !!HtmlStorageHelper.getIsLoggedIn();
     }
 
     /*
@@ -39,10 +39,10 @@ export class AuthenticatorImpl implements Authenticator {
         try {
 
             // Call the API to set up the login
-            const response = await this._callOAuthAgent('POST', 'login/start');
+            const response = await this.callOAuthAgent('POST', 'login/start');
 
             // Store the app location before the login redirect
-            HtmlStorageHelper.preLoginLocation = currentLocation;
+            HtmlStorageHelper.setPreLoginLocation(currentLocation);
 
             // Then redirect the main window
             location.href = response.authorizationRequestUrl;
@@ -71,7 +71,7 @@ export class AuthenticatorImpl implements Authenticator {
                     const request = {
                         pageUrl: location.href,
                     };
-                    const response = await this._callOAuthAgent(
+                    const response = await this.callOAuthAgent(
                         'POST',
                         'login/end',
                         request) as EndLoginResponse;
@@ -82,7 +82,7 @@ export class AuthenticatorImpl implements Authenticator {
                     }
 
                     // Store a flag to indicate the logged in state
-                    HtmlStorageHelper.isLoggedIn = true;
+                    HtmlStorageHelper.setIsLoggedIn(true);
 
                     // Once login is complete, return the SPA to the pre-login location
                     return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
@@ -92,7 +92,7 @@ export class AuthenticatorImpl implements Authenticator {
                     // Session expired errors can be caused by browser cookies using an old encryption key
                     // Handle these by returning a default result
                     // API calls will then fail and a new login redirect will be triggered, to get updated cookies
-                    if (this._isSessionExpiredError(e)) {
+                    if (this.isSessionExpiredError(e)) {
                         return null;
                     }
 
@@ -113,7 +113,7 @@ export class AuthenticatorImpl implements Authenticator {
 
         try {
 
-            const response = await this._callOAuthAgent('POST', 'logout');
+            const response = await this.callOAuthAgent('POST', 'logout');
             this.clearLoginState();
             location.href = response.url;
 
@@ -134,7 +134,7 @@ export class AuthenticatorImpl implements Authenticator {
      * Synchronize a refresh call to the OAuth agent, which will rewrite cookies
      */
     public async synchronizedRefresh(): Promise<void> {
-        await this._concurrencyHandler.execute(this._performTokenRefresh);
+        await this.concurrencyHandler.execute(this.performTokenRefresh);
     }
 
     /*
@@ -145,12 +145,12 @@ export class AuthenticatorImpl implements Authenticator {
         try {
 
             // Rewrite the access token within the cookie, using existing cookies as the request credential
-            await this._callOAuthAgent('POST', 'access/expire');
+            await this.callOAuthAgent('POST', 'access/expire');
 
         } catch (e: any) {
 
             // Session expired errors are silently ignored
-            if (!this._isSessionExpiredError(e)) {
+            if (!this.isSessionExpiredError(e)) {
                 throw ErrorFactory.fromTestExpiryError(e, 'access');
             }
         }
@@ -164,12 +164,12 @@ export class AuthenticatorImpl implements Authenticator {
         try {
 
             // Rewrite the refresh token within the cookie, using the existing cookies as the request credential
-            await this._callOAuthAgent('POST', 'refresh/expire');
+            await this.callOAuthAgent('POST', 'refresh/expire');
 
         } catch (e: any) {
 
             // Session expired errors are silently ignored
-            if (!this._isSessionExpiredError(e)) {
+            if (!this.isSessionExpiredError(e)) {
                 throw ErrorFactory.fromTestExpiryError(e, 'refresh');
             }
         }
@@ -178,11 +178,11 @@ export class AuthenticatorImpl implements Authenticator {
     /*
      * Do the work of asking the OAuth agent API to refresh the access token stored in the secure cookie
      */
-    private async _performTokenRefresh(): Promise<void> {
+    private async performTokenRefresh(): Promise<void> {
 
         try {
 
-            await this._callOAuthAgent('POST', 'refresh', null);
+            await this.callOAuthAgent('POST', 'refresh', null);
 
         } catch (e: any) {
 
@@ -198,9 +198,9 @@ export class AuthenticatorImpl implements Authenticator {
     /*
      * A parameterized method for calling the OAuth agent
      */
-    private async _callOAuthAgent(method: Method, operationPath: string, requestData: any = null): Promise<any> {
+    private async callOAuthAgent(method: Method, operationPath: string, requestData: any = null): Promise<any> {
 
-        const url = `${this._configuration.bffBaseUrl}/oauth-agent/${operationPath}`;
+        const url = `${this.configuration.bffBaseUrl}/oauth-agent/${operationPath}`;
         try {
 
             // Add the token-handler-version custom header, which is required to trigger CORS preflights
@@ -240,16 +240,16 @@ export class AuthenticatorImpl implements Authenticator {
      * When operations fail due to invalid cookies, the OAuth proxy will return a 401 during API calls
      * This could also be caused by a new cookie encryption key or a redeployment of the Authorization Server
      */
-    private _isSessionExpiredError(e: any): boolean {
+    private isSessionExpiredError(e: any): boolean {
 
         const uiError = e as UIError;
-        return uiError.statusCode === 401;
+        return uiError.getStatusCode() === 401;
     }
 
     /*
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
-    private _setupCallbacks(): void {
-        this._performTokenRefresh = this._performTokenRefresh.bind(this);
+    private setupCallbacks(): void {
+        this.performTokenRefresh = this.performTokenRefresh.bind(this);
     }
 }

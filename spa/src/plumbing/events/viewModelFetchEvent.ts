@@ -3,13 +3,13 @@
  */
 export class ViewModelFetchEvent {
 
-    private readonly _loaded: boolean;
+    private readonly loaded: boolean;
 
     public constructor(loaded: boolean) {
-        this._loaded= loaded;
+        this.loaded= loaded;
     }
 
-    public get loaded(): boolean {
-        return this._loaded;
+    public getLoaded(): boolean {
+        return this.loaded;
     }
 }

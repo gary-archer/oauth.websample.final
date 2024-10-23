@@ -48,7 +48,7 @@ export function App(props: AppProps): JSX.Element {
         Modal.setAppElement('#root');
 
         // Subscribe to application and window events
-        model.eventBus.on(EventNames.LoginRequired, onLoginRequired);
+        model.getEventBus().on(EventNames.LoginRequired, onLoginRequired);
         window.onresize = onResize;
         window.onstorage = onStorage;
 
@@ -84,7 +84,7 @@ export function App(props: AppProps): JSX.Element {
     function cleanup() {
 
         // Unsubscribe from application events
-        model.eventBus.detach(EventNames.LoginRequired, onLoginRequired);
+        model.getEventBus().detach(EventNames.LoginRequired, onLoginRequired);
 
         // Unsubscribe from window events
         window.onresize = null;
@@ -105,18 +105,18 @@ export function App(props: AppProps): JSX.Element {
     async function onHome(): Promise<void> {
 
         // Handle retrying initialisation
-        if (!model.isInitialised) {
+        if (!model.getIsInitialised()) {
             await initialiseData();
         }
 
         // Handle retrying page load errors
-        if (!model.isLoaded) {
+        if (!model.getIsLoaded()) {
             await handlePageLoad();
         }
 
-        if (model.isLoaded) {
+        if (model.getIsLoaded()) {
 
-            if (!model.authenticator.isLoggedIn()) {
+            if (!model.getAuthenticator().isLoggedIn()) {
 
                 // Trigger a login if required
                 await model.login(CurrentLocation.path);
@@ -199,7 +199,7 @@ export function App(props: AppProps): JSX.Element {
 
     function getTitleProps(): TitleViewProps {
 
-        if (model.isLoaded) {
+        if (model.getIsLoaded()) {
 
             return {
                 userInfo: {
@@ -217,7 +217,7 @@ export function App(props: AppProps): JSX.Element {
     function getHeaderButtonProps(): HeaderButtonsViewProps {
 
         return {
-            eventBus: model.eventBus,
+            eventBus: model.getEventBus(),
             handleHomeClick: onHome,
             handleExpireAccessTokenClick: onExpireAccessToken,
             handleExpireRefreshTokenClick: onExpireRefreshToken,
@@ -230,7 +230,7 @@ export function App(props: AppProps): JSX.Element {
 
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
-            error: model.error!,
+            error: model.getError()!,
             errorsToIgnore: [],
             containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
@@ -243,7 +243,7 @@ export function App(props: AppProps): JSX.Element {
 
         return {
             sessionId: SessionManager.get(),
-            eventBus: model.eventBus,
+            eventBus: model.getEventBus(),
         };
     }
 
@@ -266,7 +266,7 @@ export function App(props: AppProps): JSX.Element {
     function getLoginRequiredProps(): LoginRequiredViewProps {
 
         return {
-            eventBus: model.eventBus,
+            eventBus: model.getEventBus(),
             navigate,
         };
     }
@@ -275,8 +275,8 @@ export function App(props: AppProps): JSX.Element {
         <>
             <TitleView {...getTitleProps()} />
             <HeaderButtonsView {...getHeaderButtonProps()} />
-            {model.error && <ErrorSummaryView {...getErrorProps()} />}
-            {model.isLoaded &&
+            {model.getError() && <ErrorSummaryView {...getErrorProps()} />}
+            {model.getIsLoaded() &&
                 <>
                     <SessionView {...getSessionProps()} />
                     <Routes>

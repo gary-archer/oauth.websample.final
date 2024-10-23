@@ -5,35 +5,35 @@ import {UIError} from '../../plumbing/errors/uiError';
  */
 export class FetchCacheItem {
 
-    private _isLoading: boolean;
-    private _data: any;
-    private _error: UIError | null;
+    private isLoading: boolean;
+    private data: any;
+    private error: UIError | null;
 
     public constructor() {
-        this._isLoading = true;
-        this._data = null;
-        this._error = null;
+        this.isLoading = true;
+        this.data = null;
+        this.error = null;
     }
 
-    public get isLoading(): boolean {
-        return this._isLoading;
+    public getIsLoading(): boolean {
+        return this.isLoading;
     }
 
-    public get data(): any {
-        return this._data;
+    public getData(): any {
+        return this.data;
     }
 
-    public set data(value: any) {
-        this._isLoading = false;
-        this._data = value;
+    public setData(value: any): void {
+        this.isLoading = false;
+        this.data = value;
     }
 
-    public get error(): UIError | null {
-        return this._error;
+    public getError(): UIError | null {
+        return this.error;
     }
 
-    public set error(value: UIError | null) {
-        this._isLoading = false;
-        this._error = value;
+    public setError(value: UIError | null): void {
+        this.isLoading = false;
+        this.error = value;
     }
 }

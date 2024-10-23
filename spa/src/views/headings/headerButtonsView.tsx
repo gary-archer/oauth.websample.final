@@ -35,7 +35,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
      * The session button state changes when data starts and ends loading
      */
     function onViewModelFetch(event: ViewModelFetchEvent) {
-        setHasData(event.loaded);
+        setHasData(event.getLoaded());
     }
 
     /*

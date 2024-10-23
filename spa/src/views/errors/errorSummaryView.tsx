@@ -38,7 +38,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
             return true;
         }
 
-        if (props.errorsToIgnore.indexOf(props.error.errorCode) !== -1) {
+        if (props.errorsToIgnore.indexOf(props.error.getErrorCode()) !== -1) {
             return true;
         }
 

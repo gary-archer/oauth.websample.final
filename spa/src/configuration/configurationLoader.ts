@@ -21,13 +21,13 @@ export class ConfigurationLoader {
         }
 
         // Otherwise download the configuration, which enables us to spin up new environments without rebuilding code
-        return this._download();
+        return this.download();
     }
 
     /*
      * Download JSON data from the app config file
      */
-    private async _download(): Promise<Configuration> {
+    private async download(): Promise<Configuration> {
 
         const fileName = 'spa.config.json';
         const currentTime = new Date().getTime().toString();

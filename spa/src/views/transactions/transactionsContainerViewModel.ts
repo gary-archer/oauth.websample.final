@@ -14,28 +14,28 @@ import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
  */
 export class TransactionsContainerViewModel {
 
-    private readonly _fetchClient: FetchClient;
-    private readonly _eventBus: EventBus;
-    private readonly _viewModelCoordinator: ViewModelCoordinator;
-    private _companyId: string | null;
-    private _transactions: CompanyTransactions | null;
-    private _error: UIError | null;
-    private _setTransactions: Dispatch<SetStateAction<CompanyTransactions | null>> | null;
-    private _setError: Dispatch<SetStateAction<UIError | null>> | null;
+    private readonly fetchClient: FetchClient;
+    private readonly eventBus: EventBus;
+    private readonly viewModelCoordinator: ViewModelCoordinator;
+    private companyId: string | null;
+    private transactions: CompanyTransactions | null;
+    private error: UIError | null;
+    private setTransactions: Dispatch<SetStateAction<CompanyTransactions | null>> | null;
+    private setError: Dispatch<SetStateAction<UIError | null>> | null;
 
     public constructor(
         fetchClient: FetchClient,
         eventBus: EventBus,
         viewModelCoordinator: ViewModelCoordinator,
     ) {
-        this._fetchClient = fetchClient;
-        this._eventBus = eventBus;
-        this._viewModelCoordinator = viewModelCoordinator;
-        this._companyId = null;
-        this._transactions = null;
-        this._error = null;
-        this._setTransactions = null;
-        this._setError = null;
+        this.fetchClient = fetchClient;
+        this.eventBus = eventBus;
+        this.viewModelCoordinator = viewModelCoordinator;
+        this.companyId = null;
+        this.transactions = null;
+        this.error = null;
+        this.setTransactions = null;
+        this.setError = null;
     }
 
     /*
@@ -43,30 +43,30 @@ export class TransactionsContainerViewModel {
      */
     public useState(): void {
 
-        const [, setTransactions] = useState(this._transactions);
-        this._setTransactions = setTransactions;
+        const [, setTransactions] = useState(this.transactions);
+        this.setTransactions = setTransactions;
 
-        const [, setError] = useState(this._error);
-        this._setError = setError;
+        const [, setError] = useState(this.error);
+        this.setError = setError;
     }
 
     /*
      * Property accessors
      */
-    public get transactions(): CompanyTransactions | null {
-        return this._transactions;
+    public getTransactions(): CompanyTransactions | null {
+        return this.transactions;
     }
 
-    public get companyId(): string {
-        return this._companyId || '';
+    public getCompanyId(): string {
+        return this.companyId || '';
     }
 
-    public get error(): UIError | null {
-        return this._error;
+    public getError(): UIError | null {
+        return this.error;
     }
 
-    public get eventBus(): EventBus {
-        return this._eventBus;
+    public getEventBus(): EventBus {
+        return this.eventBus;
     }
 
     /*
@@ -80,28 +80,28 @@ export class TransactionsContainerViewModel {
             causeError: options?.causeError || false,
         };
 
-        this._viewModelCoordinator.onMainViewModelLoading();
-        this._updateError(null);
-        if (this._companyId !== id) {
-            this._updateTransactions(null);
-            this._companyId = id;
+        this.viewModelCoordinator.onMainViewModelLoading();
+        this.updateError(null);
+        if (this.companyId !== id) {
+            this.updateTransactions(null);
+            this.companyId = id;
         }
 
         try {
 
-            const result = await this._fetchClient.getCompanyTransactions(id, fetchOptions);
+            const result = await this.fetchClient.getCompanyTransactions(id, fetchOptions);
             if (result) {
-                this._updateTransactions(result);
+                this.updateTransactions(result);
             }
 
         } catch (e: any) {
 
-            this._updateError(ErrorFactory.fromException(e));
-            this._updateTransactions(null);
+            this.updateError(ErrorFactory.fromException(e));
+            this.updateTransactions(null);
 
         } finally {
 
-            this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
+            this.viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
     }
 
@@ -109,7 +109,7 @@ export class TransactionsContainerViewModel {
      * Allow the view to clear data
      */
     public clearData(): void {
-        this._transactions = null;
+        this.transactions = null;
     }
 
     /*
@@ -117,15 +117,15 @@ export class TransactionsContainerViewModel {
      */
     public isForbiddenError(): boolean {
 
-        if (this._error) {
+        if (this.error) {
 
-            if (this._error.statusCode === 404 && this._error.errorCode === ErrorCodes.companyNotFound) {
+            if (this.error.getStatusCode() === 404 && this.error.getErrorCode() === ErrorCodes.companyNotFound) {
 
                 // User typed an id value outside of allowed company ids
                 return true;
             }
 
-            if (this._error.statusCode === 400 && this._error.errorCode === ErrorCodes.invalidCompanyId) {
+            if (this.error.getStatusCode() === 400 && this.error.getErrorCode() === ErrorCodes.invalidCompanyId) {
 
                 // User typed an invalid id such as 'abc'
                 return true;
@@ -138,22 +138,22 @@ export class TransactionsContainerViewModel {
     /*
      * Update state and the binding system
      */
-    private _updateTransactions(transactions: CompanyTransactions | null): void {
+    private updateTransactions(transactions: CompanyTransactions | null): void {
 
-        this._transactions = transactions;
-        if (this._setTransactions) {
-            this._setTransactions(this._transactions);
+        this.transactions = transactions;
+        if (this.setTransactions) {
+            this.setTransactions(this.transactions);
         }
     }
 
     /*
      * Update state and the binding system
      */
-    private _updateError(error: UIError | null): void {
+    private updateError(error: UIError | null): void {
 
-        this._error = error;
-        if (this._setError) {
-            this._setError(this._error);
+        this.error = error;
+        if (this.setError) {
+            this.setError(this.error);
         }
     }
 }

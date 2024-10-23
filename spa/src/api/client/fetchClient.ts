@@ -16,10 +16,10 @@ import {FetchOptions} from './fetchOptions';
  */
 export class FetchClient {
 
-    private readonly _configuration: Configuration;
-    private readonly _fetchCache: FetchCache;
-    private readonly _authenticator: Authenticator;
-    private readonly _sessionId: string;
+    private readonly configuration: Configuration;
+    private readonly fetchCache: FetchCache;
+    private readonly authenticator: Authenticator;
+    private readonly sessionId: string;
 
     public constructor(
         configuration: Configuration,
@@ -27,10 +27,10 @@ export class FetchClient {
         authenticator: Authenticator,
         sessionId: string) {
 
-        this._configuration = configuration;
-        this._fetchCache = fetchCache;
-        this._authenticator = authenticator;
-        this._sessionId = sessionId;
+        this.configuration = configuration;
+        this.fetchCache = fetchCache;
+        this.authenticator = authenticator;
+        this.sessionId = sessionId;
     }
 
     /*
@@ -38,8 +38,8 @@ export class FetchClient {
      */
     public async getCompanyList(options: FetchOptions) : Promise<Company[] | null> {
 
-        const url = `${this._configuration.bffBaseUrl}/investments/companies`;
-        return this._getDataFromApi(url, options);
+        const url = `${this.configuration.bffBaseUrl}/investments/companies`;
+        return this.getDataFromApi(url, options);
     }
 
     /*
@@ -47,8 +47,8 @@ export class FetchClient {
      */
     public async getCompanyTransactions(id: string, options: FetchOptions) : Promise<CompanyTransactions | null> {
 
-        const url = `${this._configuration.bffBaseUrl}/investments/companies/${id}/transactions`;
-        return this._getDataFromApi(url, options);
+        const url = `${this.configuration.bffBaseUrl}/investments/companies/${id}/transactions`;
+        return this.getDataFromApi(url, options);
     }
 
     /*
@@ -56,8 +56,8 @@ export class FetchClient {
      */
     public async getOAuthUserInfo(options: FetchOptions) : Promise<OAuthUserInfo | null> {
 
-        const url = `${this._configuration.bffBaseUrl}/oauth-agent/userinfo`;
-        const data = await this._getDataFromApi(url, options);
+        const url = `${this.configuration.bffBaseUrl}/oauth-agent/userinfo`;
+        const data = await this.getDataFromApi(url, options);
         if (!data) {
             return null;
         }
@@ -73,79 +73,79 @@ export class FetchClient {
      */
     public async getApiUserInfo(options: FetchOptions) : Promise<ApiUserInfo | null> {
 
-        const url = `${this._configuration.bffBaseUrl}/investments/userinfo`;
-        return this._getDataFromApi(url, options);
+        const url = `${this.configuration.bffBaseUrl}/investments/userinfo`;
+        return this.getDataFromApi(url, options);
     }
 
     /*
      * A parameterized method containing application specific logic for managing API calls
      */
-    private async _getDataFromApi(url: string, options: FetchOptions): Promise<any> {
+    private async getDataFromApi(url: string, options: FetchOptions): Promise<any> {
 
         // Remove the item from the cache when a reload is requested
         if (options.forceReload) {
-            this._fetchCache.removeItem(options.cacheKey);
+            this.fetchCache.removeItem(options.cacheKey);
         }
 
         // Return existing data from the memory cache when available
         // If a view is created whiles its API requests are in flight, this returns null to the view model
-        let cacheItem = this._fetchCache.getItem(options.cacheKey);
-        if (cacheItem && !cacheItem.error) {
-            return cacheItem.data;
+        let cacheItem = this.fetchCache.getItem(options.cacheKey);
+        if (cacheItem && !cacheItem.getError()) {
+            return cacheItem.getData();
         }
 
         // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
-        cacheItem = this._fetchCache.createItem(options.cacheKey);
+        cacheItem = this.fetchCache.createItem(options.cacheKey);
 
         // Avoid API requests and trigger a login redirect when we know it is needed
-        if (!this._authenticator.isLoggedIn()) {
+        if (!this.authenticator.isLoggedIn()) {
 
             const loginRequiredError = ErrorFactory.fromLoginRequired();
-            cacheItem.error = loginRequiredError;
+            cacheItem.setError(loginRequiredError);
             throw loginRequiredError;
         }
 
         try {
 
             // Call the API and return data on success
-            const data1 = await this._callApiWithCredential('GET', url, options);
-            cacheItem.data = data1;
+            const data1 = await this.callApiWithCredential('GET', url, options);
+            cacheItem.setData(data1);
             return data1;
 
         } catch (e1: any) {
 
             const error1 = ErrorFactory.fromHttpError(e1, url, 'API');
-            if (error1.statusCode !== 401) {
+            if (error1.getStatusCode() !== 401) {
 
                 // Report errors if this is not a 401
-                cacheItem.error = error1;
+                cacheItem.setError(error1);
                 throw error1;
             }
 
             try {
                 // Try to refresh the access token cookie
-                await this._authenticator.synchronizedRefresh();
+                await this.authenticator.synchronizedRefresh();
 
             } catch (e2: any) {
 
                 // Save refresh errors
                 const error2 = ErrorFactory.fromHttpError(e2, url, 'API');
-                cacheItem.error = error2;
+                cacheItem.setError(error2);
                 throw error2;
             }
 
             try {
 
                 // Call the API again with the rewritten access token cookie
-                const data2 = await this._callApiWithCredential('GET', url, options);
-                cacheItem.data = data2;
+                const data2 = await this.callApiWithCredential('GET', url, options);
+                cacheItem.setData(data2);
                 return data2;
 
             }  catch (e3: any) {
 
                 // Save retry errors
                 const error3 = ErrorFactory.fromHttpError(e3, url, 'API');
-                cacheItem.error = error3;
+                cacheItem.setError(error3);
                 throw error3;
             }
         }
@@ -154,7 +154,7 @@ export class FetchClient {
     /*
      * Do the work of calling the API
      */
-    private async _callApiWithCredential(
+    private async callApiWithCredential(
         method: Method,
         url: string,
         fetchOptions: FetchOptions,
@@ -165,7 +165,7 @@ export class FetchClient {
         const headers: any = {
             'token-handler-version':        '1',
             'x-authsamples-api-client':     'FinalSPA',
-            'x-authsamples-session-id':     this._sessionId,
+            'x-authsamples-session-id':     this.sessionId,
             'x-authsamples-correlation-id': Guid.create().toString(),
         };
 

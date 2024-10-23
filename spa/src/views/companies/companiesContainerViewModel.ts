@@ -13,26 +13,26 @@ import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
  */
 export class CompaniesContainerViewModel {
 
-    private readonly _fetchClient: FetchClient;
-    private readonly _eventBus: EventBus;
-    private readonly _viewModelCoordinator: ViewModelCoordinator;
-    private _companies: Company[];
-    private _error: UIError | null;
-    private _setCompanies: Dispatch<SetStateAction<Company[]>> | null;
-    private _setError: Dispatch<SetStateAction<UIError | null>> | null;
+    private readonly fetchClient: FetchClient;
+    private readonly eventBus: EventBus;
+    private readonly viewModelCoordinator: ViewModelCoordinator;
+    private companies: Company[];
+    private error: UIError | null;
+    private setCompanies: Dispatch<SetStateAction<Company[]>> | null;
+    private setError: Dispatch<SetStateAction<UIError | null>> | null;
 
     public constructor(
         fetchClient: FetchClient,
         eventBus: EventBus,
         viewModelCoordinator: ViewModelCoordinator,
     ) {
-        this._fetchClient = fetchClient;
-        this._eventBus = eventBus;
-        this._viewModelCoordinator = viewModelCoordinator;
-        this._companies = [];
-        this._error = null;
-        this._setCompanies = null;
-        this._setError = null;
+        this.fetchClient = fetchClient;
+        this.eventBus = eventBus;
+        this.viewModelCoordinator = viewModelCoordinator;
+        this.companies = [];
+        this.error = null;
+        this.setCompanies = null;
+        this.setError = null;
     }
 
     /*
@@ -40,26 +40,26 @@ export class CompaniesContainerViewModel {
      */
     public useState(): void {
 
-        const [, setCompanies] = useState(this._companies);
-        this._setCompanies = setCompanies;
+        const [, setCompanies] = useState(this.companies);
+        this.setCompanies = setCompanies;
 
-        const [, setError] = useState(this._error);
-        this._setError = setError;
+        const [, setError] = useState(this.error);
+        this.setError = setError;
     }
 
     /*
      * Property accessors
      */
-    public get companies(): Company[] {
-        return this._companies;
+    public getCompanies(): Company[] {
+        return this.companies;
     }
 
-    public get error(): UIError | null {
-        return this._error;
+    public getError(): UIError | null {
+        return this.error;
     }
 
-    public get eventBus(): EventBus {
-        return this._eventBus;
+    public getEventBus(): EventBus {
+        return this.eventBus;
     }
 
     /*
@@ -73,46 +73,46 @@ export class CompaniesContainerViewModel {
             causeError: options?.causeError || false,
         };
 
-        this._viewModelCoordinator.onMainViewModelLoading();
-        this._updateError(null);
+        this.viewModelCoordinator.onMainViewModelLoading();
+        this.updateError(null);
 
         try {
 
-            const result = await this._fetchClient.getCompanyList(fetchOptions);
+            const result = await this.fetchClient.getCompanyList(fetchOptions);
             if (result) {
-                this._updateCompanies(result);
+                this.updateCompanies(result);
             }
 
         } catch (e: any) {
 
-            this._updateCompanies([]);
-            this._updateError(ErrorFactory.fromException(e));
+            this.updateCompanies([]);
+            this.updateError(ErrorFactory.fromException(e));
 
         } finally {
 
-            this._viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
+            this.viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
         }
     }
 
     /*
      * Update state and the binding system
      */
-    private _updateCompanies(companies: Company[]): void {
+    private updateCompanies(companies: Company[]): void {
 
-        this._companies = companies;
-        if (this._setCompanies) {
-            this._setCompanies(this._companies);
+        this.companies = companies;
+        if (this.setCompanies) {
+            this.setCompanies(this.companies);
         }
     }
 
     /*
      * Update state and the binding system
      */
-    private _updateError(error: UIError | null): void {
+    private updateError(error: UIError | null): void {
 
-        this._error = error;
-        if (this._setError) {
-            this._setError(this._error);
+        this.error = error;
+        if (this.setError) {
+            this.setError(this.error);
         }
     }
 }
