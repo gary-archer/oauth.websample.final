@@ -26,6 +26,10 @@ if [ "$LOCALAPI" == 'true' ]; then
     exit
   fi
 
+  cd localtokenhandler
+  git checkout feature/cookie_revamp
+  cd ..
+
   echo 'Building local token handler components ...'
   ./localtokenhandler/deployment/docker-local/build.sh
   if [ $? -ne 0 ]; then
