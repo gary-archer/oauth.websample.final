@@ -3,9 +3,12 @@
  */
 export interface EndLoginResponse {
 
+    // True if there are valid cookies
+    isLoggedIn: boolean;
+
     // True if an authorization response has just been handled
     handled: boolean;
 
-    // True if there are valid cookies
-    isLoggedIn: boolean;
+    // Claims from the ID token
+    claims: any
 }
