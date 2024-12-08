@@ -27,7 +27,7 @@ if [ "$LOCALAPI" == 'true' ]; then
   fi
 
   echo 'Building local token handler components ...'
-  ./localtokenhandler/deployment/docker-local/build.sh
+  ./localtokenhandler/docker/build.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building local token handler resources'
     exit

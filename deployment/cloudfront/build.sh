@@ -10,14 +10,12 @@ cd ../..
 #
 # Build the SPA's Javascript bundles
 #
-cd spa
 export BUILD_CONFIGURATION='RELEASE'
-./build.sh
+./spa/build.sh
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   exit
 fi
-cd ..
 
 #
 # Create the package folder

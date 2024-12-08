@@ -6,6 +6,6 @@ services:
     ports:
       - 443:8000
     volumes:
-      - ../environments/docker-local/spa.config.json:/usr/webhost/spa/spa.config.json
-      - ../environments/docker-local/webhost.config.json:/usr/webhost/webhost.config.json
+      - ../environments/docker/spa.config.json:/usr/webhost/spa/spa.config.json
+      - ../environments/docker/webhost.config.json:/usr/webhost/webhost.config.json
       - ../../certs/authsamples-dev.ssl.p12:/usr/webhost/certs/authsamples-dev.ssl.p12

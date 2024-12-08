@@ -30,7 +30,7 @@ if [ "$LOCALAPI" == 'true' ]; then
   #
   # When connecting the SPA to a local API, deploy local token handler components in Docker
   #
-  ./localtokenhandler/deployment/docker-local/deploy.sh
+  ./localtokenhandler/docker/deploy.sh
   if [ $? -ne 0 ]; then
     echo 'Problem encountered deploying the local token handler'
     exit
