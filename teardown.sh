@@ -7,5 +7,5 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 if [ "$(docker ps | grep oauthagent)" != '' ]; then
-  ./localtokenhandler/deployment/docker-local/teardown.sh
+  ./localtokenhandler/docker/teardown.sh
 fi
