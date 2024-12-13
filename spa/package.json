@@ -24,15 +24,15 @@
     "axios": "^1.7.9",
     "guid-typescript": "^1.0.9",
     "js-event-bus": "^1.1.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-modal": "^3.16.1",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^7.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
-    "@types/react": "^18.3.2",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^18.3.16",
+    "@types/react-dom": "^18.3.5",
     "@types/react-modal": "^3.16.3",
     "eslint": "^9.15.0",
     "eslint-plugin-react": "^7.37.2",
@@ -44,5 +44,11 @@
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^6.0.1"
+  },
+  "overrides": {
+    "react-modal": {
+      "react": "^18 || ^19",
+      "react-dom": "^18 || ^19"
+    }
   }
 }
