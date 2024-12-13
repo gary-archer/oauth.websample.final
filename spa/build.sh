@@ -73,13 +73,14 @@ if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
     read -n 1
     exit 1
   fi
+
 else
 
   # In debug builds copy the full CSS to the dist folder
   cp bootstrap.min.css ./dist
 
-  # Change this to 'npm run webpackDebugWatch' when you want to develop in watch mode
-  npm run webpackDebug
+  # Run the webpack dev server to run the SPA
+  npm start
   if [ $? -ne 0 ]; then
     echo 'Problem encountered building the SPA'
     read -n 1

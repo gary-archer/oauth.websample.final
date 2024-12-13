@@ -12,11 +12,9 @@
   },
   "scripts": {
     "lint": "npx eslint . --ignore-pattern dist",
-    "start": "npm run webpackDebug",
+    "start": "NODE_OPTIONS='--import tsx' webpack serve --config webpack/webpack.config.dev.ts",
     "build": "./build.sh",
     "buildRelease": "./build.sh RELEASE",
-    "webpackDebug": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.dev.ts",
-    "webpackDebugWatch": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.dev.ts -- watch",
     "webpackRelease": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.prod.ts",
     "purgecss": "purgecss -c purgecss.config.cjs -o dist"
   },
@@ -41,8 +39,9 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.16.0",
-    "webpack": "^5.94.0",
+    "webpack": "^5.97.1",
     "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.2.0",
     "webpack-merge": "^6.0.1"
   },
   "overrides": {
