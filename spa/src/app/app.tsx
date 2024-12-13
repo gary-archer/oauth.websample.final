@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {JSX, useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 import {EventNames} from '../plumbing/events/eventNames';

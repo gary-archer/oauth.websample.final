@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {JSX} from 'react';
 import {UserInfoView} from '../userInfo/userInfoView';
 import {HeadingView} from './headingView';
 import {TitleViewProps} from './titleViewProps';

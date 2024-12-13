@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {JSX, useEffect} from 'react';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
 import {HtmlStorageHelper} from '../../plumbing/utilities/htmlStorageHelper';

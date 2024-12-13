@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {JSX, useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
