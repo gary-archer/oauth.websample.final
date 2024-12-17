@@ -1,56 +1,96 @@
 #!/bin/bash
 
-###########################################################
-# A script to build all web resources for local development
-###########################################################
+##########################################################################
+# Install and build the main SPA ready for deploying
+# On Windows, ensure that you have first set Git bash as the node.js shell
+# npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
+##########################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# Download development SSL certificates
+# Get the build configuration
 #
-./downloadcerts.sh
-if [ $? -ne 0 ]; then
-  exit
+if [ "$BUILD_CONFIGURATION" != 'RELEASE' ]; then
+  BUILD_CONFIGURATION='DEBUG'
 fi
 
 #
-# When connecting the SPA to a local API, run token handler components on the local development computer
+# Install dependencies
 #
-if [ "$LOCALAPI" == 'true' ]; then
-
-  rm -rf localtokenhandler 2>/dev/null
-  git clone https://github.com/gary-archer/oauth-agent-node-express localtokenhandler
+if [ ! -d 'node_modules' ]; then
+  
+  npm install
   if [ $? -ne 0 ]; then
-    echo 'Problem encountered downloading local token handler resources'
-    exit
-  fi
-
-  echo 'Building local token handler components ...'
-  ./localtokenhandler/docker/build.sh
-  if [ $? -ne 0 ]; then
-    echo 'Problem encountered building local token handler resources'
-    exit
+    echo 'Problem encountered installing SPA dependencies'
+    read -n 1
+    exit 1
   fi
 fi
 
 #
-# Build the development web host's code
+# Clean the output folder
 #
-echo 'Building the development web host ...'
-./webhost/build.sh
+rm -rf ./dist 2>/dev/null
+mkdir ./dist
+
+#
+# Check code quality
+#
+npm run lint
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the development web host'
-  exit
+  echo 'SPA code quality checks failed'
+  read -n 1
+  exit 1
 fi
 
 #
-# Build the SPA code
+# Clean existing files
 #
-echo 'Building the SPA ...'
-./spa/build.sh 'DEBUG'
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the SPA'
-  exit
-fi
+rm -rf dist 2>/dev/null
+mkdir dist
+mkdir dist/spa
 
+#
+# Copy HTML assets to the output folder
+#
+cp favicon.ico ./dist
+cp index.html app.css spa.config.json ./dist/spa
+if [ "$BUILD_CONFIGURATION" == 'RELEASE' ]; then
+
+  # Do the release build
+  npm run webpackRelease
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered building the SPA'
+    read -n 1
+    exit 1
+  fi
+
+  # In release builds, produce minimized CSS
+  npm run purgecss
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered reducing CSS for the SPA'
+    read -n 1
+    exit 1
+  fi
+
+  ## Write the final index.html before deploying to a CDN
+  npx tsx ./webpack/rewriteIndexHtml.ts
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered rewriting the SPA index.html file'
+    read -n 1
+    exit 1
+  fi
+else
+
+  # In debug builds copy the full CSS to the dist folder
+  cp bootstrap.min.css ./dist/spa
+
+  # Then run the webpack dev server
+  npm run serve
+  if [ $? -ne 0 ]; then
+    echo 'Problem encountered building the SPA'
+    read -n 1
+    exit 1
+  fi
+fi

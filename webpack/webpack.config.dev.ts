@@ -11,15 +11,17 @@ const devServer: webpackDevServer.Configuration = {
     server: {
         type: 'https',
         options: {
-            key: fs.readFileSync('../certs/authsamples-dev.ssl.key'),
-            cert: fs.readFileSync('../certs/authsamples-dev.ssl.crt'),
+            key: fs.readFileSync('./certs/authsamples-dev.ssl.key'),
+            cert: fs.readFileSync('./certs/authsamples-dev.ssl.crt'),
         },
     },
     static: {
         directory: path.join(dirname, './dist'),
     },
     port: 443,
-    historyApiFallback: true,
+    historyApiFallback: {
+        index: '/spa/',
+    },
     hot: true,
     allowedHosts: [
         'www.authsamples-dev.com',
@@ -34,7 +36,8 @@ const devConfig: webpack.Configuration = {
 
     // This setting enables us to step through our TypeScript in Visual Studio Code
     output: Object.assign({}, baseConfig.output, {
-        devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]'
+        devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]',
+        publicPath: '/spa/',
     }),
 
     // Pass a variable through to our Web UI to tell it to display stack traces
