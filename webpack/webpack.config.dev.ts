@@ -7,12 +7,26 @@ import baseConfig from './webpack.config.base.js';
 import webpackDevServer, {Request, Response, NextFunction} from 'webpack-dev-server';
 
 /*
+ * Use a strong content security policy for development
+ */
+let policy = "default-src 'none';";
+policy += " script-src 'self';";
+policy += " connect-src 'self' https://bff.authsamples-dev.com;";
+policy += " child-src 'self';";
+policy += " img-src 'self';";
+policy += " style-src 'self';";
+policy += " object-src 'none';";
+policy += " frame-ancestors 'none';";
+policy += " base-uri 'self';";
+policy += " form-action 'self'";
+
+/*
  * Configure the main development server
  */
 const dirname = process.cwd();
 const devServer: webpackDevServer.Configuration = {
 
-    // Use HTTPS for local development
+    // Use HTTPS and a real world domain name for local development
     server: {
         type: 'https',
         options: {
@@ -24,13 +38,42 @@ const devServer: webpackDevServer.Configuration = {
         directory: path.join(dirname, './dist'),
     },
     port: 443,
+
+    // Serve the index.html file for this subfolder for not found routes like /spa/xxx
     historyApiFallback: {
-        // Serve the index.html file for this subfolder for not found routes like /spa/xxx
         index: '/spa/',
     },
     hot: true,
     allowedHosts: [
         'www.authsamples-dev.com',
+    ],
+
+    // Add recommended security headers during development
+    headers: [
+        {
+            key: 'content-security-policy',
+            value: policy,
+        },
+        {
+            key: 'strict-transport-security',
+            value: 'max-age=31536000; includeSubdomains; preload',
+        },
+        {
+            key: 'x-frame-options',
+            value: 'DENY',
+        },
+        {
+            key: 'x-xss-protection',
+            value: '1; mode=block',
+        },
+        {
+            key: 'x-content-type-options',
+            value: 'nosniff',
+        },
+        {
+            key: 'referrer-policy',
+            value: 'same-origin',
+        },
     ],
     setupMiddlewares: (middlewares: webpackDevServer.Middleware[]) => {
 
