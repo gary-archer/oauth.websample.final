@@ -25,14 +25,6 @@ case "$(uname -s)" in
 esac
 
 #
-# First download development SSL certificates
-#
-./downloadcerts.sh
-if [ $? -ne 0 ]; then
-  exit
-fi
-
-#
 # Run webpack dev server to serve static content
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:
 # - sudo setcap 'cap_net_bind_service=+ep' $(which node)
@@ -56,24 +48,9 @@ fi
 #
 if [ "$LOCALAPI" == 'true' ]; then
 
-  rm -rf localtokenhandler 2>/dev/null
-  git clone https://github.com/gary-archer/oauth-agent-node-express localtokenhandler
-  if [ $? -ne 0 ]; then
-    echo 'Problem encountered downloading local token handler resources'
-    exit
-  fi
-
-  echo 'Building local token handler components ...'
-  ./localtokenhandler/docker/build.sh
-  if [ $? -ne 0 ]; then
-    echo 'Problem encountered building the local token handler'
-    exit
-  fi
-
   ./localtokenhandler/docker/deploy.sh
   if [ $? -ne 0 ]; then
-    echo 'Problem encountered deploying the local token handler to Docker'
-    exit
+    exit 1
   fi
 fi
 
@@ -104,4 +81,3 @@ elif [ "$PLATFORM" == 'LINUX' ]; then
   xdg-open "$WEB_ORIGIN/"
 
 fi
-

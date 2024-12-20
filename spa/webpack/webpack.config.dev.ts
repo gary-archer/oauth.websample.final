@@ -21,7 +21,6 @@ policy += " object-src 'none';";
 policy += " frame-ancestors 'none';";
 policy += " base-uri 'self';";
 policy += " form-action 'self'";
-console.log(policy);
 
 /*
  * Configure the main development server
