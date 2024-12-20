@@ -12,11 +12,8 @@
   },
   "scripts": {
     "lint": "npx eslint . --ignore-pattern dist",
-    "start": "./build.sh",
-    "serve": "NODE_OPTIONS='--import tsx' webpack serve --config webpack/webpack.config.dev.ts",
-    "buildRelease": "./build.sh RELEASE",
-    "webpackRelease": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.prod.ts",
-    "purgecss": "purgecss -c purgecss.config.cjs -o dist"
+    "start": "./start.sh",
+    "buildRelease": "./buildRelease.sh"
   },
   "dependencies": {
     "axios": "^1.7.9",

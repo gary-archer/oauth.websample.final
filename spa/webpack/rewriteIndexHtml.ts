@@ -13,7 +13,7 @@ export function execute(): void {
 
     // Get the timestamp at the time of the build
     const timestamp = new Date().getTime().toString();
-    const outFolder = './dist';
+    const outFolder = './dist/spa';
 
     // First remove sourceMappingURL references
     removeSourcemapReference(`${outFolder}/vendor.bundle.js`);

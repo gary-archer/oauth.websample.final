@@ -32,9 +32,9 @@ const config: webpack.Configuration = {
     },
     output: {
 
-        // Output our Javascript bundles to a dist folder
-        path: path.resolve(dirname, './dist'),
-        filename: '[name].bundle.js'
+        // Output our Javascript bundles to a dist/spa folder
+        path: path.resolve(dirname, './dist/spa'),
+        filename: '[name].bundle.js',
     },
 
     optimization: {

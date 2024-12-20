@@ -8,9 +8,12 @@ import webpackDevServer, {Request, Response, NextFunction} from 'webpack-dev-ser
 /*
  * Use a strong content security policy for development
  */
+const bffHost = (process.env.LOCALAPI === 'true') ?
+    'https://bfflocal.authsamples-dev.com:444' : 'https://bff.authsamples-dev.com';
+
 let policy = "default-src 'none';";
 policy += " script-src 'self';";
-policy += " connect-src 'self' https://bff.authsamples-dev.com;";
+policy += ` connect-src 'self' ${bffHost};`;
 policy += " child-src 'self';";
 policy += " img-src 'self';";
 policy += " style-src 'self';";
@@ -18,6 +21,7 @@ policy += " object-src 'none';";
 policy += " frame-ancestors 'none';";
 policy += " base-uri 'self';";
 policy += " form-action 'self'";
+console.log(policy);
 
 /*
  * Configure the main development server
@@ -29,8 +33,8 @@ const devServer: webpackDevServer.Configuration = {
     server: {
         type: 'https',
         options: {
-            key: fs.readFileSync('./certs/authsamples-dev.ssl.key'),
-            cert: fs.readFileSync('./certs/authsamples-dev.ssl.crt'),
+            key: fs.readFileSync('../certs/authsamples-dev.ssl.key'),
+            cert: fs.readFileSync('../certs/authsamples-dev.ssl.crt'),
         },
     },
     static: {
