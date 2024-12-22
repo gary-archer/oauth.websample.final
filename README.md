@@ -50,7 +50,7 @@ Configure custom development domains by adding this DNS entry to your hosts file
 127.0.0.1 localhost www.authsamples-dev.com
 ```
 
-Install OpenSSL if required, then create a folder in which to create development certificates for the SPA:
+Install OpenSSL 3+ if required, create a secrets folder, then create development certificates:
 
 ```bash
 export SECRETS_FOLDER='~/secrets'
