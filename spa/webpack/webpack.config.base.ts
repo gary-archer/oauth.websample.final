@@ -40,6 +40,7 @@ const config: webpack.Configuration = {
     optimization: {
 
         // Build third party code into two bundles, for React and non-React code
+        // Using a function works for both the webpack dev server and release builds
         splitChunks: {
             cacheGroups: {
                 react: {
