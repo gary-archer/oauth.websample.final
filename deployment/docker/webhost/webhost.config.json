@@ -1,7 +1,0 @@
-{
-    "port": 443,
-    "sslCertificateFileName": "../../../certs/authsamples-dev.ssl.p12",
-    "sslCertificatePassword": "Password1",
-    "trustedHosts": ["https://bff.authsamples-dev.com"],
-    "mode": "development"
-}
