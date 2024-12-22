@@ -32,18 +32,19 @@ fi
 #
 # Copy non JavaScript files to the dist folder
 #
+cd ..
 rm -rf dist 2>/dev/null
 mkdir dist
 mkdir dist/spa
-cp ../favicon.ico   ./dist/
-cp index.html *.css ./dist/spa/
+cp favicon.ico              dist/
+cp spa/index.html spa/*.css dist/spa/
 
 #
 # Ensure that the SPA uses the correct backend for frontend URL
 #
 if [ "$LOCALAPI" == 'true' ]; then
-  cp ../deployment/environments/dev-localapi/spa.config.json dist/spa/spa.config.json
+  cp deployment/environments/dev-localapi/spa.config.json dist/spa/spa.config.json
 
 else 
-  cp ../deployment/environments/dev/spa.config.json dist/spa/spa.config.json
+  cp deployment/environments/dev/spa.config.json dist/spa/spa.config.json
 fi

@@ -37,7 +37,7 @@ const devServer: webpackDevServer.Configuration = {
         },
     },
     static: {
-        directory: path.join(dirname, './dist'),
+        directory: path.join(dirname, '../dist'),
     },
     port: 443,
 

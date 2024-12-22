@@ -18,17 +18,16 @@ fi
 #
 # Build the web host's Javascript code
 #
-./webhost/build.sh
+./deployment/webhost/buildRelease.sh
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the web host'
   exit
 fi
 
 #
-# Build the React SPA's Javascript bundles
+# Build the React SPA's in release mode
 #
-export BUILD_CONFIGURATION='RELEASE'
-./spa/build.sh
+./spa/buildRelease.sh
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   exit

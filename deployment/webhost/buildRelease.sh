@@ -1,8 +1,8 @@
 #!/bin/bash
 
-##############################################
-# Build the web host ready for local execution
-##############################################
+#########################################
+# Build the web host ready for deployment
+#########################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
@@ -28,10 +28,10 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Build its code
+# Build the code
 #
 rm -rf dist 2>/dev/null
-npm run buildRelease
+npx tsc --sourceMap false
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the webhost code'
   exit 1

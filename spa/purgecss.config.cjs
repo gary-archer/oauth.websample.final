@@ -5,7 +5,7 @@
  * It also avoids needing to add style-src 'unsafe-inline' to the content security policy
  */
 module.exports = {
-    content: ['dist/spa/app.bundle.js'],
+    content: ['../dist/spa/app.bundle.js'],
     css: ['bootstrap.min.css'],
     
     // This prevents some required elements from being removed

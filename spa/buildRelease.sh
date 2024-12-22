@@ -32,11 +32,15 @@ fi
 #
 # Copy non JavaScript files to the dist folder without a configuration file
 #
+cd ..
 rm -rf dist 2>/dev/null
 mkdir dist
 mkdir dist/spa
-cp ../favicon.ico   ./dist/
-cp index.html app.css ./dist/spa/
+cp favicon.ico                                 dist/
+cp spa/index.html spa/*.css                    dist/spa/
+cp deployment/environments/dev/spa.config.json dist/spa/spa.config.json
+cd spa
+
 
 #
 # Produce minified JavaScript bundles
@@ -51,12 +55,12 @@ fi
 #
 # Produce minified CSS
 #
-npx purgecss -c purgecss.config.cjs -o dist/spa
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered reducing CSS for the SPA'
-  read -n 1
-  exit 1
-fi
+#npx purgecss -c purgecss.config.cjs -o ../dist/spa
+#if [ $? -ne 0 ]; then
+#  echo 'Problem encountered reducing CSS for the SPA'
+#  read -n 1
+#  exit 1
+#fi
 
 #
 # Write the final index.html with integrity details and cache busting timestamps

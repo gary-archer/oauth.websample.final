@@ -12,7 +12,7 @@
   },
   "scripts": {
     "lint": "npx eslint . --ignore-pattern dist",
-    "start": "./start.sh",
+    "start": "./build.sh && ./serve.sh",
     "buildRelease": "./buildRelease.sh"
   },
   "dependencies": {
