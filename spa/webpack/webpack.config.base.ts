@@ -1,5 +1,5 @@
 import path from 'path';
-import webpack from 'webpack';
+import webpack, {Module, NormalModule} from 'webpack';
 
 const dirname = process.cwd();
 const config: webpack.Configuration = {
@@ -32,24 +32,47 @@ const config: webpack.Configuration = {
     },
     output: {
 
-        // Output our Javascript bundles to a dist folder
-        path: path.resolve(dirname, './dist'),
-        filename: '[name].bundle.js'
+        // Output our Javascript bundles to the ../dist/spa folder
+        path: path.resolve(dirname, '../dist/spa'),
+        filename: '[name].bundle.js',
     },
+
     optimization: {
 
         // Build third party code into two bundles, for React and non-React code
         splitChunks: {
             cacheGroups: {
                 react: {
-                    chunks: 'all',
                     name: 'react',
-                    test: /node_modules[\\/](react|react-dom|react-router-dom|react-modal)[\\/]/,
+                    chunks: 'all',
+                    test: (module: Module) => {
+
+                        if (!(module instanceof NormalModule)) {
+                            return false;
+                        }
+
+                        if (module.resource.indexOf('node_modules') !== -1 && module.resource.indexOf('react') !== -1) {
+                            return true;
+                        }
+
+                        return false;
+                    },
                 },
                 vendor: {
-                    chunks: 'all',
                     name: 'vendor',
-                    test: /node_modules/,
+                    chunks: 'all',
+                    test: (module: Module) => {
+
+                        if (!(module instanceof NormalModule)) {
+                            return false;
+                        }
+
+                        if (module.resource.indexOf('node_modules') !== -1 && module.resource.indexOf('react') === -1) {
+                            return true;
+                        }
+
+                        return false;
+                    },
                 }
             }
         }

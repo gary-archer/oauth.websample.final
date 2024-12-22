@@ -19,7 +19,7 @@ export class HttpServerConfiguration {
 
         this.express = expressApp;
         this.configuration = configuration;
-        this.webStaticContent = new WebStaticContent(this.express, this.configuration);
+        this.webStaticContent = new WebStaticContent(this.express);
         this.responseHeaders = new ResponseHeaders(this.configuration);
     }
 

@@ -41,9 +41,7 @@ export class ResponseHeaders {
         response.setHeader('referrer-policy', 'same-origin');
 
         // Also set the cache control header, for best browser performance
-        if (this.configuration.mode === 'deployed') {
-            response.setHeader('cache-control', this.getCacheControlResponseHeader(request));
-        }
+        response.setHeader('cache-control', this.getCacheControlResponseHeader(request));
 
         next();
     }

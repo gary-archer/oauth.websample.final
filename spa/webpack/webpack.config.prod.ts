@@ -7,7 +7,7 @@ const prodConfig: webpack.Configuration = {
     // Let webpack know this is a production build
     mode: 'production',
 
-    // Turn off inaccurate performance warnings
+    // Turn off performance warnings that I do not want to deal with for the demo SPA
     performance: {
         hints: false,
     },

@@ -87,4 +87,3 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 * AWS Cognito is the default authorization server for the SPA and API components.
 * [AWS Serverless](https://github.com/gary-archer/oauth.apisample.serverless) or Kubernetes host remote API endpoints that the SPA calls.
 * Token handler components implement API-driven cookie issuing on behalf of the SPA.
-
