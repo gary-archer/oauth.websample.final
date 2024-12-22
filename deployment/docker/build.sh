@@ -16,22 +16,23 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Build the web host's Javascript code
-#
-./deployment/webhost/buildRelease.sh
-if [ $? -ne 0 ]; then
-  echo 'Problem encountered building the web host'
-  exit
-fi
-
-#
-# Build the React SPA's in release mode
+# Build the React SPA's code in release mode
 #
 ./spa/buildRelease.sh
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   exit
 fi
+
+#
+# Build the web host's Javascript code
+#
+./deployment/docker/webhost/buildRelease.sh
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered building the web host'
+  exit
+fi
+
 
 #
 # Build files into a docker image

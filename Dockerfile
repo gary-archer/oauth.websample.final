@@ -2,8 +2,8 @@ FROM node:20-bookworm-slim
 
 # Copy the web host application and install its dependencies
 WORKDIR /usr/webhost
-COPY deployment/webhost/dist          /usr/webhost/dist
-COPY deployment/webhost/package*.json /usr/webhost/
+COPY deployment/docker/webhost/dist          /usr/webhost/dist
+COPY deployment/docker/webhost/package*.json /usr/webhost/
 RUN npm install --production
 
 # Copy the SPA's static content files
