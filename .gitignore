@@ -2,6 +2,7 @@
 node_modules
 dist
 resources
-certs
+certs/*.p12
+certs/*.crt
 localtokenhandler
 .package

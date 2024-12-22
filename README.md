@@ -40,33 +40,39 @@ Login at https://www.authsamples.com/ with this AWS Cognito test account:
 
 ## Local Development Quick Start
 
-First ensure that Node.js 20+ is installed.\
-Then build code locally via this command, which runs `npm install` and `npm start`:
+To run the code sample locally you must configure some infrastructure before you run the code.
 
-```bash
-./build.sh
-```
+### Configure DNS and SSL
 
-You must use custom development domains and add this DNS entry to your hosts file:
+Configure custom development domains by adding this DNS entry to your hosts file:
 
 ```bash
 127.0.0.1 localhost www.authsamples-dev.com
 ```
 
-Next, configure [Browser SSL Trust](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/developer-ssl-setup.mdx#trust-a-root-certificate-in-browsers) for the SSL root certificate:
+Then create a folder in which to create OpenSSL development certificate for the SPA:
 
+```bash
+export SECRETS_FOLDER='~/secrets'
+mkdir ~/secrets
+./certs/create.sh
 ```
+
+Finally, configure [Browser SSL Trust](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/developer-ssl-setup.mdx#trust-a-root-certificate-in-browsers) for the SSL root certificate at this location:
+
+```text
 ./certs/authsamples-dev.ca.crt
 ```
 
-Then run this script to run a simple web host that serves static content.\
-You can edit the SPA's React code and update the UI productively, in a pure SPA manner.
+### Run the Code
+
+Ensure that Node.js 20+ is installed, then build and run the SPA in the webpack development server:
 
 ```bash
-./run.sh
+./build.sh && ./run.sh
 ```
 
-When the browser is invoked at `https://www.authsamples-dev.com/`, sign in with the test account.\
+The browser then opens at `https://www.authsamples-dev.com/` and you can sign in with the test account.\
 You can then test all lifecycle operations, including expiry events, multi-tab browsing and multi-tab logout.
 
 ## Further Information
