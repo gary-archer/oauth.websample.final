@@ -11,7 +11,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "lint": "npx eslint . --ignore-pattern dist",
+    "lint": "npx eslint .",
     "start": "./build.sh && ./serve.sh",
     "buildRelease": "./buildRelease.sh"
   },

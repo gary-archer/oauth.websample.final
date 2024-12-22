@@ -7,6 +7,14 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
+# Create certificates if required
+#
+../../certs/create.sh
+if [ $? -ne 0 ]; then
+  exit
+fi
+
+#
 # Run the docker deployment
 #
 docker compose --project-name webhost up --force-recreate --detach

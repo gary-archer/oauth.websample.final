@@ -101,4 +101,6 @@ if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the PKCS#12 file'
   exit 1
 fi
+
+chmod 644 *
 echo 'All certificates created successfully'

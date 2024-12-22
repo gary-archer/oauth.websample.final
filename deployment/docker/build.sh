@@ -8,14 +8,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 cd ../..
 
 #
-# Download certificates if required
-#
-./downloadcerts.sh
-if [ $? -ne 0 ]; then
-  exit
-fi
-
-#
 # Build the React SPA's code in release mode
 #
 ./spa/buildRelease.sh
