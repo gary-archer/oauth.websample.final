@@ -10,8 +10,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 # Create certificates if required
 #
 ../../certs/create.sh
-if [ $? -ne 0 ]; then
-  exit
+if [ $? -ne 0 ]; then1
+  exit 1
 fi
 
 #
