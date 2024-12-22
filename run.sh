@@ -25,6 +25,14 @@ case "$(uname -s)" in
 esac
 
 #
+# Create SSL certificates if required
+#
+./certs/create.sh
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+#
 # Run webpack dev server to serve static content
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:
 # - sudo setcap 'cap_net_bind_service=+ep' $(which node)

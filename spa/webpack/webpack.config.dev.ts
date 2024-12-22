@@ -32,8 +32,8 @@ const devServer: webpackDevServer.Configuration = {
     server: {
         type: 'https',
         options: {
-            key: fs.readFileSync('../certs/authsamples-dev.ssl.key'),
-            cert: fs.readFileSync('../certs/authsamples-dev.ssl.crt'),
+            pfx: fs.readFileSync('../certs/authsamples-dev.ssl.p12'),
+            passphrase: 'Password1',
         },
     },
     static: {

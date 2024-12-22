@@ -7,14 +7,6 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 #
-# First download development SSL certificates
-#
-./downloadcerts.sh
-if [ $? -ne 0 ]; then
-  exit
-fi
-
-#
 # Build the SPA
 #
 ./spa/build.sh
