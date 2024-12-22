@@ -37,10 +37,9 @@ rm -rf dist 2>/dev/null
 mkdir dist
 mkdir dist/spa
 cp favicon.ico                                 dist/
-cp spa/index.html spa/*.css                    dist/spa/
+cp spa/index.html spa/app.css                  dist/spa/
 cp deployment/environments/dev/spa.config.json dist/spa/spa.config.json
 cd spa
-
 
 #
 # Produce minified JavaScript bundles
@@ -53,14 +52,15 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Produce minified CSS
+# Produce minified CSS and use a safelist to prevent required elements from being removed
+# https://github.com/FullHuman/purgecss/issues/491
 #
-#npx purgecss -c purgecss.config.cjs -o ../dist/spa
-#if [ $? -ne 0 ]; then
-#  echo 'Problem encountered reducing CSS for the SPA'
-#  read -n 1
-#  exit 1
-#fi
+npx purgecss --css bootstrap.min.css --content ../dist/spa/app.bundle.js --safelist 'body' --safelist 'container' --output ../dist/spa
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered reducing CSS for the SPA'
+  read -n 1
+  exit 1
+fi
 
 #
 # Write the final index.html with integrity details and cache busting timestamps

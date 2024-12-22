@@ -47,7 +47,11 @@ const config: webpack.Configuration = {
                     chunks: 'all',
                     test: (module: Module) => {
 
-                        if (module instanceof NormalModule && module.resource.indexOf('react') !== -1) {
+                        if (!(module instanceof NormalModule)) {
+                            return false;
+                        }
+
+                        if (module.resource.indexOf('node_modules') !== -1 && module.resource.indexOf('react') !== -1) {
                             return true;
                         }
 
@@ -59,7 +63,11 @@ const config: webpack.Configuration = {
                     chunks: 'all',
                     test: (module: Module) => {
 
-                        if (!(module instanceof NormalModule) || module.resource.indexOf('react') === -1) {
+                        if (!(module instanceof NormalModule)) {
+                            return false;
+                        }
+
+                        if (module.resource.indexOf('node_modules') !== -1 && module.resource.indexOf('react') === -1) {
                             return true;
                         }
 
