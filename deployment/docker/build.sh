@@ -25,7 +25,6 @@ if [ $? -ne 0 ]; then
   exit
 fi
 
-
 #
 # Build files into a docker image
 #

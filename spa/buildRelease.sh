@@ -36,9 +36,8 @@ cd ..
 rm -rf dist 2>/dev/null
 mkdir dist
 mkdir dist/spa
-cp favicon.ico                                 dist/
-cp spa/index.html spa/app.css                  dist/spa/
-cp deployment/environments/dev/spa.config.json dist/spa/spa.config.json
+cp favicon.ico                dist/
+cp spa/index.html spa/app.css dist/spa/
 cd spa
 
 #
