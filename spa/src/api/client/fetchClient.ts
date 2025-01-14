@@ -1,5 +1,4 @@
 import axios, {AxiosRequestConfig, Method} from 'axios';
-import {Guid} from 'guid-typescript';
 import {Company} from '../entities/company';
 import {ApiUserInfo} from '../entities/apiUserInfo';
 import {CompanyTransactions} from '../entities/companyTransactions';
@@ -166,7 +165,7 @@ export class FetchClient {
             'token-handler-version':        '1',
             'x-authsamples-api-client':     'FinalSPA',
             'x-authsamples-session-id':     this.sessionId,
-            'x-authsamples-correlation-id': Guid.create().toString(),
+            'x-authsamples-correlation-id': crypto.randomUUID(),
         };
 
         // A special header can be sent to ask the API to throw a simulated exception

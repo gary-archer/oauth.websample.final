@@ -1,4 +1,3 @@
-import {Guid} from 'guid-typescript';
 import {HtmlStorageHelper} from './htmlStorageHelper';
 
 /*
@@ -14,7 +13,7 @@ export class SessionManager {
         let sessionId = HtmlStorageHelper.getApiSessionId();
         if (!sessionId) {
 
-            sessionId = Guid.create().toString();
+            sessionId = crypto.randomUUID();
             HtmlStorageHelper.setApiSessionId(sessionId);
         }
 
