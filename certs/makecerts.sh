@@ -5,6 +5,7 @@
 ###########################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
+cd "$SECRETS_FOLDER"
 
 #
 # Initialize
@@ -74,17 +75,24 @@ fi
 
 SUBJECT_ALT_NAMES="DNS:$DOMAIN.com,DNS:api.$DOMAIN.com,DNS:login.$DOMAIN.com,DNS:www.$DOMAIN.com,DNS:bfflocal.$DOMAIN.com,DNS:logs.$DOMAIN.com"
 openssl req \
-    -x509 \
     -new \
-    -CA "$DOMAIN.ca.crt" \
-    -CAkey "$DOMAIN.ca.key" \
     -key "$DOMAIN.ssl.key" \
-    -out "$DOMAIN.ssl.crt" \
+    -out "$DOMAIN.ssl.csr" \
     -subj "/CN=*.$DOMAIN.com" \
-    -days 365 \
     -addext 'basicConstraints=critical,CA:FALSE' \
     -addext 'extendedKeyUsage=serverAuth' \
     -addext "subjectAltName=$SUBJECT_ALT_NAMES"
+if [ $? -ne 0 ]; then
+  echo '*** Problem encountered creating the SSL certificate'
+  exit 1
+fi
+
+openssl x509 -req \
+    -in "$DOMAIN.ssl.csr" \
+    -CA "$DOMAIN.ca.crt" \
+    -CAkey "$DOMAIN.ca.key" \
+    -out "$DOMAIN.ssl.crt" \
+    -days 365
 if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the SSL certificate'
   exit 1
@@ -102,5 +110,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+rm *.csr
 chmod 644 ./*
 echo 'All certificates created successfully'
