@@ -108,6 +108,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-rm *.csr
+rm ./*.csr
 chmod 644 ./*
 echo 'All certificates created successfully'
