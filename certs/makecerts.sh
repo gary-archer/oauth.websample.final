@@ -11,6 +11,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 #
 DOMAIN="authsamples-dev"
 PRIVATE_KEY_PASSWORD='Password1'
+EXTFILE=$(readlink -f extensions.cnf)
 cd "$SECRETS_FOLDER"
 
 #
@@ -56,7 +57,6 @@ openssl req \
     -key "$DOMAIN.ca.key" \
     -out "$DOMAIN.ca.crt" \
     -subj "/CN=Development CA for $DOMAIN.com" \
-    -addext 'basicConstraints=critical,CA:TRUE' \
     -days 3650
 if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the Root CA'
@@ -72,19 +72,25 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-SUBJECT_ALT_NAMES="DNS:$DOMAIN.com,DNS:api.$DOMAIN.com,DNS:login.$DOMAIN.com,DNS:www.$DOMAIN.com,DNS:bfflocal.$DOMAIN.com,DNS:logs.$DOMAIN.com"
 openssl req \
-    -x509 \
     -new \
+    -key $DOMAIN.ssl.key \
+    -out $DOMAIN.ssl.csr \
+    -subj "/CN=*.$DOMAIN.com"
+if [ $? -ne 0 ]; then
+  echo '*** Problem encountered creating the certificate signing request'
+  exit 1
+fi
+
+openssl x509 -req \
+    -in "$DOMAIN.ssl.csr" \
     -CA "$DOMAIN.ca.crt" \
     -CAkey "$DOMAIN.ca.key" \
-    -key "$DOMAIN.ssl.key" \
     -out "$DOMAIN.ssl.crt" \
-    -subj "/CN=*.$DOMAIN.com" \
+    -sha256 \
     -days 365 \
-    -addext 'basicConstraints=critical,CA:FALSE' \
-    -addext 'extendedKeyUsage=serverAuth' \
-    -addext "subjectAltName=$SUBJECT_ALT_NAMES"
+    -extfile "$EXTFILE" \
+    -extensions server_ext
 if [ $? -ne 0 ]; then
   echo '*** Problem encountered creating the SSL certificate'
   exit 1
@@ -102,5 +108,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+rm *.csr
 chmod 644 ./*
 echo 'All certificates created successfully'

@@ -54,7 +54,7 @@ Install OpenSSL 3+ if required, create a secrets folder, then create development
 
 ```bash
 export SECRETS_FOLDER="$HOME/secrets"
-mkdir "$SECRETS_FOLDER"
+mkdir -p "$SECRETS_FOLDER"
 ./certs/create.sh
 ```
 
