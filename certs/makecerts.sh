@@ -11,7 +11,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 #
 DOMAIN="authsamples-dev"
 PRIVATE_KEY_PASSWORD='Password1'
-EXTFILE=$(readlink -f extensions.cnf)
+EXTFILE="$(readlink -f extensions.cnf)"
 cd "$SECRETS_FOLDER"
 
 #
