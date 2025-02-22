@@ -1,7 +1,7 @@
 /*
- * An interface to represent authentication related operations for the SPA
+ * An interface to represent OAuth related operations for the SPA
  */
-export interface Authenticator {
+export interface OAuthClient {
 
     // Indicate whether logged in
     isLoggedIn(): boolean;

@@ -116,7 +116,7 @@ export function App(props: AppProps): JSX.Element {
 
         if (model.getIsLoaded()) {
 
-            if (!model.getAuthenticator().isLoggedIn()) {
+            if (!model.getOAuthClient().isLoggedIn()) {
 
                 // Trigger a login if required
                 await model.login(CurrentLocation.path);

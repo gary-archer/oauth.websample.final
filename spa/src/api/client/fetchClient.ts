@@ -5,7 +5,7 @@ import {CompanyTransactions} from '../entities/companyTransactions';
 import {OAuthUserInfo} from '../entities/oauthUserInfo';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {Authenticator} from '../../plumbing/oauth/authenticator';
+import {OAuthClient} from '../../plumbing/oauth/oauthClient';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {FetchCache} from './fetchCache';
 import {FetchOptions} from './fetchOptions';
@@ -17,18 +17,18 @@ export class FetchClient {
 
     private readonly configuration: Configuration;
     private readonly fetchCache: FetchCache;
-    private readonly authenticator: Authenticator;
+    private readonly oauthClient: OAuthClient;
     private readonly sessionId: string;
 
     public constructor(
         configuration: Configuration,
         fetchCache: FetchCache,
-        authenticator: Authenticator,
+        oauthClient: OAuthClient,
         sessionId: string) {
 
         this.configuration = configuration;
         this.fetchCache = fetchCache;
-        this.authenticator = authenticator;
+        this.oauthClient = oauthClient;
         this.sessionId = sessionId;
     }
 
@@ -97,7 +97,7 @@ export class FetchClient {
         cacheItem = this.fetchCache.createItem(options.cacheKey);
 
         // Avoid API requests and trigger a login redirect when we know it is needed
-        if (!this.authenticator.isLoggedIn()) {
+        if (!this.oauthClient.isLoggedIn()) {
 
             const loginRequiredError = ErrorFactory.fromLoginRequired();
             cacheItem.setError(loginRequiredError);
@@ -123,7 +123,7 @@ export class FetchClient {
 
             try {
                 // Try to refresh the access token cookie
-                await this.authenticator.synchronizedRefresh();
+                await this.oauthClient.synchronizedRefresh();
 
             } catch (e2: any) {
 

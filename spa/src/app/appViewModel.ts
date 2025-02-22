@@ -10,8 +10,8 @@ import {UIError} from '../plumbing/errors/uiError';
 import {EventNames} from '../plumbing/events/eventNames';
 import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ReloadDataEvent} from '../plumbing/events/reloadDataEvent';
-import {Authenticator} from '../plumbing/oauth/authenticator';
-import {AuthenticatorImpl} from '../plumbing/oauth/authenticatorImpl';
+import {OAuthClient} from '../plumbing/oauth/oauthClient';
+import {OAuthClientImpl} from '../plumbing/oauth/oauthClientImpl';
 import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainerViewModel} from '../views/companies/companiesContainerViewModel';
 import {TransactionsContainerViewModel} from '../views/transactions/transactionsContainerViewModel';
@@ -24,7 +24,7 @@ export class AppViewModel {
 
     // Global objects created from configuration
     private configuration!: Configuration;
-    private authenticator!: Authenticator;
+    private oauthClient!: OAuthClient;
     private fetchClient!: FetchClient;
     private viewModelCoordinator!: ViewModelCoordinator;
 
@@ -109,20 +109,20 @@ export class AppViewModel {
             const sessionId = SessionManager.get();
 
             // Create an object to manage OAuth related operations
-            this.authenticator = new AuthenticatorImpl(this.configuration);
+            this.oauthClient = new OAuthClientImpl(this.configuration);
 
             // Create a client for calling the API
             this.fetchClient = new FetchClient(
                 this.configuration,
                 this.fetchCache,
-                this.authenticator,
+                this.oauthClient,
                 sessionId);
 
             // Create an object used to deal with API responses across multiple views
             this.viewModelCoordinator = new ViewModelCoordinator(
                 this.eventBus,
                 this.fetchCache,
-                this.authenticator);
+                this.oauthClient);
 
             // Update state, to prevent model recreation if the view is recreated
             this.isInitialised = true;
@@ -154,7 +154,7 @@ export class AppViewModel {
             this.isLoading = true;
 
             // Handle any login responses
-            const navigateTo = await this.authenticator.handlePageLoad();
+            const navigateTo = await this.oauthClient.handlePageLoad();
 
             // Inform the view that loading is complete
             this.updateIsLoaded(true);
@@ -186,7 +186,7 @@ export class AppViewModel {
     public async login(currentLocation: string): Promise<void> {
 
         try {
-            await this.authenticator.login(currentLocation);
+            await this.oauthClient.login(currentLocation);
         } catch (e: any) {
             this.updateError(ErrorFactory.fromException(e));
         }
@@ -198,7 +198,7 @@ export class AppViewModel {
     public async logout(): Promise<boolean> {
 
         try {
-            await this.authenticator.logout();
+            await this.oauthClient.logout();
             return true;
 
         } catch (e: any) {
@@ -214,7 +214,7 @@ export class AppViewModel {
     public onLoggedOut(): void {
 
         this.viewModelCoordinator.resetState();
-        this.authenticator.clearLoginState();
+        this.oauthClient.clearLoginState();
         this.updateError(null);
     }
 
@@ -237,8 +237,8 @@ export class AppViewModel {
         return this.configuration;
     }
 
-    public getAuthenticator(): Authenticator {
-        return this.authenticator;
+    public getOAuthClient(): OAuthClient {
+        return this.oauthClient;
     }
 
     public getFetchClient(): FetchClient {
@@ -318,7 +318,7 @@ export class AppViewModel {
     public async expireAccessToken(): Promise<void> {
 
         try {
-            await this.authenticator.expireAccessToken();
+            await this.oauthClient.expireAccessToken();
         } catch (e: any) {
             this.updateError(ErrorFactory.fromException(e));
         }
@@ -330,7 +330,7 @@ export class AppViewModel {
     public async expireRefreshToken(): Promise<void> {
 
         try {
-            await this.authenticator.expireRefreshToken();
+            await this.oauthClient.expireRefreshToken();
         } catch (e: any) {
             this.updateError(ErrorFactory.fromException(e));
         }

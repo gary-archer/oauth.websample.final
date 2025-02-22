@@ -6,13 +6,13 @@ import {UIError} from '../errors/uiError';
 import {AxiosUtils} from '../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
-import {Authenticator} from './authenticator';
+import {OAuthClient} from './oauthClient';
 import {EndLoginResponse} from './endLoginResponse';
 
 /*
- * The authenticator implementation
+ * The OAuth client implementation
  */
-export class AuthenticatorImpl implements Authenticator {
+export class OAuthClientImpl implements OAuthClient {
 
     private readonly configuration: Configuration;
     private readonly concurrencyHandler: ConcurrentActionHandler;
