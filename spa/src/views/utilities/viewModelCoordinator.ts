@@ -6,7 +6,6 @@ import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
-import {OAuthClient} from '../../plumbing/oauth/oauthClient';
 
 /*
  * Coordinates API requests from multiple views, and notifies once all API calls are complete
@@ -16,7 +15,6 @@ export class ViewModelCoordinator {
 
     private readonly eventBus: EventBus;
     private readonly fetchCache: FetchCache;
-    private readonly oauthClient: OAuthClient;
     private mainCacheKey: string;
     private loadingCount: number;
     private loadedCount: number;
@@ -24,11 +22,10 @@ export class ViewModelCoordinator {
     /*
      * Set the initial state
      */
-    public constructor(eventBus: EventBus, fetchCache: FetchCache, oauthClient: OAuthClient) {
+    public constructor(eventBus: EventBus, fetchCache: FetchCache) {
 
         this.eventBus = eventBus;
         this.fetchCache = fetchCache;
-        this.oauthClient = oauthClient;
         this.mainCacheKey = '';
         this.loadingCount = 0;
         this.loadedCount = 0;

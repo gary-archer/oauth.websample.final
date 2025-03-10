@@ -119,10 +119,7 @@ export class AppViewModel {
                 sessionId);
 
             // Create an object used to deal with API responses across multiple views
-            this.viewModelCoordinator = new ViewModelCoordinator(
-                this.eventBus,
-                this.fetchCache,
-                this.oauthClient);
+            this.viewModelCoordinator = new ViewModelCoordinator(this.eventBus, this.fetchCache);
 
             // Update state, to prevent model recreation if the view is recreated
             this.isInitialised = true;
