@@ -63,7 +63,7 @@ export class ViewModelCoordinator {
         }
 
         // Perform error logic after all views have loaded
-        this.handleErrorsAfterLoad();
+        this.handleAllViewsLoaded();
     }
 
     /*
@@ -78,7 +78,7 @@ export class ViewModelCoordinator {
      */
     public onUserInfoViewModelLoaded(): void {
         ++this.loadedCount;
-        this.handleErrorsAfterLoad();
+        this.handleAllViewsLoaded();
     }
 
     /*
@@ -92,23 +92,24 @@ export class ViewModelCoordinator {
      * Reset state when the Reload Data button is clicked
      */
     public resetState(): void {
-        this.loadingCount = 0;
-        this.loadedCount = 0;
         this.mainCacheKey = '';
         this.fetchCache.clearAll();
     }
 
     /*
-     * Handle OAuth related errors
+     * Handle OAuth related errors once all views finish loading
      */
-    private handleErrorsAfterLoad(): void {
+    private handleAllViewsLoaded(): void {
 
         if (this.loadedCount === this.loadingCount) {
 
-            const errors = this.getLoadErrors();
+            // Reset counts, which include extra calls triggered by React strict mode
+            this.loadingCount = 0;
+            this.loadedCount = 0;
 
             // Login required errors occur when there are no tokens yet or when token refresh fails
             // The sample's user behavior is to automatically redirect the user to login
+            const errors = this.getLoadErrors();
             const loginRequired = errors.find((e) => e.getErrorCode() === ErrorCodes.loginRequired);
             if (loginRequired) {
                 this.resetState();
