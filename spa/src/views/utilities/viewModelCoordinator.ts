@@ -116,18 +116,6 @@ export class ViewModelCoordinator {
                 this.eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
                 return;
             }
-
-            // In normal conditions the following errors are likely to be OAuth configuration errors
-            const oauthConfigurationError = errors.find((e) =>
-                (e.getStatusCode() === 401 && e.getErrorCode() === ErrorCodes.invalidToken) ||
-                (e.getStatusCode() === 403 && e.getErrorCode() === ErrorCodes.insufficientScope));
-
-            // The sample's user behavior is to present an error, after which clicking Home runs a new login redirect
-            // This allows the frontend application to get new tokens, which may fix the problem in some cases
-            if (oauthConfigurationError) {
-                this.oauthClient.clearLoginState();
-                return;
-            }
         }
     }
 

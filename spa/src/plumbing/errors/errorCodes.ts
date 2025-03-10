@@ -24,9 +24,6 @@ export class ErrorCodes {
     // Returned from APIs when an access token is rejected
     public static readonly invalidToken = 'invalid_token';
 
-    // Returned from APIs when an access token does not have the expected scope or claims
-    public static readonly insufficientScope = 'insufficient_scope';
-
     // An error when testing token expiry
     public static readonly expiryTestError = 'expiry_test';
 
