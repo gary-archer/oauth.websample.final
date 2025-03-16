@@ -27,6 +27,7 @@ if [ "$LOCALAPI" == 'true' ]; then
   fi
 
   echo 'Building local token handler components ...'
+  ./localtokenhandler/certs/create.sh
   ./localtokenhandler/docker/build.sh
   if [ $? -ne 0 ]; then
     exit 1
