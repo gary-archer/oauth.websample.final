@@ -26,6 +26,15 @@ if [ "$LOCALAPI" == 'true' ]; then
     exit 1
   fi
 
+  if [ "$SECRETS_FOLDER" == '' ]; then
+    echo 'You must supply a SECRETS_FOLDER environment variable'
+    exit 1
+  fi
+
+  cd localtokenhandler
+  git checkout feature/certs
+  cd ..
+
   echo 'Building local token handler components ...'
   ./localtokenhandler/certs/create.sh
   ./localtokenhandler/docker/build.sh
