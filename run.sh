@@ -33,6 +33,17 @@ if [ $? -ne 0 ]; then
 fi
 
 #
+# When connecting the SPA to a local API, run token handler components in Docker
+#
+if [ "$LOCALAPI" == 'true' ]; then
+
+  ./localtokenhandler/docker/deploy.sh
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+fi
+
+#
 # Run webpack dev server to serve static content
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:
 # - sudo setcap 'cap_net_bind_service=+ep' $(which node)
@@ -49,17 +60,6 @@ elif [ "$PLATFORM" == 'WINDOWS' ]; then
 elif [ "$PLATFORM" == 'LINUX' ]; then
 
   gnome-terminal -- ./spa/serve.sh
-fi
-
-#
-# When connecting the SPA to a local API, run token handler components in Docker
-#
-if [ "$LOCALAPI" == 'true' ]; then
-
-  ./localtokenhandler/docker/deploy.sh
-  if [ $? -ne 0 ]; then
-    exit 1
-  fi
 fi
 
 #
