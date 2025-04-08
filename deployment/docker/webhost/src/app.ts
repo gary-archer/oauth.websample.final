@@ -4,8 +4,8 @@ import {Configuration} from './configuration.js';
 import {HttpServerConfiguration} from './httpServerConfiguration.js';
 
 // First load configuration
-const configurationBuffer = await fs.readFile('webhost.config.json');
-const configuration =  JSON.parse(configurationBuffer.toString()) as Configuration;
+const configurationJson = await fs.readFile('webhost.config.json', 'utf8');
+const configuration =  JSON.parse(configurationJson) as Configuration;
 
 // Create the web host
 const expressApp = express();
