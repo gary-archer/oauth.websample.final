@@ -20,7 +20,7 @@ fi
 if [ "$LOCALAPI" == 'true' ]; then
 
   rm -rf localtokenhandler 2>/dev/null
-  git clone https://github.com/gary-archer/oauth-agent-node-express localtokenhandler
+  git clone https://github.com/gary-archer/oauth.tokenhandler.cloudnative localtokenhandler
   if [ $? -ne 0 ]; then
     echo ' Problem encountered downloading local token handler resources'
     exit 1
