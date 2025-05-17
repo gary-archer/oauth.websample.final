@@ -4,7 +4,7 @@ FROM node:22-bookworm-slim
 WORKDIR /usr/webhost
 COPY deployment/docker/webhost/dist          /usr/webhost/dist
 COPY deployment/docker/webhost/package*.json /usr/webhost/
-RUN npm install --production
+RUN npm install --omit=dev
 
 # Copy the SPA's static content files
 COPY dist/favicon.ico       /usr/webhost/
