@@ -1,0 +1,29 @@
+{
+  "name": "webhost",
+  "version": "1.0.0",
+  "description": "A web host for serving SPA static content in local computer deployments",
+  "author": "Gary Archer",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "npx eslint . --ignore-pattern dist",
+    "start": "./buildRelease.sh"
+  },
+  "dependencies": {
+    "express": "^5.0.1",
+    "fs-extra": "^11.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/express": "^5.0.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.15.18",
+    "eslint": "^9.22.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8",
+    "typescript-eslint": "^8.26.1"
+  }
+}

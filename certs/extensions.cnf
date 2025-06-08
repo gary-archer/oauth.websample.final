@@ -1,0 +1,5 @@
+[ server_ext ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName=DNS:authsamples-dev.com,DNS:api.authsamples-dev.com,DNS:login.authsamples-dev.com,DNS:www.authsamples-dev.com,DNS:bfflocal.authsamples-dev.com,DNS:logs.authsamples-dev.com

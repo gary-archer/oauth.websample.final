@@ -1,0 +1,49 @@
+{
+  "name": "finalspa",
+  "version": "3.0.0",
+  "description": "An SPA that sends tokens to OAuth 2.0 secured APIs using HTTP-only SameSite cookies",
+  "main": "index.tsx",
+  "keywords": [],
+  "author": "Gary Archer",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "npx eslint .",
+    "start": "./build.sh && ./serve.sh",
+    "buildRelease": "./buildRelease.sh"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "js-event-bus": "^1.1.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^7.5.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@types/react-modal": "^3.16.3",
+    "eslint": "^9.22.0",
+    "eslint-plugin-react": "^7.37.4",
+    "purgecss": "^7.0.2",
+    "ts-loader": "^9.5.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8",
+    "typescript-eslint": "^8.26.1",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1",
+    "webpack-merge": "^6.0.1"
+  },
+  "overrides": {
+    "react-modal": {
+      "react": "^18 || ^19",
+      "react-dom": "^18 || ^19"
+    }
+  }
+}
