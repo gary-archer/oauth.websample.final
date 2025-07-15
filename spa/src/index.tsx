@@ -11,7 +11,7 @@ const props = {
     viewModel: new AppViewModel(),
 };
 
-// Create the React router with the base value
+// Create the React router and instruct it to use a base path
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render (
     <StrictMode>
