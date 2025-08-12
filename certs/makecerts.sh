@@ -11,7 +11,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 #
 DOMAIN="authsamples-dev"
 PRIVATE_KEY_PASSWORD='Password1'
-EXTFILE="$(readlink -f extensions.cnf)"
 cd "$SECRETS_FOLDER"
 
 #
@@ -77,7 +76,7 @@ openssl x509 -req \
     -out "$DOMAIN.ssl.crt" \
     -sha256 \
     -days 365 \
-    -extfile "$EXTFILE" \
+    -extfile extensions.cnf \
     -extensions server_ext
 if [ $? -ne 0 ]; then
   echo 'Problem encountered creating the SSL certificate'
@@ -97,5 +96,4 @@ if [ $? -ne 0 ]; then
 fi
 
 rm ./*.csr
-chmod 644 ./*
 echo 'All certificates created successfully'
