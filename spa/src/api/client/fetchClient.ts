@@ -77,7 +77,7 @@ export class FetchClient {
     }
 
     /*
-     * A parameterized method containing application specific logic for managing API calls
+     * The entry point to get data deals with caching
      */
     private async getDataFromApi(url: string, options: FetchOptions): Promise<any> {
 
@@ -93,59 +93,71 @@ export class FetchClient {
             return cacheItem.getData();
         }
 
-        // Ensure that the cache item exists, to avoid a redundant API request on every view recreation
+        // Ensure that the cache item exists for any re-entrant requests that fire after this one
         cacheItem = this.fetchCache.createItem(options.cacheKey);
+
+        try {
+
+            // Get the data and update the cache item for this request
+            const data = await this.getDataFromApiWithTokenRefresh(url, options);
+            cacheItem.setData(data);
+            return data;
+
+        } catch (e: any) {
+
+            // Get the data and update the cache item for this request
+            cacheItem.setError(e);
+            throw e;
+        }
+    }
+
+    /*
+     * A standard algorithm for token refresh
+     */
+    private async getDataFromApiWithTokenRefresh(url: string, options: FetchOptions): Promise<any> {
 
         // Avoid API requests and trigger a login redirect when we know it is needed
         if (!this.oauthClient.isLoggedIn()) {
-
-            const loginRequiredError = ErrorFactory.fromLoginRequired();
-            cacheItem.setError(loginRequiredError);
-            throw loginRequiredError;
+            throw ErrorFactory.fromLoginRequired();
         }
 
         try {
 
             // Call the API and return data on success
-            const data1 = await this.callApiWithCredential('GET', url, options);
-            cacheItem.setData(data1);
-            return data1;
+            return await this.callApiWithCredential('GET', url, options);
 
         } catch (e1: any) {
 
+            // Report errors if this is not a 401
             const error1 = ErrorFactory.fromHttpError(e1, url, 'API');
             if (error1.getStatusCode() !== 401) {
-
-                // Report errors if this is not a 401
-                cacheItem.setError(error1);
                 throw error1;
             }
 
+            // Try to refresh the access token cookie
             try {
-                // Try to refresh the access token cookie
                 await this.oauthClient.synchronizedRefresh();
-
             } catch (e2: any) {
-
-                // Save refresh errors
-                const error2 = ErrorFactory.fromHttpError(e2, url, 'API');
-                cacheItem.setError(error2);
-                throw error2;
+                throw ErrorFactory.fromHttpError(e2, url, 'API');
             }
 
             try {
 
                 // Call the API again with the rewritten access token cookie
-                const data2 = await this.callApiWithCredential('GET', url, options);
-                cacheItem.setData(data2);
-                return data2;
+                return await this.callApiWithCredential('GET', url, options);
 
             }  catch (e3: any) {
 
                 // Save retry errors
                 const error3 = ErrorFactory.fromHttpError(e3, url, 'API');
-                cacheItem.setError(error3);
-                throw error3;
+                if (error3.getStatusCode() !== 401) {
+                    throw error3;
+                }
+
+                // A permanent API 401 error triggers a new login.
+                // This could be caused by an invalid API configuration.
+                this.oauthClient.clearLoginState();
+                throw ErrorFactory.fromLoginRequired();
             }
         }
     }
