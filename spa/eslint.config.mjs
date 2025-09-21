@@ -21,7 +21,6 @@ export default tseslint.config({
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-extraneous-class': 'off',
         'brace-style': ['error', '1tbs'],
-        'indent': 'error',
         'max-len': ['error', { 'code': 120 }],
         'no-multiple-empty-lines': ['error', {'max': 1}],
         'no-trailing-spaces': 'error',
