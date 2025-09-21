@@ -106,8 +106,9 @@ export class FetchClient {
         } catch (e: any) {
 
             // Get the data and update the cache item for this request
-            cacheItem.setError(e);
-            throw e;
+            const error = ErrorFactory.fromException(e);
+            cacheItem.setError(error);
+            throw error;
         }
     }
 
@@ -135,23 +136,19 @@ export class FetchClient {
             }
 
             // Try to refresh the access token cookie
-            try {
-                await this.oauthClient.synchronizedRefresh();
-            } catch (e2: any) {
-                throw ErrorFactory.fromHttpError(e2, url, 'API');
-            }
+            await this.oauthClient.synchronizedRefresh();
 
             try {
 
                 // Call the API again with the rewritten access token cookie
                 return await this.callApiWithCredential('GET', url, options);
 
-            }  catch (e3: any) {
+            }  catch (e2: any) {
 
                 // Save retry errors
-                const error3 = ErrorFactory.fromHttpError(e3, url, 'API');
-                if (error3.getStatusCode() !== 401) {
-                    throw error3;
+                const error2 = ErrorFactory.fromHttpError(e2, url, 'API');
+                if (error2.getStatusCode() !== 401) {
+                    throw error2;
                 }
 
                 // A permanent API 401 error triggers a new login.
