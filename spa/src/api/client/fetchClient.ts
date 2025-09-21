@@ -105,7 +105,7 @@ export class FetchClient {
 
         } catch (e: any) {
 
-            // Get the data and update the cache item for this request
+            // Get the error and update the cache item for this request
             const error = ErrorFactory.fromException(e);
             cacheItem.setError(error);
             throw error;
