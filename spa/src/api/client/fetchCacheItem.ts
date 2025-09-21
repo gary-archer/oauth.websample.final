@@ -26,6 +26,7 @@ export class FetchCacheItem {
     public setData(value: any): void {
         this.isLoading = false;
         this.data = value;
+        this.error = null;
     }
 
     public getError(): UIError | null {
@@ -35,5 +36,6 @@ export class FetchCacheItem {
     public setError(value: UIError | null): void {
         this.isLoading = false;
         this.error = value;
+        this.data = null;
     }
 }
