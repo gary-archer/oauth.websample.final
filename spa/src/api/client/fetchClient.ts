@@ -172,14 +172,14 @@ export class FetchClient {
         // The other custom headers are written to API logs
         const headers: any = {
             'token-handler-version':        '1',
-            'x-authsamples-api-client':     'FinalSPA',
-            'x-authsamples-session-id':     this.sessionId,
-            'x-authsamples-correlation-id': crypto.randomUUID(),
+            'authsamples-api-client':     'FinalSPA',
+            'authsamples-session-id':     this.sessionId,
+            'authsamples-correlation-id': crypto.randomUUID(),
         };
 
         // A special header can be sent to ask the API to throw a simulated exception
         if (fetchOptions.causeError) {
-            headers['x-authsamples-test-exception'] = 'FinalApi';
+            headers['authsamples-test-exception'] = 'FinalApi';
         }
 
         // Set options and send the secure cookie to the backend for frontend origin
