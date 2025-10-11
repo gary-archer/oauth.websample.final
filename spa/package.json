@@ -18,14 +18,14 @@
   "dependencies": {
     "axios": "^1.12.2",
     "js-event-bus": "^1.1.1",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-modal": "^3.16.3",
-    "react-router-dom": "^7.9.1"
+    "react-router-dom": "^7.9.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
-    "@types/react": "^19.1.2",
+    "@types/react": "^19.2.2",
     "@types/react-dom": "^19.1.2",
     "@types/react-modal": "^3.16.3",
     "eslint": "^9.35.0",
