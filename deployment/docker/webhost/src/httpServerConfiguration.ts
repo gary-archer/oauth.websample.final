@@ -1,5 +1,5 @@
 import {Application} from 'express';
-import fs from 'fs-extra';
+import fs from 'node:fs/promises';
 import https from 'https';
 import {Configuration} from './configuration.js';
 import {ResponseHeaders} from './responseHeaders.js';

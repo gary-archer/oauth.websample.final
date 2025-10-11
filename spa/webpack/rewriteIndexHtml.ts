@@ -65,7 +65,7 @@ export function execute(): void {
  */
 function removeSourcemapReference(filePath: string) {
 
-    const textData = fs.readFileSync(filePath, 'utf8');
+    const textData = fs.readFileSync(filePath, 'utf-8');
     const correctedTextData = textData.split('\n').filter(
         (line) => line.indexOf('sourceMappingURL') === -1).join('\n');
 
