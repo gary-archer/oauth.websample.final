@@ -28,7 +28,7 @@ fi
 #
 # Build files into a docker image
 #
-docker build -t webhost:latest .
+docker build --no-cache -t webhost:latest .
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the Web Host docker container'
   exit 1
