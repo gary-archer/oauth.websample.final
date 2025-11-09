@@ -67,6 +67,7 @@ export class FetchClient {
             familyName: data['family_name'] || '',
         };*/
 
+        console.log(options);
         return {
             givenName: 'Demo',
             familyName: 'User',
