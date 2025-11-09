@@ -71,7 +71,7 @@ export class FetchClient {
         return {
             givenName: 'Demo',
             familyName: 'User',
-        }
+        };
     }
 
     /*
