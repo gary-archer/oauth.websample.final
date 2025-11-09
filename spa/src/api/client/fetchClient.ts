@@ -55,7 +55,7 @@ export class FetchClient {
      */
     public async getOAuthUserInfo(options: FetchOptions) : Promise<OAuthUserInfo | null> {
 
-        const url = `${this.configuration.bffBaseUrl}/oauthuserinfo`;
+        const url = `${this.configuration.bffBaseUrl}/oauth-agent/userinfo`;
         const data = await this.getDataFromApi(url, options);
         if (!data) {
             return null;
