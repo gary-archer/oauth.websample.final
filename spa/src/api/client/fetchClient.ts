@@ -55,6 +55,7 @@ export class FetchClient {
      */
     public async getOAuthUserInfo(options: FetchOptions) : Promise<OAuthUserInfo | null> {
 
+        /*
         const url = `${this.configuration.bffBaseUrl}/oauth-agent/userinfo`;
         const data = await this.getDataFromApi(url, options);
         if (!data) {
@@ -64,7 +65,12 @@ export class FetchClient {
         return {
             givenName: data['given_name'] || '',
             familyName: data['family_name'] || '',
-        };
+        };*/
+
+        return {
+            givenName: 'Demo',
+            familyName: 'User',
+        }
     }
 
     /*
