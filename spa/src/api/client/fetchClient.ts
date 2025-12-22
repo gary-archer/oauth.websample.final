@@ -18,18 +18,15 @@ export class FetchClient {
     private readonly configuration: Configuration;
     private readonly fetchCache: FetchCache;
     private readonly oauthClient: OAuthClient;
-    private readonly sessionId: string;
 
     public constructor(
         configuration: Configuration,
         fetchCache: FetchCache,
-        oauthClient: OAuthClient,
-        sessionId: string) {
+        oauthClient: OAuthClient) {
 
         this.configuration = configuration;
         this.fetchCache = fetchCache;
         this.oauthClient = oauthClient;
-        this.sessionId = sessionId;
     }
 
     /*
@@ -168,18 +165,17 @@ export class FetchClient {
         fetchOptions: FetchOptions,
         dataToSend: any = null): Promise<any> {
 
-        // Add the token-handler-version custom header, which is required to trigger CORS preflights
-        // The other custom headers are written to API logs
+        // Add the token-handler-version custom header, which is required to trigger CORS preflights.
+        // Also add a correlation ID for logging.
         const headers: any = {
-            'token-handler-version':        '1',
-            'authsamples-api-client':     'FinalSPA',
-            'authsamples-session-id':     this.sessionId,
-            'authsamples-correlation-id': crypto.randomUUID(),
+            'token-handler-version': '1',
+            'correlation-id': crypto.randomUUID(),
         };
 
-        // A special header can be sent to ask the API to throw a simulated exception
+        // A special header can be sent to choose a backend API that simulates a 500 error.
+        // That behavior enables rehearsal of the end-to-end technical support process to resolve such errors.
         if (fetchOptions.causeError) {
-            headers['authsamples-test-exception'] = 'FinalApi';
+            headers['api-exception-simulation'] = 'FinalApi';
         }
 
         // Set options and send the secure cookie to the backend for frontend origin

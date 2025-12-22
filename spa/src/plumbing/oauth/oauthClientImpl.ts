@@ -81,8 +81,9 @@ export class OAuthClientImpl implements OAuthClient {
                         throw ErrorFactory.fromInvalidLoginResponse();
                     }
 
-                    // Store a flag to indicate the logged in state
+                    // Store post login details
                     HtmlStorageHelper.setIsLoggedIn(true);
+                    HtmlStorageHelper.setDelegationId(response.claims[this.configuration.delegationIdClaimName] || '');
 
                     // Once login is complete, return the SPA to the pre-login location
                     return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
@@ -124,10 +125,11 @@ export class OAuthClientImpl implements OAuthClient {
     }
 
     /*
-     * Allow the login state to be cleared when required
+     * Clear the login state when the session ends
      */
     public clearLoginState(): void {
         HtmlStorageHelper.clearIsLoggedIn();
+        HtmlStorageHelper.clearDelegationId();
     }
 
     /*

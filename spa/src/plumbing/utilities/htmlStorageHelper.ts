@@ -5,7 +5,7 @@ export class HtmlStorageHelper {
 
     private static prefix = 'finalspa.';
     private static preLoginLocation = 'preLoginLocation';
-    private static apiSessionKeyName = 'apisessionid';
+    private static delegationIdKeyName = 'delegationId';
     private static isLoggedIn = 'isLoggedIn';
     private static loggedOutEventKeyName = 'loggedoutEvent';
 
@@ -34,12 +34,30 @@ export class HtmlStorageHelper {
     }
 
     /*
-     * Record a session id to be sent to the API for requests from this browser tab
+     * The delegation ID is a session identifier for all API requests in the user's authentication session
      */
-    public static setApiSessionId(value: string): void {
+    public static setDelegationId(value: string): void {
 
-        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.apiSessionKeyName}`;
-        sessionStorage.setItem(key, value);
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.delegationIdKeyName}`;
+        localStorage.setItem(key, value);
+    }
+
+    /*
+     * Get the delegation id for display
+     */
+    public static getDelegationId(): string {
+
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.delegationIdKeyName}`;
+        return localStorage.getItem(key) || '';
+    }
+
+    /*
+     * Clear the delegation ID when the user's session ends
+     */
+    public static clearDelegationId(): void {
+
+        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.delegationIdKeyName}`;
+        localStorage.removeItem(key);
     }
 
     /*
@@ -67,15 +85,6 @@ export class HtmlStorageHelper {
 
         const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.isLoggedIn}`;
         localStorage.removeItem(key);
-    }
-
-    /*
-     * Get the session id for API requests from this browser tab
-     */
-    public static getApiSessionId(): string {
-
-        const key = `${HtmlStorageHelper.prefix}${HtmlStorageHelper.apiSessionKeyName}`;
-        return sessionStorage.getItem(key) || '';
     }
 
     /*

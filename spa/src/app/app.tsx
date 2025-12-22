@@ -4,7 +4,6 @@ import {Route, Routes, useNavigate} from 'react-router-dom';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
-import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainer} from '../views/companies/companiesContainer';
 import {CompaniesContainerProps} from '../views/companies/companiesContainerProps';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
@@ -242,7 +241,7 @@ export function App(props: AppProps): JSX.Element {
     function getSessionProps(): SessionViewProps {
 
         return {
-            sessionId: SessionManager.get(),
+            sessionId: HtmlStorageHelper.getDelegationId(),
             eventBus: model.getEventBus(),
         };
     }

@@ -12,7 +12,6 @@ import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ReloadDataEvent} from '../plumbing/events/reloadDataEvent';
 import {OAuthClient} from '../plumbing/oauth/oauthClient';
 import {OAuthClientImpl} from '../plumbing/oauth/oauthClientImpl';
-import {SessionManager} from '../plumbing/utilities/sessionManager';
 import {CompaniesContainerViewModel} from '../views/companies/companiesContainerViewModel';
 import {TransactionsContainerViewModel} from '../views/transactions/transactionsContainerViewModel';
 import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
@@ -105,9 +104,6 @@ export class AppViewModel {
             const loader = new ConfigurationLoader();
             this.configuration = await loader.get();
 
-            // Create an API session ID
-            const sessionId = SessionManager.get();
-
             // Create an object to manage OAuth related operations
             this.oauthClient = new OAuthClientImpl(this.configuration);
 
@@ -115,8 +111,7 @@ export class AppViewModel {
             this.fetchClient = new FetchClient(
                 this.configuration,
                 this.fetchCache,
-                this.oauthClient,
-                sessionId);
+                this.oauthClient);
 
             // Create an object used to deal with API responses across multiple views
             this.viewModelCoordinator = new ViewModelCoordinator(this.eventBus, this.fetchCache);

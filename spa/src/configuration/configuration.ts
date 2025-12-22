@@ -3,4 +3,5 @@
  */
 export interface Configuration {
     bffBaseUrl: string;
+    delegationIdClaimName: string;
 }

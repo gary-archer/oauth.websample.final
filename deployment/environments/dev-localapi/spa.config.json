@@ -1,3 +1,4 @@
 {
-    "bffBaseUrl": "https://bfflocal.authsamples-dev.com:444"
+    "bffBaseUrl": "https://bfflocal.authsamples-dev.com:444",
+    "delegationIdClaimName": "origin_jti"
 }
