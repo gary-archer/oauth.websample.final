@@ -45,3 +45,14 @@ if [ "$LOCALAPI" == 'true' ]; then
 else 
   cp deployment/environments/dev/spa.config.json dist/spa/spa.config.json
 fi
+
+#
+# Start listening in watch mode
+#
+cd spa
+NODE_OPTIONS='--import tsx' npx webpack serve --config webpack/webpack.config.dev.ts
+if [ $? -ne 0 ]; then
+  echo 'Problem encountered serving SPA static content'
+  read -n 1
+  exit 1
+fi

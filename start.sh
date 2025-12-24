@@ -37,6 +37,19 @@ fi
 #
 if [ "$LOCALAPI" == 'true' ]; then
 
+  rm -rf localtokenhandler 2>/dev/null
+  git clone https://github.com/gary-archer/oauth.tokenhandler.cloudnative localtokenhandler
+  if [ $? -ne 0 ]; then
+    echo ' Problem encountered downloading local token handler resources'
+    exit 1
+  fi
+
+  echo 'Building local token handler components ...'
+  ./localtokenhandler/docker/build.sh
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
   ./localtokenhandler/docker/deploy.sh
   if [ $? -ne 0 ]; then
     exit 1
@@ -50,16 +63,16 @@ fi
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
 
-  open -a Terminal ./spa/serve.sh
+  open -a Terminal ./spa/start.sh
 
 elif [ "$PLATFORM" == 'WINDOWS' ]; then
   
   GIT_BASH="C:\Program Files\Git\git-bash.exe"
-  "$GIT_BASH" -c ./spa/serve.sh &
+  "$GIT_BASH" -c ./spa/start.sh &
 
 elif [ "$PLATFORM" == 'LINUX' ]; then
 
-  gnome-terminal -- ./spa/serve.sh
+  gnome-terminal -- ./spa/start.sh
 fi
 
 #
@@ -87,5 +100,4 @@ elif [ "$PLATFORM" == 'WINDOWS' ]; then
 elif [ "$PLATFORM" == 'LINUX' ]; then
 
   xdg-open "$WEB_ORIGIN/"
-
 fi

@@ -68,7 +68,7 @@ Finally, configure [Browser SSL Trust](https://github.com/gary-archer/oauth.blog
 Ensure that Node.js 24+ is installed, then build and run the SPA in the webpack development server:
 
 ```bash
-./build.sh && ./run.sh
+./start.sh
 ```
 
 The browser then opens at `https://www.authsamples-dev.com/` and you can sign in with the test account.\
