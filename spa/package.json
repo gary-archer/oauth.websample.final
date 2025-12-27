@@ -31,13 +31,9 @@
     "eslint": "^9.39.2",
     "eslint-plugin-react": "^7.37.5",
     "purgecss": "^7.0.2",
-    "ts-loader": "^9.5.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.49.0",
-    "webpack": "^5.103.0",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
-    "webpack-merge": "^6.0.1"
+    "vite": "^7.3.0"
   }
 }
