@@ -12,7 +12,7 @@
   },
   "scripts": {
     "lint": "npx eslint .",
-    "start": "./build.sh && ./serve.sh",
+    "start": "./start.sh",
     "buildRelease": "./buildRelease.sh"
   },
   "dependencies": {

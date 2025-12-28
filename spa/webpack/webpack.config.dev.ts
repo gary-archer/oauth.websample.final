@@ -82,7 +82,7 @@ const devServer: webpackDevServer.Configuration = {
         // Redirect for paths outside the root, which React Router cannot serve when it uses a base path
         // - https://webpack.js.org/configuration/dev-server/#devserversetupmiddlewares
         middlewares.unshift({
-            name: 'first-in-array',
+            name: 'not-found',
             path: '/',
             middleware: (request: Request, response: Response, next: NextFunction) => {
 

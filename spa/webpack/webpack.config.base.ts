@@ -35,8 +35,11 @@ const config: webpack.Configuration = {
         // Output our Javascript bundles to the ../dist/spa folder
         path: path.resolve(dirname, '../dist/spa'),
         filename: '[name].bundle.js',
+        module: true,
     },
-
+    experiments: {
+        outputModule: true,
+    },
     optimization: {
 
         // Build third party code into two bundles, for React and non-React code
