@@ -47,7 +47,9 @@ else
 fi
 
 #
-# Start listening in watch mode
+# Start the SPA
+# On Linux ensure that you have first granted Node.js permissions to listen on port 443:
+# - sudo setcap 'cap_net_bind_service=+ep' $(which node)
 #
 cd spa
 NODE_OPTIONS='--import tsx' npx webpack serve --config webpack/webpack.config.dev.ts

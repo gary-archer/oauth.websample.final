@@ -50,6 +50,7 @@ const devServer: webpackDevServer.Configuration = {
     // Serve the index.html file for this subfolder for not found routes like /spa/xxx
     historyApiFallback: {
         index: '/spa/',
+        disableDotRule: true,
     },
     hot: true,
     allowedHosts: [
@@ -112,9 +113,12 @@ const devConfig: webpack.Configuration = {
     mode: 'development',
     devServer,
 
-    // Enable stepping through the SPA's TypeScript code in the Visual Studio Code debugger
     output: Object.assign({}, baseConfig.output, {
+
+        // Enable stepping through the SPA's TypeScript code in the Visual Studio Code debugger
         devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]',
+
+        // Setting the public path here can prevents errors in development builds that use a CSP
         publicPath: '/spa/',
     }),
 
