@@ -34,7 +34,7 @@ rm -rf dist 2>/dev/null
 mkdir dist
 mkdir dist/spa
 cp favicon.ico dist/
-cp spa/index.html spa/*.css dist/spa/
+cp spa/index.html spa/css/* dist/spa/
 
 #
 # Ensure that the SPA uses the correct backend for frontend URL

@@ -33,8 +33,8 @@ cd ..
 rm -rf dist 2>/dev/null
 mkdir dist
 mkdir dist/spa
-cp favicon.ico                dist/
-cp spa/index.html spa/app.css dist/spa/
+cp favicon.ico              dist/
+cp spa/index.html spa/css/* dist/spa/
 cd spa
 
 #

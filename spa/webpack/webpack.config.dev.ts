@@ -40,6 +40,12 @@ const devServer: webpackDevServer.Configuration = {
         directory: path.join(dirname, '../dist'),
     },
     port: 443,
+    open: 'https://www.authsamples-dev.com/spa',
+
+    // Output bundles to disk to enable viewing of the final ECMAScript code in bundle files
+    devMiddleware: {
+        writeToDisk: true,
+    },
 
     // Serve the index.html file for this subfolder for not found routes like /spa/xxx
     historyApiFallback: {
