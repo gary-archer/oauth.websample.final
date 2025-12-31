@@ -117,7 +117,7 @@ const devConfig: webpack.Configuration = {
         // Enable stepping through the SPA's TypeScript code in the Visual Studio Code debugger
         devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]',
 
-        // Setting the public path here can prevents errors in development builds that use a CSP
+        // Setting the public path here can prevent errors in development builds that use a CSP
         publicPath: '/spa/',
     }),
 
