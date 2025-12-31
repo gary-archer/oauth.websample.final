@@ -40,9 +40,8 @@ export class ResponseHeaders {
         response.setHeader('x-content-type-options', 'nosniff');
         response.setHeader('referrer-policy', 'same-origin');
 
-        // Also set the cache control header, for best browser performance
+        // Enable cache response headers to use browser caching and get the best performance
         response.setHeader('cache-control', this.getCacheControlResponseHeader(request));
-
         next();
     }
 
