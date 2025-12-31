@@ -13,10 +13,12 @@
     "start": "./buildRelease.sh"
   },
   "dependencies": {
+    "compression": "^1.8.1",
     "express": "^5.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@types/compression": "^1.8.1",
     "@types/express": "^5.0.6",
     "@types/node": "^24.10.3",
     "eslint": "^9.39.2",
