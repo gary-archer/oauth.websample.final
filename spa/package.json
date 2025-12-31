@@ -2,8 +2,6 @@
   "name": "finalspa",
   "version": "3.0.0",
   "description": "An SPA that sends tokens to OAuth 2.0 secured APIs using HTTP-only SameSite cookies",
-  "main": "index.tsx",
-  "keywords": [],
   "author": "Gary Archer",
   "license": "MIT",
   "type": "module",
