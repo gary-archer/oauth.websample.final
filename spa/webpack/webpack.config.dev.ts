@@ -51,7 +51,7 @@ const devServer: webpackDevServer.Configuration = {
     historyApiFallback: {
         index: '/spa/',
     },
-    hot: true,
+    hot: false,
     allowedHosts: [
         'www.authsamples-dev.com',
     ],
