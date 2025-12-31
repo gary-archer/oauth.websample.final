@@ -27,17 +27,15 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Copy non JavaScript files to the dist folder
+# Prepare the dist folder
 #
 cd ..
 rm -rf dist 2>/dev/null
 mkdir dist
 mkdir dist/spa
-cp favicon.ico dist/
-cp spa/index.html spa/css/* dist/spa/
 
 #
-# Ensure that the SPA uses the correct backend for frontend URL
+# Use the correct configuration file
 #
 if [ "$LOCALAPI" == 'true' ]; then
   cp ./deployment/environments/dev-localapi/spa.config.json dist/spa/spa.config.json
@@ -47,7 +45,7 @@ else
 fi
 
 #
-# Start the SPA
+# Build and run the SPA
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:
 # - sudo setcap 'cap_net_bind_service=+ep' $(which node)
 #

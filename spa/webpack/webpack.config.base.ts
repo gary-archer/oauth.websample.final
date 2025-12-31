@@ -1,3 +1,4 @@
+import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
 import webpack, {Module, NormalModule} from 'webpack';
 
@@ -5,7 +6,7 @@ const dirname = process.cwd();
 const config: webpack.Configuration = {
 
     // Set the working folder and build bundles for the browser
-    context: path.resolve(dirname, './src'),
+    context: path.resolve(dirname, '.'),
     target: ['web'],
 
     // Always output a source map, to support stack trace lookups
@@ -14,7 +15,7 @@ const config: webpack.Configuration = {
     entry: {
 
         // Specify the application entry point
-        app: ['./index.tsx'],
+        app: ['./src/index.tsx'],
     },
     module: {
         rules: [{
@@ -80,7 +81,27 @@ const config: webpack.Configuration = {
                 }
             }
         }
-    }
+    },
+    plugins: [
+
+        // Copy static files to the dist folder
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: 'index.html',
+                    to: path.resolve('../dist/spa'),
+                },
+                {
+                    from: 'css',
+                    to: path.resolve('../dist/spa'),
+                },
+                {
+                    from: '../favicon.ico',
+                    to: path.resolve('../dist'),
+                },
+            ]
+        }),
+    ]
 };
 
 export default config;

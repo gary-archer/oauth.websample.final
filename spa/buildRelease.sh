@@ -27,19 +27,17 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Copy non JavaScript files to the dist folder without a configuration file
+# Prepare the dist folder
 #
 cd ..
 rm -rf dist 2>/dev/null
 mkdir dist
 mkdir dist/spa
-cp favicon.ico              dist/
-cp spa/index.html spa/css/* dist/spa/
-cd spa
 
 #
 # Produce minified JavaScript bundles
 #
+cd spa
 NODE_OPTIONS='--import tsx' npx webpack --config webpack/webpack.config.prod.ts
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
