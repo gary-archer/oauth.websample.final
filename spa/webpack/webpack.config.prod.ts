@@ -7,9 +7,9 @@ const prodConfig: webpack.Configuration = {
     // Let webpack know this is a production build
     mode: 'production',
 
-    // Turn off performance warnings that I do not want to deal with for the demo SPA
+    // Increase the default limit to avoid warnings
     performance: {
-        hints: false,
+        maxEntrypointSize: 400000,
     },
 
     plugins:[
