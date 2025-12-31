@@ -57,6 +57,19 @@ if [ "$LOCALAPI" == 'true' ]; then
 fi
 
 #
+# Prepare the output folder and copy in the correct configuration file
+#
+rm -rf dist 2>/dev/null
+mkdir dist
+mkdir dist/spa
+if [ "$LOCALAPI" == 'true' ]; then
+  cp ./deployment/environments/dev-localapi/spa.config.json dist/spa/spa.config.json
+
+else 
+  cp ./deployment/environments/dev/spa.config.json dist/spa/spa.config.json
+fi
+
+#
 # Run webpack dev server to serve static content
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:
 # - sudo setcap 'cap_net_bind_service=+ep' $(which node)

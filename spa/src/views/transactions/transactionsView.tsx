@@ -47,7 +47,7 @@ export function TransactionsView(props: TransactionsViewProps): JSX.Element {
     }
 
     /*
-     * Render the data on a wide screen
+     * Render the collection of data
      */
     return props.data &&
         (

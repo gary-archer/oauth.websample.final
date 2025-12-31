@@ -22,7 +22,7 @@ import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
 
 /*
- * The entry point view
+ * The application shell
  */
 export function App(props: AppProps): JSX.Element {
 

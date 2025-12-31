@@ -80,12 +80,3 @@
         font-size: 0.85em;
     }
 }
-
-/* Mobile views also use a smaller heading size */
-@media all and (max-width: 768px)
-{
-    h2
-    {
-        font-size: 1.5em;
-    }
-}

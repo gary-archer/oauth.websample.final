@@ -27,6 +27,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/react-modal": "^3.16.3",
+    "copy-webpack-plugin": "^13.0.1",
     "eslint": "^9.39.2",
     "eslint-plugin-react": "^7.37.5",
     "purgecss": "^7.0.2",
