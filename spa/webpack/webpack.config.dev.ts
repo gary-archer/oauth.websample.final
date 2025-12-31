@@ -50,7 +50,6 @@ const devServer: webpackDevServer.Configuration = {
     // Serve the index.html file for this subfolder for not found routes like /spa/xxx
     historyApiFallback: {
         index: '/spa/',
-        disableDotRule: true,
     },
     hot: true,
     allowedHosts: [
