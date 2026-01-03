@@ -1,6 +1,6 @@
 import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
-import webpack, {Module, NormalModule} from 'webpack';
+import webpack from 'webpack';
 
 const dirname = process.cwd();
 const config: webpack.Configuration = {
@@ -15,7 +15,7 @@ const config: webpack.Configuration = {
     entry: {
 
         // Specify the application entry point
-        app: ['./src/index.tsx'],
+        app: './src/index.tsx',
     },
     module: {
         rules: [{
@@ -36,6 +36,7 @@ const config: webpack.Configuration = {
         // Output our Javascript bundles to the ../dist/spa folder
         path: path.resolve(dirname, '../dist/spa'),
         filename: '[name].bundle.js',
+        chunkFilename: '[name].bundle.js',
         module: true,
     },
     experiments: {
@@ -43,44 +44,38 @@ const config: webpack.Configuration = {
     },
     optimization: {
 
-        // Build third party code into two bundles, for React and non-React code
-        // Using a function works for both the webpack dev server and release builds
         splitChunks: {
             cacheGroups: {
                 react: {
                     name: 'react',
                     chunks: 'all',
-                    test: (module: Module) => {
+                    enforce: true,
+                    test: (module: any) => {
 
-                        if (!(module instanceof NormalModule)) {
-                            return false;
-                        }
+                        const includeChunk = (resource: string) => {
+                            return resource.indexOf('node_modules') !== -1 &&
+                                   resource.indexOf('react') !== -1;
+                        };
 
-                        if (module.resource.indexOf('node_modules') !== -1 && module.resource.indexOf('react') !== -1) {
-                            return true;
-                        }
-
-                        return false;
+                        return module.resource && includeChunk(module.resource);
                     },
                 },
                 vendor: {
                     name: 'vendor',
                     chunks: 'all',
-                    test: (module: Module) => {
+                    enforce: true,
+                    test: (module: any) => {
 
-                        if (!(module instanceof NormalModule)) {
-                            return false;
-                        }
+                        const includeChunk = (resource: string) => {
+                            return resource.indexOf('node_modules') !== -1 &&
+                                   resource.indexOf('react') === -1;
+                        };
 
-                        if (module.resource.indexOf('node_modules') !== -1 && module.resource.indexOf('react') === -1) {
-                            return true;
-                        }
-
-                        return false;
+                        return module.resource && includeChunk(module.resource);
                     },
                 }
             }
-        }
+        },
     },
     plugins: [
 
