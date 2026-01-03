@@ -1,4 +1,4 @@
-import React, {JSX, useState} from 'react';
+import {JSX, MouseEvent, useState} from 'react';
 import ReactModal from 'react-modal';
 import {ErrorDetailsView} from './errorDetailsView';
 import {ErrorSummaryViewProps} from './errorSummaryViewProps';
@@ -78,7 +78,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
     /*
      * Invoke error details when the link is clicked
      */
-    function handleSummaryClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    function handleSummaryClick(event: MouseEvent<HTMLAnchorElement>) {
 
         event.preventDefault();
         setShowDetails(true);

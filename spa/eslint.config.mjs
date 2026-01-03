@@ -15,18 +15,19 @@ export default tseslint.config({
         react,
     },
     rules: {
-        '@typescript-eslint/explicit-module-boundary-types': ['error', {
-            'allowArgumentsExplicitlyTypedAsAny': true,
-        }],
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-extraneous-class': 'off',
         'brace-style': ['error', '1tbs'],
         'max-len': ['error', { 'code': 120 }],
         'no-multiple-empty-lines': ['error', {'max': 1}],
         'no-trailing-spaces': 'error',
         'quotes': ['error', 'single', { 'avoidEscape': true }],
         'semi': 'error',
-        ...react.configs.recommended.rules,
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-extraneous-class': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': ['error', {
+            'allowArgumentsExplicitlyTypedAsAny': true,
+        }],
+        ... react.configs.recommended.rules,
+        'react/react-in-jsx-scope': 'off',
     },
     settings: {
         react: {

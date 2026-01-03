@@ -1,5 +1,5 @@
-import React, {StrictMode} from 'react';
-import ReactDOM from 'react-dom/client';
+import {StrictMode} from 'react';
+import {createRoot} from 'react-dom/client';
 import {BrowserRouter} from 'react-router-dom';
 import {App} from './app/app';
 import {AppViewModel} from './app/appViewModel';
@@ -12,7 +12,7 @@ const props = {
 };
 
 // Create the React router and instruct it to use a base path
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render (
     <StrictMode>
         <ErrorBoundary>

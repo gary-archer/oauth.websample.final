@@ -3,7 +3,7 @@
     "strict": true,
     "target": "ES2017",
     "lib": ["ES2024", "DOM"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "module": "ES2022",
     "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,

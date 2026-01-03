@@ -1,4 +1,4 @@
-import React, {JSX, useEffect, useState} from 'react';
+import {JSX, useEffect, useState} from 'react';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ViewModelFetchEvent} from '../../plumbing/events/viewModelFetchEvent';
 import {HeaderButtonsViewProps} from './headerButtonsViewProps';

@@ -1,4 +1,4 @@
-import React, {JSX, useEffect} from 'react';
+import {JSX, useEffect} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';

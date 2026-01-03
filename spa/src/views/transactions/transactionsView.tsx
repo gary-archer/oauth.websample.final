@@ -1,4 +1,4 @@
-import React, {JSX} from 'react';
+import {JSX} from 'react';
 import {Transaction} from '../../api/entities/transaction';
 import {TransactionsViewProps} from './transactionsViewProps';
 

@@ -1,4 +1,4 @@
-import React, {JSX} from 'react';
+import {JSX} from 'react';
 import {ErrorLine} from '../../plumbing/errors/errorLine';
 import {ErrorFormatter} from '../../plumbing/errors/errorFormatter';
 import {ErrorDetailsViewProps} from './errorDetailsViewProps';
