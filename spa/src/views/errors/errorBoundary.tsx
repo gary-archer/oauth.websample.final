@@ -1,4 +1,4 @@
-import {Component, ErrorInfo} from 'react';
+import {Component, ErrorInfo, ReactNode} from 'react';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {ErrorBoundaryState} from './errorBoundaryState';
 import {ErrorDetailsView} from './errorDetailsView';
@@ -29,7 +29,7 @@ export class ErrorBoundary extends Component<any, ErrorBoundaryState> {
     /*
      * Render children, or an error if a component has failed to render
      */
-    public render(): React.ReactNode {
+    public render(): ReactNode {
 
         // Render children by default
         if (!this.state.error) {
