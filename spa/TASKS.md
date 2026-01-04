@@ -5,8 +5,10 @@ Test Electron and Serverless next.
 
 ## Development Server Bug
 
-This occurs in the browser console for the development server, but works OK in Express.\
-Seems to be a React Tools and browser / Node HTTPS server incompatibility issue.
+My big initial problem is the lack of a good development server:
+
+- Problem occurs in the browser console in the development server, but works OK in Express.
+- The dev server also feels quite limited generally.
 
 - Uncaught TypeError: Cannot set properties of undefined (setting 'unstable_now')
   at scheduler.development.js:182:5
