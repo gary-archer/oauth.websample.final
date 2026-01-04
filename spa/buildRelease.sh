@@ -32,18 +32,20 @@ fi
 cd ..
 rm -rf dist 2>/dev/null
 mkdir dist
-mkdir dist/spa
 
 #
 # Produce minified JavaScript bundles
 #
 cd spa
-NODE_OPTIONS='--import tsx' npx webpack --config webpack/webpack.config.prod.ts
+npx rollup --config ./build/rollup.config.ts --configPlugin @rollup/plugin-typescript
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   read -n 1
   exit 1
 fi
+
+echo 'quit early'
+exit 1
 
 #
 # Produce minified CSS and use a safelist to prevent required elements from being removed
@@ -59,7 +61,7 @@ fi
 #
 # Write the final index.html with integrity details and cache busting timestamps
 #
-npx tsx ./webpack/rewriteIndexHtml.ts
+npx tsx ./build/rewriteIndexHtml.ts
 if [ $? -ne 0 ]; then
   echo 'Problem encountered rewriting the SPA index.html file'
   read -n 1

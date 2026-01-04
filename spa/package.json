@@ -23,21 +23,24 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-replace": "^6.0.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@types/node": "^24.10.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/react-modal": "^3.16.3",
-    "copy-webpack-plugin": "^13.0.1",
     "eslint": "^9.39.2",
     "eslint-plugin-react": "^7.37.5",
     "purgecss": "^7.0.2",
-    "ts-loader": "^9.5.3",
+    "rollup": "^4.54.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-serve": "^3.0.0",
+    "tslib": "^2.8.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.49.0",
-    "webpack": "^5.103.0",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
-    "webpack-merge": "^6.0.1"
+    "typescript-eslint": "^8.49.0"
   }
 }
