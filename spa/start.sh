@@ -27,31 +27,15 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Prepare the dist folder
-#
-cd ..
-rm -rf dist 2>/dev/null
-mkdir dist
-
-#
-# Use the correct configuration file
-#
-ls -l
-if [ "$LOCALAPI" == 'true' ]; then
-  cp ./deployment/environments/dev-localapi/spa.config.json dist/spa/spa.config.json
-else 
-  cp ./deployment/environments/dev/spa.config.json dist/spa/spa.config.json
-fi
-
-#
-# Build the SPA, serve its static content and open the browser
+# Run a debug build of the SPA, serve its static content and open the browser
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:
 # - sudo setcap 'cap_net_bind_service=+ep' $(which node)
 #
-cd spa
-npx rollup --config ./build/rollup.config.ts --configPlugin @rollup/plugin-typescript --watch
+npm start
 if [ $? -ne 0 ]; then
   echo 'Problem encountered serving SPA static content'
   read -n 1
   exit 1
 fi
+
+read -n 1

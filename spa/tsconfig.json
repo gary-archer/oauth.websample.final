@@ -5,9 +5,8 @@
     "lib": ["ES2024", "DOM"],
     "jsx": "react-jsx",
     "module": "ES2022",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
     "outDir": "../dist/spa"
   },
   "include": [

@@ -26,26 +26,14 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Run the release build
 #
-# Prepare the dist folder
-#
-cd ..
-rm -rf dist 2>/dev/null
-mkdir dist
-
-#
-# Produce minified JavaScript bundles
-#
-cd spa
-npx rollup --config ./build/rollup.config.ts --configPlugin @rollup/plugin-typescript
+npm run build
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   read -n 1
   exit 1
 fi
-
-echo 'quit early'
-exit 1
 
 #
 # Produce minified CSS and use a safelist to prevent required elements from being removed

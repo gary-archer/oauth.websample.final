@@ -5,11 +5,14 @@ import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import fs from 'fs';
 import {defineConfig, RollupOptions} from 'rollup';
-import livereload from 'rollup-plugin-livereload';
+import copy from 'rollup-plugin-copy';
+// import livereload from 'rollup-plugin-livereload';
 import serve from 'rollup-plugin-serve';
+import {getConfigurationFile} from './utils';
 
-const isDevelopment = process.env.ROLLUP_WATCH === 'true';
+const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
 const options: RollupOptions = {
+
     input: './src/index.tsx',
     output: {
 
@@ -59,15 +62,31 @@ const options: RollupOptions = {
         }),
 
         // Handle any commonjs modules in mode_modules folder
-        commonjs(),
+        commonjs({
+            include: 'node_modules/**',
+        }),
 
         // Define 'environment variables' that will be present in the browser
         replace({
-            'process.env.IS_DEBUG': isDevelopment,
+            'process.env.NODE_ENV': JSON.stringify(env),
+            'process.env.IS_DEBUG': env === 'development',
             preventAssignment: true,
         }),
 
-        isDevelopment ? [
+        // Copy other static files
+        copy({
+            targets: [
+                { src: '../favicon.ico', dest: '../dist' },
+                { src: ['index.html', 'css/*'], dest: '../dist/spa' },
+                { src: getConfigurationFile(), dest: '../dist/spa' },
+            ],
+        }),
+
+        // Minify production bundles
+        env !== 'development' && terser(),
+
+        // Run a development static content server
+        env === 'development' &&
 
             // Use a development static content server
             serve({
@@ -82,13 +101,7 @@ const options: RollupOptions = {
                 openPage: '/spa',
                 contentBase: '../dist',
             }),
-            livereload('../dist'),
-
-        ] : [
-
-            // Minimize bundles for production
-            terser(),
-        ]
+            // livereload('../dist/spa'),
     ],
 };
 
