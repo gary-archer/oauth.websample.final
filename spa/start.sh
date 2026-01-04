@@ -27,6 +27,12 @@ if [ $? -ne 0 ]; then
 fi
 
 #
+# Prepare the output folder
+#
+rm -rf ../dist 2>/dev/null
+mkdir ../dist
+
+#
 # Run a debug build of the SPA, serve its static content and open the browser
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:
 # - sudo setcap 'cap_net_bind_service=+ep' $(which node)
@@ -38,4 +44,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+#
+# Show a message if the static content server is already running
+#
 read -n 1

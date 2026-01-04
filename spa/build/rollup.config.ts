@@ -61,19 +61,20 @@ const options: RollupOptions = {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         }),
 
-        // Handle any commonjs modules in mode_modules folder
+        // Handle any commonjs libraries in the mode_modules folder
         commonjs({
             include: 'node_modules/**',
         }),
 
         // Define 'environment variables' that will be present in the browser
+        // React expects NODE_ENV to be available and I use IS_DEBUG for my own purposes
         replace({
             'process.env.NODE_ENV': JSON.stringify(env),
             'process.env.IS_DEBUG': env === 'development',
             preventAssignment: true,
         }),
 
-        // Copy other static files
+        // Copy other static files to the output folder
         copy({
             targets: [
                 { src: '../favicon.ico', dest: '../dist' },
@@ -83,12 +84,11 @@ const options: RollupOptions = {
         }),
 
         // Minify production bundles
-        env !== 'development' && terser(),
+        env === 'production' && terser(),
 
         // Run a development static content server
         env === 'development' &&
 
-            // Use a development static content server
             serve({
                 port: 443,
                 host: 'www.authsamples-dev.com',

@@ -26,6 +26,12 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+#
+# Prepare the output folder
+#
+rm -rf ../dist 2>/dev/nuyll
+mkdir ../dist
+
 # Run the release build
 #
 npm run build
