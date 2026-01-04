@@ -50,9 +50,12 @@ const options: RollupOptions = {
     },
     plugins: [
 
-        // Use tslib and the typescript plugin with the settings from the configuration file
-        typescript({
-            tsconfig: './tsconfig.json',
+        // Define 'environment variables' that will be present in the browser
+        // React expects NODE_ENV to be available and I use IS_DEBUG for my own purposes
+        replace({
+            'process.env.NODE_ENV': JSON.stringify(env),
+            'process.env.IS_DEBUG': env === 'development',
+            preventAssignment: true,
         }),
 
         // Use browser resolution for node_modules
@@ -66,12 +69,9 @@ const options: RollupOptions = {
             include: 'node_modules/**',
         }),
 
-        // Define 'environment variables' that will be present in the browser
-        // React expects NODE_ENV to be available and I use IS_DEBUG for my own purposes
-        replace({
-            'process.env.NODE_ENV': JSON.stringify(env),
-            'process.env.IS_DEBUG': env === 'development',
-            preventAssignment: true,
+        // Use tslib and the typescript plugin with the settings from the configuration file
+        typescript({
+            tsconfig: './tsconfig.json',
         }),
 
         // Copy other static files to the output folder
@@ -100,6 +100,9 @@ const options: RollupOptions = {
                 open: true,
                 openPage: '/spa',
                 contentBase: '../dist',
+                mimeTypes: {
+                    'application/javascript': ['js_commonjs-proxy'],
+                }
             }),
             // livereload('../dist/spa'),
     ],
