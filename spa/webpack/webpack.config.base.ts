@@ -45,6 +45,7 @@ const config: webpack.Configuration = {
     },
     optimization: {
 
+        // Demonstrates using webpack to split code from the app and / or node_modules into chunks
         splitChunks: {
             cacheGroups: {
                 react: {
