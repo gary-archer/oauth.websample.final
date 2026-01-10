@@ -30,7 +30,7 @@
     "copy-webpack-plugin": "^13.0.1",
     "eslint": "^9.39.2",
     "eslint-plugin-react": "^7.37.5",
-    "purgecss": "^7.0.2",
+    "purgecss-webpack-plugin": "^7.0.2",
     "ts-loader": "^9.5.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",

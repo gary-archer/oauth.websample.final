@@ -1,7 +1,9 @@
+import CopyPlugin from 'copy-webpack-plugin';
+import path from 'path';
 import webpack from 'webpack';
 import {merge} from 'webpack-merge';
 import baseConfig from './webpack.config.base.js';
-import {getDevelopmentServer} from './developmentServer.js';
+import {configureDevelopmentServer} from './configureDevelopmentServer.js';
 
 /*
  * Return the development configuration
@@ -10,7 +12,7 @@ const devConfig: webpack.Configuration = {
 
     // Let webpack know this is a development build
     mode: 'development',
-    devServer: getDevelopmentServer(),
+    devServer: configureDevelopmentServer(),
 
     output: {
 
@@ -25,12 +27,31 @@ const devConfig: webpack.Configuration = {
         publicPath: '/spa/',
     },
 
-    // Pass a variable through to the frontend to tell it to display stack traces
-    plugins:[
+    plugins: [
+
+        // Copy static files to the dist folder
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: 'index.html',
+                    to: path.resolve('../dist/spa'),
+                },
+                {
+                    from: 'css',
+                    to: path.resolve('../dist/spa'),
+                },
+                {
+                    from: '../favicon.ico',
+                    to: path.resolve('../dist'),
+                },
+            ]
+        }),
+
+        // Pass a variable through to the frontend to tell it to display stack traces
         new webpack.DefinePlugin({
             IS_DEBUG: 'true',
         })
-    ]
+    ],
 };
 
 export default merge(baseConfig, devConfig);

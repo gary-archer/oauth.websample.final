@@ -5,7 +5,7 @@ import {Configuration, Headers, Middleware, Request, Response, NextFunction} fro
 /*
  * Return the webpack development server details
  */
-export function getDevelopmentServer(): Configuration {
+export function configureDevelopmentServer(): Configuration {
 
     const dirname = process.cwd();
     return {

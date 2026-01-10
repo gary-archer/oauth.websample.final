@@ -1,4 +1,3 @@
-import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
 
@@ -78,26 +77,6 @@ const config: webpack.Configuration = {
             }
         },
     },
-    plugins: [
-
-        // Copy static files to the dist folder
-        new CopyPlugin({
-            patterns: [
-                {
-                    from: 'index.html',
-                    to: path.resolve('../dist/spa'),
-                },
-                {
-                    from: 'css',
-                    to: path.resolve('../dist/spa'),
-                },
-                {
-                    from: '../favicon.ico',
-                    to: path.resolve('../dist'),
-                },
-            ]
-        }),
-    ]
 };
 
 export default config;
