@@ -26,7 +26,7 @@ mkdir .package/spa
 #
 # Copy HTML assets
 #
-cp ./dist/favicon.ico      .package
-cp ./dist/spa/index.html   .package/spa
-cp ./dist/spa/*.bundle.js  .package/spa
-cp ./dist/spa/*.css        .package/spa
+cp ./dist/favicon.ico    .package
+cp ./dist/spa/index.html .package/spa
+cp ./dist/spa/*.js       .package/spa
+cp ./dist/spa/*.css      .package/spa
