@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import fs from 'fs';
 
 /*
- * Update the index.html for release builds with some production level tags
+ * Update release build assets with production values
  */
 export function writeProductionAssets(timestamp: string): void {
 
@@ -52,8 +52,8 @@ export function writeProductionAssets(timestamp: string): void {
 }
 
 /*
- * Production source maps enable diagnosis of exception stack traces but the production web host does not use them
- * This removes 'missing sourcemap' warning lines from the browser developer console
+ * Production source maps enable diagnosis of exception stack traces but are not deployed to the production web host
+ * This step ensures that users do not see 'missing sourcemap' warnings in the browser console
  */
 function removeSourcemapReference(filePath: string) {
 
@@ -65,7 +65,7 @@ function removeSourcemapReference(filePath: string) {
 }
 
 /*
- * Update a resource with a cache busting timestamp and a script integrity value
+ * Update an index.html JS or CSS resource with a cache busting timestamp and a script integrity value
  */
 function updateResource(
     outFolder: string,
@@ -81,7 +81,7 @@ function updateResource(
 }
 
 /*
- * Calculate the hash of a file, used for subresource integrity in the index.html file
+ * Calculate the hash of a JS or CSS file, used for subresource integrity in the index.html file
  */
 function calculateFileHash(filePath: string): string {
 
@@ -93,7 +93,7 @@ function calculateFileHash(filePath: string): string {
 }
 
 /*
- * Update a text file, replacing all occurrences of the from text with the to text
+ * Update a JS or CSS entry in the index.html file, replacing the from text with the to text
  */
 function updateIndexHtml(outFolder: string, from: string, to: string): void {
 
