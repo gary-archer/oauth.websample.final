@@ -26,9 +26,7 @@ import {AppProps} from './appProps';
  */
 export function App(props: AppProps): JSX.Element {
 
-    const model = props.viewModel;
-    model.useState();
-
+    const model = props.viewModel.use();
     const [isMobileLayout, setIsMobileLayout] = useState(isMobileLayoutRequired());
     const navigate = useNavigate();
 

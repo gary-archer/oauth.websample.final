@@ -73,15 +73,17 @@ export class AppViewModel {
     }
 
     /*
-     * For the correct React behavior, the view initializes state every time it loads
+     * Initialize bindable model state when the view loads
      */
-    public useState(): void {
+    public use(): AppViewModel {
 
         const [, setIsLoaded] = useState(this.isLoaded);
         this.setIsLoaded = setIsLoaded;
 
         const [, setError] = useState(this.error);
         this.setError = setError;
+
+        return this;
     }
 
     /*

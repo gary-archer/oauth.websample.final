@@ -18,8 +18,7 @@ import {CompaniesViewProps} from './companiesViewProps';
  */
 export function CompaniesView(props: CompaniesViewProps): JSX.Element {
 
-    const model = props.viewModel;
-    model.useState();
+    const model = props.viewModel.use();
     CurrentLocation.path = useLocation().pathname;
 
     useEffect(() => {

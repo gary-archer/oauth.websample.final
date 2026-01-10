@@ -17,12 +17,11 @@ import {TransactionsViewProps} from './transactionsViewProps';
  */
 export function TransactionsView(props: TransactionsViewProps): JSX.Element {
 
-    const model = props.viewModel;
-    model.useState();
+    const model = props.viewModel.use();
+    CurrentLocation.path = useLocation().pathname;
 
     const params = useParams();
     const companyId = params.id || '';
-    CurrentLocation.path = useLocation().pathname;
 
     useEffect(() => {
         startup();

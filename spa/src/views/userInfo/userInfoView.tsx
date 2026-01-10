@@ -13,8 +13,7 @@ import {UserInfoViewProps} from './userInfoViewProps';
  */
 export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
-    const model = props.viewModel;
-    model.useState();
+    const model = props.viewModel.use();
 
     useEffect(() => {
         startup();

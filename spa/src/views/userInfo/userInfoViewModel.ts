@@ -10,7 +10,7 @@ import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
- * The view model for the user info view
+ * The user info view model manages API state
  */
 export class UserInfoViewModel {
 
@@ -41,9 +41,9 @@ export class UserInfoViewModel {
     }
 
     /*
-     * For the correct React behavior, the view initializes state every time it loads
+     * Initialize bindable model state when the view loads
      */
-    public useState(): void {
+    public use(): UserInfoViewModel {
 
         const [, setOAuthUserInfo] = useState(this.oauthUserInfo);
         this.setOAuthUserInfo = setOAuthUserInfo;
@@ -53,6 +53,8 @@ export class UserInfoViewModel {
 
         const [, setError] = useState(this.error);
         this.setError = setError;
+
+        return this;
     }
 
     /*

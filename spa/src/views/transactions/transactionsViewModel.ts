@@ -10,7 +10,7 @@ import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
- * The transactions view model
+ * The transactions view model manages API state
  */
 export class TransactionsViewModel {
 
@@ -39,15 +39,17 @@ export class TransactionsViewModel {
     }
 
     /*
-     * For the correct React behavior, the view initializes state every time it loads
+     * Initialize bindable model state when the view loads
      */
-    public useState(): void {
+    public use(): TransactionsViewModel {
 
         const [, setTransactions] = useState(this.transactions);
         this.setTransactions = setTransactions;
 
         const [, setError] = useState(this.error);
         this.setError = setError;
+
+        return this;
     }
 
     /*
