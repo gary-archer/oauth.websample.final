@@ -1,6 +1,7 @@
 import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
-import webpack from 'webpack';
+import webpack, {Compiler} from 'webpack';
+import {rewriteIndexHtml} from './rewriteIndexHtml.js';
 
 const dirname = process.cwd();
 const config: webpack.Configuration = {
@@ -35,8 +36,8 @@ const config: webpack.Configuration = {
 
         // Output our Javascript bundles to the ../dist/spa folder
         path: path.resolve(dirname, '../dist/spa'),
-        filename: '[name].bundle.js',
-        chunkFilename: '[name].bundle.js',
+        filename: '[name].[contenthash].bundle.js',
+        chunkFilename: '[name].[contenthash].bundle.js',
         module: true,
     },
     experiments: {
@@ -96,6 +97,17 @@ const config: webpack.Configuration = {
                 },
             ]
         }),
+
+        // Rewrite the index.html with dynamic chunk names
+        {
+            /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+            apply: (compiler: Compiler) => {
+                compiler.hooks.afterEmit.tap('AfterEmitPlugin', () => {
+                    rewriteIndexHtml();
+                    return;
+                });
+            }
+        },
     ]
 };
 

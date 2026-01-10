@@ -2,28 +2,30 @@ import crypto from 'crypto';
 import fs from 'fs';
 
 /*
- * Trigger the work
+ * Update the index.html with some production level tags
  */
-execute();
-
-/*
- * Update the index.html for release builds with some production level tags
- */
-export function execute(): void {
+export function rewriteIndexHtml(): void {
 
     // Get the timestamp at the time of the build
     const timestamp = new Date().getTime().toString();
+
+    // Get bundle files that contain chunk names
     const outFolder = '../dist/spa';
+    const files = fs.readdirSync(outFolder);
+    const appBundleFileName = findChunkFileName(files, /app.*\.js/);
+    const reactBundleFileName = findChunkFileName(files, /react.*\.js/);
+    const vendorBundleFileName = findChunkFileName(files, /vendor.*\.js/);
 
     // First remove sourceMappingURL references
-    removeSourcemapReference(`${outFolder}/vendor.bundle.js`);
-    removeSourcemapReference(`${outFolder}/react.bundle.js`);
-    removeSourcemapReference(`${outFolder}/app.bundle.js`);
+    removeSourcemapReference(`${outFolder}/${appBundleFileName}`);
+    removeSourcemapReference(`${outFolder}/${reactBundleFileName}`);
+    removeSourcemapReference(`${outFolder}/${vendorBundleFileName}`);
 
     // Update CSS resources with a cache busting timestamp and an integrity hash
     updateResource(
         `${outFolder}/index.html`,
         'href',
+        'bootstrap.min.css',
         'bootstrap.min.css',
         timestamp,
         calculateFileHash(`${outFolder}/bootstrap.min.css`));
@@ -32,6 +34,7 @@ export function execute(): void {
         `${outFolder}/index.html`,
         'href',
         'app.css',
+        'app.css',
         timestamp,
         calculateFileHash(`${outFolder}/app.css`));
 
@@ -39,23 +42,39 @@ export function execute(): void {
     updateResource(
         `${outFolder}/index.html`,
         'src',
-        'vendor.bundle.js',
+        'app.bundle.js',
+        appBundleFileName,
         timestamp,
-        calculateFileHash(`${outFolder}/vendor.bundle.js`));
+        calculateFileHash(`${outFolder}/${appBundleFileName}`));
 
     updateResource(
         `${outFolder}/index.html`,
         'src',
         'react.bundle.js',
+        reactBundleFileName,
         timestamp,
-        calculateFileHash(`${outFolder}/react.bundle.js`));
+        calculateFileHash(`${outFolder}/${reactBundleFileName}`));
 
     updateResource(
         `${outFolder}/index.html`,
         'src',
-        'app.bundle.js',
+        'vendor.bundle.js',
+        vendorBundleFileName,
         timestamp,
-        calculateFileHash(`${outFolder}/app.bundle.js`));
+        calculateFileHash(`${outFolder}/${vendorBundleFileName}`));
+}
+
+/*
+ * Find a file expected to exist on disk
+ */
+function findChunkFileName(files: string[], regex: RegExp): string {
+
+    const filename = files.find((f) => f.match(regex));
+    if (!filename) {
+        throw new Error(`Unable to find file matching pattern: ${regex}`);
+    }
+
+    return filename;
 }
 
 /*
@@ -78,12 +97,13 @@ function removeSourcemapReference(filePath: string) {
 function updateResource(
     filePath: string,
     itemType: string,
-    resourceName: string,
+    defaultName: string,
+    chunkName: string,
     timestamp: string,
     integrity: string): void {
 
-    const from = `${itemType}='${resourceName}'`;
-    const to = `${itemType}='${resourceName}?t=${timestamp}' integrity='${integrity}'`;
+    const from = `${itemType}='${defaultName}'`;
+    const to = `${itemType}='${chunkName}?t=${timestamp}' integrity='${integrity}'`;
     replaceTextInFile(filePath, from, to);
 }
 
