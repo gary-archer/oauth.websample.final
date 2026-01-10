@@ -1,7 +1,9 @@
-import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
 
+/*
+ * Return the base configuration to both development and production configurations
+ */
 const dirname = process.cwd();
 const config: webpack.Configuration = {
 
@@ -33,10 +35,8 @@ const config: webpack.Configuration = {
     },
     output: {
 
-        // Output our Javascript bundles to the ../dist/spa folder
+        // Output ECMAScript bundles to the ../dist/spa folder
         path: path.resolve(dirname, '../dist/spa'),
-        filename: '[name].bundle.js',
-        chunkFilename: '[name].bundle.js',
         module: true,
     },
     experiments: {
@@ -77,26 +77,6 @@ const config: webpack.Configuration = {
             }
         },
     },
-    plugins: [
-
-        // Copy static files to the dist folder
-        new CopyPlugin({
-            patterns: [
-                {
-                    from: 'index.html',
-                    to: path.resolve('../dist/spa'),
-                },
-                {
-                    from: 'css',
-                    to: path.resolve('../dist/spa'),
-                },
-                {
-                    from: '../favicon.ico',
-                    to: path.resolve('../dist'),
-                },
-            ]
-        }),
-    ]
 };
 
 export default config;

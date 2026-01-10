@@ -40,12 +40,8 @@ export class ResponseHeaders {
         response.setHeader('x-content-type-options', 'nosniff');
         response.setHeader('referrer-policy', 'same-origin');
 
-        // I write cache response headers but not for the development URL of https://www.authsamples-dev.com/spa.
-        // This prevents cached files that conflict with the webpack development server.
-        if (this.configuration.addResponseCacheHeaders) {
-            response.setHeader('cache-control', this.getCacheControlResponseHeader(request));
-        }
-
+        // Add cache headers to release builds to serve downloaded assets from the browser cache
+        response.setHeader('cache-control', this.getCacheControlResponseHeader(request));
         next();
     }
 

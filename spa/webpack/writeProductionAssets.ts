@@ -2,65 +2,57 @@ import crypto from 'crypto';
 import fs from 'fs';
 
 /*
- * Trigger the work
- */
-execute();
-
-/*
  * Update the index.html for release builds with some production level tags
  */
-export function execute(): void {
+export function writeProductionAssets(timestamp: string): void {
 
-    // Get the timestamp at the time of the build
-    const timestamp = new Date().getTime().toString();
     const outFolder = '../dist/spa';
 
     // First remove sourceMappingURL references
-    removeSourcemapReference(`${outFolder}/vendor.bundle.js`);
-    removeSourcemapReference(`${outFolder}/react.bundle.js`);
-    removeSourcemapReference(`${outFolder}/app.bundle.js`);
+    removeSourcemapReference(`${outFolder}/vendor.bundle.min.js`);
+    removeSourcemapReference(`${outFolder}/react.bundle.min.js`);
+    removeSourcemapReference(`${outFolder}/app.bundle.min.js`);
 
     // Update CSS resources with a cache busting timestamp and an integrity hash
     updateResource(
-        `${outFolder}/index.html`,
+        outFolder,
         'href',
+        'bootstrap.css',
         'bootstrap.min.css',
-        timestamp,
-        calculateFileHash(`${outFolder}/bootstrap.min.css`));
+        timestamp);
 
     updateResource(
-        `${outFolder}/index.html`,
+        outFolder,
         'href',
         'app.css',
-        timestamp,
-        calculateFileHash(`${outFolder}/app.css`));
+        'app.min.css',
+        timestamp);
 
     // Update Javascript resources with a cache busting timestamp and an integrity hash
     updateResource(
-        `${outFolder}/index.html`,
+        outFolder,
         'src',
         'vendor.bundle.js',
-        timestamp,
-        calculateFileHash(`${outFolder}/vendor.bundle.js`));
+        'vendor.bundle.min.js',
+        timestamp);
 
     updateResource(
-        `${outFolder}/index.html`,
+        outFolder,
         'src',
         'react.bundle.js',
-        timestamp,
-        calculateFileHash(`${outFolder}/react.bundle.js`));
+        'react.bundle.min.js',
+        timestamp);
 
     updateResource(
-        `${outFolder}/index.html`,
+        outFolder,
         'src',
         'app.bundle.js',
-        timestamp,
-        calculateFileHash(`${outFolder}/app.bundle.js`));
+        'app.bundle.min.js',
+        timestamp);
 }
 
 /*
- * We build source map files and use them to look up exception stack traces if ever needed
- * We do not deploy them to Cloudfront though, and end users should not know about them
+ * Production source maps enable diagnosis of exception stack traces but the production web host does not use them
  * This removes 'missing sourcemap' warning lines from the browser developer console
  */
 function removeSourcemapReference(filePath: string) {
@@ -76,15 +68,16 @@ function removeSourcemapReference(filePath: string) {
  * Update a resource with a cache busting timestamp and a script integrity value
  */
 function updateResource(
-    filePath: string,
+    outFolder: string,
     itemType: string,
-    resourceName: string,
-    timestamp: string,
-    integrity: string): void {
+    defaultName: string,
+    minimizedName: string,
+    timestamp: string): void {
 
-    const from = `${itemType}='${resourceName}'`;
-    const to = `${itemType}='${resourceName}?t=${timestamp}' integrity='${integrity}'`;
-    replaceTextInFile(filePath, from, to);
+    const integrity = calculateFileHash(`${outFolder}/${minimizedName}`);
+    const from = `${itemType}='${defaultName}'`;
+    const to = `${itemType}='${minimizedName}?t=${timestamp}' integrity='${integrity}'`;
+    updateIndexHtml(outFolder, from, to);
 }
 
 /*
@@ -102,10 +95,10 @@ function calculateFileHash(filePath: string): string {
 /*
  * Update a text file, replacing all occurrences of the from text with the to text
  */
-function replaceTextInFile(filePath: string, from: string, to: string): void {
+function updateIndexHtml(outFolder: string, from: string, to: string): void {
 
-    const oldData = fs.readFileSync(filePath, 'utf8');
+    const oldData = fs.readFileSync(`${outFolder}/index.html`, 'utf8');
     const regex = new RegExp(from, 'g');
     const newData = oldData.replace(regex, to);
-    fs.writeFileSync(filePath, newData, 'utf8');
+    fs.writeFileSync(`${outFolder}/index.html`, newData, 'utf8');
 }
