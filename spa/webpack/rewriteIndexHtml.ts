@@ -24,9 +24,9 @@ export function execute(): void {
     updateResource(
         `${outFolder}/index.html`,
         'href',
-        'bootstrap.min.css',
+        'bootstrap.css',
         timestamp,
-        calculateFileHash(`${outFolder}/bootstrap.min.css`));
+        calculateFileHash(`${outFolder}/bootstrap.css`));
 
     updateResource(
         `${outFolder}/index.html`,
