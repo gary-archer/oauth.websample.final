@@ -4,7 +4,7 @@
     "target": "ES2017",
     "lib": ["ES2024", "DOM"],
     "jsx": "react-jsx",
-    "module": "ES2022",
+    "module": "ES2020",
     "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
