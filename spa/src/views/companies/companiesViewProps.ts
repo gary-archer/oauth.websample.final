@@ -1,8 +1,9 @@
-import {Company} from '../../api/entities/company';
+import {CompaniesViewModel} from './companiesViewModel';
 
 /*
- * Input to the company views
+ * Input to the companies view
  */
 export interface CompaniesViewProps {
-    companies: Company[];
+    isMobileLayout: boolean;
+    viewModel: CompaniesViewModel;
 }

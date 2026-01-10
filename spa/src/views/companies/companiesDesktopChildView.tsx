@@ -1,12 +1,12 @@
 import {JSX} from 'react';
 import {Link} from 'react-router-dom';
 import {Company} from '../../api/entities/company';
-import {CompaniesViewProps} from './companiesViewProps';
+import {CompaniesChildViewProps} from './companiesChildViewProps';
 
 /*
- * Render the companies view on a desktop browser
+ * Render the companies data on a desktop browser
  */
-export function CompaniesDesktopView(props: CompaniesViewProps): JSX.Element {
+export function CompaniesDesktopChildView(props: CompaniesChildViewProps): JSX.Element {
 
     /*
      * Render a single item

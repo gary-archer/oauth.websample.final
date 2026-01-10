@@ -2,25 +2,23 @@ import EventBus from 'js-event-bus';
 import {Dispatch, SetStateAction, useState} from 'react';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
-import {CompanyTransactions} from '../../api/entities/companyTransactions';
-import {ErrorCodes} from '../../plumbing/errors/errorCodes';
+import {Company} from '../../api/entities/company';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {UIError} from '../../plumbing/errors/uiError';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 
 /*
- * The view model for the transactions container view
+ * The view model for the companies view
  */
-export class TransactionsContainerViewModel {
+export class CompaniesViewModel {
 
     private readonly fetchClient: FetchClient;
     private readonly eventBus: EventBus;
     private readonly viewModelCoordinator: ViewModelCoordinator;
-    private companyId: string | null;
-    private transactions: CompanyTransactions | null;
+    private companies: Company[];
     private error: UIError | null;
-    private setTransactions: Dispatch<SetStateAction<CompanyTransactions | null>> | null;
+    private setCompanies: Dispatch<SetStateAction<Company[]>> | null;
     private setError: Dispatch<SetStateAction<UIError | null>> | null;
 
     public constructor(
@@ -31,10 +29,9 @@ export class TransactionsContainerViewModel {
         this.fetchClient = fetchClient;
         this.eventBus = eventBus;
         this.viewModelCoordinator = viewModelCoordinator;
-        this.companyId = null;
-        this.transactions = null;
+        this.companies = [];
         this.error = null;
-        this.setTransactions = null;
+        this.setCompanies = null;
         this.setError = null;
     }
 
@@ -43,8 +40,8 @@ export class TransactionsContainerViewModel {
      */
     public useState(): void {
 
-        const [, setTransactions] = useState(this.transactions);
-        this.setTransactions = setTransactions;
+        const [, setCompanies] = useState(this.companies);
+        this.setCompanies = setCompanies;
 
         const [, setError] = useState(this.error);
         this.setError = setError;
@@ -53,12 +50,8 @@ export class TransactionsContainerViewModel {
     /*
      * Property accessors
      */
-    public getTransactions(): CompanyTransactions | null {
-        return this.transactions;
-    }
-
-    public getCompanyId(): string {
-        return this.companyId || '';
+    public getCompanies(): Company[] {
+        return this.companies;
     }
 
     public getError(): UIError | null {
@@ -72,32 +65,28 @@ export class TransactionsContainerViewModel {
     /*
      * Get data from the API and then notify the caller
      */
-    public async callApi(id: string, options?: ViewLoadOptions): Promise<void> {
+    public async callApi(options?: ViewLoadOptions): Promise<void> {
 
         const fetchOptions = {
-            cacheKey: `${FetchCacheKeys.Transactions}-${id}`,
+            cacheKey: FetchCacheKeys.Companies,
             forceReload: options?.forceReload || false,
             causeError: options?.causeError || false,
         };
 
         this.viewModelCoordinator.onMainViewModelLoading();
         this.updateError(null);
-        if (this.companyId !== id) {
-            this.updateTransactions(null);
-            this.companyId = id;
-        }
 
         try {
 
-            const result = await this.fetchClient.getCompanyTransactions(id, fetchOptions);
+            const result = await this.fetchClient.getCompanyList(fetchOptions);
             if (result) {
-                this.updateTransactions(result);
+                this.updateCompanies(result);
             }
 
         } catch (e: any) {
 
+            this.updateCompanies([]);
             this.updateError(ErrorFactory.fromException(e));
-            this.updateTransactions(null);
 
         } finally {
 
@@ -106,43 +95,13 @@ export class TransactionsContainerViewModel {
     }
 
     /*
-     * Allow the view to clear data
-     */
-    public clearData(): void {
-        this.transactions = null;
-    }
-
-    /*
-     * Handle 'business errors' received from the API
-     */
-    public isForbiddenError(): boolean {
-
-        if (this.error) {
-
-            if (this.error.getStatusCode() === 404 && this.error.getErrorCode() === ErrorCodes.companyNotFound) {
-
-                // User typed an id value outside of allowed company ids
-                return true;
-            }
-
-            if (this.error.getStatusCode() === 400 && this.error.getErrorCode() === ErrorCodes.invalidCompanyId) {
-
-                // User typed an invalid id such as 'abc'
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /*
      * Update state and the binding system
      */
-    private updateTransactions(transactions: CompanyTransactions | null): void {
+    private updateCompanies(companies: Company[]): void {
 
-        this.transactions = transactions;
-        if (this.setTransactions) {
-            this.setTransactions(this.transactions);
+        this.companies = companies;
+        if (this.setCompanies) {
+            this.setCompanies(this.companies);
         }
     }
 

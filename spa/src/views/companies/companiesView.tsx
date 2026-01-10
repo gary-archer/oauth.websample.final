@@ -8,15 +8,15 @@ import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
-import {CompaniesContainerProps} from './companiesContainerProps';
-import {CompaniesDesktopView} from './companiesDesktopView';
-import {CompaniesMobileView} from './companiesMobileView';
+import {CompaniesChildViewProps} from './companiesChildViewProps';
+import {CompaniesDesktopChildView} from './companiesDesktopChildView';
+import {CompaniesMobileChildView} from './companiesMobileChildView';
 import {CompaniesViewProps} from './companiesViewProps';
 
 /*
- * Render the companies view to replace the existing view
+ * Render the companies view
  */
-export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element {
+export function CompaniesView(props: CompaniesViewProps): JSX.Element {
 
     const model = props.viewModel;
     model.useState();
@@ -79,7 +79,7 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         };
     }
 
-    function getChildProps(): CompaniesViewProps {
+    function getChildProps(): CompaniesChildViewProps {
 
         return {
             companies: model.getCompanies(),
@@ -90,8 +90,8 @@ export function CompaniesContainer(props: CompaniesContainerProps): JSX.Element 
         <>
             {model.getError() && <ErrorSummaryView {...getErrorProps()}/>}
             {model.getCompanies().length > 0 && (props.isMobileLayout ?
-                <CompaniesMobileView {...getChildProps()}/> :
-                <CompaniesDesktopView {...getChildProps()}/>)}
+                <CompaniesMobileChildView {...getChildProps()}/> :
+                <CompaniesDesktopChildView {...getChildProps()}/>)}
 
         </>
     );

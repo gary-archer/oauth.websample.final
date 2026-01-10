@@ -1,12 +1,12 @@
 import {JSX} from 'react';
 import {Link} from 'react-router-dom';
 import {Company} from '../../api/entities/company';
-import {CompaniesViewProps} from './companiesViewProps';
+import {CompaniesChildViewProps} from './companiesChildViewProps';
 
 /*
  * Render the companies view on a mobile browser
  */
-export function CompaniesMobileView(props: CompaniesViewProps): JSX.Element {
+export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.Element {
 
     /*
      * Render a single company item
