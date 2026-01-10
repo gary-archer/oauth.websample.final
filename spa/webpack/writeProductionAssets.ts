@@ -6,7 +6,7 @@ import fs from 'fs';
  */
 export function writeProductionAssets(timestamp: string): void {
 
-    const outFolder = '../dist/spa';
+    const outFolder = './dist/spa';
 
     // First remove sourceMappingURL references
     removeSourcemapReference(`${outFolder}/vendor.bundle.min.js`);

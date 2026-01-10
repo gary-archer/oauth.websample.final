@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#################################
-# Build the SPA before running it
-#################################
+#######################
+# Build and run the SPA
+#######################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
@@ -27,30 +27,11 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Prepare the dist folder
-#
-cd ..
-rm -rf dist 2>/dev/null
-mkdir dist
-mkdir dist/spa
-
-#
-# Use the correct configuration file
-#
-if [ "$LOCALAPI" == 'true' ]; then
-  cp ./deployment/environments/dev-localapi/spa.config.json dist/spa/spa.config.json
-
-else 
-  cp ./deployment/environments/dev/spa.config.json dist/spa/spa.config.json
-fi
-
-#
-# Build and run the SPA
+# Build and run the SPA on the webpack development server
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:
 # - sudo setcap 'cap_net_bind_service=+ep' $(which node)
 #
-cd spa
-NODE_OPTIONS='--import tsx' npx webpack serve --config webpack/webpack.config.dev.ts
+npm start
 if [ $? -ne 0 ]; then
   echo 'Problem encountered serving SPA static content'
   read -n 1

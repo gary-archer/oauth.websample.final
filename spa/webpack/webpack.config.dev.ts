@@ -6,6 +6,13 @@ import baseConfig from './webpack.config.base.js';
 import {configureDevelopmentServer} from './configureDevelopmentServer.js';
 
 /*
+ * Get the configuration file to serve
+ */
+const configurationFile = process.env.LOCALAPI === 'true' ?
+    '../deployment/environments/dev-localapi/spa.config.json' :
+    '../deployment/environments/dev/spa.config.json';
+
+/*
  * Return the development configuration
  */
 const devConfig: webpack.Configuration = {
@@ -33,16 +40,20 @@ const devConfig: webpack.Configuration = {
         new CopyPlugin({
             patterns: [
                 {
+                    from: 'favicon.ico',
+                    to: path.resolve('dist'),
+                },
+                {
                     from: 'index.html',
-                    to: path.resolve('../dist/spa'),
+                    to: path.resolve('dist/spa'),
                 },
                 {
                     from: 'css',
-                    to: path.resolve('../dist/spa'),
+                    to: path.resolve('dist/spa'),
                 },
                 {
-                    from: '../favicon.ico',
-                    to: path.resolve('../dist'),
+                    from: configurationFile,
+                    to: path.resolve('dist/spa'),
                 },
             ]
         }),

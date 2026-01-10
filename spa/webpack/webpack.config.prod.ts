@@ -35,16 +35,16 @@ const prodConfig: webpack.Configuration = {
         new CopyPlugin({
             patterns: [
                 {
+                    from: 'favicon.ico',
+                    to: path.resolve('dist'),
+                },
+                {
                     from: 'index.html',
-                    to: path.resolve('../dist/spa'),
+                    to: path.resolve('dist/spa'),
                 },
                 {
                     from: 'css/app.css',
-                    to: path.resolve('../dist/spa/app.min.css'),
-                },
-                {
-                    from: '../favicon.ico',
-                    to: path.resolve('../dist'),
+                    to: path.resolve('dist/spa/app.min.css'),
                 },
             ]
         }),
@@ -57,10 +57,10 @@ const prodConfig: webpack.Configuration = {
                     // - https://github.com/FullHuman/purgecss/issues/491
                     const result = await new PurgeCSS().purge({
                         css: ['css/bootstrap.css'],
-                        content: ['../dist/spa/app.bundle.min.js'],
+                        content: ['dist/spa/app.bundle.min.js'],
                         safelist: ['body', 'container'],
                     });
-                    fs.writeFileSync('../dist/spa/bootstrap.min.css', result[0].css);
+                    fs.writeFileSync('dist/spa/bootstrap.min.css', result[0].css);
 
                     // Produce the final HTML assets for production builds
                     writeProductionAssets(timestamp);

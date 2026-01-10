@@ -19,7 +19,7 @@ export function configureDevelopmentServer(): Configuration {
             },
         },
         static: {
-            directory: path.join(dirname, '../dist'),
+            directory: path.join(dirname, 'dist'),
         },
         port: 443,
         open: 'https://www.authsamples-dev.com/spa',

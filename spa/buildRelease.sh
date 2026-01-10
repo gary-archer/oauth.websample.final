@@ -27,18 +27,9 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Prepare the dist folder
+# Build minified production assets
 #
-cd ..
-rm -rf dist 2>/dev/null
-mkdir dist
-mkdir dist/spa
-
-#
-# Produce minified JavaScript bundles
-#
-cd spa
-NODE_OPTIONS='--import tsx' npx webpack --config webpack/webpack.config.prod.ts
+npm run build
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   read -n 1

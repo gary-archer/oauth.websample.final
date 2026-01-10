@@ -36,8 +36,9 @@ const config: webpack.Configuration = {
     output: {
 
         // Output ECMAScript bundles to the ../dist/spa folder
-        path: path.resolve(dirname, '../dist/spa'),
+        path: path.resolve(dirname, 'dist/spa'),
         module: true,
+        clean: true,
     },
     experiments: {
         outputModule: true,
