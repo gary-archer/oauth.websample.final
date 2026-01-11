@@ -1,7 +1,7 @@
 {
   "name": "webhost",
   "version": "1.0.0",
-  "description": "A web host for serving SPA static content in local computer deployments",
+  "description": "A web host to serve release builds of SPA static content in local computer deployments",
   "author": "Gary Archer",
   "license": "MIT",
   "type": "module",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "lint": "npx eslint . --ignore-pattern dist",
-    "start": "./buildRelease.sh"
+    "build": "./buildRelease.sh"
   },
   "dependencies": {
     "compression": "^1.8.1",

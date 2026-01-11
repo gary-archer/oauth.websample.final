@@ -6,5 +6,4 @@ export interface Configuration {
     sslCertificateFileName: string;
     sslCertificatePassword: string;
     trustedHosts: string[];
-    addResponseCacheHeaders: boolean;
 }

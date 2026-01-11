@@ -17,4 +17,4 @@ RUN groupadd --gid 10000 webuser \
   && useradd --uid 10001 --gid webuser --shell /bin/bash --create-home webuser
 USER 10001
 
-CMD ["node", "dist/app.js"]
+CMD ["node", "dist/index.js"]

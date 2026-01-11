@@ -90,8 +90,8 @@ export class OAuthClientImpl implements OAuthClient {
 
                 } catch (e: any) {
 
-                    // Session expired errors can be caused by browser cookies using an old encryption key
-                    // Handle these by returning a default result
+                    // Handle errors that we want to treat as non-errors to avoid user issues
+                    // These include cookies with an old encryption key or invalid authorization responses
                     // API calls will then fail and a new login redirect will be triggered, to get updated cookies
                     if (this.isSessionExpiredError(e)) {
                         return null;
