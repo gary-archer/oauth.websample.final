@@ -9,7 +9,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "lint": "npx eslint . --ignore-pattern dist",
+    "lint": "eslint .",
     "build": "./buildRelease.sh"
   },
   "dependencies": {

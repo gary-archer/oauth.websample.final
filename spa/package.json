@@ -9,7 +9,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "lint": "npx eslint . --ignore-pattern dist",
+    "lint": "eslint .",
     "start": "NODE_OPTIONS='--import tsx' webpack serve --config webpack/webpack.config.dev.ts",
     "build": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.prod.ts"
   },
