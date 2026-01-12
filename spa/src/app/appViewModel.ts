@@ -269,7 +269,7 @@ export class AppViewModel {
     }
 
     /*
-     * Raise and event to ask all views to get updated data from the API
+     * Raise an event to ask all views to get updated data from the API
      */
     public triggerDataReload(causeError: boolean): void {
 
