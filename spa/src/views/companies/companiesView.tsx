@@ -89,7 +89,7 @@ export function CompaniesView(props: CompaniesViewProps): JSX.Element {
     function getChildProps(): CompaniesChildViewProps {
 
         return {
-            companies: companies,
+            companies,
         };
     }
 
