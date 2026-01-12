@@ -1,5 +1,4 @@
 import EventBus from 'js-event-bus';
-import {Dispatch, SetStateAction, useState} from 'react';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
 import {CompanyTransactions} from '../../api/entities/companyTransactions';
@@ -20,8 +19,6 @@ export class TransactionsViewModel {
     private companyId: string | null;
     private transactions: CompanyTransactions | null;
     private error: UIError | null;
-    private setTransactions: Dispatch<SetStateAction<CompanyTransactions | null>> | null;
-    private setError: Dispatch<SetStateAction<UIError | null>> | null;
 
     public constructor(
         fetchClient: FetchClient,
@@ -34,22 +31,6 @@ export class TransactionsViewModel {
         this.companyId = null;
         this.transactions = null;
         this.error = null;
-        this.setTransactions = null;
-        this.setError = null;
-    }
-
-    /*
-     * Initialize bindable model state when the view loads
-     */
-    public use(): TransactionsViewModel {
-
-        const [, setTransactions] = useState(this.transactions);
-        this.setTransactions = setTransactions;
-
-        const [, setError] = useState(this.error);
-        this.setError = setError;
-
-        return this;
     }
 
     /*
@@ -83,9 +64,9 @@ export class TransactionsViewModel {
         };
 
         this.viewModelCoordinator.onMainViewModelLoading();
-        this.updateError(null);
+        this.error = null;
         if (this.companyId !== id) {
-            this.updateTransactions(null);
+            this.transactions = null;
             this.companyId = id;
         }
 
@@ -93,13 +74,13 @@ export class TransactionsViewModel {
 
             const result = await this.fetchClient.getCompanyTransactions(id, fetchOptions);
             if (result) {
-                this.updateTransactions(result);
+                this.transactions = result;
             }
 
         } catch (e: any) {
 
-            this.updateError(ErrorFactory.fromException(e));
-            this.updateTransactions(null);
+            this.error = ErrorFactory.fromException(e);
+            this.transactions = null;
 
         } finally {
 
@@ -135,27 +116,5 @@ export class TransactionsViewModel {
         }
 
         return false;
-    }
-
-    /*
-     * Update state and the binding system
-     */
-    private updateTransactions(transactions: CompanyTransactions | null): void {
-
-        this.transactions = transactions;
-        if (this.setTransactions) {
-            this.setTransactions(this.transactions);
-        }
-    }
-
-    /*
-     * Update state and the binding system
-     */
-    private updateError(error: UIError | null): void {
-
-        this.error = error;
-        if (this.setError) {
-            this.setError(this.error);
-        }
     }
 }

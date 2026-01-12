@@ -1,5 +1,4 @@
 import EventBus from 'js-event-bus';
-import {Dispatch, SetStateAction, useState} from 'react';
 import {FetchCache} from '../api/client/fetchCache';
 import {FetchClient} from '../api/client/fetchClient';
 import {ViewModelCoordinator} from '../views/utilities/viewModelCoordinator';
@@ -17,7 +16,7 @@ import {TransactionsViewModel} from '../views/transactions/transactionsViewModel
 import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
 
 /*
- * Global objects as input to the application view
+ * Manages global objects for the React application
  */
 export class AppViewModel {
 
@@ -43,10 +42,6 @@ export class AppViewModel {
     private transactionsViewModel: TransactionsViewModel | null;
     private userInfoViewModel: UserInfoViewModel | null;
 
-    // Callbacks to set model properties that affect view rendering
-    private setIsLoaded: Dispatch<SetStateAction<boolean>> | null;
-    private setError: Dispatch<SetStateAction<UIError | null>> | null;
-
     /*
      * Set the initial state when the app starts
      */
@@ -62,28 +57,12 @@ export class AppViewModel {
         this.isInitialised = false;
         this.isLoading = false;
         this.isLoaded = false;
-        this.setIsLoaded = null;
-        this.setError = null;
 
         // Initialize child view models
         this.companiesViewModel = null;
         this.transactionsViewModel = null;
         this.userInfoViewModel = null;
         this.setupCallbacks();
-    }
-
-    /*
-     * Initialize bindable model state when the view loads
-     */
-    public use(): AppViewModel {
-
-        const [, setIsLoaded] = useState(this.isLoaded);
-        this.setIsLoaded = setIsLoaded;
-
-        const [, setError] = useState(this.error);
-        this.setError = setError;
-
-        return this;
     }
 
     /*
@@ -100,7 +79,7 @@ export class AppViewModel {
 
             // Prevent re-entrancy due to React strict mode
             this.isInitialising = true;
-            this.updateError(null);
+            this.error = null;
 
             // Get the application configuration
             const loader = new ConfigurationLoader();
@@ -124,7 +103,7 @@ export class AppViewModel {
         } catch (e: any) {
 
             // Render startup errors
-            this.updateError(ErrorFactory.fromException(e));
+            this.error = ErrorFactory.fromException(e);
 
         } finally {
 
@@ -151,7 +130,7 @@ export class AppViewModel {
             const navigateTo = await this.oauthClient.handlePageLoad();
 
             // Inform the view that loading is complete
-            this.updateIsLoaded(true);
+            this.isLoaded = true;
 
             // If a login response was handled, return the pre-login location to navigate back to
             // This also avoids leaving the authorization code in the browser URL
@@ -162,7 +141,7 @@ export class AppViewModel {
         } catch (e: any) {
 
             // Render errors and navigate home, to remove OAuth parameters from the browser URL
-            this.updateError(ErrorFactory.fromException(e));
+            this.error = ErrorFactory.fromException(e);
             return '/';
 
         } finally {
@@ -182,7 +161,7 @@ export class AppViewModel {
         try {
             await this.oauthClient.login(currentLocation);
         } catch (e: any) {
-            this.updateError(ErrorFactory.fromException(e));
+            this.error = ErrorFactory.fromException(e);
         }
     }
 
@@ -209,7 +188,7 @@ export class AppViewModel {
 
         this.viewModelCoordinator.resetState();
         this.oauthClient.clearLoginState();
-        this.updateError(null);
+        this.error = null;
     }
 
     /*
@@ -290,19 +269,19 @@ export class AppViewModel {
     }
 
     /*
-     * Ask all views to get updated data from the API
+     * Raise and event to ask all views to get updated data from the API
      */
-    public reloadData(causeError: boolean): void {
+    public triggerDataReload(causeError: boolean): void {
 
-        this.updateError(null);
+        this.error = null;
         this.viewModelCoordinator.resetState();
         this.eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }
 
     /*
-     * See if there are any errors
+     * See if there are any API errors
      */
-    public hasError(): boolean {
+    public hasApiError(): boolean {
         return !!this.error || this.viewModelCoordinator.hasErrors();
     }
 
@@ -314,7 +293,7 @@ export class AppViewModel {
         try {
             await this.oauthClient.expireAccessToken();
         } catch (e: any) {
-            this.updateError(ErrorFactory.fromException(e));
+            this.error = ErrorFactory.fromException(e);
         }
     }
 
@@ -326,29 +305,7 @@ export class AppViewModel {
         try {
             await this.oauthClient.expireRefreshToken();
         } catch (e: any) {
-            this.updateError(ErrorFactory.fromException(e));
-        }
-    }
-
-    /*
-     * Update loaded state and the binding system
-     */
-    private updateIsLoaded(isLoaded: boolean): void {
-
-        this.isLoaded = isLoaded;
-        if (this.setIsLoaded) {
-            this.setIsLoaded(isLoaded);
-        }
-    }
-
-    /*
-     * Update error state and the binding system
-     */
-    private updateError(error: UIError | null): void {
-
-        this.error = error;
-        if (this.setError) {
-            this.setError(error);
+            this.error = ErrorFactory.fromException(e);
         }
     }
 
@@ -356,6 +313,6 @@ export class AppViewModel {
      * Plumbing to ensure that the this parameter is available in async callbacks
      */
     private setupCallbacks() {
-        this.reloadData = this.reloadData.bind(this);
+        this.triggerDataReload = this.triggerDataReload.bind(this);
     }
 }

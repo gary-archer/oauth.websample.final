@@ -1,4 +1,4 @@
-import {JSX, useEffect} from 'react';
+import {JSX, useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
@@ -18,7 +18,12 @@ import {CompaniesViewProps} from './companiesViewProps';
  */
 export function CompaniesView(props: CompaniesViewProps): JSX.Element {
 
-    const model = props.viewModel.use();
+    // Initialize React state from the view model
+    const model = props.viewModel;
+    const [companies, setCompanies] = useState(model.getCompanies());
+    const [error, setError] = useState(model.getError());
+
+    // Update the current path
     CurrentLocation.path = useLocation().pathname;
 
     useEffect(() => {
@@ -59,17 +64,20 @@ export function CompaniesView(props: CompaniesViewProps): JSX.Element {
     }
 
     /*
-     * Get data from the API and update state
+     * Get data from the API and update React state
      */
     async function loadData(options?: ViewLoadOptions): Promise<void> {
+
         await model.callApi(options);
+        setCompanies(model.getCompanies());
+        setError(model.getError());
     }
 
     function getErrorProps(): ErrorSummaryViewProps {
 
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
-            error: model.getError()!,
+            error: error!,
             errorsToIgnore: [ErrorCodes.loginRequired],
             containingViewName: 'companies',
             hyperlinkMessage: 'Problem Encountered in Companies View',
@@ -81,14 +89,14 @@ export function CompaniesView(props: CompaniesViewProps): JSX.Element {
     function getChildProps(): CompaniesChildViewProps {
 
         return {
-            companies: model.getCompanies(),
+            companies: companies,
         };
     }
 
     return  (
         <>
-            {model.getError() && <ErrorSummaryView {...getErrorProps()}/>}
-            {model.getCompanies().length > 0 && (props.isMobileLayout ?
+            {error && <ErrorSummaryView {...getErrorProps()}/>}
+            {companies.length > 0 && (props.isMobileLayout ?
                 <CompaniesMobileChildView {...getChildProps()}/> :
                 <CompaniesDesktopChildView {...getChildProps()}/>)}
 

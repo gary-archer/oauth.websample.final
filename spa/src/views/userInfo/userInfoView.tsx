@@ -1,4 +1,4 @@
-import {JSX, useEffect} from 'react';
+import {JSX, useEffect, useState} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
@@ -13,7 +13,11 @@ import {UserInfoViewProps} from './userInfoViewProps';
  */
 export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
-    const model = props.viewModel.use();
+    // Initialize React state from the view model
+    const model = props.viewModel;
+    const [oauthUserInfo, setOAuthUserInfo] = useState(model.getOAuthUserInfo());
+    const [apiUserInfo, setApiUserInfo] = useState(model.getApiUserInfo());
+    const [error, setError] = useState(model.getError());
 
     useEffect(() => {
         startup();
@@ -42,7 +46,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     async function onNavigate(event: NavigatedEvent): Promise<void> {
 
         if (!event.isAuthenticatedView) {
-            model.unload();
+            unloadData();
         } else {
             await loadData();
         }
@@ -65,7 +69,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     function getUserNameForDisplay(): string {
 
-        const oauthUserInfo = model.getOAuthUserInfo();
         if (oauthUserInfo) {
             return `${oauthUserInfo.givenName} ${oauthUserInfo.familyName}`;
         }
@@ -77,7 +80,7 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Show the user's title when the name is clicked
      */
     function getUserTitle(): string {
-        return model.getApiUserInfo()?.title || '';
+        return apiUserInfo?.title || '';
     }
 
     /*
@@ -85,7 +88,6 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      */
     function getUserRegions(): string {
 
-        const apiUserInfo = model.getApiUserInfo();
         if (!apiUserInfo?.regions || apiUserInfo.regions.length == 0) {
             return '';
         }
@@ -98,14 +100,29 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
      * Ask the model to load data, then update state
      */
     async function loadData(options?: ViewLoadOptions): Promise<void> {
+
         await model.callApi(options);
+        setOAuthUserInfo(model.getOAuthUserInfo());
+        setApiUserInfo(model.getApiUserInfo());
+        setError(model.getError());
+    }
+
+    /*
+     * Ask the model to unload data, then update state
+     */
+    function unloadData(): void {
+
+        model.unload();
+        setOAuthUserInfo(model.getOAuthUserInfo());
+        setApiUserInfo(model.getApiUserInfo());
+        setError(model.getError());
     }
 
     function getErrorProps(): ErrorSummaryViewProps {
 
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
-            error: model.getError()!,
+            error: error!,
             errorsToIgnore: [ErrorCodes.loginRequired],
             containingViewName: 'userinfo',
             hyperlinkMessage: 'Problem Encountered',
@@ -116,12 +133,12 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
     return (
         <>
-            {model.getError() &&
+            {error &&
                 <div className='text-end mx-auto'>
                     <ErrorSummaryView {...getErrorProps()}/>
                 </div>
             }
-            {model.getOAuthUserInfo() && model.getApiUserInfo() &&
+            {oauthUserInfo && apiUserInfo &&
                 <div className='text-end mx-auto'>
                     <div className='fw-bold basictooltip'>{getUserNameForDisplay()}
                         <div className='basictooltiptext'>

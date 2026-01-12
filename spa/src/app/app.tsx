@@ -22,11 +22,16 @@ import {CurrentLocation} from '../views/utilities/currentLocation';
 import {AppProps} from './appProps';
 
 /*
- * The entry point view
+ * The React application view
  */
 export function App(props: AppProps): JSX.Element {
 
-    const model = props.viewModel.use();
+    // Initialize React state from the view model
+    const model = props.viewModel;
+    const [isLoaded, setIsLoaded] = useState(model.getIsLoaded());
+    const [error, setError] = useState(model.getError());
+
+    // Set additional state and prepare React Router navigation
     const [isMobileLayout, setIsMobileLayout] = useState(isMobileLayoutRequired());
     const navigate = useNavigate();
 
@@ -50,17 +55,18 @@ export function App(props: AppProps): JSX.Element {
         window.onstorage = onStorage;
 
         // Initialise the main view model the first time
-        await initialiseData();
+        await model.initialise();
 
         // Next deal with the authentication state
         await handlePageLoad();
     }
 
-    /*
+     /*
      * Initialise the model on startup
      */
     async function initialiseData(): Promise<void> {
         await model.initialise();
+        setError(model.getError());
     }
 
     /*
@@ -68,8 +74,12 @@ export function App(props: AppProps): JSX.Element {
      */
     async function handlePageLoad(): Promise<void> {
 
-        // Handle any login responses, and navigate back to the pre-login location
+        // Handle any login responses
         const navigateTo = await model.handlePageLoad();
+        setIsLoaded(model.getIsLoaded());
+        setError(model.getError());
+
+        // After a login, navigate back to the pre-login location
         if (navigateTo) {
             navigate(navigateTo, { replace: true });
         }
@@ -107,16 +117,17 @@ export function App(props: AppProps): JSX.Element {
         }
 
         // Handle retrying page load errors
-        if (!model.getIsLoaded()) {
+        if (!isLoaded) {
             await handlePageLoad();
         }
 
-        if (model.getIsLoaded()) {
+        if (isLoaded) {
 
             if (!model.getOAuthClient().isLoggedIn()) {
 
                 // Trigger a login if required
                 await model.login(CurrentLocation.path);
+                setError(model.getError());
 
             } else {
 
@@ -124,8 +135,8 @@ export function App(props: AppProps): JSX.Element {
                 navigate('/');
 
                 // Force a data reload if there were errors last time
-                if (model.hasError()) {
-                    model.reloadData(false);
+                if (model.hasApiError()) {
+                    model.triggerDataReload(false);
                 }
             }
         }
@@ -140,7 +151,9 @@ export function App(props: AppProps): JSX.Element {
         HtmlStorageHelper.raiseLoggedOutEvent();
 
         // Try to logout, which could fail due to activity on other tab, in which case move to a logged out state
-        if (!await model.logout()) {
+        const success = await model.logout();
+        setError(model.getError());
+        if (!success) {
             onLoggedOut();
         }
     }
@@ -170,6 +183,7 @@ export function App(props: AppProps): JSX.Element {
      */
     async function onExpireAccessToken(): Promise<void> {
         await model.expireAccessToken();
+        setError(model.getError());
     }
 
     /*
@@ -177,6 +191,7 @@ export function App(props: AppProps): JSX.Element {
      */
     async function onExpireRefreshToken(): Promise<void> {
         await model.expireRefreshToken();
+        setError(model.getError());
     }
 
     /*
@@ -196,7 +211,7 @@ export function App(props: AppProps): JSX.Element {
 
     function getTitleProps(): TitleViewProps {
 
-        if (model.getIsLoaded()) {
+        if (isLoaded) {
 
             return {
                 userInfo: {
@@ -218,7 +233,7 @@ export function App(props: AppProps): JSX.Element {
             handleHomeClick: onHome,
             handleExpireAccessTokenClick: onExpireAccessToken,
             handleExpireRefreshTokenClick: onExpireRefreshToken,
-            handleReloadDataClick: model.reloadData,
+            handleReloadDataClick: model.triggerDataReload,
             handleLogoutClick: onLogout,
         };
     }
@@ -227,7 +242,7 @@ export function App(props: AppProps): JSX.Element {
 
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
-            error: model.getError()!,
+            error: error!,
             errorsToIgnore: [],
             containingViewName: 'main',
             hyperlinkMessage: 'Problem Encountered',
@@ -272,8 +287,8 @@ export function App(props: AppProps): JSX.Element {
         <>
             <TitleView {...getTitleProps()} />
             <HeaderButtonsView {...getHeaderButtonProps()} />
-            {model.getError() && <ErrorSummaryView {...getErrorProps()} />}
-            {model.getIsLoaded() &&
+            {error && <ErrorSummaryView {...getErrorProps()} />}
+            {isLoaded &&
                 <>
                     <SessionView {...getSessionProps()} />
                     <Routes>

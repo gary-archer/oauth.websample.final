@@ -1,4 +1,4 @@
-import {JSX, useEffect} from 'react';
+import {JSX, useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
@@ -17,9 +17,12 @@ import {TransactionsViewProps} from './transactionsViewProps';
  */
 export function TransactionsView(props: TransactionsViewProps): JSX.Element {
 
-    const model = props.viewModel.use();
-    CurrentLocation.path = useLocation().pathname;
+    // Initialize React state from the view model
+    const model = props.viewModel;
+    const [transactions, setTransactions] = useState(model.getTransactions());
+    const [error, setError] = useState(model.getError());
 
+    CurrentLocation.path = useLocation().pathname;
     const params = useParams();
     const companyId = params.id || '';
 
@@ -66,6 +69,8 @@ export function TransactionsView(props: TransactionsViewProps): JSX.Element {
     async function loadData(options?: ViewLoadOptions): Promise<void> {
 
         await model.callApi(companyId, options);
+        setTransactions(model.getTransactions());
+        setError(model.getError());
 
         // For expected forbidden errors, where the user edits the browser URL, return to the home view
         if (model.isForbiddenError()) {
@@ -77,7 +82,7 @@ export function TransactionsView(props: TransactionsViewProps): JSX.Element {
 
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         return {
-            error: model.getError()!,
+            error: error!,
             errorsToIgnore: [ErrorCodes.loginRequired],
             containingViewName: 'transactions',
             hyperlinkMessage: 'Problem Encountered in Transactions View',
@@ -89,14 +94,14 @@ export function TransactionsView(props: TransactionsViewProps): JSX.Element {
     function getChildViewProps(): TransactionsChildViewProps {
 
         return {
-            data: model.getTransactions()!,
+            data: transactions!,
         };
     }
 
     return  (
         <>
-            {model.getError() && <ErrorSummaryView {...getErrorProps()}/>}
-            {model.getTransactions() && <TransactionsChildView {...getChildViewProps()}/>}
+            {error && <ErrorSummaryView {...getErrorProps()}/>}
+            {transactions && <TransactionsChildView {...getChildViewProps()}/>}
         </>
     );
 }
