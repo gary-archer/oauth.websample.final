@@ -35,6 +35,7 @@ fi
 #
 # When connecting the SPA to a local API, run token handler components in Docker
 #
+echo "LOCALAPI='$LOCALAPI'" > ./spa/.env
 if [ "$LOCALAPI" == 'true' ]; then
 
   rm -rf localtokenhandler 2>/dev/null

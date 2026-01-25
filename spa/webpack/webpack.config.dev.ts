@@ -8,6 +8,7 @@ import {configureDevelopmentServer} from './configureDevelopmentServer.js';
 /*
  * Get the configuration file to serve
  */
+process.loadEnvFile('.env');
 const configurationFile = process.env.LOCALAPI === 'true' ?
     '../deployment/environments/dev-localapi/spa.config.json' :
     '../deployment/environments/dev/spa.config.json';
