@@ -55,7 +55,7 @@ export function App(props: AppProps): JSX.Element {
         window.onstorage = onStorage;
 
         // Initialise the main view model the first time
-        await model.initialise();
+        await initialiseData();
 
         // Next deal with the authentication state
         await handlePageLoad();
