@@ -30,11 +30,11 @@ export class ErrorCodes {
     // A general exception in the UI
     public static readonly generalUIError = 'ui_error';
 
-    // An error making an HTTP call
-    public static readonly networkError = 'network_error';
+    // An error making a fetch request to get API data
+    public static readonly connectionError = 'connection_error';
 
-    // An error receiving data as JSON
-    public static readonly jsonDataError = 'json_data_error';
+    // An error receiving API data as JSON
+    public static readonly dataError = 'data_error';
 
     // A general error response from the API
     public static readonly responseError = 'http_response_error';

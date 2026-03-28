@@ -14,7 +14,6 @@
     "build": "NODE_OPTIONS='--import tsx' webpack --config webpack/webpack.config.prod.ts"
   },
   "dependencies": {
-    "axios": "^1.13.6",
     "js-event-bus": "^1.1.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
@@ -22,19 +21,19 @@
     "react-router-dom": "^7.10.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^9.39.4",
     "@types/node": "^24.10.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/react-modal": "^3.16.3",
     "copy-webpack-plugin": "^14.0.0",
-    "eslint": "^9.39.2",
+    "eslint": "^9.39.4",
     "eslint-plugin-react": "^7.37.5",
     "purgecss": "^7.0.2",
-    "ts-loader": "^9.5.3",
+    "ts-loader": "^9.5.4",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.49.0",
+    "typescript-eslint": "^8.57.2",
     "webpack": "^5.105.4",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2",

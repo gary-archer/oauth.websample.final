@@ -1,9 +1,7 @@
-import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
 import {UIError} from '../errors/uiError';
-import {AxiosUtils} from '../utilities/axiosUtils';
 import {ConcurrentActionHandler} from '../utilities/concurrentActionHandler';
 import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {OAuthClient} from './oauthClient';
@@ -39,7 +37,7 @@ export class OAuthClientImpl implements OAuthClient {
         try {
 
             // Call the API to set up the login
-            const response = await this.callOAuthAgent('POST', 'login/start');
+            const response = await this.callOAuthAgent('POST', 'login/start', null, true);
 
             // Store the app location before the login redirect
             HtmlStorageHelper.setPreLoginLocation(currentLocation);
@@ -68,13 +66,10 @@ export class OAuthClientImpl implements OAuthClient {
                 try {
 
                     // Send the full URL to the OAuth agent API
-                    const request = {
+                    const body = {
                         pageUrl: location.href,
                     };
-                    const response = await this.callOAuthAgent(
-                        'POST',
-                        'login/end',
-                        request) as EndLoginResponse;
+                    const response = await this.callOAuthAgent('POST', 'login/end', body, true) as EndLoginResponse;
 
                     // Check for expected data in the response
                     if (!response.handled) {
@@ -114,7 +109,7 @@ export class OAuthClientImpl implements OAuthClient {
 
         try {
 
-            const response = await this.callOAuthAgent('POST', 'logout');
+            const response = await this.callOAuthAgent('POST', 'logout', null, true);
             this.clearLoginState();
             location.href = response.url;
 
@@ -147,7 +142,7 @@ export class OAuthClientImpl implements OAuthClient {
         try {
 
             // Rewrite the access token within the cookie, using existing cookies as the request credential
-            await this.callOAuthAgent('POST', 'access/expire');
+            await this.callOAuthAgent('POST', 'access/expire', null, false);
 
         } catch (e: any) {
 
@@ -166,7 +161,7 @@ export class OAuthClientImpl implements OAuthClient {
         try {
 
             // Rewrite the refresh token within the cookie, using the existing cookies as the request credential
-            await this.callOAuthAgent('POST', 'refresh/expire');
+            await this.callOAuthAgent('POST', 'refresh/expire', null, false);
 
         } catch (e: any) {
 
@@ -184,7 +179,7 @@ export class OAuthClientImpl implements OAuthClient {
 
         try {
 
-            await this.callOAuthAgent('POST', 'refresh', null);
+            await this.callOAuthAgent('POST', 'refresh', null, false);
 
         } catch (e: any) {
 
@@ -200,41 +195,55 @@ export class OAuthClientImpl implements OAuthClient {
     /*
      * A parameterized method for calling the OAuth agent
      */
-    private async callOAuthAgent(method: Method, operationPath: string, requestData: any = null): Promise<any> {
+    private async callOAuthAgent(
+        method: string,
+        operationPath: string,
+        dataToSend: any,
+        readResponse: boolean): Promise<any> {
 
+        // Set the full URL
         const url = `${this.configuration.bffBaseUrl}/oauth-agent/${operationPath}`;
+
+        // Add the token-handler-version custom header, which ensures CORS preflights
+        const headers: HeadersInit = {
+            'token-handler-version': '1',
+            'correlation-id': crypto.randomUUID(),
+        };
+
+        // Use the credentials option to send same-site cross-origin cookies to the token handler
+        const options: RequestInit = {
+            method,
+            credentials: 'include',
+            headers,
+        };
+
+        // Send JSON data if required
+        if (dataToSend) {
+            headers['content-type'] = 'application/json';
+            options.body = JSON.stringify(dataToSend);
+        }
+
         try {
 
-            // Add the token-handler-version custom header, which is required to trigger CORS preflights
-            // Also send the secure cookie to the backend for frontend origin
-            const options: AxiosRequestConfig = {
-                url,
-                method,
-                headers: {
-                    'token-handler-version': '1',
-                },
-                withCredentials: true,
-            };
+            // Try the request
+            const response = await fetch(url, options);
+            if (!response.ok) {
 
-            // Post data unless the payload is empty
-            if (requestData) {
-                (options.headers as any)['content-type'] = 'application/json';
-                options.data = requestData;
+                // Handle error responses
+                throw await ErrorFactory.getFromApiResponseError(response, 'OAuth agent');
+
+            } else {
+
+                // Return response data if required
+                if (readResponse) {
+                    return await response.json();
+                }
             }
-
-            // Make the request and return the response
-            const response = await axios.request(options as AxiosRequestConfig);
-            if (response.data) {
-
-                AxiosUtils.checkJson(response.data);
-                return response.data;
-            }
-
-            return null;
 
         } catch (e: any) {
 
-            throw ErrorFactory.fromHttpError(e, url, 'OAuth agent');
+            // Handle connection errors
+            throw ErrorFactory.getFromFetchError(e, url, 'OAuth agent');
         }
     }
 

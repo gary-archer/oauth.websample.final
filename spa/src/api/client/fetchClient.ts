@@ -1,4 +1,3 @@
-import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Company} from '../entities/company';
 import {ApiUserInfo} from '../entities/apiUserInfo';
 import {CompanyTransactions} from '../entities/companyTransactions';
@@ -6,7 +5,6 @@ import {OAuthUserInfo} from '../entities/oauthUserInfo';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {OAuthClient} from '../../plumbing/oauth/oauthClient';
-import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {FetchCache} from './fetchCache';
 import {FetchOptions} from './fetchOptions';
 
@@ -127,7 +125,7 @@ export class FetchClient {
         } catch (e1: any) {
 
             // Report errors if this is not a 401
-            const error1 = ErrorFactory.fromHttpError(e1, url, 'API');
+            const error1 = ErrorFactory.fromException(e1);
             if (error1.getStatusCode() !== 401) {
                 throw error1;
             }
@@ -143,7 +141,7 @@ export class FetchClient {
             }  catch (e2: any) {
 
                 // Save retry errors
-                const error2 = ErrorFactory.fromHttpError(e2, url, 'API');
+                const error2 = ErrorFactory.fromException(e2);
                 if (error2.getStatusCode() !== 401) {
                     throw error2;
                 }
@@ -160,36 +158,52 @@ export class FetchClient {
      * Do the work of calling the API
      */
     private async callApiWithCredential(
-        method: Method,
+        method: string,
         url: string,
         fetchOptions: FetchOptions,
         dataToSend: any = null): Promise<any> {
 
-        // Add the token-handler-version custom header, which is required to trigger CORS preflights.
-        // Also add a correlation ID for logging.
-        const headers: any = {
+        // Add the token-handler-version custom header, which ensures CORS preflights.
+        // Also add a correlation ID to include in API logs.
+        const headers: HeadersInit = {
             'token-handler-version': '1',
             'correlation-id': crypto.randomUUID(),
         };
 
-        // A special header can be sent to choose a backend API that simulates a 500 error.
+        // A custom header can be sent to choose a backend API that simulates a 500 error.
         // That behavior enables rehearsal of the end-to-end technical support process to resolve such errors.
         if (fetchOptions.causeError) {
             headers['api-exception-simulation'] = 'FinalApi';
         }
 
-        // Set options and send the secure cookie to the backend for frontend origin
-        const requestOptions = {
-            url,
+        // Use the credentials option to send same-site cross-origin cookies to the token handler
+        const options: RequestInit = {
             method,
-            data: dataToSend,
+            credentials: 'include',
             headers,
-            withCredentials: true,
-        } as AxiosRequestConfig;
+        };
 
-        // Make the API request and return the result
-        const response = await axios.request(requestOptions);
-        AxiosUtils.checkJson(response.data);
-        return response.data;
+        // Send JSON data if required
+        if (dataToSend) {
+            headers['content-type'] = 'application/json';
+            options.body = JSON.stringify(dataToSend);
+        }
+
+        try {
+
+            // Try the request
+            const response = await fetch(url, options);
+            if (response.ok) {
+                return await response.json();
+            }
+
+            // Handle error responses
+            throw await ErrorFactory.getFromApiResponseError(response, 'web API');
+
+        } catch (e: any) {
+
+            // Handle connection errors
+            throw ErrorFactory.getFromFetchError(e, url, 'web API');
+        }
     }
 }

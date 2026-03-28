@@ -1,6 +1,4 @@
-import axios from 'axios';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
-import {AxiosUtils} from '../plumbing/utilities/axiosUtils';
 import {Configuration} from './configuration';
 import {productionCloudNativeConfiguration, productionServerlessConfiguration} from './productionConfiguration';
 
@@ -26,22 +24,26 @@ export class ConfigurationLoader {
 
     /*
      * Download JSON data from the app config file
+     * Use a cache busting parameter to ensure that we always get the latest configuration
      */
     private async download(): Promise<Configuration> {
 
         const fileName = 'spa.config.json';
         const currentTime = new Date().getTime().toString();
+        const url = `${fileName}?t=${currentTime}`;
+
         try {
 
-            // Use a cache busting parameter to ensure that we always get the latest configuration
-            const response = await axios.get<Configuration>(`${fileName}?t=${currentTime}`);
-            AxiosUtils.checkJson(response.data);
-            return response.data;
+            const response = await fetch(url);
+            if (response.ok) {
+                return await response.json() as Configuration;
+            }
 
-        } catch (xhr) {
+            throw await ErrorFactory.getFromFetchResponseError(response, 'web host');
 
-            // Capture error details
-            throw ErrorFactory.fromHttpError(xhr, fileName, 'web host');
+        } catch (e: any) {
+
+            throw ErrorFactory.getFromFetchError(e, url, 'web host');
         }
     }
 }

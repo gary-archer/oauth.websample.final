@@ -29,71 +29,80 @@ export class ErrorFactory {
     }
 
     /*
-     * Return an object for Ajax errors
+     * Exceptions during fetches could be caused by CORS misconfiguration, server unavailable or JSON parsing failures
      */
-    public static fromJsonParseError(): UIError {
+    public static getFromFetchError(exception: any, url: string, source: string): UIError {
 
-        return new UIError(
-            'Data',
-            ErrorCodes.jsonDataError,
-            'HTTP response data was not valid JSON and could not be parsed');
-    }
-
-    /*
-     * Return an object for Ajax errors
-     */
-    public static fromHttpError(exception: any, url: string, source: string): UIError {
-
-        // Already handled errors
+        // Already handled
         if (exception instanceof UIError) {
             return exception;
         }
 
-        // Calculate the status code
-        let statusCode = 0;
-        if (exception.response && exception.response.status) {
-            statusCode = exception.response.status;
-        }
-
         let error: UIError;
-        if (statusCode === 0) {
+        if (exception.constructor.name === 'SyntaxError') {
 
-            // This status is generally a CORS or availability problem
+            // Handle JSON parse errors
             error = new UIError(
-                'Network',
-                ErrorCodes.networkError,
-                `A network problem occurred when the UI called the ${source}`,
-                exception.stack);
-            error.setDetails(ErrorFactory.getExceptionMessage(exception));
-
-        } else if (statusCode >= 200 && statusCode <= 299) {
-
-            // This status is generally a JSON parsing error
-            error = new UIError(
-                'JSON',
-                ErrorCodes.jsonDataError,
-                `'A technical problem occurred parsing data from the ${source}`,
-                exception.stack);
-            error.setDetails(ErrorFactory.getExceptionMessage(exception));
+                'Data',
+                ErrorCodes.dataError,
+                `Unexpected data received from the ${source}`);
 
         } else {
 
-            // Create an error indicating a data problem
+            // Handle connection or CORS errors
             error = new UIError(
-                source,
-                ErrorCodes.responseError,
-                `An error response was returned from the ${source}`,
+                'Connection',
+                ErrorCodes.connectionError,
+                `A connection error occurred when the UI called the ${source}`,
                 exception.stack);
-            error.setDetails(ErrorFactory.getExceptionMessage(exception));
-
-            // Override the default with a server response when received and CORS allows us to read it
-            if (exception.response && exception.response.data && typeof exception.response.data === 'object') {
-                ErrorFactory.updateFromApiErrorResponse(error, exception.response.data);
-            }
         }
 
-        error.setStatusCode(statusCode);
+        error.setDetails(this.getExceptionMessage(exception));
         error.setUrl(url);
+        return error;
+    }
+
+    /*
+     * Handle fetch response errors
+     */
+    public static async getFromFetchResponseError(response: Response, source: string): Promise<UIError> {
+
+        const error = new UIError(
+            source,
+            ErrorCodes.responseError,
+            `An error response was returned from the ${source}`
+        );
+
+        error.setStatusCode(response.status);
+        return error;
+    }
+
+    /*
+     * Response errors can contain JSON error details or may be non-JSON responses from an API gateway
+     */
+    public static async getFromApiResponseError(response: Response, source: string): Promise<UIError> {
+
+        const error = await this.getFromFetchResponseError(response, source);
+
+        try {
+            const apiError = await response.json();
+            if (apiError) {
+
+                // All API endpoints return JSON errors with code and message fields
+                if (apiError?.code && apiError?.message) {
+                    error.setErrorCode(apiError.code);
+                    error.setDetails(apiError.message);
+                }
+
+                // Set extra details returned for API 5xx errors
+                if (apiError?.area && apiError.id && apiError.utcTime) {
+                    error.setApiErrorDetails(apiError.area, apiError.id, apiError.utcTime);
+                }
+            }
+        } catch {
+            // Swallow JSON parse errors for unexpected responses
+        }
+
         return error;
     }
 
@@ -227,27 +236,6 @@ export class ErrorFactory {
             ErrorCodes.expiryTestError,
             `A technical problem occurred during expiry testing of the ${type} token`,
             exception.stack);
-    }
-
-    /*
-     * Try to update the default API error with response details
-     */
-    private static updateFromApiErrorResponse(error: UIError, apiError: any): void {
-
-        // Attempt to read the API error response
-        if (apiError) {
-
-            // Set the code and message, returned for both 4xx and 5xx errors
-            if (apiError.code && apiError.message) {
-                error.setErrorCode(apiError.code);
-                error.setDetails(apiError.message);
-            }
-
-            // Set extra details returned for 5xx errors
-            if (apiError.area && apiError.id && apiError.utcTime) {
-                error.setApiErrorDetails(apiError.area, apiError.id, apiError.utcTime);
-            }
-        }
     }
 
     /*
