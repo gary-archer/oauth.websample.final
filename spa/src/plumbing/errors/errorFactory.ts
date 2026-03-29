@@ -89,13 +89,13 @@ export class ErrorFactory {
             if (apiError) {
 
                 // All API endpoints return JSON errors with code and message fields
-                if (apiError?.code && apiError?.message) {
+                if (apiError.code && apiError.message) {
                     error.setErrorCode(apiError.code);
                     error.setDetails(apiError.message);
                 }
 
                 // Set extra details returned for API 5xx errors
-                if (apiError?.area && apiError.id && apiError.utcTime) {
+                if (apiError.area && apiError.id && apiError.utcTime) {
                     error.setApiErrorDetails(apiError.area, apiError.id, apiError.utcTime);
                 }
             }
