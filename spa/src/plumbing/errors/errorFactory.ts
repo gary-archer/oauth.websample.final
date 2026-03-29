@@ -69,7 +69,7 @@ export class ErrorFactory {
 
         const error = new UIError(
             source,
-            ErrorCodes.responseError,
+            ErrorCodes.fetchError,
             `An error response was returned from the ${source}`
         );
 
