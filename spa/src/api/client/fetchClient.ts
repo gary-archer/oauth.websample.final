@@ -166,6 +166,7 @@ export class FetchClient {
         // Add the token-handler-version custom header, which ensures CORS preflights.
         // Also add a correlation ID to include in API logs.
         const headers: HeadersInit = {
+            'accept': 'application/json',
             'token-handler-version': '1',
             'correlation-id': crypto.randomUUID(),
         };

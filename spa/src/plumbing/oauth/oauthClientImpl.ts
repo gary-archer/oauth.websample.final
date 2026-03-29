@@ -206,6 +206,7 @@ export class OAuthClientImpl implements OAuthClient {
 
         // Add the token-handler-version custom header, which ensures CORS preflights
         const headers: HeadersInit = {
+            'accept': 'application/json',
             'token-handler-version': '1',
             'correlation-id': crypto.randomUUID(),
         };
