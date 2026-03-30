@@ -7,7 +7,7 @@
     "moduleResolution": "Node16",
     "outDir": "dist",
     "sourceMap": true,
-    "rootDir": "./src"
+    "rootDir": "src"
   },
   "include": [
     "src"
