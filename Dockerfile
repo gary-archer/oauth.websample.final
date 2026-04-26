@@ -1,4 +1,4 @@
-FROM node:24-bookworm-slim
+FROM node:24-trixie-slim
 
 # Copy the web host application and install its dependencies
 WORKDIR /usr/webhost

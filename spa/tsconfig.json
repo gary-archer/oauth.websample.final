@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "target": "ES2017",
-    "lib": ["ES2024", "DOM"],
+    "lib": ["ES2025", "DOM"],
     "jsx": "react-jsx",
     "module": "ES2020",
     "moduleResolution": "Bundler",
