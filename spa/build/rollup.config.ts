@@ -55,14 +55,15 @@ const options: RollupOptions = {
         clearScreen: false,
     },
 
-    // Ignore this React warning
     onwarn(warning, warn) {
-    if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes('use client')) {
-        return;
-    }
 
-    warn(warning);
-  },
+        // Ignore this React warning
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes('use client')) {
+            return;
+        }
+
+        warn(warning);
+    },
 
     plugins: [
 
