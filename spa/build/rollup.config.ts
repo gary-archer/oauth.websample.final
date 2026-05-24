@@ -3,14 +3,14 @@ import {nodeResolve} from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
-import fs from 'fs/promises';
 import path from 'path';
-import {PurgeCSS} from 'purgecss';
 import {defineConfig, RollupOptions} from 'rollup';
 import copy from 'rollup-plugin-copy';
-import {writeProductionAssets} from './writeProductionAssets';
+import {copyOnEdit, openBrowser} from './plugins/developmentPlugins';
+import {finalizeBundles, renderBundles, writeCssAndHtml} from './plugins/productionPlugins';
 
 const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
+const outputFolder = 'dist';
 const timestamp = new Date().getTime().toString();
 
 const options: RollupOptions = {
@@ -18,8 +18,8 @@ const options: RollupOptions = {
     input: 'src/index.tsx',
     output: {
 
-        // Build ECMAScript modules to the dist folder
-        dir: 'dist',
+        // Output ECMAScript modules
+        dir: outputFolder,
         format: 'esm',
 
         // Define name formats for the entry point app chunk, and any manual and dynamic chunks
@@ -75,9 +75,7 @@ const options: RollupOptions = {
         commonjs(),
 
         // Use tslib and the typescript plugin with the settings from the tsconfig.json file
-        typescript({
-            sourceMap: true,
-        }),
+        typescript(),
 
         // React requires the NODE_ENV value and we add IS_DEBUG to determine whether to render exception stack traces
         replace({
@@ -89,59 +87,25 @@ const options: RollupOptions = {
         // During a build, copy static files to the output folder
         copy({
             targets: [
-                { src: 'favicon.ico', dest: 'dist' },
-                { src: ['index.html', 'css/*'], dest: 'dist' },
-                { src: 'spa.config.json', dest: 'dist' },
+                { src: 'favicon.ico', dest: outputFolder },
+                { src: ['index.html', 'css/*'], dest: outputFolder },
+                { src: 'spa.config.json', dest: outputFolder },
             ],
         }),
 
         env === 'development' ? [
 
-            // A simple plugin to copy these files to the output folder when edited
-            {
-                name: 'watch-external',
-                buildStart() {
-                    this.addWatchFile('index.html');
-                    this.addWatchFile('css');
-                    this.addWatchFile('spa.config.json');
-                },
-            },
+            // Add development plugins to copy files to the dist folder
+            copyOnEdit(),
+            openBrowser(),
 
         ] : [
 
-            // A simple plugin to add cache-busting timestamps to references inside bundles
-            {
-                name: 'add-timestamp-to-bundle-refs',
-                renderChunk(code: string) {
-
-                    const timestamped = `.bundle.js?t=${timestamp}`;
-                    return {
-                        code: code.replace(/\.bundle\.js\b/g, timestamped),
-                        map: null,
-                    };
-                }
-            },
-
-            // Minimize bundles
+            // For production builds, adjust bundle output and write the final CSS and HTML
             terser(),
-
-            // Run final logic when the build completes
-            {
-                name: 'rewrite-output',
-                async writeBundle() {
-
-                    // Produce minified CSS
-                    const result = await new PurgeCSS().purge({
-                        css: ['css/bootstrap.css'],
-                        content: ['dist/app.bundle.js'],
-                        safelist: ['body', 'container'],
-                    });
-                    await fs.writeFile('dist/bootstrap.css', result[0].css);
-
-                    // Use custom code to rewrite the index.html file
-                    writeProductionAssets(timestamp);
-                }
-            }
+            renderBundles(timestamp),
+            finalizeBundles(),
+            writeCssAndHtml(outputFolder, timestamp),
         ]
     ],
 };

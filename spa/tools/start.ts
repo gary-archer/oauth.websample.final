@@ -1,9 +1,21 @@
 import {spawn} from 'child_process';
-import open from 'open';
+
+/*
+ * Run a development server to serve static content
+ */
+console.log('Running development web server ...');
+const server = spawn(
+    'tsx',
+    ['tools/developmentWebServer.ts'],
+    {
+        stdio: 'inherit',
+    }
+);
 
 /*
  * Run rollup in watch mode
  */
+console.log('Starting rollup build ...');
 const rollup = spawn(
     'rollup',
     ['--config', 'build/rollup.config.ts', '--watch'],
@@ -15,24 +27,6 @@ const rollup = spawn(
         },
     }
 );
-
-/*
- * Run a development server to serve static content
- */
-const server = spawn(
-    'tsx',
-    ['tools/developmentWebServer.ts'],
-    {
-        stdio: 'inherit',
-    }
-);
-
-/*
- * Open the browser once content is built
- */
-setTimeout(() => {
-    open('https://www.authsamples-dev.com/spa/');
-}, 1000);
 
 /*
  * Handle shutdown
