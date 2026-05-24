@@ -12,7 +12,6 @@ interface Configuration {
     sslCertificateFileName: string;
     sslCertificatePassword: string;
     trustedHosts: string[];
-    liveReloadHost: string;
 }
 
 const configurationFolder = process.env.LOCALAPI ?
@@ -43,7 +42,7 @@ const httpsOptions = {
 const liveReloadServer = livereload.createServer({
     host: 'www.authsamples-dev.com',
     https: httpsOptions,
-    mindelay: 250,
+    delay: 300,
 });
 liveReloadServer.watch('dist');
 app.use(connectLivereload());
@@ -69,10 +68,21 @@ server.listen(configuration.port, () => {
  */
 function setSecurityHeaders(request: Request, response: Response, next: NextFunction): any {
 
-    const trustedHosts = configuration.trustedHosts.join(' ');
+    // The live reload server injects a script into index.html that uses a live reload port
+    const extraScriptHosts = [
+        'https://www.authsamples-dev.com:35729',
+    ];
+
+    // When the script runs, the browser calls the live reload server's web socket endpoint
+    const extraConnectHosts = [
+        ...configuration.trustedHosts,
+        'wss://www.authsamples-dev.com:35729',
+    ];
+    
+    
     let policy = "default-src 'none';";
-    policy += ` script-src 'self' ${configuration.liveReloadHost};`;
-    policy += ` connect-src 'self' ${trustedHosts};`;
+    policy += ` script-src 'self' ${extraScriptHosts.join(' ')};`;
+    policy += ` connect-src 'self' ${extraConnectHosts.join(' ')};`;
     policy += " child-src 'self';";
     policy += " img-src 'self';";
     policy += " style-src 'self';";
