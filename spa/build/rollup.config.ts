@@ -6,8 +6,8 @@ import typescript from '@rollup/plugin-typescript';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
 import copy from 'rollup-plugin-copy';
-import {copyOnEdit, openBrowser} from './plugins/developmentPlugins';
-import {finalizeBundles, renderBundles, writeCssAndHtml} from './plugins/productionPlugins';
+import {copyOnEdit, openBrowser} from './plugins/developmentPlugins.js';
+import {finalizeBundles, renderBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
 
 const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
 const outputFolder = 'dist';
