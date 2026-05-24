@@ -3,11 +3,16 @@ import {nodeResolve} from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import fs from 'fs/promises';
 import path from 'path';
+import {PurgeCSS} from 'purgecss';
 import {defineConfig, RollupOptions} from 'rollup';
 import copy from 'rollup-plugin-copy';
+import {writeProductionAssets} from './writeProductionAssets';
 
 const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
+const timestamp = new Date().getTime().toString();
+
 const options: RollupOptions = {
 
     input: 'src/index.tsx',
@@ -92,7 +97,7 @@ const options: RollupOptions = {
 
         env === 'development' ? [
 
-            // During development, if these files are directly edited, copy them to the output folder
+            // A simple plugin to copy these files to the output folder when edited
             {
                 name: 'watch-external',
                 buildStart() {
@@ -104,8 +109,39 @@ const options: RollupOptions = {
 
         ] : [
 
-            // Deployed bundles are minimized
+            // A simple plugin to add cache-busting timestamps to references inside bundles
+            {
+                name: 'add-timestamp-to-bundle-refs',
+                renderChunk(code: string) {
+
+                    const timestamped = `.bundle.js?t=${timestamp}`;
+                    return {
+                        code: code.replace(/\.bundle\.js\b/g, timestamped),
+                        map: null,
+                    };
+                }
+            },
+
+            // Minimize bundles
             terser(),
+
+            // Run final logic when the build completes
+            {
+                name: 'rewrite-output',
+                async writeBundle() {
+
+                    // Produce minified CSS
+                    const result = await new PurgeCSS().purge({
+                        css: ['css/bootstrap.css'],
+                        content: ['dist/app.bundle.js'],
+                        safelist: ['body', 'container'],
+                    });
+                    await fs.writeFile('dist/bootstrap.css', result[0].css);
+
+                    // Use custom code to rewrite the index.html file
+                    writeProductionAssets(timestamp);
+                }
+            }
         ]
     ],
 };

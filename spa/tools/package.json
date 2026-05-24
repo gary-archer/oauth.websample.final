@@ -1,7 +1,7 @@
 {
   "name": "tools",
   "version": "1.0.0",
-  "description": "Development setup dependencies for the SPA",
+  "description": "Extra SPA dependencies during development, such as for the development web server",
   "author": "Gary Archer",
   "license": "MIT",
   "type": "module",
@@ -10,7 +10,6 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
-    "@types/node": "^24.10.3",
     "connect-livereload": "^0.6.1",
     "express": "^5.2.1",
     "livereload": "^0.10.3",

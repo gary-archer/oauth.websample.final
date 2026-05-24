@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "eslint .",
     "start": "tsx tools/start.ts",
-    "build": "NODE_OPTIONS='--import tsx' rollup --config build/rollup.config.ts"
+    "build": "rm -rf dist && NODE_OPTIONS='--import tsx' rollup --config build/rollup.config.ts"
   },
   "dependencies": {
     "js-event-bus": "^1.1.1",
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@types/node": "^24.10.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/react-modal": "^3.16.3",
