@@ -19,7 +19,7 @@ const configurationJson = await fs.readFile('tools/webhost.config.json', 'utf-8'
 const configuration =  JSON.parse(configurationJson) as Configuration;
 
 /*
- * Create the Express host and set up a strong content security policy
+ * Create the Express host and develop with a strong content security policy
  */
 const app = express();
 app.use('/*_', setSecurityHeaders);
@@ -61,12 +61,11 @@ server.listen(configuration.port, () => {
 });
 
 /*
- * Set security headers for static content requests
+ * Use a strong content security policy for development
  */
 function setSecurityHeaders(request: Request, response: Response, next: NextFunction): any {
 
     const trustedHosts = configuration.trustedHosts.join(' ');
-
     let policy = "default-src 'none';";
     policy += ` script-src 'self' ${configuration.liveReloadHost};`;
     policy += ` connect-src 'self' ${trustedHosts};`;
@@ -84,7 +83,6 @@ function setSecurityHeaders(request: Request, response: Response, next: NextFunc
     response.setHeader('x-xss-protection', '1; mode=block');
     response.setHeader('x-content-type-options', 'nosniff');
     response.setHeader('referrer-policy', 'same-origin');
-
     next();
 }
 
