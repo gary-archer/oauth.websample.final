@@ -70,10 +70,8 @@ const options: RollupOptions = {
         commonjs(),
 
         // Use tslib and the typescript plugin with the settings from the tsconfig.json file
-        // Set the source root from the dist folder, to fix relative paths supplied to sourcemapPathTransform
         typescript({
             sourceMap: true,
-            sourceRoot: '../src',
         }),
 
         // React requires the NODE_ENV value and we add IS_DEBUG to determine whether to render exception stack traces

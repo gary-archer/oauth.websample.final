@@ -8,6 +8,7 @@
     "moduleResolution": "Bundler",
     "outDir": "dist",
     "sourceMap": true,
+    "sourceRoot": "",
     "rootDir": "src"
   },
   "include": [
