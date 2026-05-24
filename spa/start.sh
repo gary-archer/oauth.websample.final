@@ -27,7 +27,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Build and run the SPA on the webpack development server
+# Build and run the SPA with a development static content server
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:
 # - sudo setcap 'cap_net_bind_service=+ep' $(which node)
 #
