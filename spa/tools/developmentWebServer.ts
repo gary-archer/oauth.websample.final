@@ -40,7 +40,6 @@ const httpsOptions = {
  * During development, integrate live reload on port 35729
  */
 const liveReloadServer = livereload.createServer({
-    host: 'www.authsamples-dev.com',
     https: httpsOptions,
     delay: 300,
 });
@@ -78,8 +77,7 @@ function setSecurityHeaders(request: Request, response: Response, next: NextFunc
         ...configuration.trustedHosts,
         'wss://www.authsamples-dev.com:35729',
     ];
-    
-    
+
     let policy = "default-src 'none';";
     policy += ` script-src 'self' ${extraScriptHosts.join(' ')};`;
     policy += ` connect-src 'self' ${extraConnectHosts.join(' ')};`;
