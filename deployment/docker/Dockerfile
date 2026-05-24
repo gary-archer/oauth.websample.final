@@ -2,8 +2,8 @@ FROM node:24-trixie-slim
 
 # Copy the web host application and install its dependencies
 WORKDIR /usr/webhost
-COPY --chown=10001:10000 deployment/docker/webhost/dist          /usr/webhost/dist
-COPY --chown=10001:10000 deployment/docker/webhost/package*.json /usr/webhost/
+COPY --chown=10001:10000 deployment/docker/dist          /usr/webhost/dist
+COPY --chown=10001:10000 deployment/docker/package*.json /usr/webhost/
 RUN npm install --omit=dev
 
 # Copy the SPA's static content files

@@ -13,7 +13,7 @@ const server = spawn(
 );
 
 /*
- * Run rollup in watch mode
+ * Run the rollup bundler in watch mode
  */
 console.log('Starting rollup build ...');
 const rollup = spawn(

@@ -1,7 +1,7 @@
 {
   "name": "tools",
   "version": "1.0.0",
-  "description": "Extra SPA dependencies during development, such as for the development web server",
+  "description": "Extra SPA dependencies during development, for the development web server",
   "author": "Gary Archer",
   "license": "MIT",
   "type": "module",
@@ -12,7 +12,6 @@
     "@types/express": "^5.0.6",
     "connect-livereload": "^0.6.1",
     "express": "^5.2.1",
-    "livereload": "^0.10.3",
-    "open": "^11.0.0"
+    "livereload": "^0.10.3"
   }
 }

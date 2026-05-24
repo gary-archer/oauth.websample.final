@@ -15,7 +15,11 @@ interface Configuration {
     liveReloadHost: string;
 }
 
-const configurationJson = await fs.readFile('tools/webhost.config.json', 'utf-8');
+const configurationFolder = process.env.LOCALAPI ?
+    '../deployment/environments/dev-localapi' :
+    '../deployment/environments/dev';
+
+const configurationJson = await fs.readFile(`${configurationFolder}/webhost.config.json`, 'utf-8');
 const configuration =  JSON.parse(configurationJson) as Configuration;
 
 /*
@@ -57,7 +61,7 @@ app.get('*_', handleNotFoundPath);
  */
 const server = https.createServer(httpsOptions, app);
 server.listen(configuration.port, () => {
-    console.log(`Web host is listening on HTTPS port ${configuration.port}`);
+    console.log(`Web host is listening on HTTPS port ${configuration.port} ...`);
 });
 
 /*
