@@ -8,9 +8,9 @@ RUN npm install --omit=dev
 
 # Copy the SPA's static content files
 COPY --chown=10001:10000 spa/dist/favicon.ico /usr/webhost/
-COPY --chown=10001:10000 spa/dist/spa/*.html  /usr/webhost/spa/
-COPY --chown=10001:10000 spa/dist/spa/*.js    /usr/webhost/spa/
-COPY --chown=10001:10000 spa/dist/spa/*.css   /usr/webhost/spa/
+COPY --chown=10001:10000 spa/dist/*.html      /usr/webhost/spa/
+COPY --chown=10001:10000 spa/dist/*.js        /usr/webhost/spa/
+COPY --chown=10001:10000 spa/dist/*.css       /usr/webhost/spa/
 
 #  Run the web host as a low privilege user
 RUN groupadd --gid 10000 webuser \

@@ -17,11 +17,11 @@ const options: RollupOptions = {
         dir: 'dist',
         format: 'esm',
 
-        // The app uses an entry chunk and additional vendor chunks
+        // Define name formats for the entry point app chunk, and any manual and dynamic chunks
         entryFileNames: 'app.bundle.js',
         chunkFileNames: '[name].bundle.js',
 
-        // Define content for the fixed vendor chunk referenced in index.html
+        // Define content for manual chunks, which are referenced in index.html
         manualChunks: (id: string) => {
 
             if (!id.includes('node_modules')) {
@@ -106,7 +106,7 @@ const options: RollupOptions = {
 
         ] : [
 
-            // Minify production bundles
+            // Deployed bundles are minimized
             terser(),
         ]
     ],
