@@ -1,45 +1,24 @@
 import crypto from 'crypto';
 import fs from 'fs/promises';
 import {PurgeCSS} from 'purgecss';
-import {OutputBundle, OutputChunk, Plugin} from 'rollup';
+import {NormalizedOutputOptions, OutputBundle, OutputChunk, Plugin} from 'rollup';
 
 /*
- * Make some small edits to bundles as rollup renders their code
- */
-export function renderBundles(timestamp: string): Plugin {
-
-    const plugin: Plugin = {
-
-        name: 'render-bundles',
-        renderChunk(code: string) {
-
-            // When bundles reference each other, use a cache busting timestamp
-            return {
-                code: code.replace(/\.bundle\.js\b/g, `.bundle.js?t=${timestamp}`),
-                map: null,
-            };
-        }
-    };
-
-    return plugin;
-}
-
-/*
- * Make some small edits once rollup finishes rendering code
+ * Remove the source map line from production bundles
+ * I do not deploy map files to the web host, so this prevents browser warnings in the console
  */
 export function finalizeBundles(): Plugin {
 
     const plugin: Plugin = {
 
         name: 'finalize-bundles',
-        generateBundle(options, bundle: OutputBundle) {
+        generateBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
 
             for (const file of Object.values(bundle)) {
 
                 if (file.type === 'chunk') {
 
                     const chunk = file as OutputChunk;
-
                     chunk.code = chunk.code
                         .replace(/\s*\/\/[@#]\s*sourceMappingURL=.*\s*$/, '')
                         .replace(/\s+$/, '');
@@ -54,23 +33,26 @@ export function finalizeBundles(): Plugin {
 /*
  * Produce the final CSS and HTML
  */
-export function writeCssAndHtml(outputFolder: string, timestamp: string): Plugin {
+export function writeCssAndHtml(buildId: string, outputFolder: string): Plugin {
 
     const plugin: Plugin = {
 
         name: 'rewrite-css-and-html',
         async writeBundle() {
 
-            // Write minified CSS to the output folder
+            // Copy the app.css with a dynamic filename
+            await fs.copyFile('css/app.css', `dist/app.${buildId}.css`);
+
+            // Copy reduced boostrap CSS to the output folder with a dynamic filename
             const result = await new PurgeCSS().purge({
                 css: ['css/bootstrap.css'],
-                content: [`${outputFolder}/app.bundle.js`],
+                content: [`${outputFolder}/app.${buildId}.bundle.js`],
                 safelist: ['body', 'container'],
             });
-            await fs.writeFile('dist/bootstrap.css', result[0].css);
+            await fs.writeFile(`dist/bootstrap.${buildId}.css`, result[0].css);
 
-            // Write the final index.html with subresource integrity attributes and cache busting timestamps
-            await rewriteIndexHtml(outputFolder, timestamp);
+            // Write dynamic filenames to index.html and add subresource integrity attributes
+            await rewriteIndexHtml(outputFolder, buildId);
         }
     };
 
@@ -80,53 +62,53 @@ export function writeCssAndHtml(outputFolder: string, timestamp: string): Plugin
 /*
  * Update each item in the index.html file
  */
-async function rewriteIndexHtml(outputFolder: string, timestamp: string): Promise<void> {
+async function rewriteIndexHtml(outputFolder: string, buildId: string): Promise<void> {
 
     // Update CSS resources with a cache busting timestamp and an integrity hash
     await updateHtmlItem(
         outputFolder,
         'href',
         'bootstrap.css',
-        timestamp);
+        `bootstrap.${buildId}.css`);
 
     await updateHtmlItem(
         outputFolder,
         'href',
         'app.css',
-        timestamp);
+        `app.${buildId}.css`);
 
     // Update Javascript resources with a cache busting timestamp and an integrity hash
     await updateHtmlItem(
         outputFolder,
         'src',
         'vendor.bundle.js',
-        timestamp);
+        `vendor.${buildId}.bundle.js`);
 
     await updateHtmlItem(
         outputFolder,
         'src',
         'react.bundle.js',
-        timestamp);
+        `react.${buildId}.bundle.js`);
 
     await updateHtmlItem(
         outputFolder,
         'src',
         'app.bundle.js',
-        timestamp);
+        `app.${buildId}.bundle.js`);
 }
 
 /*
- * Update an index.html JS or CSS resource with a cache busting timestamp and a script integrity value
+ * Update an index.html JS or CSS resource with a dynamic filename and a script integrity value
  */
 async function updateHtmlItem(
     outFolder: string,
     itemType: string,
-    name: string,
-    timestamp: string): Promise<void> {
+    originalName: string,
+    dynamicName: string): Promise<void> {
 
-    const integrity = await calculateItemHash(`${outFolder}/${name}`);
-    const from = `${itemType}='${name}'`;
-    const to = `${itemType}='${name}?t=${timestamp}' integrity='${integrity}'`;
+    const integrity = await calculateItemHash(`${outFolder}/${dynamicName}`);
+    const from = `${itemType}='${originalName}'`;
+    const to = `${itemType}='${dynamicName}' integrity='${integrity}'`;
 
     const oldData = await fs.readFile(`${outFolder}/index.html`, 'utf8');
     const regex = new RegExp(from, 'g');

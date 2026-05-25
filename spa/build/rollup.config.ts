@@ -3,11 +3,12 @@ import {nodeResolve} from '@rollup/plugin-node-resolve';
 import _replace from '@rollup/plugin-replace';
 import _terser from '@rollup/plugin-terser';
 import _typescript from '@rollup/plugin-typescript';
+import {randomUUID} from 'crypto';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
 import _copy from 'rollup-plugin-copy';
 import {copyOnEdit, openBrowser} from './plugins/developmentPlugins.js';
-import {finalizeBundles, renderBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
+import {finalizeBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
 
 // This prevents Visual Studio Code intellisense errors
 // - https://github.com/rollup/plugins/issues/1662
@@ -18,9 +19,9 @@ const copy = _copy as unknown as typeof _copy.default;
 const terser = _terser as unknown as typeof _terser.default;
 
 // Set base values and use the watch flag to distinguish between development v production builds
-const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
+const isDevelopment = process.env.ROLLUP_WATCH === 'true';
+const buildId = randomUUID().slice(0, 8);
 const outputFolder = 'dist';
-const timestamp = new Date().getTime().toString();
 
 const options: RollupOptions = {
 
@@ -31,11 +32,11 @@ const options: RollupOptions = {
         dir: outputFolder,
         format: 'esm',
 
-        // Define name formats for the entry point app chunk, and any manual and dynamic chunks
-        entryFileNames: 'app.bundle.js',
-        chunkFileNames: '[name].bundle.js',
+        // Define chunks names for the entry point app chunk, and any manual and dynamic chunks
+        entryFileNames: isDevelopment ? 'app.bundle.js' : `app.${buildId}.bundle.js`,
+        chunkFileNames: isDevelopment ? '[name].bundle.js' : `[name].${buildId}.bundle.js`,
 
-        // Define content for manual chunks, which are referenced in index.html
+        // Define content for chunks referenced in index.html
         manualChunks: (id: string) => {
 
             if (!id.includes('node_modules')) {
@@ -90,22 +91,29 @@ const options: RollupOptions = {
         // React requires the NODE_ENV value and we add IS_DEBUG to determine whether to render exception stack traces
         replace({
             'process.env.NODE_ENV': JSON.stringify('production'),
-            'IS_DEBUG': JSON.stringify(env === 'development'),
+            'IS_DEBUG': JSON.stringify(isDevelopment),
             preventAssignment: true,
         }),
 
-        // During a build, copy static files to the output folder
+        // Copy these static files to the output folder when a build completes
         copy({
             targets: [
                 { src: 'favicon.ico', dest: outputFolder },
-                { src: ['index.html', 'css/*'], dest: outputFolder },
+                { src: 'index.html', dest: outputFolder },
                 { src: 'spa.config.json', dest: outputFolder },
             ],
         }),
 
-        env === 'development' ? [
+        isDevelopment ? [
 
-            // Add development plugins to copy files on edit and open the system browser
+            // For development builds, copy CSS files directly to the output folder
+            copy({
+                targets: [
+                    { src: 'css/*', dest: outputFolder },
+                ],
+            }),
+
+            // Add development plugins to copy files after CSS / HTML edits and to open the system browser
             copyOnEdit(),
             openBrowser(),
 
@@ -113,9 +121,8 @@ const options: RollupOptions = {
 
             // For production builds, adjust bundle output and write the final CSS and HTML
             terser(),
-            renderBundles(timestamp),
             finalizeBundles(),
-            writeCssAndHtml(outputFolder, timestamp),
+            writeCssAndHtml(buildId, outputFolder),
         ]
     ],
 };
