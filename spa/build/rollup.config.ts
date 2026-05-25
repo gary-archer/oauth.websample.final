@@ -1,14 +1,23 @@
-import commonjs from '@rollup/plugin-commonjs';
+import _commonjs from '@rollup/plugin-commonjs';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
-import replace from '@rollup/plugin-replace';
-import terser from '@rollup/plugin-terser';
-import typescript from '@rollup/plugin-typescript';
+import _replace from '@rollup/plugin-replace';
+import _terser from '@rollup/plugin-terser';
+import _typescript from '@rollup/plugin-typescript';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
-import copy from 'rollup-plugin-copy';
+import _copy from 'rollup-plugin-copy';
 import {copyOnEdit, openBrowser} from './plugins/developmentPlugins.js';
 import {finalizeBundles, renderBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
 
+// This prevents Visual Studio Code intellisense errors
+// - https://github.com/rollup/plugins/issues/1662
+const commonjs = _commonjs as unknown as typeof _commonjs.default;
+const typescript = _typescript as unknown as typeof _typescript.default;
+const replace = _replace as unknown as typeof _replace.default;
+const copy = _copy as unknown as typeof _copy.default;
+const terser = _terser as unknown as typeof _terser.default;
+
+// Set base values and use the watch flag to distinguish between development v production builds
 const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
 const outputFolder = 'dist';
 const timestamp = new Date().getTime().toString();
@@ -96,7 +105,7 @@ const options: RollupOptions = {
 
         env === 'development' ? [
 
-            // Add development plugins to copy files to the dist folder
+            // Add development plugins to copy files on edit and open the system browser
             copyOnEdit(),
             openBrowser(),
 
