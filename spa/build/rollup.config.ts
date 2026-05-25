@@ -105,14 +105,14 @@ const options: RollupOptions = {
 
         isDevelopment ? [
 
-            // Copy CSS files to the output folder when a build completes
+            // In development, copy CSS files directly to the output folder when a build completes
             copy({
                 targets: [
                     { src: 'css/*', dest: outputFolder },
                 ],
             }),
 
-            // Add development plugins to copy files after CSS / HTML edits and to open the system browser
+            // Add development plugins to copy non JavaScript files and to open the system browser
             copyConfiguration(),
             copyOnEdit(),
             openBrowser(),
