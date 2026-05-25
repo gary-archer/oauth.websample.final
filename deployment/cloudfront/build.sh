@@ -10,7 +10,7 @@ cd ../..
 #
 # Build the SPA's Javascript bundles
 #
-./spa/buildRelease.sh
+./spa/build.sh
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   exit
