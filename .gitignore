@@ -6,5 +6,4 @@ certs/*.p12
 certs/*.crt
 certs/*.key
 localtokenhandler
-.env
 .package
