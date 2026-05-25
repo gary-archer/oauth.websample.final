@@ -7,7 +7,7 @@ import {randomUUID} from 'crypto';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
 import _copy from 'rollup-plugin-copy';
-import {copyOnEdit, openBrowser} from './plugins/developmentPlugins.js';
+import {copyConfiguration, copyOnEdit, openBrowser} from './plugins/developmentPlugins.js';
 import {finalizeBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
 
 // This prevents Visual Studio Code intellisense errors
@@ -100,13 +100,12 @@ const options: RollupOptions = {
             targets: [
                 { src: 'favicon.ico', dest: outputFolder },
                 { src: 'index.html', dest: outputFolder },
-                { src: 'spa.config.json', dest: outputFolder },
             ],
         }),
 
         isDevelopment ? [
 
-            // For development builds, copy CSS files directly to the output folder
+            // Copy CSS files to the output folder when a build completes
             copy({
                 targets: [
                     { src: 'css/*', dest: outputFolder },
@@ -114,6 +113,7 @@ const options: RollupOptions = {
             }),
 
             // Add development plugins to copy files after CSS / HTML edits and to open the system browser
+            copyConfiguration(),
             copyOnEdit(),
             openBrowser(),
 
