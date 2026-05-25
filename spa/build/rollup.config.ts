@@ -10,7 +10,7 @@ import _copy from 'rollup-plugin-copy';
 import {copyConfiguration, copyOnEdit, openBrowser} from './plugins/developmentPlugins.js';
 import {finalizeBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
 
-// This prevents Visual Studio Code intellisense errors
+// Type updates to prevent Visual Studio Code intellisense warnings
 // - https://github.com/rollup/plugins/issues/1662
 const commonjs = _commonjs as unknown as typeof _commonjs.default;
 const typescript = _typescript as unknown as typeof _typescript.default;
