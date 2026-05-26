@@ -40,10 +40,12 @@ const httpsOptions = {
 /*
  * During development, integrate live reload on port 35729
  */
-const liveReloadServer = livereload.createServer({
+const reloadOptions = {
     https: httpsOptions,
+    host: configuration.hostname,
     delay: 300,
-});
+};
+const liveReloadServer = livereload.createServer(reloadOptions);
 liveReloadServer.watch('dist');
 app.use(connectLivereload());
 
