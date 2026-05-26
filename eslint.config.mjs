@@ -1,10 +1,11 @@
 
 import {defineConfig, globalIgnores} from 'eslint/config'
 import js from '@eslint/js';
+import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-    globalIgnores(['dist']),
+    globalIgnores(['dist', 'localtokenhandler']),
     {
         files: ['**/*.{ts,tsx}'],
         extends: [
@@ -23,6 +24,16 @@ export default defineConfig([
             '@typescript-eslint/explicit-module-boundary-types': ['error', {
                 'allowArgumentsExplicitlyTypedAsAny': true,
             }],
+            ... react.configs.recommended.rules,
+            'react/react-in-jsx-scope': 'off',
+        },
+        plugins: {
+            react,
+        },
+        settings: {
+            react: {
+                version: 'detect',
+            },
         },
     },
 ]);

@@ -10,7 +10,7 @@ cd ../..
 #
 # Build the SPA's Javascript bundles
 #
-./spa/buildRelease.sh
+./build.sh
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   exit
@@ -26,7 +26,7 @@ mkdir .package/spa
 #
 # Copy HTML assets
 #
-cp ./spa/dist/favicon.ico    .package
-cp ./spa/dist/spa/index.html .package/spa
-cp ./spa/dist/spa/*.js       .package/spa
-cp ./spa/dist/spa/*.css      .package/spa
+cp ./dist/favicon.ico .package
+cp ./dist/index.html  .package/spa
+cp ./dist/*.js        .package/spa
+cp ./dist/*.css       .package/spa

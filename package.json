@@ -1,0 +1,38 @@
+{
+  "name": "finalspa",
+  "version": "3.0.0",
+  "description": "An SPA that sends tokens to OAuth 2.0 secured APIs using HTTP-only SameSite cookies",
+  "author": "Gary Archer",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "start": "rm -rf dist && tsx tools/start.ts",
+    "build": "rm -rf dist && NODE_OPTIONS='--import tsx' rollup --config build/rollup.config.ts"
+  },
+  "dependencies": {
+    "js-event-bus": "^1.1.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-modal": "^3.16.3",
+    "react-router-dom": "^7.15.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@types/react-modal": "^3.16.3",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react": "^7.37.5",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.58.0"
+  },
+  "workspaces": [
+    "build",
+    "tools"
+  ]
+}

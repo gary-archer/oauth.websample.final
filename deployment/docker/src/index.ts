@@ -2,9 +2,15 @@ import compression from 'compression';
 import express, {NextFunction, Request, Response} from 'express';
 import fs from 'fs/promises';
 import https from 'https';
-import {Configuration} from './configuration.js';
 
 // First load configuration
+export interface Configuration {
+    port: number;
+    sslCertificateFileName: string;
+    sslCertificatePassword: string;
+    trustedHosts: string[];
+}
+
 const configurationJson = await fs.readFile('webhost.config.json', 'utf-8');
 const configuration =  JSON.parse(configurationJson) as Configuration;
 
