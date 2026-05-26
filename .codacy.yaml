@@ -1,6 +1,5 @@
 ---
 exclude_paths:
   - '*'
-  - 'images/**'
   - 'deployment/**'
-  
+  - 'images/**'
