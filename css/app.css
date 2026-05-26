@@ -49,7 +49,7 @@
     position: relative;
     display: inline-block;
  }
-  
+
 .basictooltip .basictooltiptext {
     visibility: hidden;
     width: 150px;
@@ -64,7 +64,7 @@
     left: 50%;
     margin-left: -100px;
 }
-  
+
 .basictooltip:hover .basictooltiptext {
     visibility: visible;
 }
