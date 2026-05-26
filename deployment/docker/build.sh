@@ -28,7 +28,7 @@ fi
 #
 # Build the React SPA's code in release mode
 #
-../../spa/build.sh
+../../build.sh
 if [ $? -ne 0 ]; then
   echo 'Problem encountered building the SPA'
   exit

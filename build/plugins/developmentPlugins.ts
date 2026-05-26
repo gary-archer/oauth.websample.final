@@ -8,8 +8,8 @@ import open from 'open';
 export function copyConfiguration(): Plugin {
 
     const configurationFile = process.env.LOCALAPI === 'true' ?
-        '../deployment/environments/dev-localapi/spa.config.json' :
-        '../deployment/environments/dev/spa.config.json';
+        './deployment/environments/dev-localapi/spa.config.json' :
+        './deployment/environments/dev/spa.config.json';
 
     const plugin: Plugin = {
 

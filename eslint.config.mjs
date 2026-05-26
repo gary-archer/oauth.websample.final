@@ -5,7 +5,7 @@ import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-    globalIgnores(['dist']),
+    globalIgnores(['dist', 'localtokenhandler']),
     {
         files: ['**/*.{ts,tsx}'],
         extends: [

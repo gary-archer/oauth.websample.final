@@ -8,6 +8,7 @@ import livereload from 'livereload';
  * First load configuration
  */
 interface Configuration {
+    hostname: 'www.authsamples-dev.com',
     port: number;
     sslCertificateFileName: string;
     sslCertificatePassword: string;
@@ -15,8 +16,8 @@ interface Configuration {
 }
 
 const configurationFolder = process.env.LOCALAPI ?
-    '../deployment/environments/dev-localapi' :
-    '../deployment/environments/dev';
+    './deployment/environments/dev-localapi' :
+    './deployment/environments/dev';
 
 const configurationJson = await fs.readFile(`${configurationFolder}/webhost.config.json`, 'utf-8');
 const configuration =  JSON.parse(configurationJson) as Configuration;
@@ -69,13 +70,13 @@ function setSecurityHeaders(request: Request, response: Response, next: NextFunc
 
     // The live reload server injects a script into index.html that uses a live reload port
     const extraScriptHosts = [
-        'https://www.authsamples-dev.com:35729',
+        `https://${configuration.hostname}:35729`,
     ];
 
     // When the script runs, the browser calls the live reload server's web socket endpoint
     const extraConnectHosts = [
         ...configuration.trustedHosts,
-        'wss://www.authsamples-dev.com:35729',
+        `wss://${configuration.hostname}:35729`,
     ];
 
     let policy = "default-src 'none';";
@@ -112,7 +113,7 @@ function handleNotFoundPath(request: Request, response: Response) {
 
     } else if (requestPath.startsWith(spaBasePath)) {
 
-        // Within the SPA serve the defeault document
+        // Within the SPA serve the default document
         response.sendFile('index.html', {root: spaPhysicalRoot});
 
     } else {
