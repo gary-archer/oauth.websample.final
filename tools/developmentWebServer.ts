@@ -8,7 +8,7 @@ import livereload from 'livereload';
  * First load configuration
  */
 interface Configuration {
-    hostname: 'www.authsamples-dev.com',
+    hostname: string,
     port: number;
     sslCertificateFileName: string;
     sslCertificatePassword: string;
