@@ -61,5 +61,3 @@ fi
 aws s3 ls s3://$DOMAIN/spa --recursive \
   | awk -v cutoff="$CUTOFF" '$1 < cutoff {print $4}' \
   | xargs -I {} aws s3 rm "s3://$DOMAIN/{}"
-
-aws s3 ls s3://$DOMAIN/spa --recursive
