@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #########################################################
-# A script to deployed the SPA files to S3 and Cloudfront
+# A script to deployed the SPA files to S3 and CloudFront
 #########################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -38,10 +38,10 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Invalidate the index.html
+# Invalidate the index.html in the CloudFront cache so that users get the new one when they next reload the page
 #
 aws cloudfront create-invalidation --distribution-id="$DISTRIBUTION_ID" --paths '/spa/index.html'
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered creating a Cloudfront invalidation'
+  echo 'Problem encountered creating the CloudFront invalidation'
   exit
 fi
