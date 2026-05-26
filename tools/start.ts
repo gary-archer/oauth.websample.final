@@ -9,6 +9,7 @@ const server = spawn(
     ['tools/developmentWebServer.ts'],
     {
         stdio: 'inherit',
+        shell: process.platform === 'win32',
     }
 );
 
@@ -21,6 +22,7 @@ const rollup = spawn(
     ['--config', 'build/rollup.config.ts', '--watch'],
     {
         stdio: 'inherit',
+        shell: process.platform === 'win32',
         env: {
             ...process.env,
             NODE_OPTIONS: '--import tsx',
