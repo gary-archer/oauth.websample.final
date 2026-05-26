@@ -1,59 +1,56 @@
-.row
-{
+.row {
     margin-top: 5px;
 }
-.listRow
-{
+
+.listRow {
     height: 80px;
 }
-.mobileHeaderRow
-{
+
+.mobileHeaderRow {
     height: 60px;
 }
-.mobileRow
-{
+
+.mobileRow {
     height: 40px;
 }
-.col-one-fifth
-{
+
+.col-one-fifth {
     width: 20%;
     float: left;
 }
-.valuecolor
-{
+
+.valuecolor {
     color: blue;
 }
-.highlightcolor
-{
+
+.highlightcolor {
     color: green;
 }
-.largetext
-{
+
+.largetext {
     font-size: larger;
 }
-.errorcolor
-{
+
+.errorcolor {
     color: red;
 }
-.errorlinecolor
-{
+
+.errorlinecolor {
     color: darkblue;
 }
-.sessionid
-{
+
+.sessionid {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
 /* A basic tooltip: https://www.w3schools.com/css/css_tooltip.asp */
-.basictooltip
-{
+.basictooltip {
     position: relative;
     display: inline-block;
  }
   
-.basictooltip .basictooltiptext
-{
+.basictooltip .basictooltiptext {
     visibility: hidden;
     width: 150px;
     background-color: gray;
@@ -68,16 +65,13 @@
     margin-left: -100px;
 }
   
-.basictooltip:hover .basictooltiptext
-{
+.basictooltip:hover .basictooltiptext {
     visibility: visible;
 }
 
 /* Reduce browser text size when the view is reduced, so that text fits */
-@media all and (max-width: 992px)
-{
-    body
-    {
+@media all and (max-width: 992px) {
+    body {
         font-size: 0.85em;
     }
 }
