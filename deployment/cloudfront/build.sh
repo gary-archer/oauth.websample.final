@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##########################################################################
-# A script to build all resources ready to upload to AWS S3 and Cloudfront
+# A script to build all resources ready to upload to AWS S3 and CloudFront
 ##########################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"

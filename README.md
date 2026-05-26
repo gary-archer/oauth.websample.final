@@ -29,7 +29,7 @@ The SPA uses user attributes from both the OpenID Connect userinfo endpoint and 
 
 ## Online System
 
-The online version uses the AWS Cloudfront content delivery network to deliver static content to the browser.\
+The online version uses the AWS CloudFront content delivery network to deliver static content to the browser.\
 Login at https://www.authsamples.com/ with this AWS Cognito test account:
 
 ```text
@@ -87,7 +87,7 @@ You can then test all lifecycle operations, including expiry events, multi-tab b
 
 * AWS Route 53 provides custom hosting domains.
 * AWS S3 is the upload point for web static content.
-* AWS Cloudfront distributes web static content globally, for equal web performance.
+* AWS CloudFront distributes web static content globally, for equal web performance.
 * AWS Certificate Manager issues and auto renews the web host's SSL certificate.
 * AWS Cognito is the default authorization server for the SPA and API components.
 * [AWS Serverless](https://github.com/gary-archer/oauth.apisample.serverless) or Kubernetes host remote API endpoints that the SPA calls.
