@@ -14,7 +14,7 @@ export function copyConfiguration(): Plugin {
     const plugin: Plugin = {
 
         name: 'copy-configuration',
-        async writeBundle() {
+        async writeBundle(): Promise<void> {
             await fs.copyFile(configurationFile, 'dist/spa.config.json');
         }
     };
@@ -29,7 +29,7 @@ export function copyOnEdit(): Plugin {
 
     const plugin: Plugin = {
         name: 'copy-on-edit',
-        buildStart() {
+        buildStart(): void {
             this.addWatchFile('index.html');
             this.addWatchFile('css');
             this.addWatchFile('spa.config.json');
@@ -47,16 +47,17 @@ export function notifyBrowser(): Plugin {
 
     const plugin: Plugin = {
         name: 'open-browser',
-        writeBundle() {
+        async writeBundle(): Promise<void> {
 
+            const webHostUrl = 'https://www.authsamples-dev.com';
             if (!isOpen) {
 
                 isOpen = true;
-                open('https://www.authsamples-dev.com/spa/');
+                open(`${webHostUrl}/spa/`);
 
             } else {
 
-                fetch('https://www.authsamples-dev.com/reload');
+                await fetch(`${webHostUrl}/reload`);
             }
         }
     };

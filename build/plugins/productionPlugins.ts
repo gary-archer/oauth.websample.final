@@ -12,7 +12,7 @@ export function finalizeBundles(): Plugin {
     const plugin: Plugin = {
 
         name: 'finalize-bundles',
-        generateBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
+        generateBundle(options: NormalizedOutputOptions, bundle: OutputBundle): void {
 
             for (const file of Object.values(bundle)) {
 
@@ -38,7 +38,7 @@ export function writeCssAndHtml(buildId: string, outputFolder: string): Plugin {
     const plugin: Plugin = {
 
         name: 'rewrite-css-and-html',
-        async writeBundle() {
+        async writeBundle(): Promise<void> {
 
             // Copy the app.css with a dynamic filename
             await fs.copyFile('css/app.css', `dist/app.${buildId}.css`);
