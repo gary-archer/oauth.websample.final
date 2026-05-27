@@ -9,9 +9,6 @@
     "node": ">=24"
   },
   "devDependencies": {
-    "@types/connect-livereload": "^0.6.3",
-    "@types/express": "^5.0.6",
-    "@types/livereload": "^0.9.5",
     "@types/node": "^24.10.3",
     "connect-livereload": "^0.6.1",
     "express": "^5.2.1",
