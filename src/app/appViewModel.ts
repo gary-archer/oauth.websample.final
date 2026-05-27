@@ -76,7 +76,6 @@ export class AppViewModel {
         }
 
         try {
-
             // Prevent re-entrancy due to React strict mode
             this.isInitialising = true;
             this.error = null;

@@ -40,18 +40,23 @@ export function copyOnEdit(): Plugin {
 }
 
 /*
- * Open the browser when a development build completes
+ * Open the browser when the first development build completes, or notify it to reload
  */
 let isOpen = false;
-export function openBrowser(): Plugin {
+export function notifyBrowser(): Plugin {
 
     const plugin: Plugin = {
-        name: 'copy-on-edit',
+        name: 'open-browser',
         writeBundle() {
 
             if (!isOpen) {
+
                 isOpen = true;
                 open('https://www.authsamples-dev.com/spa/');
+
+            } else {
+
+                fetch('https://www.authsamples-dev.com/reload');
             }
         }
     };

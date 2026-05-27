@@ -1,8 +1,7 @@
-import connectLivereload from 'connect-livereload';
 import express, {NextFunction, Request, Response} from 'express';
 import fs from 'fs/promises';
 import https from 'https';
-import livereload from 'livereload';
+import {WebSocketServer, WebSocket} from 'ws';
 
 /*
  * First load configuration
@@ -23,13 +22,13 @@ const configurationJson = await fs.readFile(`${configurationFolder}/webhost.conf
 const configuration =  JSON.parse(configurationJson) as Configuration;
 
 /*
- * Create the Express host and develop with a strong content security policy
+ * Create the Express host and set a strong content security policy
  */
 const app = express();
 app.use('/*_', setSecurityHeaders);
 
 /*
- * I develop with SSL, so load the certificate file from disk
+ * Load SSL certificate files from disk
  */
 const pfxData = await fs.readFile(configuration.sslCertificateFileName);
 const httpsOptions = {
@@ -38,16 +37,27 @@ const httpsOptions = {
 };
 
 /*
- * During development, integrate live reload on port 35729
+ * Create the HTTPS server and a web socket on the same port
  */
-const reloadOptions = {
-    https: httpsOptions,
-    host: configuration.hostname,
-    delay: 300,
-};
-const liveReloadServer = livereload.createServer(reloadOptions);
-liveReloadServer.watch('dist');
-app.use(connectLivereload());
+const server = https.createServer(httpsOptions, app);
+const wss = new WebSocketServer({
+    server,
+    path: '/reload'
+});
+
+/*
+ * Add a reload endpoint that rollup builds call, which notifies the browser client to reload itself
+ */
+app.get('/reload', (request: Request, response: Response) => {
+
+    console.log('Web socket server broadcasting reload event ...');
+    for (const client of wss.clients) {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send('reload');
+        }
+    }
+    response.sendStatus(204);
+});
 
 /*
  * Serve the static content
@@ -60,7 +70,6 @@ app.get('*_', handleNotFoundPath);
 /*
  * Start listening
  */
-const server = https.createServer(httpsOptions, app);
 server.listen(configuration.port, () => {
     console.log(`Web host is listening on HTTPS port ${configuration.port} ...`);
 });
@@ -70,20 +79,9 @@ server.listen(configuration.port, () => {
  */
 function setSecurityHeaders(request: Request, response: Response, next: NextFunction): any {
 
-    // The live reload server injects a script into index.html that uses a live reload port
-    const extraScriptHosts = [
-        `https://${configuration.hostname}:35729`,
-    ];
-
-    // When the script runs, the browser calls the live reload server's web socket endpoint
-    const extraConnectHosts = [
-        ...configuration.trustedHosts,
-        `wss://${configuration.hostname}:35729`,
-    ];
-
     let policy = "default-src 'none';";
-    policy += ` script-src 'self' ${extraScriptHosts.join(' ')};`;
-    policy += ` connect-src 'self' ${extraConnectHosts.join(' ')};`;
+    policy += " script-src 'self';";
+    policy += ` connect-src 'self' ${configuration.trustedHosts.join(' ')};`;
     policy += " child-src 'self';";
     policy += " img-src 'self';";
     policy += " style-src 'self';";

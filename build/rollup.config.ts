@@ -7,7 +7,7 @@ import {randomUUID} from 'crypto';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
 import _copy from 'rollup-plugin-copy';
-import {copyConfiguration, copyOnEdit, openBrowser} from './plugins/developmentPlugins.js';
+import {copyConfiguration, copyOnEdit, notifyBrowser} from './plugins/developmentPlugins.js';
 import {finalizeBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
 
 // Type updates to prevent Visual Studio Code intellisense warnings
@@ -108,10 +108,10 @@ const options: RollupOptions = {
                 ],
             }),
 
-            // Add development plugins to copy non JavaScript files and to open the system browser
+            // Add development plugins to copy non JavaScript files and to notify the browser
             copyConfiguration(),
             copyOnEdit(),
-            openBrowser(),
+            notifyBrowser(),
 
         ] : [
 

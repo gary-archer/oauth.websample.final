@@ -10,7 +10,7 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "start": "rm -rf dist && tsx tools/start.ts",
+    "start": "rm -rf dist && mkdir dist && tsx tools/start.ts",
     "build": "rm -rf dist && NODE_OPTIONS='--import tsx' rollup --config build/rollup.config.ts"
   },
   "dependencies": {
