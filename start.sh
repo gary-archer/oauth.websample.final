@@ -19,6 +19,11 @@ fi
 #
 if [ "$LOCALAPI" == 'true' ]; then
 
+  if [ "$SECRETS_FOLDER" == '' ]; then
+    echo 'You must supply a SECRETS_FOLDER environment variable'
+    exit 1
+  fi
+
   rm -rf localtokenhandler 2>/dev/null
   git clone https://github.com/gary-archer/oauth.tokenhandler.cloudnative localtokenhandler
   if [ $? -ne 0 ]; then
