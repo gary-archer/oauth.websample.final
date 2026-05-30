@@ -13,8 +13,8 @@ import {finalizeBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
 // Type updates to prevent Visual Studio Code intellisense warnings
 // - https://github.com/rollup/plugins/issues/1662
 const commonjs = _commonjs as unknown as typeof _commonjs.default;
-const replace = _replace as unknown as typeof _replace.default;
 const copy = _copy as unknown as typeof _copy.default;
+const replace = _replace as unknown as typeof _replace.default;
 const terser = _terser as unknown as typeof _terser.default;
 
 // Set base values and use the watch flag to distinguish between development v production builds
@@ -58,9 +58,9 @@ const options: RollupOptions = {
         clearScreen: false,
     },
 
+    // Ignore this React warning
     onwarn(warning, warn) {
 
-        // Ignore this React warning
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes('use client')) {
             return;
         }
