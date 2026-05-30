@@ -31,11 +31,9 @@ const options: RollupOptions = {
         dir: outputFolder,
         format: 'esm',
 
-        // Define chunks names for the entry point app chunk, and any manual and dynamic chunks
+        // Define chunks names for the entry point app chunk, and any initial chunks referenced in index.html
         entryFileNames: isDevelopment ? 'app.bundle.js' : `app.${buildId}.bundle.js`,
         chunkFileNames: isDevelopment ? '[name].bundle.js' : `[name].${buildId}.bundle.js`,
-
-        // Define content for chunks referenced in index.html
         manualChunks: (id: string) => {
 
             if (!id.includes('node_modules')) {
@@ -49,7 +47,7 @@ const options: RollupOptions = {
             return 'vendor';
         },
 
-        // Enable source maps and us correct paths to support SPA debugging
+        // Enable source maps and us correct paths to support debugging
         sourcemap: true,
         sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
             return path.resolve(path.dirname(sourcemapPath), relativeSourcePath);
