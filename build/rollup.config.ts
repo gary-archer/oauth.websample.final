@@ -82,6 +82,7 @@ const options: RollupOptions = {
         esbuild({
             tsconfig: './tsconfig.json',
             target: 'es2020',
+            jsx: 'automatic',
         }),
 
         // React requires the NODE_ENV value and we add IS_DEBUG to determine whether to render exception stack traces
