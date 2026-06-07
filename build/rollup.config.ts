@@ -1,21 +1,14 @@
-import _commonjs from '@rollup/plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
-import _replace from '@rollup/plugin-replace';
-import _terser from '@rollup/plugin-terser';
+import replace from '@rollup/plugin-replace';
+import terser from '@rollup/plugin-terser';
 import {randomUUID} from 'crypto';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
-import _copy from 'rollup-plugin-copy';
+import copy from 'rollup-plugin-copy';
 import esbuild from 'rollup-plugin-esbuild';
 import {copyConfiguration, copyOnEdit, notifyBrowser} from './plugins/developmentPlugins.js';
 import {finalizeBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
-
-// Type updates to prevent Visual Studio Code intellisense warnings
-// - https://github.com/rollup/plugins/issues/1662
-const commonjs = _commonjs as unknown as typeof _commonjs.default;
-const copy = _copy as unknown as typeof _copy.default;
-const replace = _replace as unknown as typeof _replace.default;
-const terser = _terser as unknown as typeof _terser.default;
 
 // Set base values and use the watch flag to distinguish between development v production builds
 const isDevelopment = process.env.ROLLUP_WATCH === 'true';
