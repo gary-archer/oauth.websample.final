@@ -31,7 +31,6 @@ export function copyOnEdit(): Plugin {
         name: 'copy-on-edit',
         buildStart(): void {
             this.addWatchFile('index.html');
-            this.addWatchFile('css');
             this.addWatchFile('spa.config.json');
         }
     };

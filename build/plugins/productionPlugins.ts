@@ -45,7 +45,7 @@ export function writeCssAndHtml(buildId: string, outputFolder: string): Plugin {
 
             // Copy reduced boostrap CSS to the output folder with a dynamic filename
             const result = await new PurgeCSS().purge({
-                css: ['css/bootstrap.css'],
+                css: ['bootstrap.css'],
                 content: [`${outputFolder}/app.${buildId}.bundle.js`],
                 safelist: ['body', 'container'],
             });

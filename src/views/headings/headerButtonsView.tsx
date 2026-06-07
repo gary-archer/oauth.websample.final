@@ -163,6 +163,8 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                     <small>Sign Out</small>
                 </button>
             </div>
+            <button className='btntailwind'>Click me</button>
+
         </div>
     );
 }
