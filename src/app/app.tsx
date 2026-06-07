@@ -48,7 +48,7 @@ export function App(props: AppProps): JSX.Element {
 
         // Support live reload during development
         if (IS_DEBUG) {
-            await import('./liveReload.js');
+            await import('./liveReload');
         }
 
         // Initialise the modal dialog system used for error popups
