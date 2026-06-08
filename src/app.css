@@ -1,9 +1,5 @@
 @import 'tailwindcss';
 
-.btntailwind {
-    @apply px-4 py-2 bg-blue-500 text-white rounded;
-}
-
 .row
 {
     margin-top: 5px;
@@ -22,12 +18,6 @@
 .mobileRow
 {
     height: 40px;
-}
-
-.col-one-fifth
-{
-    width: 20%;
-    float: left;
 }
 
 .valuecolor
@@ -53,12 +43,6 @@
 .errorlinecolor
 {
     color: darkblue;
-}
-
-.sessionid
-{
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 /* A basic tooltip: https://www.w3schools.com/css/css_tooltip.asp */
@@ -87,13 +71,4 @@
 .basictooltip:hover .basictooltiptext
 {
     visibility: visible;
-}
-
-/* Reduce browser text size when the view is reduced, so that text fits */
-@media all and (max-width: 992px)
-{
-    body
-    {
-        font-size: 0.85em;
-    }
 }

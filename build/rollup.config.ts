@@ -106,11 +106,11 @@ const options: RollupOptions = {
         isDevelopment ? [
 
             // In development, copy bootstrap CSS directly to the output folder when a build completes
-            copy({
+            /*copy({
                 targets: [
                     { src: 'src/bootstrap.css', dest: outputFolder },
                 ],
-            }),
+            }),*/
 
             // Add development plugins to copy non JavaScript files and to notify the browser
             copyConfiguration(),

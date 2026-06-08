@@ -134,13 +134,13 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     return (
         <>
             {error &&
-                <div className='text-end mx-auto'>
+                <div className='text-right'>
                     <ErrorSummaryView {...getErrorProps()}/>
                 </div>
             }
             {oauthUserInfo && apiUserInfo &&
-                <div className='text-end mx-auto'>
-                    <div className='fw-bold basictooltip'>{getUserNameForDisplay()}
+                <div className='text-right'>
+                    <div className='font-bold basictooltip'>{getUserNameForDisplay()}
                         <div className='basictooltiptext'>
                             <small>{getUserTitle()}</small>
                             <br />
