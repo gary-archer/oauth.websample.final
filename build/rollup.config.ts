@@ -4,6 +4,7 @@ import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import tailwind from '@tailwindcss/postcss';
 import {randomUUID} from 'crypto';
+import cssnano from 'cssnano';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
 import copy from 'rollup-plugin-copy';
@@ -87,15 +88,6 @@ const options: RollupOptions = {
             preventAssignment: true,
         }),
 
-        // Build CSS
-        postcss({
-            extract: isDevelopment ? 'app.css' : `app.${buildId}.css`,
-            minimize: !isDevelopment,
-            plugins: [
-                tailwind(),
-            ],
-        }),
-
         // Copy these static files to the output folder when a build completes
         copy({
             targets: [
@@ -104,7 +96,15 @@ const options: RollupOptions = {
             ],
         }),
 
-        isDevelopment ? [
+        ...(isDevelopment ? [
+
+            // Build development CSS
+            postcss({
+                extract: 'app.css',
+                plugins: [
+                    tailwind(),
+                ]
+            }),
 
             // Add development plugins to copy non JavaScript files and to notify the browser
             copyConfiguration(),
@@ -113,11 +113,20 @@ const options: RollupOptions = {
 
         ] : [
 
+            // Build production CSS
+            postcss({
+                extract: `app.${buildId}.css`,
+                plugins: [
+                    tailwind(),
+                    cssnano(),
+                ]
+            }),
+
             // For production builds, adjust bundle output and write the final index.html file
             terser(),
             finalizeBundles(),
             writeIndexHtml(buildId, outputFolder),
-        ]
+        ]),
     ],
 };
 
