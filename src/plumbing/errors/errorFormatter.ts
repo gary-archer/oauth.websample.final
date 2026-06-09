@@ -18,7 +18,7 @@ export class ErrorFormatter {
         /* FIELDS FOR THE END USER */
 
         // Keep the user informed and suggest an action
-        lines.push(this.createErrorLine('User Action', error.getUserAction(), 'highlightcolor'));
+        lines.push(this.createErrorLine('User Action', error.getUserAction(), 'text-green-700'));
 
         // Give the user summary level info, such as 'Network error'
         if (error.message.length > 0) {
@@ -56,7 +56,7 @@ export class ErrorFormatter {
 
         // Link to API logs if applicable
         if (error.getInstanceId() > 0) {
-            lines.push(this.createErrorLine('Instance Id', error.getInstanceId().toString(), 'errorcolor'));
+            lines.push(this.createErrorLine('Instance Id', error.getInstanceId().toString(), 'text-red-600'));
         }
 
         // Show the HTTP status if applicable
@@ -98,7 +98,7 @@ export class ErrorFormatter {
     /*
      * Return an error line as an object
      */
-    private createErrorLine(label: string, value: string, valueStyle = 'valuecolor'): ErrorLine {
+    private createErrorLine(label: string, value: string, valueStyle = 'text-blue-700'): ErrorLine {
 
         return {
             id: ++this.count,

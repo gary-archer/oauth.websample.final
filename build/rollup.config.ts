@@ -10,7 +10,7 @@ import copy from 'rollup-plugin-copy';
 import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
 import {copyConfiguration, copyOnEdit, notifyBrowser} from './plugins/developmentPlugins.js';
-import {finalizeBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
+import {finalizeBundles, writeIndexHtml} from './plugins/productionPlugins.js';
 
 // Set base values and use the watch flag to distinguish between development v production builds
 const isDevelopment = process.env.ROLLUP_WATCH === 'true';
@@ -90,6 +90,7 @@ const options: RollupOptions = {
         // Build CSS
         postcss({
             extract: isDevelopment ? 'app.css' : `app.${buildId}.css`,
+            minimize: !isDevelopment,
             plugins: [
                 tailwind(),
             ],
@@ -105,13 +106,6 @@ const options: RollupOptions = {
 
         isDevelopment ? [
 
-            // In development, copy bootstrap CSS directly to the output folder when a build completes
-            /*copy({
-                targets: [
-                    { src: 'src/bootstrap.css', dest: outputFolder },
-                ],
-            }),*/
-
             // Add development plugins to copy non JavaScript files and to notify the browser
             copyConfiguration(),
             copyOnEdit(),
@@ -119,10 +113,10 @@ const options: RollupOptions = {
 
         ] : [
 
-            // For production builds, adjust bundle output and write the final CSS and HTML
+            // For production builds, adjust bundle output and write the final index.html file
             terser(),
             finalizeBundles(),
-            writeCssAndHtml(buildId, outputFolder),
+            writeIndexHtml(buildId, outputFolder),
         ]
     ],
 };

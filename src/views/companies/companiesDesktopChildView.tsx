@@ -14,25 +14,25 @@ export function CompaniesDesktopChildView(props: CompaniesChildViewProps): JSX.E
     function renderItem(company: Company): JSX.Element {
 
         return (
-            <div className='row listRow' key={company.id}>
-                <div className='col-2 my-auto text-center'>
+            <div className='grid grid-cols-12 mt-10' key={company.id}>
+                <div className='col-span-2 my-auto text-center'>
                     {company.name}
                 </div>
-                <div className='col-2 my-auto text-center'>
+                <div className='col-span-2 my-auto text-center'>
                     {company.region}
                 </div>
-                <div className='col-2 my-auto text-center'>
-                    <Link to={`/companies/${company.id}`}>
+                <div className='col-span-2 my-auto text-center'>
+                    <Link to={`/companies/${company.id}`} className='text-blue-600 underline'>
                         View Transactions
                     </Link>
                 </div>
-                <div className='col-2 my-auto highlightcolor fw-bold text-end'>
+                <div className='col-span-2 my-auto text-green-700 font-bold text-right'>
                     {Number(company.targetUsd).toLocaleString()}
                 </div>
-                <div className='col-2 my-auto highlightcolor fw-bold text-end'>
+                <div className='col-span-2 my-auto text-green-700 font-bold text-right'>
                     {Number(company.investmentUsd).toLocaleString()}
                 </div>
-                <div className='col-2 my-auto fw-bold text-end'>
+                <div className='col-span-2 my-auto font-bold text-right'>
                     {company.noInvestors}
                 </div>
             </div>
@@ -43,14 +43,14 @@ export function CompaniesDesktopChildView(props: CompaniesChildViewProps): JSX.E
      * Render the collection of items
      */
     return  (
-        <div className='card border-0'>
-            <div className='row card-header'>
-                <div className='col-2 fw-bold text-center'>Account</div>
-                <div className='col-2 fw-bold text-center'>Region</div>
-                <div className='col-2' />
-                <div className='col-2 fw-bold text-end'>Target USD</div>
-                <div className='col-2 fw-bold text-end'>Investment USD</div>
-                <div className='col-2 fw-bold text-end'># Investors</div>
+        <div className='bg-white rounded shadow-sm'>
+            <div className='grid grid-cols-12 border-b px-4 py-3'>
+                <div className='col-span-2 font-bold text-center'>Account</div>
+                <div className='col-span-2 font-bold text-center'>Region</div>
+                <div className='col-span-2' />
+                <div className='col-span-2 font-bold text-right'>Target USD</div>
+                <div className='col-span-2 font-bold text-right'>Investment USD</div>
+                <div className='col-span-2 font-bold text-right'># Investors</div>
             </div>
             <div className='card-body'>
                 {props.companies.map((company) => renderItem(company))}

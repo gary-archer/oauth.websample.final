@@ -3,4 +3,3 @@ exclude_paths:
   - '*'
   - 'deployment/**'
   - 'images/**'
-  - 'css/**'
