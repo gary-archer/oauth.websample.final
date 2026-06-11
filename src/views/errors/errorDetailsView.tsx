@@ -19,17 +19,17 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
                     {line.label}
                 </div>
                 {line.itemType === 'useraction' &&
-                    <div className={`col-span-8 text-green-700 font-bold`}>
+                    <div className={'col-span-8 text-green-700 font-bold'}>
                         {line.value}
                     </div>
                 }
                 {line.itemType === 'value' &&
-                    <div className={`col-span-8 text-blue-700 font-bold`}>
+                    <div className={'col-span-8 text-blue-700 font-bold'}>
                         {line.value}
                     </div>
                 }
                 {line.itemType === 'error' &&
-                    <div className={`col-span-8 text-red-700 font-bold`}>
+                    <div className={'col-span-8 text-red-700 font-bold'}>
                         {line.value}
                     </div>
                 }
