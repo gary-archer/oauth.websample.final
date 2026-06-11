@@ -2,13 +2,16 @@ import commonjs from '@rollup/plugin-commonjs';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
+import tailwind from '@tailwindcss/postcss';
 import {randomUUID} from 'crypto';
+import cssnano from 'cssnano';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
 import copy from 'rollup-plugin-copy';
 import esbuild from 'rollup-plugin-esbuild';
+import postcss from 'rollup-plugin-postcss';
 import {copyConfiguration, copyOnEdit, notifyBrowser} from './plugins/developmentPlugins.js';
-import {finalizeBundles, writeCssAndHtml} from './plugins/productionPlugins.js';
+import {finalizeBundles, writeIndexHtml} from './plugins/productionPlugins.js';
 
 // Set base values and use the watch flag to distinguish between development v production builds
 const isDevelopment = process.env.ROLLUP_WATCH === 'true';
@@ -93,13 +96,14 @@ const options: RollupOptions = {
             ],
         }),
 
-        isDevelopment ? [
+        ...(isDevelopment ? [
 
-            // In development, copy CSS files directly to the output folder when a build completes
-            copy({
-                targets: [
-                    { src: 'css/*', dest: outputFolder },
-                ],
+            // Build development CSS
+            postcss({
+                extract: 'app.css',
+                plugins: [
+                    tailwind(),
+                ]
             }),
 
             // Add development plugins to copy non JavaScript files and to notify the browser
@@ -109,11 +113,20 @@ const options: RollupOptions = {
 
         ] : [
 
-            // For production builds, adjust bundle output and write the final CSS and HTML
+            // Build production CSS
+            postcss({
+                extract: `app.${buildId}.css`,
+                plugins: [
+                    tailwind(),
+                    cssnano(),
+                ]
+            }),
+
+            // For production builds, adjust bundle output and write the final index.html file
             terser(),
             finalizeBundles(),
-            writeCssAndHtml(buildId, outputFolder),
-        ]
+            writeIndexHtml(buildId, outputFolder),
+        ]),
     ],
 };
 

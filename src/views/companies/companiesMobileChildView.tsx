@@ -14,42 +14,42 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
     function renderItem(company: Company): JSX.Element {
 
         return (
-            <div key={company.id}>
-                <div className='row mobileHeaderRow'>
-                    <div className='col-6 h4'>
-                        <Link to={`/companies/${company.id}`}>
+            <div key={company.id} className='border-0 rounded-md overflow-hidden bg-white ml-5 mr-5'>
+                <div className='grid grid-cols-12 mt-10'>
+                    <div className='col-span-6 text-2xl font-medium'>
+                        <Link to={`/companies/${company.id}`} className='text-blue-600 underline'>
                             {`Company ${company.id}`}
                         </Link>
                     </div>
-                    <div className='col-6 h4 fw-bold'>
+                    <div className='col-span-6 font-bold text-2xl font-medium'>
                         {company.region}
                     </div>
                 </div>
-                <div className='row mobileRow'>
-                    <div className='col-6'>
+                <div className='grid grid-cols-12 mt-10'>
+                    <div className='col-span-6'>
                         Target USD
                     </div>
-                    <div className='col-6 highlightcolor fw-bold'>
+                    <div className='col-span-6 text-green-700 font-bold'>
                         {Number(company.targetUsd).toLocaleString()}
                     </div>
                 </div>
-                <div className='row mobileRow'>
-                    <div className='col-6'>
+                <div className='grid grid-cols-12 mt-10'>
+                    <div className='col-span-6'>
                         Investment USD
                     </div>
-                    <div className='col-6 highlightcolor fw-bold'>
+                    <div className='col-span-6 text-green-700 font-bold'>
                         {Number(company.investmentUsd).toLocaleString()}
                     </div>
                 </div>
-                <div className='row mobileRow'>
-                    <div className='col-6'>
+                <div className='grid grid-cols-12 mt-10'>
+                    <div className='col-span-6'>
                         # Investors
                     </div>
-                    <div className='col-6 fw-bold'>
+                    <div className='col-span-6 font-bold'>
                         {company.noInvestors}
                     </div>
                 </div>
-                <hr/>
+                <hr className='mt-5 text-gray-300' />
             </div>
         );
     }
@@ -58,9 +58,9 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
      * Render the collection of items
      */
     return  (
-        <div className='card border-0'>
-            <div className='card-header row'>
-                <div className='col-12 text-center mx-auto fw-bold'>
+        <div className='border-0 rounded-md overflow-hidden bg-white mt-3'>
+            <div className='grid grid-cols-12 bg-gray-100 px-4 py-3'>
+                <div className='col-span-12 text-center mx-auto font-bold'>
                     Company List
                 </div>
             </div>

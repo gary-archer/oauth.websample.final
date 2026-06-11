@@ -18,11 +18,11 @@ export class ErrorFormatter {
         /* FIELDS FOR THE END USER */
 
         // Keep the user informed and suggest an action
-        lines.push(this.createErrorLine('User Action', error.getUserAction(), 'highlightcolor'));
+        lines.push(this.createErrorLine('User Action', error.getUserAction(), 'useraction'));
 
         // Give the user summary level info, such as 'Network error'
         if (error.message.length > 0) {
-            lines.push(this.createErrorLine('Info', error.message));
+            lines.push(this.createErrorLine('Info', error.message, 'value'));
         }
 
         /* FIELDS FOR TECHNICAL SUPPORT STAFF */
@@ -41,39 +41,39 @@ export class ErrorFormatter {
                 second: '2-digit',
                 hour12: false,
             }).replace(/,/g, '');
-            lines.push(this.createErrorLine('UTC Time', displayTime));
+            lines.push(this.createErrorLine('UTC Time', displayTime, 'value'));
         }
 
         // Indicate the area of the system, such as which component failed
         if (error.getArea().length > 0) {
-            lines.push(this.createErrorLine('Area', error.getArea()));
+            lines.push(this.createErrorLine('Area', error.getArea(), 'value'));
         }
 
         // Indicate the type of error
         if (error.getErrorCode().length > 0) {
-            lines.push(this.createErrorLine('Error Code', error.getErrorCode()));
+            lines.push(this.createErrorLine('Error Code', error.getErrorCode(), 'value'));
         }
 
         // Link to API logs if applicable
         if (error.getInstanceId() > 0) {
-            lines.push(this.createErrorLine('Instance Id', error.getInstanceId().toString(), 'errorcolor'));
+            lines.push(this.createErrorLine('Instance Id', error.getInstanceId().toString(), 'error'));
         }
 
         // Show the HTTP status if applicable
         if (error.getStatusCode() > 0) {
-            lines.push(this.createErrorLine('Status Code', error.getStatusCode().toString()));
+            lines.push(this.createErrorLine('Status Code', error.getStatusCode().toString(), 'value'));
         }
 
         /* FIELDS FOR SOFTWARE ENGINEERS */
 
         // Show details for some types of error
         if (error.getDetails().length > 0) {
-            lines.push(this.createErrorLine('Details', error.getDetails()));
+            lines.push(this.createErrorLine('Details', error.getDetails(), 'value'));
         }
 
         // Show the URL that failed if applicable
         if (error.getUrl().length > 0) {
-            lines.push(this.createErrorLine('URL', error.getUrl()));
+            lines.push(this.createErrorLine('URL', error.getUrl(), 'value'));
         }
 
         return lines;
@@ -88,7 +88,7 @@ export class ErrorFormatter {
         // We can then look up results at https://sourcemaps.info
         if (IS_DEBUG) {
             if (error.stack) {
-                return this.createErrorLine('Stack', error.stack);
+                return this.createErrorLine('Stack', error.stack, 'stack');
             }
         }
 
@@ -98,13 +98,16 @@ export class ErrorFormatter {
     /*
      * Return an error line as an object
      */
-    private createErrorLine(label: string, value: string, valueStyle = 'valuecolor'): ErrorLine {
+    private createErrorLine(
+        label: string,
+        value: string,
+        itemType: 'useraction' | 'value' | 'error' | 'stack'): ErrorLine {
 
         return {
             id: ++this.count,
             label,
             value,
-            valueStyle,
+            itemType,
         };
     }
 }

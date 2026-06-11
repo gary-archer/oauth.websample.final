@@ -6,6 +6,6 @@ import {JSX} from 'react';
 export function HeadingView(): JSX.Element {
 
     return (
-        <h2>OAuth Demo App</h2>
+        <h2 className='text-3xl font-medium mb-2'>OAuth Demo App</h2>
     );
 }

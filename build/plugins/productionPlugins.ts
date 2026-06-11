@@ -1,6 +1,5 @@
 import crypto from 'crypto';
 import fs from 'fs/promises';
-import {PurgeCSS} from 'purgecss';
 import {NormalizedOutputOptions, OutputBundle, OutputChunk, Plugin} from 'rollup';
 
 /*
@@ -31,27 +30,14 @@ export function finalizeBundles(): Plugin {
 }
 
 /*
- * Produce the final CSS and HTML
+ * Produce the final index.html with runtime details
  */
-export function writeCssAndHtml(buildId: string, outputFolder: string): Plugin {
+export function writeIndexHtml(buildId: string, outputFolder: string): Plugin {
 
     const plugin: Plugin = {
 
-        name: 'rewrite-css-and-html',
+        name: 'write-index-html',
         async writeBundle(): Promise<void> {
-
-            // Copy the app.css with a dynamic filename
-            await fs.copyFile('css/app.css', `dist/app.${buildId}.css`);
-
-            // Copy reduced boostrap CSS to the output folder with a dynamic filename
-            const result = await new PurgeCSS().purge({
-                css: ['css/bootstrap.css'],
-                content: [`${outputFolder}/app.${buildId}.bundle.js`],
-                safelist: ['body', 'container'],
-            });
-            await fs.writeFile(`dist/bootstrap.${buildId}.css`, result[0].css);
-
-            // Write dynamic filenames to index.html and add subresource integrity attributes
             await rewriteIndexHtml(outputFolder, buildId);
         }
     };
@@ -65,12 +51,6 @@ export function writeCssAndHtml(buildId: string, outputFolder: string): Plugin {
 async function rewriteIndexHtml(outputFolder: string, buildId: string): Promise<void> {
 
     // Update CSS resources with a cache busting timestamp and an integrity hash
-    await updateHtmlItem(
-        outputFolder,
-        'href',
-        'bootstrap.css',
-        `bootstrap.${buildId}.css`);
-
     await updateHtmlItem(
         outputFolder,
         'href',
