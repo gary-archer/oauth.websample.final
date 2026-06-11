@@ -51,13 +51,13 @@ export function TransactionsChildView(props: TransactionsChildViewProps): JSX.El
      */
     return props.data &&
         (
-            <div className='bg-white rounded-lg'>
-                <div className='border-b px-4 py-3'>
+            <div className='bg-white rounded-lg ml-5 mr-5'>
+                <div className='bg-gray-100 px-4 py-3'>
                     <div className='w-full text-center font-bold'>
                         Today&apos;s Transactions for {props.data.company.name}
                     </div>
                 </div>
-                <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
+                <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mt-5'>
                     {props.data.transactions.map((transaction) => renderTransaction(transaction))}
                 </div>
             </div>

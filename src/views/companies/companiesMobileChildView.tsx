@@ -14,14 +14,14 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
     function renderItem(company: Company): JSX.Element {
 
         return (
-            <div key={company.id}>
+            <div key={company.id} className='border-0 rounded-md overflow-hidden bg-white ml-5 mr-5'>
                 <div className='grid grid-cols-12 mt-10'>
-                    <div className='col-span-6'>
+                    <div className='col-span-6 text-2xl font-medium'>
                         <Link to={`/companies/${company.id}`} className='text-blue-600 underline'>
                             {`Company ${company.id}`}
                         </Link>
                     </div>
-                    <div className='col-span-6 font-bold'>
+                    <div className='col-span-6 font-bold text-2xl font-medium'>
                         {company.region}
                     </div>
                 </div>
@@ -49,7 +49,7 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
                         {company.noInvestors}
                     </div>
                 </div>
-                <hr/>
+                <hr className='mt-5 text-gray-600' />
             </div>
         );
     }
@@ -58,8 +58,8 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
      * Render the collection of items
      */
     return  (
-        <div className='bg-white rounded shadow-sm'>
-            <div className='grid grid-cols-12 border-b px-4 py-3'>
+        <div className='border-0 rounded-md overflow-hidden bg-white mt-3'>
+            <div className='grid grid-cols-12 bg-gray-100 px-4 py-3'>
                 <div className='col-span-12 text-center mx-auto font-bold'>
                     Company List
                 </div>

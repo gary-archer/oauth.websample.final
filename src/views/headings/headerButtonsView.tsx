@@ -112,7 +112,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
             <div className='w-1/5 p-1 my-3 flex'>
                 <button
                     onClick={props.handleHomeClick}
-                    className='w-full p-2 bg-blue-600/90 text-white rounded-lg'
+                    className='w-full p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg leading-6'
                     type='button'
                 >
                     {homeTitle}
@@ -126,7 +126,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
                 onMouseUp={handleReloadRelease}
             >
                 <button
-                    className='w-full p-2 bg-blue-600/90 text-white rounded-lg disabled:opacity-50'
+                    className='w-full p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'
                     disabled={disabled}
                     type='button'
                 >
@@ -136,7 +136,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
             <div className='w-1/5 p-1 my-3 flex'>
                 <button
                     onClick={props.handleExpireAccessTokenClick}
-                    className='w-full p-2 bg-blue-600/90 text-white rounded-lg disabled:opacity-50'
+                    className='w-full p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'
                     disabled={disabled}
                     type='button'
                 >
@@ -146,7 +146,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
             <div className='w-1/5 p-1 my-3 flex'>
                 <button
                     onClick={props.handleExpireRefreshTokenClick}
-                    className='w-full p-2 bg-blue-600/90 text-white rounded-lg disabled:opacity-50'
+                    className='w-full p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'
                     disabled={disabled}
                     type='button'
                 >
@@ -156,7 +156,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
             <div className='w-1/5 p-1 my-3 flex'>
                 <button
                     onClick={props.handleLogoutClick}
-                    className='w-full p-2 bg-blue-600/90 text-white rounded-lg disabled:opacity-50'
+                    className='w-full p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'
                     disabled={disabled}
                     type='button'
                 >
