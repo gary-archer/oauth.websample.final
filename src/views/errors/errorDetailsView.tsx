@@ -14,13 +14,25 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
     function renderErrorLine(line: ErrorLine): JSX.Element {
 
         return (
-            <div className='grid grid-cols-12' key={line.id}>
+            <div className='grid grid-cols-12 mt-3' key={line.id}>
                 <div className='col-span-4'>
                     {line.label}
                 </div>
-                <div className={`col-span-8 ${line.valueStyle} font-bold`}>
-                    {line.value}
-                </div>
+                {line.itemType === 'useraction' &&
+                    <div className={`col-span-8 text-green-700 font-bold`}>
+                        {line.value}
+                    </div>
+                }
+                {line.itemType === 'value' &&
+                    <div className={`col-span-8 text-blue-700 font-bold`}>
+                        {line.value}
+                    </div>
+                }
+                {line.itemType === 'error' &&
+                    <div className={`col-span-8 text-red-700 font-bold`}>
+                        {line.value}
+                    </div>
+                }
             </div>
         );
     }
@@ -52,7 +64,7 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
                         {line.label}
                     </div>
                     <div className='col-span-8'>
-                        {line.value}
+                        <span className="text-sm">{line.value}</span>
                     </div>
                 </div>
             </>
@@ -65,16 +77,16 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
     const stack = formatter.getErrorStack(props.error);
 
     return  (
-        <div className='bg-white rounded-lg shadow-sm'>
+        <div className='bg-white rounded-lg'>
             <div className='grid grid-cols-12'>
-                <div className='col-span-10 text-red-600 text-xl text-center'>
+                <div className='col-span-10 text-red-600 text-2xl text-center'>
                     {props.title}
                 </div>
                 {props.handleClose && <div className='col-span-2 text-right'>
                     <button onClick={props.handleClose} type='button'>x</button>
                 </div>}
             </div>
-            <div className='grid grid-cols-12'>
+            <div className='grid grid-cols-12 mt-5'>
                 <div className='col-span-12'>
                     <div className='items-center mx-auto'>
                         {lines.map((line: any) => renderErrorLine(line))}

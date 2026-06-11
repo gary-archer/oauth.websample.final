@@ -49,7 +49,7 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
                         {company.noInvestors}
                     </div>
                 </div>
-                <hr className='mt-5 text-gray-600' />
+                <hr className='mt-5 text-gray-300' />
             </div>
         );
     }

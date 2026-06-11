@@ -23,7 +23,7 @@ export function ErrorSummaryView(props: ErrorSummaryViewProps): JSX.Element {
         }
 
         return (
-            <a href='#' className='text-red-600 text-center' onClick={handleSummaryClick}>
+            <a href='#' className='text-red-600 text-lg text-center underline' onClick={handleSummaryClick}>
                 {props.hyperlinkMessage}
             </a>
         );

@@ -14,9 +14,9 @@ export function TransactionsChildView(props: TransactionsChildViewProps): JSX.El
 
         return (
             <div key={transaction.id}>
-                <div className='rounded-lg border bg-white shadow-sm'>
+                <div className='rounded-lg border border-gray-300 bg-white'>
                     <div className='p-4'>
-                        <div className='flex'>
+                        <div className='flex mt-1'>
                             <div className='w-1/2'>
                                 Transaction ID
                             </div>
@@ -24,7 +24,7 @@ export function TransactionsChildView(props: TransactionsChildViewProps): JSX.El
                                 {transaction.id}
                             </div>
                         </div>
-                        <div className='flex'>
+                        <div className='flex mt-1'>
                             <div className='w-1/2'>
                                 Investor ID
                             </div>
@@ -32,7 +32,7 @@ export function TransactionsChildView(props: TransactionsChildViewProps): JSX.El
                                 {transaction.investorId}
                             </div>
                         </div>
-                        <div className='flex'>
+                        <div className='flex mt-1'>
                             <div className='w-1/2'>
                                 Amount USD
                             </div>
