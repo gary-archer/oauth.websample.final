@@ -45,7 +45,7 @@ let isOpen = false;
 export function notifyBrowser(): Plugin {
 
     const plugin: Plugin = {
-        name: 'open-browser',
+        name: 'notify-browser',
         async writeBundle(): Promise<void> {
 
             const webHostUrl = 'https://www.authsamples-dev.com';
