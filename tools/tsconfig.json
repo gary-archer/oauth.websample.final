@@ -4,7 +4,7 @@
     "module":"Node20",
     "moduleResolution": "Node16",
     "rootDir": ".",
-    "types": ["node"],
+    "types": ["node"]
   },
   "include": [
     "./**/*.ts"
