@@ -23,22 +23,6 @@ export function copyConfiguration(): Plugin {
 }
 
 /*
- * Copy these resources to the output folder when they are edited
- */
-export function copyOnEdit(): Plugin {
-
-    const plugin: Plugin = {
-        name: 'copy-on-edit',
-        buildStart(): void {
-            this.addWatchFile('index.html');
-            this.addWatchFile('spa.config.json');
-        }
-    };
-
-    return plugin;
-}
-
-/*
  * Open the browser when the first development build completes, or notify it to reload
  */
 let isOpen = false;

@@ -10,7 +10,7 @@ import {defineConfig, RollupOptions} from 'rollup';
 import copy from 'rollup-plugin-copy';
 import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
-import {copyConfiguration, copyOnEdit, notifyBrowser} from './plugins/developmentPlugins.js';
+import {copyConfiguration, notifyBrowser} from './plugins/developmentPlugins.js';
 import {finalizeBundles, writeIndexHtml} from './plugins/productionPlugins.js';
 
 // Set base values and use the watch flag to distinguish between development v production builds
@@ -106,9 +106,8 @@ const options: RollupOptions = {
                 ]
             }),
 
-            // Add development plugins to copy non JavaScript files and to notify the browser
+            // Implement live reload and copy the correct configuration file
             copyConfiguration(),
-            copyOnEdit(),
             notifyBrowser(),
 
         ] : [
