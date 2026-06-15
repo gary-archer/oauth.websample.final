@@ -59,10 +59,8 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
      */
     return  (
         <div className='mt-3'>
-            <div className='grid grid-cols-12 bg-gray-100 p-3'>
-                <div className='col-span-12 text-center mx-auto font-bold'>
-                    Company List
-                </div>
+            <div className='bg-gray-100 p-3 font-bold'>
+                Company List
             </div>
             <div className='mt-3'>
                 {props.companies.map((company) => renderItem(company))}

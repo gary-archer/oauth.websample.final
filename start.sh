@@ -64,7 +64,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Make sure certificates are trusted during live reload requests from rollup
+# Ensure that live reload calls from rollup trust the Express static content server's SSL certificate
 #
 if [ "$NODE_EXTRA_CA_CERTS" == '' ]; then
   export NODE_EXTRA_CA_CERTS='./certs/authsamples-dev.ca.crt'

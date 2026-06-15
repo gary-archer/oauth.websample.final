@@ -112,7 +112,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
             <div className='w-1/5 p-1 my-3 flex'>
                 <button
                     onClick={props.handleHomeClick}
-                    className='w-full p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg'
+                    className='w-full p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg'
                     type='button'
                 >
                     {homeTitle}

@@ -22,10 +22,8 @@ export function LoginRequiredView(props: LoginRequiredViewProps): JSX.Element {
 
     return  (
         <>
-            <div className='grid grid-cols-12'>
-                <div className='col-span-12 text-center mx-auto'>
-                    <h6>You are signed out - sign in to access the app ...</h6>
-                </div>
+            <div className='text-center'>
+                You are signed out - sign in to access the app ...
             </div>
         </>
     );
