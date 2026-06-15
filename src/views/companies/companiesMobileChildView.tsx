@@ -14,7 +14,7 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
     function renderItem(company: Company): JSX.Element {
 
         return (
-            <div key={company.id} className='px-3 py-3'>
+            <div key={company.id} className='p-3'>
                 <div className='grid grid-cols-12'>
                     <div className='col-span-6 text-2xl font-medium'>
                         <Link to={`/companies/${company.id}`} className='text-blue-600 underline'>
@@ -59,7 +59,7 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
      */
     return  (
         <div className='mt-3'>
-            <div className='grid grid-cols-12 bg-gray-100 px-3 py-3'>
+            <div className='grid grid-cols-12 bg-gray-100 p-3'>
                 <div className='col-span-12 text-center mx-auto font-bold'>
                     Company List
                 </div>

@@ -14,7 +14,7 @@ export function CompaniesDesktopChildView(props: CompaniesChildViewProps): JSX.E
     function renderItem(company: Company): JSX.Element {
 
         return (
-            <div className='grid grid-cols-12 px-3 py-3 mt-5' key={company.id}>
+            <div className='grid grid-cols-12 p-3 p-3 mt-5' key={company.id}>
                 <div className='col-span-2 text-center'>
                     {company.name}
                 </div>
@@ -44,7 +44,7 @@ export function CompaniesDesktopChildView(props: CompaniesChildViewProps): JSX.E
      */
     return  (
         <div className='mt-3'>
-            <div className='grid grid-cols-12 bg-gray-100 px-3 py-3'>
+            <div className='grid grid-cols-12 bg-gray-100 p-3'>
                 <div className='col-span-2 font-bold text-center'>Account</div>
                 <div className='col-span-2 font-bold text-center'>Region</div>
                 <div className='col-span-2' />

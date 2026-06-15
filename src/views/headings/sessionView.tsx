@@ -34,7 +34,7 @@ export function SessionView(props: SessionViewProps): JSX.Element {
     return  (
         <>
             {isVisible &&
-                <div className='text-right px-2 py-2'>
+                <div className='text-right p-2'>
                     <span className='text-sm'>{text}</span>
                 </div>
             }
