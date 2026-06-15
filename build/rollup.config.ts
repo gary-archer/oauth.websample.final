@@ -74,18 +74,18 @@ const options: RollupOptions = {
         // Convert any commonjs libraries from the node_modules folder to ECMAScript
         commonjs(),
 
-        // Use esbuild as an up to date plugin for building typescript code
-        esbuild({
-            tsconfig: './tsconfig.json',
-            target: 'es2020',
-            jsx: 'automatic',
-        }),
-
         // React requires the NODE_ENV value and we set IS_DEBUG to true in development mode
         replace({
             'process.env.NODE_ENV': JSON.stringify('production'),
             'IS_DEBUG': JSON.stringify(isDevelopment),
             preventAssignment: true,
+        }),
+
+        // Use esbuild as an up to date plugin for building typescript code
+        esbuild({
+            tsconfig: './tsconfig.json',
+            target: 'es2020',
+            jsx: 'automatic',
         }),
 
         // Copy these static files to the output folder when a build completes
