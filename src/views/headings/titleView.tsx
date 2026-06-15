@@ -9,12 +9,12 @@ import {TitleViewProps} from './titleViewProps';
 export function TitleView(props: TitleViewProps): JSX.Element {
 
     return (
-        <div className='flex ml-2 mr-2 mt-2 my-auto'>
-            <div className='w-2/3 self-center'>
+        <div className='flex px-2 mt-2 items-center'>
+            <div className='w-2/3'>
                 <HeadingView />
             </div>
             {props.userInfo &&
-                <div className='w-1/3 self-center'>
+                <div className='w-1/3'>
                     <UserInfoView {...props.userInfo} />
                 </div>
             }

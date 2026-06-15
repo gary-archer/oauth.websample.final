@@ -14,7 +14,7 @@ export function TransactionsChildView(props: TransactionsChildViewProps): JSX.El
 
         return (
             <div key={transaction.id}>
-                <div className='rounded-lg border border-gray-300 bg-white'>
+                <div className='rounded-lg border border-gray-300'>
                     <div className='p-4'>
                         <div className='flex mt-1'>
                             <div className='w-1/2'>
@@ -51,8 +51,8 @@ export function TransactionsChildView(props: TransactionsChildViewProps): JSX.El
      */
     return props.data &&
         (
-            <div className='bg-white rounded-lg ml-5 mr-5'>
-                <div className='bg-gray-100 px-4 py-3'>
+            <div className='mt-3'>
+                <div className='bg-gray-100 px-3 py-3'>
                     <div className='w-full text-center font-bold'>
                         Today&apos;s Transactions for {props.data.company.name}
                     </div>

@@ -14,8 +14,8 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
     function renderItem(company: Company): JSX.Element {
 
         return (
-            <div key={company.id} className='border-0 rounded-md overflow-hidden bg-white ml-5 mr-5'>
-                <div className='grid grid-cols-12 mt-10'>
+            <div key={company.id} className='px-3 py-3'>
+                <div className='grid grid-cols-12'>
                     <div className='col-span-6 text-2xl font-medium'>
                         <Link to={`/companies/${company.id}`} className='text-blue-600 underline'>
                             {`Company ${company.id}`}
@@ -33,7 +33,7 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
                         {Number(company.targetUsd).toLocaleString()}
                     </div>
                 </div>
-                <div className='grid grid-cols-12 mt-10'>
+                <div className='grid grid-cols-12 mt-5'>
                     <div className='col-span-6'>
                         Investment USD
                     </div>
@@ -41,7 +41,7 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
                         {Number(company.investmentUsd).toLocaleString()}
                     </div>
                 </div>
-                <div className='grid grid-cols-12 mt-10'>
+                <div className='grid grid-cols-12 mt-5'>
                     <div className='col-span-6'>
                         # Investors
                     </div>
@@ -49,7 +49,7 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
                         {company.noInvestors}
                     </div>
                 </div>
-                <hr className='mt-5 text-gray-300' />
+                <hr className='text-gray-300 mt-5' />
             </div>
         );
     }
@@ -58,13 +58,13 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
      * Render the collection of items
      */
     return  (
-        <div className='border-0 rounded-md overflow-hidden bg-white mt-3'>
-            <div className='grid grid-cols-12 bg-gray-100 px-4 py-3'>
+        <div className='mt-3'>
+            <div className='grid grid-cols-12 bg-gray-100 px-3 py-3'>
                 <div className='col-span-12 text-center mx-auto font-bold'>
                     Company List
                 </div>
             </div>
-            <div className='card-body'>
+            <div className='mt-3'>
                 {props.companies.map((company) => renderItem(company))}
             </div>
         </div>

@@ -289,7 +289,7 @@ export function App(props: AppProps): JSX.Element {
     }
 
     return (
-        <>
+        <div className='sm:px-8 md:px-16 lg:px-24 py-2'>
             <TitleView {...getTitleProps()} />
             <HeaderButtonsView {...getHeaderButtonProps()} />
             {error && <ErrorSummaryView {...getErrorProps()} />}
@@ -303,6 +303,6 @@ export function App(props: AppProps): JSX.Element {
                     </Routes>
                 </>
             }
-        </>
+        </div>
     );
 }

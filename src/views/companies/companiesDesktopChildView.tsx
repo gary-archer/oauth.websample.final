@@ -14,25 +14,25 @@ export function CompaniesDesktopChildView(props: CompaniesChildViewProps): JSX.E
     function renderItem(company: Company): JSX.Element {
 
         return (
-            <div className='grid grid-cols-12 px-4 py-3 mt-10' key={company.id}>
-                <div className='col-span-2 my-auto text-center'>
+            <div className='grid grid-cols-12 px-3 py-3 mt-5' key={company.id}>
+                <div className='col-span-2 text-center'>
                     {company.name}
                 </div>
-                <div className='col-span-2 my-auto text-center'>
+                <div className='col-span-2 text-center'>
                     {company.region}
                 </div>
-                <div className='col-span-2 my-auto text-center'>
+                <div className='col-span-2 text-center'>
                     <Link to={`/companies/${company.id}`} className='text-blue-600 underline'>
                         View Transactions
                     </Link>
                 </div>
-                <div className='col-span-2 my-auto text-green-700 font-bold text-right'>
+                <div className='col-span-2 text-green-700 font-bold text-right'>
                     {Number(company.targetUsd).toLocaleString()}
                 </div>
-                <div className='col-span-2 my-auto text-green-700 font-bold text-right'>
+                <div className='col-span-2 text-green-700 font-bold text-right'>
                     {Number(company.investmentUsd).toLocaleString()}
                 </div>
-                <div className='col-span-2 my-auto font-bold text-right'>
+                <div className='col-span-2 font-bold text-right'>
                     {company.noInvestors}
                 </div>
             </div>
@@ -43,8 +43,8 @@ export function CompaniesDesktopChildView(props: CompaniesChildViewProps): JSX.E
      * Render the collection of items
      */
     return  (
-        <div className='border-0 rounded-md overflow-hidden bg-white mt-3'>
-            <div className='grid grid-cols-12 bg-gray-100 px-4 py-3'>
+        <div className='mt-3'>
+            <div className='grid grid-cols-12 bg-gray-100 px-3 py-3'>
                 <div className='col-span-2 font-bold text-center'>Account</div>
                 <div className='col-span-2 font-bold text-center'>Region</div>
                 <div className='col-span-2' />
@@ -52,7 +52,7 @@ export function CompaniesDesktopChildView(props: CompaniesChildViewProps): JSX.E
                 <div className='col-span-2 font-bold text-right'>Investment USD</div>
                 <div className='col-span-2 font-bold text-right'># Investors</div>
             </div>
-            <div className='card-body'>
+            <div>
                 {props.companies.map((company) => renderItem(company))}
             </div>
         </div>
