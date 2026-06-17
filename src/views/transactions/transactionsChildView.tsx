@@ -13,31 +13,29 @@ export function TransactionsChildView(props: TransactionsChildViewProps): JSX.El
     function renderTransaction(transaction: Transaction): JSX.Element {
 
         return (
-            <div key={transaction.id}>
-                <div className='rounded-lg border border-gray-300 p-3'>
-                    <div className='flex mt-1'>
-                        <div className='w-1/2'>
-                            Transaction ID
-                        </div>
-                        <div className='w-1/2 text-right font-bold text-blue-700'>
-                            {transaction.id}
-                        </div>
+            <div key={transaction.id} className='rounded-lg border border-gray-300 p-3'>
+                <div className='flex mt-1'>
+                    <div className='w-1/2'>
+                        Transaction ID
                     </div>
-                    <div className='flex mt-1'>
-                        <div className='w-1/2'>
-                            Investor ID
-                        </div>
-                        <div className='w-1/2 text-right font-bold text-blue-700'>
-                            {transaction.investorId}
-                        </div>
+                    <div className='w-1/2 text-right font-bold text-blue-700'>
+                        {transaction.id}
                     </div>
-                    <div className='flex mt-1'>
-                        <div className='w-1/2'>
-                            Amount USD
-                        </div>
-                        <div className='w-1/2 text-right font-bold text-green-700'>
-                            {Number(transaction.amountUsd).toLocaleString()}
-                        </div>
+                </div>
+                <div className='flex mt-1'>
+                    <div className='w-1/2'>
+                        Investor ID
+                    </div>
+                    <div className='w-1/2 text-right font-bold text-blue-700'>
+                        {transaction.investorId}
+                    </div>
+                </div>
+                <div className='flex mt-1'>
+                    <div className='w-1/2'>
+                        Amount USD
+                    </div>
+                    <div className='w-1/2 text-right font-bold text-green-700'>
+                        {Number(transaction.amountUsd).toLocaleString()}
                     </div>
                 </div>
             </div>
