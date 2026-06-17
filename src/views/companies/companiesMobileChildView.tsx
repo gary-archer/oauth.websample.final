@@ -59,7 +59,7 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
      */
     return  (
         <div className='mt-3'>
-            <div className='bg-gray-100 p-3 font-bold'>
+            <div className='bg-gray-100 p-3 font-bold text-center'>
                 Company List
             </div>
             <div className='mt-3'>
