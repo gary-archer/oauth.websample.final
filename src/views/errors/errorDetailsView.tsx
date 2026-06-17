@@ -1,5 +1,5 @@
 import {JSX} from 'react';
-import {ErrorLine} from '../../plumbing/errors/errorLine';
+import {ErrorField} from '../../plumbing/errors/errorField';
 import {ErrorFormatter} from '../../plumbing/errors/errorFormatter';
 import {ErrorDetailsViewProps} from './errorDetailsViewProps';
 
@@ -9,28 +9,28 @@ import {ErrorDetailsViewProps} from './errorDetailsViewProps';
 export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
 
     /*
-     * Render a single error line
+     * Render a single error field on a line
      */
-    function renderErrorLine(line: ErrorLine): JSX.Element {
+    function renderErrorField(field: ErrorField): JSX.Element {
 
         return (
-            <div className='grid grid-cols-12 mt-3' key={line.id}>
+            <div className='grid grid-cols-12 mt-3' key={field.id}>
                 <div className='col-span-4'>
-                    {line.label}
+                    {field.label}
                 </div>
-                {line.itemType === 'useraction' &&
+                {field.itemType === 'useraction' &&
                     <div className={'col-span-8 text-green-700 font-bold'}>
-                        {line.value}
+                        {field.value}
                     </div>
                 }
-                {line.itemType === 'value' &&
+                {field.itemType === 'value' &&
                     <div className={'col-span-8 text-blue-700 font-bold'}>
-                        {line.value}
+                        {field.value}
                     </div>
                 }
-                {line.itemType === 'error' &&
+                {field.itemType === 'identifier' &&
                     <div className={'col-span-8 text-red-700 font-bold'}>
-                        {line.value}
+                        {field.value}
                     </div>
                 }
             </div>
@@ -40,9 +40,9 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
     /*
      * Render stack trace details in debug builds
      */
-    function renderErrorStack(line: ErrorLine | null): JSX.Element {
+    function renderErrorStack(field: ErrorField | null): JSX.Element {
 
-        if (!line) {
+        if (!field) {
             return (
                 <>
                 </>
@@ -51,7 +51,7 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
 
         return (
             <>
-                <div className='grid grid-cols-12' key={line.id}>
+                <div className='grid grid-cols-12' key={field.id}>
                     <div className='col-span-4'>
                         &nbsp;
                     </div>
@@ -59,12 +59,12 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
                         &nbsp;
                     </div>
                 </div>
-                <div className='grid grid-cols-12' key={line.id + 1}>
+                <div className='grid grid-cols-12' key={field.id + 1}>
                     <div className='col-span-4'>
-                        {line.label}
+                        {field.label}
                     </div>
                     <div className='col-span-8'>
-                        <span className="text-sm">{line.value}</span>
+                        <span className="text-sm">{field.value}</span>
                     </div>
                 </div>
             </>
@@ -73,7 +73,7 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
 
     // Do the main rendering
     const formatter = new ErrorFormatter();
-    const lines = formatter.getErrorLines(props.error);
+    const fields = formatter.getErrorFields(props.error);
     const stack = formatter.getErrorStack(props.error);
 
     return  (
@@ -88,7 +88,7 @@ export function ErrorDetailsView(props: ErrorDetailsViewProps): JSX.Element {
             </div>
             <div className='mt-5'>
                 <div className='items-center mx-auto'>
-                    {lines.map((line: any) => renderErrorLine(line))}
+                    {fields.map((line: any) => renderErrorField(line))}
                     {renderErrorStack(stack)}
                 </div>
             </div>

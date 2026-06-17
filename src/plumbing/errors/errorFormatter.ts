@@ -1,4 +1,4 @@
-import {ErrorLine} from './errorLine';
+import {ErrorField} from './errorField';
 import {UIError} from './uiError';
 
 /*
@@ -9,20 +9,20 @@ export class ErrorFormatter {
     private count = 0;
 
     /*
-     * Get errors ready for display
+     * Get error fields ready with formatted values
      */
-    public getErrorLines(error: UIError): ErrorLine[] {
+    public getErrorFields(error: UIError): ErrorField[] {
 
-        const lines: ErrorLine[] = [];
+        const fields: ErrorField[] = [];
 
         /* FIELDS FOR THE END USER */
 
         // Keep the user informed and suggest an action
-        lines.push(this.createErrorLine('User Action', error.getUserAction(), 'useraction'));
+        fields.push(this.createErrorField('User Action', error.getUserAction(), 'useraction'));
 
         // Give the user summary level info, such as 'Network error'
         if (error.message.length > 0) {
-            lines.push(this.createErrorLine('Info', error.message, 'value'));
+            fields.push(this.createErrorField('Info', error.message, 'value'));
         }
 
         /* FIELDS FOR TECHNICAL SUPPORT STAFF */
@@ -41,54 +41,54 @@ export class ErrorFormatter {
                 second: '2-digit',
                 hour12: false,
             }).replace(/,/g, '');
-            lines.push(this.createErrorLine('UTC Time', displayTime, 'value'));
+            fields.push(this.createErrorField('UTC Time', displayTime, 'value'));
         }
 
         // Indicate the area of the system, such as which component failed
         if (error.getArea().length > 0) {
-            lines.push(this.createErrorLine('Area', error.getArea(), 'value'));
+            fields.push(this.createErrorField('Area', error.getArea(), 'value'));
         }
 
         // Indicate the type of error
         if (error.getErrorCode().length > 0) {
-            lines.push(this.createErrorLine('Error Code', error.getErrorCode(), 'value'));
+            fields.push(this.createErrorField('Error Code', error.getErrorCode(), 'value'));
         }
 
         // Link to API logs if applicable
         if (error.getInstanceId() > 0) {
-            lines.push(this.createErrorLine('Instance Id', error.getInstanceId().toString(), 'error'));
+            fields.push(this.createErrorField('Instance Id', error.getInstanceId().toString(), 'identifier'));
         }
 
         // Show the HTTP status if applicable
         if (error.getStatusCode() > 0) {
-            lines.push(this.createErrorLine('Status Code', error.getStatusCode().toString(), 'value'));
+            fields.push(this.createErrorField('Status Code', error.getStatusCode().toString(), 'value'));
         }
 
         /* FIELDS FOR SOFTWARE ENGINEERS */
 
         // Show details for some types of error
         if (error.getDetails().length > 0) {
-            lines.push(this.createErrorLine('Details', error.getDetails(), 'value'));
+            fields.push(this.createErrorField('Details', error.getDetails(), 'value'));
         }
 
         // Show the URL that failed if applicable
         if (error.getUrl().length > 0) {
-            lines.push(this.createErrorLine('URL', error.getUrl(), 'value'));
+            fields.push(this.createErrorField('URL', error.getUrl(), 'value'));
         }
 
-        return lines;
+        return fields;
     }
 
     /*
      * Return the stack separately, since it is rendered in smaller text
      */
-    public getErrorStack(error: UIError): ErrorLine | null {
+    public getErrorStack(error: UIError): ErrorField | null {
 
         // In debug builds render the stack trace as a long string
         // We can then look up results at https://sourcemaps.info
         if (IS_DEBUG) {
             if (error.stack) {
-                return this.createErrorLine('Stack', error.stack, 'stack');
+                return this.createErrorField('Stack', error.stack, 'stack');
             }
         }
 
@@ -96,12 +96,12 @@ export class ErrorFormatter {
     }
 
     /*
-     * Return an error line as an object
+     * Return an field object
      */
-    private createErrorLine(
+    private createErrorField(
         label: string,
         value: string,
-        itemType: 'useraction' | 'value' | 'error' | 'stack'): ErrorLine {
+        itemType: 'useraction' | 'value' | 'identifier' | 'stack'): ErrorField {
 
         return {
             id: ++this.count,
