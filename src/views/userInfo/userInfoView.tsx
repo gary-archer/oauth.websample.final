@@ -139,9 +139,10 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
                 </div>
             }
             {oauthUserInfo && apiUserInfo &&
-                <div className='text-right'>
-                    <div className='font-bold basictooltip'>{getUserNameForDisplay()}
-                        <div className='basictooltiptext'>
+                <div className='text-right font-bold'>
+                    <div className='relative inline-block group'>
+                        {getUserNameForDisplay()}
+                        <div className='tooltip'>
                             <small>{getUserTitle()}</small>
                             <br />
                             <small>{getUserRegions()}</small>

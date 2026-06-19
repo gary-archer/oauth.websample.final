@@ -1,31 +1,7 @@
 @import 'tailwindcss';
 
-/* A basic tooltip from this tutorial:
- * - https://www.w3schools.com/css/css_tooltip.asp
- */
-.basictooltip
-{
-    position: relative;
-    display: inline-block;
- }
-
-.basictooltip .basictooltiptext
-{
-    visibility: hidden;
-    width: 150px;
-    background-color: gray;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    top: 100%;
-    left: 50%;
-    margin-left: -100px;
-}
-
-.basictooltip:hover .basictooltiptext
-{
-    visibility: visible;
+@layer components {
+  .tooltip {
+    @apply invisible group-hover:visible absolute top-full left-1/2 -translate-x-1/2 z-10 w-40 rounded-lg bg-gray-400 px-2 py-1 text-center text-white;
+  }
 }
