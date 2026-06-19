@@ -1,6 +1,6 @@
 import express, {NextFunction, Request, Response} from 'express';
-import fs from 'fs/promises';
-import https from 'https';
+import fs from 'node:fs/promises';
+import https from 'node:https';
 import {WebSocketServer, WebSocket} from 'ws';
 
 /*

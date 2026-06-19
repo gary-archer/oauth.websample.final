@@ -1,5 +1,5 @@
-import crypto from 'crypto';
-import fs from 'fs/promises';
+import crypto from 'node:crypto';
+import fs from 'node:fs/promises';
 import {NormalizedOutputOptions, OutputBundle, OutputChunk, Plugin} from 'rollup';
 
 /*

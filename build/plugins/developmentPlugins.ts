@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import fs from 'node:fs/promises';
 import {Plugin} from 'rollup';
 import open from 'open';
 
