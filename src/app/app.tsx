@@ -8,13 +8,14 @@ import {CompaniesView} from '../views/companies/companiesView';
 import {CompaniesViewProps} from '../views/companies/companiesViewProps';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../views/errors/errorSummaryViewProps';
+import {ContainerView} from '../views/headings/containerView';
 import {HeaderButtonsView} from '../views/headings/headerButtonsView';
 import {HeaderButtonsViewProps} from '../views/headings/headerButtonsViewProps';
-import {LoginRequiredViewProps} from '../views/loginRequired/loginRequiredViewProps';
+import {LoginRequiredView} from '../views/headings/loginRequiredView';
+import {LoginRequiredViewProps} from '../views/headings/loginRequiredViewProps';
 import {SessionView} from '../views/headings/sessionView';
 import {SessionViewProps} from '../views/headings/sessionViewProps';
 import {TitleView} from '../views/headings/titleView';
-import {LoginRequiredView} from '../views/loginRequired/loginRequiredView';
 import {TitleViewProps} from '../views/headings/titleViewProps';
 import {TransactionsView} from '../views/transactions/transactionsView';
 import {TransactionsViewProps} from '../views/transactions/transactionsViewProps';
@@ -289,7 +290,7 @@ export function App(props: AppProps): JSX.Element {
     }
 
     return (
-        <div className='sm:px-8 md:px-16 lg:px-24 py-2'>
+        <ContainerView>
             <TitleView {...getTitleProps()} />
             <HeaderButtonsView {...getHeaderButtonProps()} />
             {error && <ErrorSummaryView {...getErrorProps()} />}
@@ -303,6 +304,6 @@ export function App(props: AppProps): JSX.Element {
                     </Routes>
                 </>
             }
-        </div>
+        </ContainerView>
     );
 }
