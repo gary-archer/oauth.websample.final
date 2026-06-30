@@ -56,45 +56,46 @@ export class OAuthClientImpl implements OAuthClient {
      */
     public async handlePageLoad(): Promise<string | null> {
 
-        // If the page loads with a state query parameter we classify it as an OAuth response
-        if (location.search) {
+        const pathname = location.pathname.toLowerCase();
+        if (!pathname.endsWith('callback') || !location.search) {
+            return null;
+        }
 
-            const args = new URLSearchParams(location.search);
-            const state = args.get('state');
-            if (state) {
+        const args = new URLSearchParams(location.search);
+        const state = args.get('state');
+        if (state) {
 
-                try {
+            try {
 
-                    // Send the full URL to the OAuth agent API
-                    const body = {
-                        pageUrl: location.href,
-                    };
-                    const response = await this.callOAuthAgent('POST', 'login/end', body, true) as EndLoginResponse;
+                // Send the full URL to the OAuth agent API
+                const body = {
+                    pageUrl: location.href,
+                };
+                const response = await this.callOAuthAgent('POST', 'login/end', body, true) as EndLoginResponse;
 
-                    // Check for expected data in the response
-                    if (!response.handled) {
-                        throw ErrorFactory.fromInvalidLoginResponse();
-                    }
-
-                    // Store post login details
-                    HtmlStorageHelper.setIsLoggedIn(true);
-                    HtmlStorageHelper.setDelegationId(response.claims[this.configuration.delegationIdClaimName] || '');
-
-                    // Once login is complete, return the SPA to the pre-login location
-                    return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
-
-                } catch (e: any) {
-
-                    // Handle errors that we want to treat as non-errors to avoid user issues
-                    // These include cookies with an old encryption key or invalid authorization responses
-                    // API calls will then fail and a new login redirect will be triggered, to get updated cookies
-                    if (this.isSessionExpiredError(e)) {
-                        return null;
-                    }
-
-                    // Rethrow other errors
-                    throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
+                // Check for expected data in the response
+                if (!response.handled) {
+                    throw ErrorFactory.fromInvalidLoginResponse();
                 }
+
+                // Store post login details
+                HtmlStorageHelper.setIsLoggedIn(true);
+                HtmlStorageHelper.setDelegationId(response.claims[this.configuration.delegationIdClaimName] || '');
+
+                // Once login is complete, return the SPA to the pre-login location
+                return HtmlStorageHelper.getAndRemovePreLoginLocation() || '/';
+
+            } catch (e: any) {
+
+                // Handle errors that we want to treat as non-errors to avoid user issues
+                // These include cookies with an old encryption key or invalid authorization responses
+                // API calls will then fail and a new login redirect will be triggered, to get updated cookies
+                if (this.isSessionExpiredError(e)) {
+                    return null;
+                }
+
+                // Rethrow other errors
+                throw ErrorFactory.fromLoginOperation(e, ErrorCodes.loginResponseFailed);
             }
         }
 
