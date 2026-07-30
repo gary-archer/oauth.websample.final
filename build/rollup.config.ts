@@ -7,16 +7,18 @@ import cssnano from 'cssnano';
 import {randomUUID} from 'node:crypto';
 import path from 'node:path';
 import {defineConfig, RollupOptions} from 'rollup';
-import copy from 'rollup-plugin-copy';
 import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
-import {copyConfiguration, notifyBrowser} from './plugins/developmentPlugins.js';
-import {finalizeBundles, writeIndexHtml} from './plugins/productionPlugins.js';
+import {copyFiles, finalizeBundles, notifyBrowser, writeIndexHtml} from './plugins.js';
 
 // Set base values and use the watch flag to distinguish between development v production builds
 const isDevelopment = process.env.ROLLUP_WATCH === 'true';
 const buildId = randomUUID().slice(0, 8);
 const outputFolder = 'dist';
+
+const developmentConfigurationFile = process.env.LOCALAPI === 'true' ?
+        './deployment/environments/dev-localapi/spa.config.json' :
+        './deployment/environments/dev/spa.config.json';
 
 const options: RollupOptions = {
 
@@ -89,12 +91,10 @@ const options: RollupOptions = {
         }),
 
         // Copy these static files to the output folder when a build completes
-        copy({
-            targets: [
-                { src: 'favicon.ico', dest: outputFolder },
-                { src: 'index.html', dest: outputFolder },
-            ],
-        }),
+        copyFiles(outputFolder, [
+            'favicon.ico',
+            'index.html',
+        ]),
 
         ...(isDevelopment ? [
 
@@ -107,7 +107,7 @@ const options: RollupOptions = {
             }),
 
             // Implement live reload and copy the correct configuration file
-            copyConfiguration(),
+            copyFiles(outputFolder, [developmentConfigurationFile]),
             notifyBrowser(),
 
         ] : [
