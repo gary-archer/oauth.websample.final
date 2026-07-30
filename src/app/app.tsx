@@ -1,6 +1,6 @@
 import {JSX, useEffect, useState} from 'react';
 import Modal from 'react-modal';
-import {Route, Routes, useNavigate} from 'react-router-dom';
+import {Route, Routes, useNavigate} from 'react-router';
 import {EventNames} from '../plumbing/events/eventNames';
 import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
 import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';

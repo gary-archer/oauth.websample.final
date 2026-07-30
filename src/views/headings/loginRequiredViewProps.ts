@@ -1,5 +1,5 @@
 import EventBus from 'js-event-bus';
-import {NavigateFunction} from 'react-router-dom';
+import {NavigateFunction} from 'react-router';
 
 /*
  * Input to the login required view

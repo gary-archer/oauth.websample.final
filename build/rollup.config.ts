@@ -16,6 +16,7 @@ const isDevelopment = process.env.ROLLUP_WATCH === 'true';
 const buildId = randomUUID().slice(0, 8);
 const outputFolder = 'dist';
 
+// Get the correct configuration file for development
 const developmentConfigurationFile = process.env.LOCALAPI === 'true' ?
         './deployment/environments/dev-localapi/spa.config.json' :
         './deployment/environments/dev/spa.config.json';
@@ -38,7 +39,7 @@ const options: RollupOptions = {
                 return null;
             }
 
-            if (/node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/.test(id)) {
+            if (/node_modules[\\/](react|react-dom|scheduler|react-router|@remix-run)[\\/]/.test(id)) {
                 return 'react';
             }
 
@@ -56,10 +57,14 @@ const options: RollupOptions = {
         clearScreen: false,
     },
 
-    // Ignore this React warning
+    // Suppress benign React warnings
     onwarn(warning: any, warn: any) {
 
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes('use client')) {
+            return;
+        }
+
+        if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes('react-router')) {
             return;
         }
 
