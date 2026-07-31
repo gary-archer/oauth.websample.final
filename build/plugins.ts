@@ -119,12 +119,6 @@ async function rewriteIndexHtml(outputFolder: string, buildId: string): Promise<
     await updateHtmlItem(
         outputFolder,
         'src',
-        'react.bundle.js',
-        `react.${buildId}.bundle.js`);
-
-    await updateHtmlItem(
-        outputFolder,
-        'src',
         'app.bundle.js',
         `app.${buildId}.bundle.js`);
 }

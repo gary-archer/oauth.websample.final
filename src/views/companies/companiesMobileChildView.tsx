@@ -16,36 +16,36 @@ export function CompaniesMobileChildView(props: CompaniesChildViewProps): JSX.El
         return (
             <div key={company.id} className='p-3'>
                 <div className='grid grid-cols-12'>
-                    <div className='col-span-6 text-2xl font-medium mx-10'>
+                    <div className='col-span-6 text-2xl font-medium mx-5'>
                         <Link to={`/companies/${company.id}`} className='text-blue-600 underline'>
                             {`Company ${company.id}`}
                         </Link>
                     </div>
-                    <div className='col-span-6 font-bold text-2xl font-medium mx-10'>
+                    <div className='col-span-6 font-bold text-2xl font-medium mx-5'>
                         {company.region}
                     </div>
                 </div>
                 <div className='grid grid-cols-12 mt-10'>
-                    <div className='col-span-6 mx-10'>
+                    <div className='col-span-6 mx-5'>
                         Target USD
                     </div>
-                    <div className='col-span-6 text-green-700 font-bold mx-10'>
+                    <div className='col-span-6 text-green-700 font-bold mx-5'>
                         {Number(company.targetUsd).toLocaleString()}
                     </div>
                 </div>
                 <div className='grid grid-cols-12 mt-5'>
-                    <div className='col-span-6 mx-10'>
+                    <div className='col-span-6 mx-5'>
                         Investment USD
                     </div>
-                    <div className='col-span-6 text-green-700 font-bold mx-10'>
+                    <div className='col-span-6 text-green-700 font-bold mx-5'>
                         {Number(company.investmentUsd).toLocaleString()}
                     </div>
                 </div>
                 <div className='grid grid-cols-12 mt-5'>
-                    <div className='col-span-6 mx-10'>
+                    <div className='col-span-6 mx-5'>
                         # Investors
                     </div>
-                    <div className='col-span-6 font-bold mx-10'>
+                    <div className='col-span-6 font-bold mx-5'>
                         {company.noInvestors}
                     </div>
                 </div>

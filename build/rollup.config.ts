@@ -39,10 +39,6 @@ const options: RollupOptions = {
                 return null;
             }
 
-            if (/node_modules[\\/](react|react-dom|scheduler|react-router|@remix-run)[\\/]/.test(id)) {
-                return 'react';
-            }
-
             return 'vendor';
         },
 
