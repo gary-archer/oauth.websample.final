@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
-    "@types/node": "^24.10.3",
+    "@types/node": "^24.13.4",
     "@types/ws": "^8.18.1",
     "express": "^5.2.1",
     "ws": "^8.21.0"
