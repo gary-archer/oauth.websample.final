@@ -60,8 +60,10 @@ const options: RollupOptions = {
             return;
         }
 
-        if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes('react-router')) {
-            return;
+        if (warning.code === 'CIRCULAR_DEPENDENCY') {
+            if (warning.message.includes('react-router') || warning.message.includes('@remix-run')) {
+                return;
+            }
         }
 
         warn(warning);
