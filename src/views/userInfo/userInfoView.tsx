@@ -1,4 +1,4 @@
-import {JSX, useEffect, useState} from 'react';
+import {JSX, useEffect, useSyncExternalStore} from 'react';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
@@ -13,11 +13,12 @@ import {UserInfoViewProps} from './userInfoViewProps';
  */
 export function UserInfoView(props: UserInfoViewProps): JSX.Element {
 
-    // Initialize React state from the view model
+    // Subscribe to state from the view model
     const model = props.viewModel;
-    const [oauthUserInfo, setOAuthUserInfo] = useState(model.getOAuthUserInfo());
-    const [apiUserInfo, setApiUserInfo] = useState(model.getApiUserInfo());
-    const [error, setError] = useState(model.getError());
+    const {oauthUserInfo, apiUserInfo, error} = useSyncExternalStore(
+        model.subscribe.bind(model),
+        model.getSnapshot.bind(model),
+    );
 
     useEffect(() => {
         startup();
@@ -97,25 +98,17 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
     }
 
     /*
-     * Ask the model to load data, then update state
+     * Ask the model to load data; the view model notifies subscribers when done
      */
     async function loadData(options?: ViewLoadOptions): Promise<void> {
-
         await model.callApi(options);
-        setOAuthUserInfo(model.getOAuthUserInfo());
-        setApiUserInfo(model.getApiUserInfo());
-        setError(model.getError());
     }
 
     /*
-     * Ask the model to unload data, then update state
+     * Ask the model to unload data; the view model notifies subscribers immediately
      */
     function unloadData(): void {
-
         model.unload();
-        setOAuthUserInfo(model.getOAuthUserInfo());
-        setApiUserInfo(model.getApiUserInfo());
-        setError(model.getError());
     }
 
     function getErrorProps(): ErrorSummaryViewProps {

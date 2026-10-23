@@ -4,7 +4,7 @@ FROM node:24-trixie-slim
 WORKDIR /usr/webhost
 COPY --chown=10001:10000 deployment/docker/dist          /usr/webhost/dist
 COPY --chown=10001:10000 deployment/docker/package*.json /usr/webhost/
-RUN npm install --omit=dev
+RUN npm ci --omit=dev
 
 # Copy the SPA's static content files
 COPY --chown=10001:10000 dist/favicon.ico /usr/webhost/

@@ -1,12 +1,11 @@
 import EventBus from 'js-event-bus';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
-import {CompanyTransactions} from '../../api/entities/companyTransactions';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {UIError} from '../../plumbing/errors/uiError';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
+import {TransactionsViewState} from './transactionsViewState';
 
 /*
  * The transactions view model manages API state
@@ -16,9 +15,9 @@ export class TransactionsViewModel {
     private readonly fetchClient: FetchClient;
     private readonly eventBus: EventBus;
     private readonly viewModelCoordinator: ViewModelCoordinator;
+    private listener: (() => void) | null;
     private companyId: string | null;
-    private transactions: CompanyTransactions | null;
-    private error: UIError | null;
+    private snapshot: TransactionsViewState;
 
     public constructor(
         fetchClient: FetchClient,
@@ -28,32 +27,38 @@ export class TransactionsViewModel {
         this.fetchClient = fetchClient;
         this.eventBus = eventBus;
         this.viewModelCoordinator = viewModelCoordinator;
+        this.listener = null;
         this.companyId = null;
-        this.transactions = null;
-        this.error = null;
+        this.snapshot = {transactions: null, error: null};
     }
 
     /*
-     * Property accessors
+     * Subscribe a listener for useSyncExternalStore and return an unsubscribe function
      */
-    public getTransactions(): CompanyTransactions | null {
-        return this.transactions;
+    public subscribe(listener: () => void): () => void {
+
+        this.listener = listener;
+        return () => {
+            this.listener = null;
+        };
     }
 
-    public getCompanyId(): string {
-        return this.companyId || '';
+    /*
+     * Return the current state
+     */
+    public getSnapshot(): TransactionsViewState {
+        return this.snapshot;
     }
 
-    public getError(): UIError | null {
-        return this.error;
-    }
-
+    /*
+     * Enable the view to use the EventBus
+     */
     public getEventBus(): EventBus {
         return this.eventBus;
     }
 
     /*
-     * Get data from the API and then notify the caller
+     * Get data from the API and notify the view
      */
     public async callApi(id: string, options?: ViewLoadOptions): Promise<void> {
 
@@ -64,35 +69,25 @@ export class TransactionsViewModel {
         };
 
         this.viewModelCoordinator.onMainViewModelLoading();
-        this.error = null;
-        if (this.companyId !== id) {
-            this.transactions = null;
-            this.companyId = id;
-        }
+        this.snapshot = {transactions: this.companyId !== id ? null : this.snapshot.transactions, error: null};
+        this.companyId = id;
 
         try {
 
             const result = await this.fetchClient.getCompanyTransactions(id, fetchOptions);
             if (result) {
-                this.transactions = result;
+                this.snapshot = {transactions: result, error: null};
             }
 
         } catch (e: any) {
 
-            this.error = ErrorFactory.fromException(e);
-            this.transactions = null;
+            this.snapshot = {transactions: null, error: ErrorFactory.fromException(e)};
 
         } finally {
 
             this.viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
+            this.notifyView();
         }
-    }
-
-    /*
-     * Allow the view to clear data
-     */
-    public clearData(): void {
-        this.transactions = null;
     }
 
     /*
@@ -100,15 +95,17 @@ export class TransactionsViewModel {
      */
     public isForbiddenError(): boolean {
 
-        if (this.error) {
+        if (this.snapshot.error) {
 
-            if (this.error.getStatusCode() === 404 && this.error.getErrorCode() === ErrorCodes.companyNotFound) {
+            if (this.snapshot.error.getStatusCode() === 404 &&
+                this.snapshot.error.getErrorCode() === ErrorCodes.companyNotFound) {
 
                 // User typed an id value outside of allowed company ids
                 return true;
             }
 
-            if (this.error.getStatusCode() === 400 && this.error.getErrorCode() === ErrorCodes.invalidCompanyId) {
+            if (this.snapshot.error.getStatusCode() === 400 &&
+                this.snapshot.error.getErrorCode() === ErrorCodes.invalidCompanyId) {
 
                 // User typed an invalid id such as 'abc'
                 return true;
@@ -116,5 +113,14 @@ export class TransactionsViewModel {
         }
 
         return false;
+    }
+
+    /*
+     * Update the view when the model data changes
+     */
+    private notifyView(): void {
+        if (this.listener) {
+            this.listener();
+        }
     }
 }

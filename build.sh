@@ -9,7 +9,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 #
 # Install dependencies
 #
-npm install
+npm ci
 if [ $? -ne 0 ]; then
   echo 'Problem encountered installing SPA dependencies'
   read -n 1

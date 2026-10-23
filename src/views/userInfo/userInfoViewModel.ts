@@ -1,12 +1,10 @@
 import EventBus from 'js-event-bus';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
-import {ApiUserInfo} from '../../api/entities/apiUserInfo';
-import {OAuthUserInfo} from '../../api/entities/oauthUserInfo';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {UIError} from '../../plumbing/errors/uiError';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
+import {UserInfoViewState} from './userInfoViewState';
 
 /*
  * The user info view model manages API state
@@ -16,9 +14,8 @@ export class UserInfoViewModel {
     private readonly fetchClient: FetchClient;
     private readonly eventBus: EventBus;
     private readonly viewModelCoordinator: ViewModelCoordinator;
-    private oauthUserInfo: OAuthUserInfo | null;
-    private apiUserInfo: ApiUserInfo | null;
-    private error: UIError | null;
+    private listener: (() => void) | null;
+    private snapshot: UserInfoViewState;
 
     public constructor(
         fetchClient: FetchClient,
@@ -28,32 +25,37 @@ export class UserInfoViewModel {
         this.fetchClient = fetchClient;
         this.eventBus = eventBus;
         this.viewModelCoordinator = viewModelCoordinator;
-        this.oauthUserInfo = null;
-        this.apiUserInfo = null;
-        this.error = null;
+        this.listener = null;
+        this.snapshot = {oauthUserInfo: null, apiUserInfo: null, error: null};
     }
 
     /*
-     * Property accessors
+     * Subscribe a listener for useSyncExternalStore and return an unsubscribe function
      */
-    public getOAuthUserInfo(): OAuthUserInfo | null {
-        return this.oauthUserInfo;
+    public subscribe(listener: () => void): () => void {
+
+        this.listener = listener;
+        return () => {
+            this.listener = null;
+        };
     }
 
-    public getApiUserInfo(): ApiUserInfo | null {
-        return this.apiUserInfo;
+    /*
+     * Return the current state
+     */
+    public getSnapshot(): UserInfoViewState {
+        return this.snapshot;
     }
 
-    public getError(): UIError | null {
-        return this.error;
-    }
-
+    /*
+     * Enable the view to use the EventBus
+     */
     public getEventBus(): EventBus {
         return this.eventBus;
     }
 
     /*
-     * Get data from the API and then notify the caller
+     * Get data from the API and notify the view
      */
     public async callApi(options?: ViewLoadOptions): Promise<void> {
 
@@ -70,7 +72,7 @@ export class UserInfoViewModel {
         };
 
         this.viewModelCoordinator.onUserInfoViewModelLoading();
-        this.error = null;
+        this.snapshot = {oauthUserInfo: null, apiUserInfo: null, error: null};
 
         try {
 
@@ -83,23 +85,18 @@ export class UserInfoViewModel {
             const oauthUserInfo = results[0];
             const apiUserInfo = results[1];
 
-            // Update data
-            if (oauthUserInfo) {
-                this.oauthUserInfo = oauthUserInfo;
-            }
-            if (apiUserInfo) {
-                this.apiUserInfo = apiUserInfo;
+            if (oauthUserInfo && apiUserInfo) {
+                this.snapshot = {oauthUserInfo, apiUserInfo, error: null};
             }
 
         } catch (e: any) {
 
-            this.error = ErrorFactory.fromException(e);
-            this.oauthUserInfo = null;
-            this.apiUserInfo = null;
+            this.snapshot = {oauthUserInfo: null, apiUserInfo: null, error: ErrorFactory.fromException(e)};
 
         } finally {
 
             this.viewModelCoordinator.onUserInfoViewModelLoaded();
+            this.notifyView();
         }
     }
 
@@ -107,15 +104,16 @@ export class UserInfoViewModel {
      * Unload when the user navigates to login required
      */
     public unload(): void {
-        this.error = null;
-        this.oauthUserInfo = null;
-        this.apiUserInfo = null;
+        this.snapshot = {oauthUserInfo: null, apiUserInfo: null, error: null};
+        this.notifyView();
     }
 
     /*
-     * Reload when the user navigates from login required
+     * Update the view when the model data changes
      */
-    public async reload(): Promise<void> {
-        await this.callApi();
+    private notifyView(): void {
+        if (this.listener) {
+            this.listener();
+        }
     }
 }
