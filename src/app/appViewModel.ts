@@ -1,7 +1,7 @@
 import EventBus from 'js-event-bus';
 import {FetchCache} from '../api/client/fetchCache';
 import {FetchClient} from '../api/client/fetchClient';
-import {ViewModelCoordinator} from '../views/utilities/viewModelCoordinator';
+import {ApiRequestCoordinator} from '../api/coordination/apiRequestCoordinator';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
@@ -24,7 +24,7 @@ export class AppViewModel {
     private configuration!: Configuration;
     private oauthClient!: OAuthClient;
     private fetchClient!: FetchClient;
-    private viewModelCoordinator!: ViewModelCoordinator;
+    private apiRequestCoordinator!: ApiRequestCoordinator;
 
     // Other infrastructure
     private readonly eventBus: EventBus;
@@ -94,7 +94,7 @@ export class AppViewModel {
                 this.oauthClient);
 
             // Create an object used to deal with API responses across multiple views
-            this.viewModelCoordinator = new ViewModelCoordinator(this.eventBus, this.fetchCache);
+            this.apiRequestCoordinator = new ApiRequestCoordinator(this.eventBus, this.fetchCache);
 
             // Update state, to prevent model recreation if the view is recreated
             this.isInitialised = true;
@@ -185,7 +185,7 @@ export class AppViewModel {
      */
     public onLoggedOut(): void {
 
-        this.viewModelCoordinator.resetState();
+        this.apiRequestCoordinator.resetState();
         this.oauthClient.clearLoginState();
         this.error = null;
     }
@@ -231,7 +231,7 @@ export class AppViewModel {
             this.companiesViewModel = new CompaniesViewModel(
                 this.fetchClient,
                 this.eventBus,
-                this.viewModelCoordinator,
+                this.apiRequestCoordinator,
             );
         }
 
@@ -246,7 +246,7 @@ export class AppViewModel {
             (
                 this.fetchClient,
                 this.eventBus,
-                this.viewModelCoordinator,
+                this.apiRequestCoordinator,
             );
         }
 
@@ -260,7 +260,7 @@ export class AppViewModel {
             this.userInfoViewModel = new UserInfoViewModel(
                 this.fetchClient,
                 this.eventBus,
-                this.viewModelCoordinator,
+                this.apiRequestCoordinator,
             );
         }
 
@@ -273,7 +273,7 @@ export class AppViewModel {
     public triggerDataReload(causeError: boolean): void {
 
         this.error = null;
-        this.viewModelCoordinator.resetState();
+        this.apiRequestCoordinator.resetState();
         this.eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }
 
@@ -281,7 +281,7 @@ export class AppViewModel {
      * See if there are any API errors
      */
     public hasApiError(): boolean {
-        return !!this.error || this.viewModelCoordinator.hasErrors();
+        return !!this.error || this.apiRequestCoordinator.hasErrors();
     }
 
     /*

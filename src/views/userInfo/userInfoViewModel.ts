@@ -1,9 +1,9 @@
 import EventBus from 'js-event-bus';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
+import {ApiRequestCoordinator} from '../../api/coordination/apiRequestCoordinator';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
-import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 import {UserInfoViewState} from './userInfoViewState';
 
 /*
@@ -13,18 +13,18 @@ export class UserInfoViewModel {
 
     private readonly fetchClient: FetchClient;
     private readonly eventBus: EventBus;
-    private readonly viewModelCoordinator: ViewModelCoordinator;
+    private readonly apiRequestCoordinator: ApiRequestCoordinator;
     private listener: (() => void) | null;
     private snapshot: UserInfoViewState;
 
     public constructor(
         fetchClient: FetchClient,
         eventBus: EventBus,
-        viewModelCoordinator: ViewModelCoordinator,
+        apiRequestCoordinator: ApiRequestCoordinator,
     ) {
         this.fetchClient = fetchClient;
         this.eventBus = eventBus;
-        this.viewModelCoordinator = viewModelCoordinator;
+        this.apiRequestCoordinator = apiRequestCoordinator;
         this.listener = null;
         this.snapshot = {oauthUserInfo: null, apiUserInfo: null, error: null};
     }
@@ -71,7 +71,7 @@ export class UserInfoViewModel {
             causeError: options?.causeError || false,
         };
 
-        this.viewModelCoordinator.onUserInfoViewModelLoading();
+        this.apiRequestCoordinator.onApiRequestStart(FetchCacheKeys.OAuthUserInfo, FetchCacheKeys.ApiUserInfo);
         this.snapshot = {oauthUserInfo: null, apiUserInfo: null, error: null};
 
         try {
@@ -95,7 +95,7 @@ export class UserInfoViewModel {
 
         } finally {
 
-            this.viewModelCoordinator.onUserInfoViewModelLoaded();
+            this.apiRequestCoordinator.onApiRequestEnd();
             this.notifyView();
         }
     }

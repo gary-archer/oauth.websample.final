@@ -3,8 +3,8 @@
  */
 export class EventNames {
 
-    // Raised when a view model fetches data
-    public static ViewModelFetch = 'ViewModelFetch';
+    // Raised when API requests start and when all complete
+    public static ApiRequest = 'ApiRequest';
 
     // Raised when the main view changes
     public static Navigated  = 'Navigated';

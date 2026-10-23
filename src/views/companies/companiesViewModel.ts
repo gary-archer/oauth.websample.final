@@ -1,9 +1,9 @@
 import EventBus from 'js-event-bus';
 import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
 import {FetchClient} from '../../api/client/fetchClient';
+import {ApiRequestCoordinator} from '../../api/coordination/apiRequestCoordinator';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
-import {ViewModelCoordinator} from '../utilities/viewModelCoordinator';
 import {CompaniesViewState} from './companiesViewState';
 
 /*
@@ -13,18 +13,18 @@ export class CompaniesViewModel {
 
     private readonly fetchClient: FetchClient;
     private readonly eventBus: EventBus;
-    private readonly viewModelCoordinator: ViewModelCoordinator;
+    private readonly apiRequestCoordinator: ApiRequestCoordinator;
     private listener: (() => void) | null;
     private snapshot: CompaniesViewState;
 
     public constructor(
         fetchClient: FetchClient,
         eventBus: EventBus,
-        viewModelCoordinator: ViewModelCoordinator,
+        apiRequestCoordinator: ApiRequestCoordinator,
     ) {
         this.fetchClient = fetchClient;
         this.eventBus = eventBus;
-        this.viewModelCoordinator = viewModelCoordinator;
+        this.apiRequestCoordinator = apiRequestCoordinator;
         this.listener = null;
         this.snapshot = {companies: [], error: null};
     }
@@ -65,7 +65,7 @@ export class CompaniesViewModel {
             causeError: options?.causeError || false,
         };
 
-        this.viewModelCoordinator.onMainViewModelLoading();
+        this.apiRequestCoordinator.onApiRequestStart(fetchOptions.cacheKey);
         this.snapshot = {companies: this.snapshot.companies, error: null};
 
         try {
@@ -81,7 +81,7 @@ export class CompaniesViewModel {
 
         } finally {
 
-            this.viewModelCoordinator.onMainViewModelLoaded(fetchOptions.cacheKey);
+            this.apiRequestCoordinator.onApiRequestEnd();
             this.notifyView();
         }
     }
