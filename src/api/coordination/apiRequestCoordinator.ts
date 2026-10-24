@@ -92,7 +92,7 @@ export class ApiRequestCoordinator {
             if (errors.length === 0) {
                 this.eventBus.emit(EventNames.ApiRequest, null, new ApiRequestEvent(true));
             }
-            
+
             // Login required errors occur when there are no tokens yet or when token refresh fails
             // Raise a single event so that navigation to login required is triggered only once
             const loginRequired = errors.find((e) => e.getErrorCode() === ErrorCodes.loginRequired);
