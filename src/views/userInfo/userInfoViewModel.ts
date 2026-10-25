@@ -1,7 +1,6 @@
 import EventBus from 'js-event-bus';
-import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
-import {FetchClient} from '../../api/client/fetchClient';
-import {ApiRequestCoordinator} from '../../api/coordination/apiRequestCoordinator';
+import {FetchCacheKeys} from '../../api/cache/fetchCacheKeys';
+import {ApiClient} from '../../api/client/apiClient';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {UserInfoViewState} from './userInfoViewState';
@@ -11,20 +10,15 @@ import {UserInfoViewState} from './userInfoViewState';
  */
 export class UserInfoViewModel {
 
-    private readonly fetchClient: FetchClient;
+    private readonly apiClient: ApiClient;
     private readonly eventBus: EventBus;
-    private readonly apiRequestCoordinator: ApiRequestCoordinator;
     private listener: (() => void) | null;
     private snapshot: UserInfoViewState;
 
-    public constructor(
-        fetchClient: FetchClient,
-        eventBus: EventBus,
-        apiRequestCoordinator: ApiRequestCoordinator,
-    ) {
-        this.fetchClient = fetchClient;
+    public constructor(apiClient: ApiClient, eventBus: EventBus) {
+
+        this.apiClient = apiClient;
         this.eventBus = eventBus;
-        this.apiRequestCoordinator = apiRequestCoordinator;
         this.listener = null;
         this.snapshot = {oauthUserInfo: null, apiUserInfo: null, error: null};
     }
@@ -71,14 +65,13 @@ export class UserInfoViewModel {
             causeError: options?.causeError || false,
         };
 
-        this.apiRequestCoordinator.onApiRequestStart(FetchCacheKeys.OAuthUserInfo, FetchCacheKeys.ApiUserInfo);
         this.snapshot = {oauthUserInfo: null, apiUserInfo: null, error: null};
 
         try {
 
             // Set up promises for the two sources of user info
-            const oauthUserInfoPromise = this.fetchClient.getOAuthUserInfo(oauthFetchOptions);
-            const apiUserInfoPromise = this.fetchClient.getApiUserInfo(apiFetchOptions);
+            const oauthUserInfoPromise = this.apiClient.getOAuthUserInfo(oauthFetchOptions);
+            const apiUserInfoPromise = this.apiClient.getApiUserInfo(apiFetchOptions);
 
             // Run the tasks in parallel
             const results = await Promise.all([oauthUserInfoPromise, apiUserInfoPromise]);
@@ -95,7 +88,6 @@ export class UserInfoViewModel {
 
         } finally {
 
-            this.apiRequestCoordinator.onApiRequestEnd();
             this.notifyView();
         }
     }

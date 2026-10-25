@@ -141,7 +141,7 @@ export function App(props: AppProps): JSX.Element {
                 navigate('/');
 
                 // Force a data reload if there were errors last time
-                if (model.hasApiError()) {
+                if (model.hasErrors()) {
                     model.triggerDataReload(false);
                 }
             }

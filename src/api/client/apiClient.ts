@@ -1,3 +1,4 @@
+import EventBus from 'js-event-bus';
 import {Company} from '../entities/company';
 import {ApiUserInfo} from '../entities/apiUserInfo';
 import {CompanyTransactions} from '../entities/companyTransactions';
@@ -5,26 +6,26 @@ import {OAuthUserInfo} from '../entities/oauthUserInfo';
 import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {OAuthClient} from '../../plumbing/oauth/oauthClient';
-import {FetchCache} from './fetchCache';
-import {FetchOptions} from './fetchOptions';
+import {FetchCache} from '../cache/fetchCache';
+import {FetchOptions} from '../cache/fetchOptions';
+import {ApiRequestCoordinator} from './apiRequestCoordinator';
 
 /*
- * A high level class used by the rest of the SPA to fetch cacheable secured data
+ * An example API client that implements infrastructure to fetch  and cache sensitive data
  */
-export class FetchClient {
+export class ApiClient {
 
     private readonly configuration: Configuration;
-    private readonly fetchCache: FetchCache;
     private readonly oauthClient: OAuthClient;
+    private readonly fetchCache: FetchCache;
+    private readonly requestCoordinator: ApiRequestCoordinator;
 
-    public constructor(
-        configuration: Configuration,
-        fetchCache: FetchCache,
-        oauthClient: OAuthClient) {
+    public constructor(configuration: Configuration, oauthClient: OAuthClient, eventBus: EventBus) {
 
         this.configuration = configuration;
-        this.fetchCache = fetchCache;
         this.oauthClient = oauthClient;
+        this.fetchCache = new FetchCache();
+        this.requestCoordinator = new ApiRequestCoordinator(this.fetchCache, eventBus);
     }
 
     /*
@@ -72,7 +73,22 @@ export class FetchClient {
     }
 
     /*
-     * The entry point to get data deals with caching
+     * Return the overall status after a batch of concurrent API requests complete
+     */
+    public hasErrors(): boolean {
+        return this.requestCoordinator.hasErrors();
+    }
+
+    /*
+     * Clear any API state when the user logs out
+     */
+    public clearState(): void {
+        this.fetchCache.clearAll();
+        this.requestCoordinator.resetState();
+    }
+
+    /*
+     * The code sample's entry point for GET requests manages caching
      */
     private async getDataFromApi(url: string, options: FetchOptions): Promise<any> {
 
@@ -81,22 +97,26 @@ export class FetchClient {
             this.fetchCache.removeItem(options.cacheKey);
         }
 
-        // Return existing data from the memory cache when available
-        // If a view is created whiles its API requests are in flight, this returns null to the view model
         let cacheItem = this.fetchCache.getItem(options.cacheKey);
         if (cacheItem && !cacheItem.getError()) {
+
+            // Return existing data from the memory cache when available
+            // If React strict mode recreates the view and sends a second request, this returns null
             return cacheItem.getData();
         }
 
         // Ensure that the cache item exists for any re-entrant requests that fire after this one
         cacheItem = this.fetchCache.createItem(options.cacheKey);
 
+        // Notify the request coordinator that we are sending an API request
+        this.requestCoordinator.onApiRequestStart(options.cacheKey);
+
+        let result: any;
         try {
 
             // Get the data and update the cache item for this request
-            const data = await this.getDataFromApiWithTokenRefresh(url, options);
-            cacheItem.setData(data);
-            return data;
+            result = await this.getDataFromApiWithTokenRefresh(url, options);
+            cacheItem.setData(result);
 
         } catch (e: any) {
 
@@ -104,11 +124,18 @@ export class FetchClient {
             const error = ErrorFactory.fromException(e);
             cacheItem.setError(error);
             throw error;
+
+        } finally {
+
+            // Notify the request coordinator that we sent an API request
+            this.requestCoordinator.onApiRequestEnd();
         }
+
+        return result;
     }
 
     /*
-     * A standard algorithm for token refresh
+     * This method runs a standard algorithm for token refresh
      */
     private async getDataFromApiWithTokenRefresh(url: string, options: FetchOptions): Promise<any> {
 
@@ -148,14 +175,14 @@ export class FetchClient {
 
                 // A permanent API 401 error triggers a new login.
                 // This could be caused by an invalid API configuration.
-                this.oauthClient.clearLoginState();
+                this.oauthClient.clearState();
                 throw ErrorFactory.fromLoginRequired();
             }
         }
     }
 
     /*
-     * Do the work of calling the API
+     * This method does the work of calling the API
      */
     private async callApiWithCredential(
         method: string,

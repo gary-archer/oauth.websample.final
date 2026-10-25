@@ -1,7 +1,6 @@
 import EventBus from 'js-event-bus';
-import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
-import {FetchClient} from '../../api/client/fetchClient';
-import {ApiRequestCoordinator} from '../../api/coordination/apiRequestCoordinator';
+import {FetchCacheKeys} from '../../api/cache/fetchCacheKeys';
+import {ApiClient} from '../../api/client/apiClient';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {CompaniesViewState} from './companiesViewState';
@@ -11,20 +10,15 @@ import {CompaniesViewState} from './companiesViewState';
  */
 export class CompaniesViewModel {
 
-    private readonly fetchClient: FetchClient;
+    private readonly apiClient: ApiClient;
     private readonly eventBus: EventBus;
-    private readonly apiRequestCoordinator: ApiRequestCoordinator;
     private listener: (() => void) | null;
     private snapshot: CompaniesViewState;
 
-    public constructor(
-        fetchClient: FetchClient,
-        eventBus: EventBus,
-        apiRequestCoordinator: ApiRequestCoordinator,
-    ) {
-        this.fetchClient = fetchClient;
+    public constructor(apiClient: ApiClient, eventBus: EventBus) {
+
+        this.apiClient = apiClient;
         this.eventBus = eventBus;
-        this.apiRequestCoordinator = apiRequestCoordinator;
         this.listener = null;
         this.snapshot = {companies: [], error: null};
     }
@@ -65,12 +59,11 @@ export class CompaniesViewModel {
             causeError: options?.causeError || false,
         };
 
-        this.apiRequestCoordinator.onApiRequestStart(fetchOptions.cacheKey);
         this.snapshot = {companies: this.snapshot.companies, error: null};
 
         try {
 
-            const result = await this.fetchClient.getCompanyList(fetchOptions);
+            const result = await this.apiClient.getCompanyList(fetchOptions);
             if (result) {
                 this.snapshot = {companies: result, error: null};
             }
@@ -81,7 +74,6 @@ export class CompaniesViewModel {
 
         } finally {
 
-            this.apiRequestCoordinator.onApiRequestEnd();
             this.notifyView();
         }
     }

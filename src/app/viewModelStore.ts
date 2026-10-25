@@ -1,6 +1,5 @@
 import EventBus from 'js-event-bus';
-import {FetchClient} from '../api/client/fetchClient';
-import {ApiRequestCoordinator} from '../api/coordination/apiRequestCoordinator';
+import {ApiClient} from '../api/client/apiClient';
 import {CompaniesViewModel} from '../views/companies/companiesViewModel';
 import {TransactionsViewModel} from '../views/transactions/transactionsViewModel';
 import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
@@ -10,9 +9,8 @@ import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
  */
 export class ViewModelStore {
 
-    private readonly fetchClient: FetchClient;
+    private readonly apiClient: ApiClient;
     private readonly eventBus: EventBus;
-    private readonly apiRequestCoordinator: ApiRequestCoordinator;
 
     private companiesViewModel: CompaniesViewModel | null;
     private transactionsViewModel: TransactionsViewModel | null;
@@ -21,14 +19,10 @@ export class ViewModelStore {
     /*
      * Set the initial state when the app starts
      */
-    public constructor(
-        fetchClient: FetchClient,
-        eventBus: EventBus,
-        apiRequestCoordinator: ApiRequestCoordinator) {
+    public constructor(apiClient: ApiClient, eventBus: EventBus) {
 
-        this.fetchClient = fetchClient;
+        this.apiClient = apiClient;
         this.eventBus = eventBus;
-        this.apiRequestCoordinator = apiRequestCoordinator;
 
         this.companiesViewModel = null;
         this.transactionsViewModel = null;
@@ -41,12 +35,7 @@ export class ViewModelStore {
     public getCompaniesViewModel(): CompaniesViewModel {
 
         if (!this.companiesViewModel) {
-
-            this.companiesViewModel = new CompaniesViewModel(
-                this.fetchClient,
-                this.eventBus,
-                this.apiRequestCoordinator,
-            );
+            this.companiesViewModel = new CompaniesViewModel(this.apiClient, this.eventBus);
         }
 
         return this.companiesViewModel;
@@ -58,13 +47,7 @@ export class ViewModelStore {
     public getTransactionsViewModel(): TransactionsViewModel {
 
         if (!this.transactionsViewModel) {
-
-            this.transactionsViewModel = new TransactionsViewModel
-            (
-                this.fetchClient,
-                this.eventBus,
-                this.apiRequestCoordinator,
-            );
+            this.transactionsViewModel = new TransactionsViewModel(this.apiClient, this.eventBus);
         }
 
         return this.transactionsViewModel;
@@ -77,11 +60,7 @@ export class ViewModelStore {
 
         if (!this.userInfoViewModel) {
 
-            this.userInfoViewModel = new UserInfoViewModel(
-                this.fetchClient,
-                this.eventBus,
-                this.apiRequestCoordinator,
-            );
+            this.userInfoViewModel = new UserInfoViewModel(this.apiClient, this.eventBus);
         }
 
         return this.userInfoViewModel;

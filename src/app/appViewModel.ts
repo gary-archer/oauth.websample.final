@@ -1,7 +1,5 @@
 import EventBus from 'js-event-bus';
-import {FetchCache} from '../api/client/fetchCache';
-import {FetchClient} from '../api/client/fetchClient';
-import {ApiRequestCoordinator} from '../api/coordination/apiRequestCoordinator';
+import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
@@ -18,18 +16,12 @@ import {ViewModelStore} from './viewModelStore';
  */
 export class AppViewModel {
 
-    // Global objects created from configuration
     private configuration!: Configuration;
     private oauthClient!: OAuthClient;
-    private fetchClient!: FetchClient;
-    private apiRequestCoordinator!: ApiRequestCoordinator;
+    private apiClient!: ApiClient;
     private viewModelStore!: ViewModelStore;
-
-    // Other infrastructure
     private readonly eventBus: EventBus;
-    private readonly fetchCache: FetchCache;
 
-    // State
     private error: UIError | null;
     private isInitialising: boolean;
     private isInitialised: boolean;
@@ -41,11 +33,8 @@ export class AppViewModel {
      */
     public constructor() {
 
-        // Create objects used for coordination
         this.eventBus = new EventBus();
-        this.fetchCache = new FetchCache();
 
-        // Set initial state
         this.error = null;
         this.isInitialising = false;
         this.isInitialised = false;
@@ -77,16 +66,10 @@ export class AppViewModel {
             this.oauthClient = new OAuthClientImpl(this.configuration);
 
             // Create a client for calling the API
-            this.fetchClient = new FetchClient(
-                this.configuration,
-                this.fetchCache,
-                this.oauthClient);
-
-            // Create an object used to deal with API responses across multiple views
-            this.apiRequestCoordinator = new ApiRequestCoordinator(this.eventBus, this.fetchCache);
+            this.apiClient = new ApiClient(this.configuration, this.oauthClient, this.eventBus);
 
             // Create an object to store view models
-            this.viewModelStore = new ViewModelStore(this.fetchClient, this.eventBus, this.apiRequestCoordinator);
+            this.viewModelStore = new ViewModelStore(this.apiClient, this.eventBus);
 
             // Update state, to prevent model recreation if the view is recreated
             this.isInitialised = true;
@@ -177,8 +160,8 @@ export class AppViewModel {
      */
     public onLoggedOut(): void {
 
-        this.apiRequestCoordinator.resetState();
-        this.oauthClient.clearLoginState();
+        this.oauthClient.clearState();
+        this.apiClient.clearState();
         this.error = null;
     }
 
@@ -205,10 +188,6 @@ export class AppViewModel {
         return this.oauthClient;
     }
 
-    public getFetchClient(): FetchClient {
-        return this.fetchClient;
-    }
-
     public getEventBus(): EventBus {
         return this.eventBus;
     }
@@ -223,15 +202,14 @@ export class AppViewModel {
     public triggerDataReload(causeError: boolean): void {
 
         this.error = null;
-        this.apiRequestCoordinator.resetState();
         this.eventBus.emit(EventNames.ReloadData, null, new ReloadDataEvent(causeError));
     }
 
     /*
-     * See if there are any API errors
+     * See if the last batch of API requests resulted in errors
      */
-    public hasApiError(): boolean {
-        return !!this.error || this.apiRequestCoordinator.hasErrors();
+    public hasErrors(): boolean {
+        return !!this.error || this.apiClient.hasErrors();
     }
 
     /*

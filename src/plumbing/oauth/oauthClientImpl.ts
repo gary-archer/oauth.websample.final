@@ -110,7 +110,7 @@ export class OAuthClientImpl implements OAuthClient {
         try {
 
             const response = await this.callOAuthAgent('POST', 'logout', null, true);
-            this.clearLoginState();
+            this.clearState();
             location.href = response.url;
 
         } catch (e) {
@@ -122,7 +122,7 @@ export class OAuthClientImpl implements OAuthClient {
     /*
      * Clear the login state when the session ends
      */
-    public clearLoginState(): void {
+    public clearState(): void {
         HtmlStorageHelper.clearIsLoggedIn();
         HtmlStorageHelper.clearDelegationId();
     }
@@ -184,7 +184,7 @@ export class OAuthClientImpl implements OAuthClient {
         } catch (e: any) {
 
             if (e.statusCode === 401) {
-                this.clearLoginState();
+                this.clearState();
                 throw ErrorFactory.fromLoginRequired();
             }
 

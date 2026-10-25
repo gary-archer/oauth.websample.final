@@ -1,7 +1,6 @@
 import EventBus from 'js-event-bus';
-import {FetchCacheKeys} from '../../api/client/fetchCacheKeys';
-import {FetchClient} from '../../api/client/fetchClient';
-import {ApiRequestCoordinator} from '../../api/coordination/apiRequestCoordinator';
+import {FetchCacheKeys} from '../../api/cache/fetchCacheKeys';
+import {ApiClient} from '../../api/client/apiClient';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {UIError} from '../../plumbing/errors/uiError';
@@ -13,21 +12,16 @@ import {TransactionsViewState} from './transactionsViewState';
  */
 export class TransactionsViewModel {
 
-    private readonly fetchClient: FetchClient;
+    private readonly apiClient: ApiClient;
     private readonly eventBus: EventBus;
-    private readonly apiRequestCoordinator: ApiRequestCoordinator;
     private listener: (() => void) | null;
     private companyId: string | null;
     private snapshot: TransactionsViewState;
 
-    public constructor(
-        fetchClient: FetchClient,
-        eventBus: EventBus,
-        apiRequestCoordinator: ApiRequestCoordinator,
-    ) {
-        this.fetchClient = fetchClient;
+    public constructor(apiClient: ApiClient, eventBus: EventBus) {
+
+        this.apiClient = apiClient;
         this.eventBus = eventBus;
-        this.apiRequestCoordinator = apiRequestCoordinator;
         this.listener = null;
         this.companyId = null;
         this.snapshot = {data: null, error: null};
@@ -69,13 +63,12 @@ export class TransactionsViewModel {
             causeError: options.causeError,
         };
 
-        this.apiRequestCoordinator.onApiRequestStart(fetchOptions.cacheKey);
         this.snapshot = {data: this.companyId !== id ? null : this.snapshot.data, error: null};
         this.companyId = id;
 
         try {
 
-            const result = await this.fetchClient.getCompanyTransactions(id, fetchOptions);
+            const result = await this.apiClient.getCompanyTransactions(id, fetchOptions);
             if (result) {
                 this.snapshot = {data: result, error: null};
             }
@@ -92,7 +85,6 @@ export class TransactionsViewModel {
 
         } finally {
 
-            this.apiRequestCoordinator.onApiRequestEnd();
             this.notifyView();
         }
     }
