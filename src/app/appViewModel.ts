@@ -160,8 +160,8 @@ export class AppViewModel {
      */
     public onLoggedOut(): void {
 
-        this.oauthClient.clearState();
-        this.apiClient.clearState();
+        this.oauthClient.clearLoginState();
+        this.apiClient.clearLoginState();
         this.error = null;
     }
 

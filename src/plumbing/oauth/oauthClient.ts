@@ -16,7 +16,7 @@ export interface OAuthClient {
     logout(): Promise<void>;
 
     // Allow the app to clear its OAuth state
-    clearState(): void;
+    clearLoginState(): void;
 
     // Call the OAuth agent to refresh the access token and rewrite cookies
     synchronizedRefresh(): Promise<void>

@@ -82,7 +82,7 @@ export class ApiClient {
     /*
      * Clear any API state when the user logs out
      */
-    public clearState(): void {
+    public clearLoginState(): void {
         this.fetchCache.clearAll();
         this.requestCoordinator.resetState();
     }
@@ -175,7 +175,7 @@ export class ApiClient {
 
                 // A permanent API 401 error triggers a new login.
                 // This could be caused by an invalid API configuration.
-                this.oauthClient.clearState();
+                this.oauthClient.clearLoginState();
                 throw ErrorFactory.fromLoginRequired();
             }
         }
