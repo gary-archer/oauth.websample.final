@@ -65,6 +65,17 @@ export class ApiRequestCoordinator {
     }
 
     /*
+     * Reset all state when the user logs out
+     */
+    public resetState(): void {
+
+        this.errors = [];
+        this.cacheKeys = [];
+        this.loadingCount = 0;
+        this.loadedCount = 0;
+    }
+
+    /*
      * Handle OAuth related errors once all requests in the batch finish
      */
     private handleAllRequestsComplete(): void {
@@ -109,17 +120,6 @@ export class ApiRequestCoordinator {
         });
 
         return errors;
-    }
-
-    /*
-     * Reset all state when the user logs out
-     */
-    public resetState(): void {
-
-        this.errors = [];
-        this.cacheKeys = [];
-        this.loadingCount = 0;
-        this.loadedCount = 0;
     }
 
     /*
