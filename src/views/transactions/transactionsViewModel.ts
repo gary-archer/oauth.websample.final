@@ -4,6 +4,7 @@ import {FetchClient} from '../../api/client/fetchClient';
 import {ApiRequestCoordinator} from '../../api/coordination/apiRequestCoordinator';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {UIError} from '../../plumbing/errors/uiError';
 import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {TransactionsViewState} from './transactionsViewState';
 
@@ -29,7 +30,7 @@ export class TransactionsViewModel {
         this.apiRequestCoordinator = apiRequestCoordinator;
         this.listener = null;
         this.companyId = null;
-        this.snapshot = {transactions: null, error: null};
+        this.snapshot = {data: null, error: null};
     }
 
     /*
@@ -60,28 +61,34 @@ export class TransactionsViewModel {
     /*
      * Get data from the API and notify the view
      */
-    public async callApi(id: string, options?: ViewLoadOptions): Promise<void> {
+    public async callApi(id: string, options: ViewLoadOptions, onForbidden: () => void): Promise<void> {
 
         const fetchOptions = {
             cacheKey: `${FetchCacheKeys.Transactions}-${id}`,
-            forceReload: options?.forceReload || false,
-            causeError: options?.causeError || false,
+            forceReload: options.forceReload,
+            causeError: options.causeError,
         };
 
         this.apiRequestCoordinator.onApiRequestStart(fetchOptions.cacheKey);
-        this.snapshot = {transactions: this.companyId !== id ? null : this.snapshot.transactions, error: null};
+        this.snapshot = {data: this.companyId !== id ? null : this.snapshot.data, error: null};
         this.companyId = id;
 
         try {
 
             const result = await this.fetchClient.getCompanyTransactions(id, fetchOptions);
             if (result) {
-                this.snapshot = {transactions: result, error: null};
+                this.snapshot = {data: result, error: null};
             }
 
         } catch (e: any) {
 
-            this.snapshot = {transactions: null, error: ErrorFactory.fromException(e)};
+            const error = ErrorFactory.fromException(e);
+            if (this.isForbiddenError(error)) {
+                this.snapshot = {data: null, error: null};
+                onForbidden();
+            } else {
+                this.snapshot = {data: null, error: ErrorFactory.fromException(e)};
+            }
 
         } finally {
 
@@ -91,36 +98,33 @@ export class TransactionsViewModel {
     }
 
     /*
-     * Handle 'business errors' received from the API
-     */
-    public isForbiddenError(): boolean {
-
-        if (this.snapshot.error) {
-
-            if (this.snapshot.error.getStatusCode() === 404 &&
-                this.snapshot.error.getErrorCode() === ErrorCodes.companyNotFound) {
-
-                // User typed an id value outside of allowed company ids
-                return true;
-            }
-
-            if (this.snapshot.error.getStatusCode() === 400 &&
-                this.snapshot.error.getErrorCode() === ErrorCodes.invalidCompanyId) {
-
-                // User typed an invalid id such as 'abc'
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /*
      * Update the view when the model data changes
      */
     private notifyView(): void {
         if (this.listener) {
             this.listener();
         }
+    }
+
+    /*
+     * Handle 'business errors' received from the API
+     */
+    private isForbiddenError(error: UIError): boolean {
+
+        if (error.getStatusCode() === 404 &&
+            error.getErrorCode() === ErrorCodes.companyNotFound) {
+
+            // User typed an id value outside of allowed company ids
+            return true;
+        }
+
+        if (error.getStatusCode() === 400 &&
+            error.getErrorCode() === ErrorCodes.invalidCompanyId) {
+
+            // User typed an invalid id such as 'abc'
+            return true;
+        }
+
+        return false;
     }
 }

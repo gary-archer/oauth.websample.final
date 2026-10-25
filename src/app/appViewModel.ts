@@ -11,9 +11,7 @@ import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
 import {ReloadDataEvent} from '../plumbing/events/reloadDataEvent';
 import {OAuthClient} from '../plumbing/oauth/oauthClient';
 import {OAuthClientImpl} from '../plumbing/oauth/oauthClientImpl';
-import {CompaniesViewModel} from '../views/companies/companiesViewModel';
-import {TransactionsViewModel} from '../views/transactions/transactionsViewModel';
-import {UserInfoViewModel} from '../views/userInfo/userInfoViewModel';
+import {ViewModelStore} from './viewModelStore';
 
 /*
  * Manages global objects for the React application
@@ -25,6 +23,7 @@ export class AppViewModel {
     private oauthClient!: OAuthClient;
     private fetchClient!: FetchClient;
     private apiRequestCoordinator!: ApiRequestCoordinator;
+    private viewModelStore!: ViewModelStore;
 
     // Other infrastructure
     private readonly eventBus: EventBus;
@@ -36,11 +35,6 @@ export class AppViewModel {
     private isInitialised: boolean;
     private isLoading: boolean;
     private isLoaded: boolean;
-
-    // Child view models
-    private companiesViewModel: CompaniesViewModel | null;
-    private transactionsViewModel: TransactionsViewModel | null;
-    private userInfoViewModel: UserInfoViewModel | null;
 
     /*
      * Set the initial state when the app starts
@@ -57,11 +51,6 @@ export class AppViewModel {
         this.isInitialised = false;
         this.isLoading = false;
         this.isLoaded = false;
-
-        // Initialize child view models
-        this.companiesViewModel = null;
-        this.transactionsViewModel = null;
-        this.userInfoViewModel = null;
         this.setupCallbacks();
     }
 
@@ -95,6 +84,9 @@ export class AppViewModel {
 
             // Create an object used to deal with API responses across multiple views
             this.apiRequestCoordinator = new ApiRequestCoordinator(this.eventBus, this.fetchCache);
+
+            // Create an object to store view models
+            this.viewModelStore = new ViewModelStore(this.fetchClient, this.eventBus, this.apiRequestCoordinator);
 
             // Update state, to prevent model recreation if the view is recreated
             this.isInitialised = true;
@@ -221,50 +213,8 @@ export class AppViewModel {
         return this.eventBus;
     }
 
-    /*
-     * Return child view models when requested
-     */
-    public getCompaniesViewModel(): CompaniesViewModel {
-
-        if (!this.companiesViewModel) {
-
-            this.companiesViewModel = new CompaniesViewModel(
-                this.fetchClient,
-                this.eventBus,
-                this.apiRequestCoordinator,
-            );
-        }
-
-        return this.companiesViewModel;
-    }
-
-    public getTransactionsViewModel(): TransactionsViewModel {
-
-        if (!this.transactionsViewModel) {
-
-            this.transactionsViewModel = new TransactionsViewModel
-            (
-                this.fetchClient,
-                this.eventBus,
-                this.apiRequestCoordinator,
-            );
-        }
-
-        return this.transactionsViewModel;
-    }
-
-    public getUserInfoViewModel(): UserInfoViewModel {
-
-        if (!this.userInfoViewModel) {
-
-            this.userInfoViewModel = new UserInfoViewModel(
-                this.fetchClient,
-                this.eventBus,
-                this.apiRequestCoordinator,
-            );
-        }
-
-        return this.userInfoViewModel;
+    public getViewModelStore(): ViewModelStore {
+        return this.viewModelStore;
     }
 
     /*

@@ -215,15 +215,19 @@ export function App(props: AppProps): JSX.Element {
         return window.innerWidth < 768;
     }
 
+    /*
+     * Get properties for the title view
+     */
     function getTitleProps(): TitleViewProps {
 
         if (isLoaded) {
 
             return {
                 userInfo: {
-                    viewModel: model.getUserInfoViewModel(),
+                    viewModel: model.getViewModelStore().getUserInfoViewModel(),
                 },
             };
+
         } else {
 
             return {
@@ -232,6 +236,9 @@ export function App(props: AppProps): JSX.Element {
         }
     }
 
+    /*
+     * Get properties for the header buttons view
+     */
     function getHeaderButtonProps(): HeaderButtonsViewProps {
 
         return {
@@ -244,6 +251,9 @@ export function App(props: AppProps): JSX.Element {
         };
     }
 
+    /*
+     * Get properties for the error view
+     */
     function getErrorProps(): ErrorSummaryViewProps {
 
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -257,6 +267,9 @@ export function App(props: AppProps): JSX.Element {
         };
     }
 
+    /*
+     * Get properties for the session view
+     */
     function getSessionProps(): SessionViewProps {
 
         return {
@@ -265,22 +278,31 @@ export function App(props: AppProps): JSX.Element {
         };
     }
 
+    /*
+     * Get properties for the companies view
+     */
     function getCompaniesProps(): CompaniesViewProps {
 
         return {
-            viewModel: model.getCompaniesViewModel(),
+            viewModel: model.getViewModelStore().getCompaniesViewModel(),
             isMobileLayout,
         };
     }
 
+    /*
+     * Get properties for the transactions view
+     */
     function getTransactionsProps(): TransactionsViewProps {
 
         return {
-            viewModel: model.getTransactionsViewModel(),
+            viewModel: model.getViewModelStore().getTransactionsViewModel(),
             navigate,
         };
     }
 
+    /*
+     * Get properties for the login required view
+     */
     function getLoginRequiredProps(): LoginRequiredViewProps {
 
         return {

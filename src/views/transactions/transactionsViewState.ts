@@ -5,6 +5,6 @@ import {UIError} from '../../plumbing/errors/uiError';
  * The snapshot of state exposed to the view
  */
 export interface TransactionsViewState {
-    transactions: CompanyTransactions | null;
+    data: CompanyTransactions | null;
     error: UIError | null;
 }

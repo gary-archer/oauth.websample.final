@@ -111,6 +111,9 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         model.unload();
     }
 
+    /*
+     * Get details for the error display
+     */
     function getErrorProps(): ErrorSummaryViewProps {
 
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -124,25 +127,41 @@ export function UserInfoView(props: UserInfoViewProps): JSX.Element {
         };
     }
 
-    return (
-        <>
-            {error &&
-                <div className='text-right'>
-                    <ErrorSummaryView {...getErrorProps()}/>
-                </div>
-            }
-            {oauthUserInfo && apiUserInfo &&
-                <div className='text-right font-bold'>
-                    <div className='relative inline-block group'>
-                        {getUserNameForDisplay()}
-                        <div className='tooltip'>
-                            <small>{getUserTitle()}</small>
-                            <br />
-                            <small>{getUserRegions()}</small>
-                        </div>
+    /*
+     * Output user details
+     */
+    function renderData(): JSX.Element {
+
+        return (
+            <div className='text-right font-bold'>
+                <div className='relative inline-block group'>
+                    {getUserNameForDisplay()}
+                    <div className='tooltip'>
+                        <small>{getUserTitle()}</small>
+                        <br />
+                        <small>{getUserRegions()}</small>
                     </div>
                 </div>
-            }
+            </div>
+        );
+    }
+
+    /*
+     * Output error details to the right
+     */
+    function renderError(): JSX.Element {
+
+        return (
+            <div className='text-right'>
+                <ErrorSummaryView {...getErrorProps()}/>
+            </div>
+        );
+    }
+
+    return (
+        <>
+            {error && renderError()}
+            {oauthUserInfo && apiUserInfo && renderData()}
         </>
     );
 }
