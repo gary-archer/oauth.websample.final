@@ -4,14 +4,12 @@ import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {ApiRequestEvent} from '../../plumbing/events/apiRequestEvent';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
-import {FetchCache} from '../cache/fetchCache';
 
 /*
  * Coordinates API requests from multiple views, and handles session expiry when required
  */
 export class ApiRequestCoordinator {
 
-    private readonly fetchCache: FetchCache;
     private readonly eventBus: EventBus;
     private cacheKeys: string[];
     private loadingCount: number;
@@ -21,9 +19,8 @@ export class ApiRequestCoordinator {
     /*
      * Set the initial state
      */
-    public constructor(fetchCache: FetchCache, eventBus: EventBus) {
+    public constructor(eventBus: EventBus) {
 
-        this.fetchCache = fetchCache;
         this.eventBus = eventBus;
         this.cacheKeys = [];
         this.loadingCount = 0;
@@ -40,6 +37,7 @@ export class ApiRequestCoordinator {
 
         if (this.loadingCount === 0) {
             this.cacheKeys = [];
+            this.errors = [];
             this.eventBus.emit(EventNames.ApiRequest, null, new ApiRequestEvent(false));
         }
 
@@ -51,9 +49,12 @@ export class ApiRequestCoordinator {
      * Called when an API request ends
      * Fires ApiRequestEvent(true) once all pending requests in the batch have finished
      */
-    public onApiRequestEnd(): void {
+    public onApiRequestEnd(error: UIError | null = null): void {
 
         ++this.loadedCount;
+        if (error) {
+            this.errors.push(error);
+        }
         this.handleAllRequestsComplete();
     }
 
@@ -86,9 +87,6 @@ export class ApiRequestCoordinator {
             this.loadingCount = 0;
             this.loadedCount = 0;
 
-            // Get error details stored in the fetch cache
-            this.errors = this.getAllErrors();
-
             // Notify subscribers when all API requests have completed successfully
             if (this.errors.length === 0) {
                 this.eventBus.emit(EventNames.ApiRequest, null, new ApiRequestEvent(true));
@@ -101,25 +99,6 @@ export class ApiRequestCoordinator {
                 this.eventBus.emit(EventNames.LoginRequired, new LoginRequiredEvent());
             }
         }
-    }
-
-    /*
-     * Collect errors for the current batch of requests
-     */
-    private getAllErrors(): UIError[] {
-
-        const errors: UIError[] = [];
-
-        this.cacheKeys.forEach((k) => {
-
-            const found = this.fetchCache.getItem(k);
-            const error = found?.getError();
-            if (error) {
-                errors.push(error);
-            }
-        });
-
-        return errors;
     }
 
     /*
