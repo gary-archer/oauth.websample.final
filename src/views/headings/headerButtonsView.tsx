@@ -18,12 +18,12 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
     }, []);
 
     function startup() {
-        props.eventBus.on(EventNames.ApiRequests, onApiRequest);
+        props.eventBus.on(EventNames.ApiRequests, onApiRequests);
         props.eventBus.on(EventNames.Navigated, onNavigated);
     }
 
     function cleanup() {
-        props.eventBus.detach(EventNames.ApiRequests, onApiRequest);
+        props.eventBus.detach(EventNames.ApiRequests, onApiRequests);
         props.eventBus.detach(EventNames.Navigated, onNavigated);
     }
 
@@ -34,7 +34,7 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
     /*
      * The session button state changes when data starts and ends loading
      */
-    function onApiRequest(event: ApiRequestsEvent) {
+    function onApiRequests(event: ApiRequestsEvent) {
         setHasData(event.getCompleted());
     }
 
