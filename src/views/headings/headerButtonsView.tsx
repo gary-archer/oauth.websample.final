@@ -1,6 +1,6 @@
 import {JSX, useEffect, useState} from 'react';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {ApiRequestEvent} from '../../plumbing/events/apiRequestEvent';
+import {ApiRequestsEvent} from '../../plumbing/events/apiRequestsEvent';
 import {HeaderButtonsViewProps} from './headerButtonsViewProps';
 import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
 
@@ -18,12 +18,12 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
     }, []);
 
     function startup() {
-        props.eventBus.on(EventNames.ApiRequest, onApiRequest);
+        props.eventBus.on(EventNames.ApiRequests, onApiRequest);
         props.eventBus.on(EventNames.Navigated, onNavigated);
     }
 
     function cleanup() {
-        props.eventBus.detach(EventNames.ApiRequest, onApiRequest);
+        props.eventBus.detach(EventNames.ApiRequests, onApiRequest);
         props.eventBus.detach(EventNames.Navigated, onNavigated);
     }
 
@@ -34,8 +34,8 @@ export function HeaderButtonsView(props: HeaderButtonsViewProps): JSX.Element {
     /*
      * The session button state changes when data starts and ends loading
      */
-    function onApiRequest(event: ApiRequestEvent) {
-        setHasData(event.getLoaded());
+    function onApiRequest(event: ApiRequestsEvent) {
+        setHasData(event.getCompleted());
     }
 
     /*

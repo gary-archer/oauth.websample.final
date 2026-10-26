@@ -4,7 +4,7 @@
 export class EventNames {
 
     // Raised when API requests start and when all complete
-    public static ApiRequest = 'ApiRequest';
+    public static ApiRequests = 'ApiRequests';
 
     // Raised when the main view changes
     public static Navigated  = 'Navigated';

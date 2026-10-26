@@ -1,7 +1,7 @@
 /*
- * Input when making a cacheable fetch request
+ * Input when making a cacheable GET request
  */
-export interface FetchOptions {
+export interface GetOptions {
     cacheKey: string;
     forceReload: boolean;
     causeError: boolean;

@@ -2,7 +2,7 @@ import {JSX, useEffect, useSyncExternalStore} from 'react';
 import {useLocation, useParams} from 'react-router';
 import {Transaction} from '../../api/entities/transaction';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {ApiRequestEvent} from '../../plumbing/events/apiRequestEvent';
+import {ApiRequestsEvent} from '../../plumbing/events/apiRequestsEvent';
 import {EventNames} from '../../plumbing/events/eventNames';
 import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
 import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
@@ -75,10 +75,13 @@ export function TransactionsView(props: TransactionsViewProps): JSX.Element {
      */
     async function loadData(options: ViewLoadOptions): Promise<void> {
 
-        // Forbidden errors are expected if the user edits the browser URL
-        // Treat the API request as successfully completed and navigate back to the home view
+        // The code sample treats forbidden due to unauthorized browser URL edits as a normal, non-error event
         const onForbidden = () => {
-            model.getEventBus().emit(EventNames.ApiRequest, null, new ApiRequestEvent(true));
+
+            // Indicate successful completion of the batch of API requests
+            model.getEventBus().emit(EventNames.ApiRequests, null, new ApiRequestsEvent(true));
+
+            // Navigate back to the home view
             props.navigate('/');
         };
 

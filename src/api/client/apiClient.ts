@@ -7,7 +7,7 @@ import {Configuration} from '../../configuration/configuration';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {OAuthClient} from '../../plumbing/oauth/oauthClient';
 import {FetchCache} from '../cache/fetchCache';
-import {FetchOptions} from '../cache/fetchOptions';
+import {GetOptions} from '../client/getOptions';
 import {ApiRequestCoordinator} from './apiRequestCoordinator';
 
 /*
@@ -31,7 +31,7 @@ export class ApiClient {
     /*
      * Get a list of companies
      */
-    public async getCompanyList(options: FetchOptions) : Promise<Company[] | null> {
+    public async getCompanyList(options: GetOptions) : Promise<Company[] | null> {
 
         const url = `${this.configuration.bffBaseUrl}/investments/companies`;
         return this.getDataFromApi(url, options);
@@ -40,7 +40,7 @@ export class ApiClient {
     /*
      * Get a list of transactions for a single company
      */
-    public async getCompanyTransactions(id: string, options: FetchOptions) : Promise<CompanyTransactions | null> {
+    public async getCompanyTransactions(id: string, options: GetOptions) : Promise<CompanyTransactions | null> {
 
         const url = `${this.configuration.bffBaseUrl}/investments/companies/${id}/transactions`;
         return this.getDataFromApi(url, options);
@@ -49,7 +49,7 @@ export class ApiClient {
     /*
      * Get user information from the authorization server
      */
-    public async getOAuthUserInfo(options: FetchOptions) : Promise<OAuthUserInfo | null> {
+    public async getOAuthUserInfo(options: GetOptions) : Promise<OAuthUserInfo | null> {
 
         const url = `${this.configuration.bffBaseUrl}/oauthuserinfo`;
         const data = await this.getDataFromApi(url, options);
@@ -66,7 +66,7 @@ export class ApiClient {
     /*
      * Download user attributes the UI needs that are not stored in the authorization server
      */
-    public async getApiUserInfo(options: FetchOptions) : Promise<ApiUserInfo | null> {
+    public async getApiUserInfo(options: GetOptions) : Promise<ApiUserInfo | null> {
 
         const url = `${this.configuration.bffBaseUrl}/investments/userinfo`;
         return this.getDataFromApi(url, options);
@@ -90,7 +90,7 @@ export class ApiClient {
     /*
      * The code sample's entry point for GET requests manages caching
      */
-    private async getDataFromApi(url: string, options: FetchOptions): Promise<any> {
+    private async getDataFromApi(url: string, options: GetOptions): Promise<any> {
 
         // Remove the item from the cache when a reload is requested
         if (options.forceReload) {
@@ -107,12 +107,12 @@ export class ApiClient {
         cacheItem = this.fetchCache.createItem(options.cacheKey);
 
         // Notify the request coordinator that we are sending an API request
-        this.requestCoordinator.onApiRequestStart(options.cacheKey);
+        this.requestCoordinator.onApiRequestStart();
 
         try {
 
             // Get the data and update the cache item for this request
-            const result = await this.getDataFromApiWithTokenRefresh(url, options);
+            const result = await this.callApiWithTokenRefresh('GET', url, null, options.causeError);
             cacheItem.setData(result);
             this.requestCoordinator.onApiRequestEnd();
             return result;
@@ -132,7 +132,11 @@ export class ApiClient {
     /*
      * This method runs a standard algorithm for token refresh
      */
-    private async getDataFromApiWithTokenRefresh(url: string, options: FetchOptions): Promise<any> {
+    private async callApiWithTokenRefresh(
+        method: string,
+        url: string,
+        dataToSend: any,
+        causeError: boolean): Promise<any> {
 
         // Avoid API requests and trigger a login redirect when we know it is needed
         if (!this.oauthClient.isLoggedIn()) {
@@ -142,7 +146,7 @@ export class ApiClient {
         try {
 
             // Call the API and return data on success
-            return await this.callApiWithCredential('GET', url, options);
+            return await this.callApiWithCredential(method, url, dataToSend, causeError);
 
         } catch (e1: any) {
 
@@ -158,7 +162,7 @@ export class ApiClient {
             try {
 
                 // Call the API again with the rewritten access token cookie
-                return await this.callApiWithCredential('GET', url, options);
+                return await this.callApiWithCredential(method, url, dataToSend, causeError);
 
             }  catch (e2: any) {
 
@@ -182,8 +186,8 @@ export class ApiClient {
     private async callApiWithCredential(
         method: string,
         url: string,
-        fetchOptions: FetchOptions,
-        dataToSend: any = null): Promise<any> {
+        dataToSend: any,
+        causeError: boolean): Promise<any> {
 
         // Add the token-handler-version custom header, which ensures CORS preflights.
         // Also add a correlation ID to include in API logs.
@@ -195,7 +199,7 @@ export class ApiClient {
 
         // A custom header can be sent to choose a backend API that simulates a 500 error.
         // That behavior enables rehearsal of the end-to-end technical support process to resolve such errors.
-        if (fetchOptions.causeError) {
+        if (causeError) {
             headers['api-exception-simulation'] = 'FinalApi';
         }
 

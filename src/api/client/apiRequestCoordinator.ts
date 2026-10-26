@@ -2,7 +2,7 @@ import EventBus from 'js-event-bus';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {UIError} from '../../plumbing/errors/uiError';
 import {EventNames} from '../../plumbing/events/eventNames';
-import {ApiRequestEvent} from '../../plumbing/events/apiRequestEvent';
+import {ApiRequestsEvent} from '../../plumbing/events/apiRequestsEvent';
 import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
 
 /*
@@ -11,7 +11,6 @@ import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
 export class ApiRequestCoordinator {
 
     private readonly eventBus: EventBus;
-    private cacheKeys: string[];
     private loadingCount: number;
     private loadedCount: number;
     private errors: UIError[];
@@ -22,7 +21,6 @@ export class ApiRequestCoordinator {
     public constructor(eventBus: EventBus) {
 
         this.eventBus = eventBus;
-        this.cacheKeys = [];
         this.loadingCount = 0;
         this.loadedCount = 0;
         this.errors = [];
@@ -31,23 +29,21 @@ export class ApiRequestCoordinator {
 
     /*
      * Called when an API request starts
-     * Fires ApiRequestEvent(false) on the first request of a batch to signal loading has begun
+     * Fires ApiRequestsEvent(false) on the first request of a batch to signal loading has begun
      */
-    public onApiRequestStart(cacheKey: string): void {
+    public onApiRequestStart(): void {
 
         if (this.loadingCount === 0) {
-            this.cacheKeys = [];
             this.errors = [];
-            this.eventBus.emit(EventNames.ApiRequest, null, new ApiRequestEvent(false));
+            this.eventBus.emit(EventNames.ApiRequests, null, new ApiRequestsEvent(false));
         }
 
-        this.cacheKeys.push(cacheKey);
         ++this.loadingCount;
     }
 
     /*
      * Called when an API request ends
-     * Fires ApiRequestEvent(true) once all pending requests in the batch have finished
+     * Fires ApiRequestsEvent(true) once all pending requests in the batch have finished
      */
     public onApiRequestEnd(error: UIError | null = null): void {
 
@@ -71,7 +67,6 @@ export class ApiRequestCoordinator {
     public resetState(): void {
 
         this.errors = [];
-        this.cacheKeys = [];
         this.loadingCount = 0;
         this.loadedCount = 0;
     }
@@ -89,7 +84,7 @@ export class ApiRequestCoordinator {
 
             // Notify subscribers when all API requests have completed successfully
             if (this.errors.length === 0) {
-                this.eventBus.emit(EventNames.ApiRequest, null, new ApiRequestEvent(true));
+                this.eventBus.emit(EventNames.ApiRequests, null, new ApiRequestsEvent(true));
             }
 
             // Login required errors occur when there are no tokens yet or when token refresh fails
