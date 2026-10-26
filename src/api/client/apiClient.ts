@@ -109,13 +109,13 @@ export class ApiClient {
         // Notify the request coordinator that we are sending an API request
         this.requestCoordinator.onApiRequestStart(options.cacheKey);
 
-        let result: any;
         try {
 
             // Get the data and update the cache item for this request
-            result = await this.getDataFromApiWithTokenRefresh(url, options);
+            const result = await this.getDataFromApiWithTokenRefresh(url, options);
             cacheItem.setData(result);
             this.requestCoordinator.onApiRequestEnd();
+            return result;
 
         } catch (e: any) {
 
@@ -127,8 +127,6 @@ export class ApiClient {
             this.requestCoordinator.onApiRequestEnd(error);
             throw error;
         }
-
-        return result;
     }
 
     /*
