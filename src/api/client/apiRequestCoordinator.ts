@@ -13,6 +13,7 @@ export class ApiRequestCoordinator {
     private readonly eventBus: EventBus;
     private loadingCount: number;
     private loadedCount: number;
+    private urls: string[];
     private errors: UIError[];
 
     /*
@@ -23,6 +24,7 @@ export class ApiRequestCoordinator {
         this.eventBus = eventBus;
         this.loadingCount = 0;
         this.loadedCount = 0;
+        this.urls = [];
         this.errors = [];
         this.setupCallbacks();
     }
@@ -31,7 +33,7 @@ export class ApiRequestCoordinator {
      * Called when an API request starts
      * Fires ApiRequestsEvent(false) on the first request of a batch to signal loading has begun
      */
-    public onApiRequestStart(): void {
+    public onApiRequestStart(url: string): void {
 
         if (this.loadingCount === 0) {
             this.errors = [];
@@ -39,6 +41,7 @@ export class ApiRequestCoordinator {
         }
 
         ++this.loadingCount;
+        this.urls.push(url);
     }
 
     /*
@@ -55,6 +58,13 @@ export class ApiRequestCoordinator {
     }
 
     /*
+     * In React strict mode, detect additional API requests due to view recreation
+     */
+    public isApiRequestInFlight(url: string): boolean {
+        return this.urls.includes(url);
+    }
+
+    /*
      * Return true if there were any errors on the last batch of API requests
      */
     public hasErrors(): boolean {
@@ -66,6 +76,7 @@ export class ApiRequestCoordinator {
      */
     public resetState(): void {
 
+        this.urls = [];
         this.errors = [];
         this.loadingCount = 0;
         this.loadedCount = 0;
@@ -78,9 +89,10 @@ export class ApiRequestCoordinator {
 
         if (this.loadedCount === this.loadingCount) {
 
-            // Reset counts
+            // Reset data
             this.loadingCount = 0;
             this.loadedCount = 0;
+            this.urls = [];
 
             // Notify subscribers when all API requests have completed successfully
             if (this.errors.length === 0) {

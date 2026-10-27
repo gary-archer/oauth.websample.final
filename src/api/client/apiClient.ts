@@ -98,29 +98,29 @@ export class ApiClient {
         }
 
         // Return existing data from the memory cache when available
-        let cacheItem = this.fetchCache.getItem(url);
-        if (cacheItem) {
-            return cacheItem.getData();
+        const cachedData = this.fetchCache.getItem(url);
+        if (cachedData) {
+            return cachedData;
         }
 
-        // Create the cache item with a null value, so that extra strict mode requests return null
-        cacheItem = this.fetchCache.createItem(url);
+        // Handle re-entrancy in React strict mode
+        
+        if (this.requestCoordinator.isApiRequestInFlight(url)) {
+            return null;
+        }
 
         // Notify the request coordinator that we are sending an API request
-        this.requestCoordinator.onApiRequestStart();
+        this.requestCoordinator.onApiRequestStart(url);
 
         try {
 
-            // Get the data and update the cache item for this request
-            const result = await this.callApiWithTokenRefresh('GET', url, null, options.causeError);
-            cacheItem.setData(result);
+            // Get the data, store it in the cache, and return it
+            const data = await this.callApiWithTokenRefresh('GET', url, null, options.causeError);
+            this.fetchCache.setItem(url, data);
             this.requestCoordinator.onApiRequestEnd();
-            return result;
+            return data;
 
         } catch (e: any) {
-
-            // Make sure we clear the item from the cache
-            this.fetchCache.removeItem(url);
 
             // Handle the error and notify the request coordinator that the API request failed
             const error = ErrorFactory.fromException(e);
