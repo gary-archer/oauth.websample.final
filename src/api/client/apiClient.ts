@@ -104,7 +104,6 @@ export class ApiClient {
         }
 
         // Handle re-entrancy in React strict mode
-        
         if (this.requestCoordinator.isApiRequestInFlight(url)) {
             return null;
         }
