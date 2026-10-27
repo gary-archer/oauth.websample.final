@@ -1,8 +1,7 @@
 /*
- * Input when making a cacheable GET request
+ * // Input from views to influence core API GET behaviors, including an option for error rehearsal
  */
 export interface GetOptions {
-    cacheKey: string;
     forceReload: boolean;
     causeError: boolean;
 }

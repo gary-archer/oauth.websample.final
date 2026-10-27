@@ -1,5 +1,6 @@
 import {JSX, useEffect, useSyncExternalStore} from 'react';
 import {Link, useLocation} from 'react-router';
+import {GetOptions} from '../../api/client/getOptions';
 import {Company} from '../../api/entities/company';
 import {ErrorCodes} from '../../plumbing/errors/errorCodes';
 import {EventNames} from '../../plumbing/events/eventNames';
@@ -8,7 +9,6 @@ import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {CurrentLocation} from '../utilities/currentLocation';
-import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {CompaniesViewProps} from './companiesViewProps';
 
 /*
@@ -41,7 +41,11 @@ export function CompaniesView(props: CompaniesViewProps): JSX.Element {
         model.getEventBus().on(EventNames.ReloadData, onReload);
 
         // Do the initial load of data
-        await loadData();
+        const options = {
+            forceReload: false,
+            causeError: false,
+        };
+        await loadData(options);
     }
 
     /*
@@ -66,7 +70,7 @@ export function CompaniesView(props: CompaniesViewProps): JSX.Element {
     /*
      * Get data from the API; the view model notifies subscribers when done
      */
-    async function loadData(options?: ViewLoadOptions): Promise<void> {
+    async function loadData(options: GetOptions): Promise<void> {
         await model.callApi(options);
     }
 

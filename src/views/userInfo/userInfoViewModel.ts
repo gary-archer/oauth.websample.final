@@ -1,8 +1,7 @@
 import EventBus from 'js-event-bus';
-import {FetchCacheKeys} from '../../api/cache/fetchCacheKeys';
 import {ApiClient} from '../../api/client/apiClient';
+import {GetOptions} from '../../api/client/getOptions';
 import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {ViewLoadOptions} from '../utilities/viewLoadOptions';
 import {UserInfoViewState} from './userInfoViewState';
 
 /*
@@ -51,27 +50,15 @@ export class UserInfoViewModel {
     /*
      * Get data from the API and notify the view
      */
-    public async callApi(options?: ViewLoadOptions): Promise<void> {
-
-        const oauthFetchOptions = {
-            cacheKey: FetchCacheKeys.OAuthUserInfo,
-            forceReload: options?.forceReload || false,
-            causeError: options?.causeError || false,
-        };
-
-        const apiFetchOptions = {
-            cacheKey: FetchCacheKeys.ApiUserInfo,
-            forceReload: options?.forceReload || false,
-            causeError: options?.causeError || false,
-        };
+    public async callApi(options: GetOptions): Promise<void> {
 
         this.snapshot = {oauthUserInfo: null, apiUserInfo: null, error: null};
 
         try {
 
             // Set up promises for the two sources of user info
-            const oauthUserInfoPromise = this.apiClient.getOAuthUserInfo(oauthFetchOptions);
-            const apiUserInfoPromise = this.apiClient.getApiUserInfo(apiFetchOptions);
+            const oauthUserInfoPromise = this.apiClient.getOAuthUserInfo(options);
+            const apiUserInfoPromise = this.apiClient.getApiUserInfo(options);
 
             // Run the tasks in parallel
             const results = await Promise.all([oauthUserInfoPromise, apiUserInfoPromise]);

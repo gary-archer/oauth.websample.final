@@ -7,7 +7,7 @@ import {FetchCacheItem} from './fetchCacheItem';
  */
 export class FetchCache {
 
-    // A map of cache keys to API responses
+    // A map of cache keys (URLs) to API responses
     private requests: Record<string, FetchCacheItem> = {};
 
     /*

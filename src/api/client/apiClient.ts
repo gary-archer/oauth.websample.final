@@ -94,17 +94,17 @@ export class ApiClient {
 
         // Remove the item from the cache when a reload is requested
         if (options.forceReload) {
-            this.fetchCache.removeItem(options.cacheKey);
+            this.fetchCache.removeItem(url);
         }
 
         // Return existing data from the memory cache when available
-        let cacheItem = this.fetchCache.getItem(options.cacheKey);
+        let cacheItem = this.fetchCache.getItem(url);
         if (cacheItem) {
             return cacheItem.getData();
         }
 
         // Create the cache item with a null value, so that extra strict mode requests return null
-        cacheItem = this.fetchCache.createItem(options.cacheKey);
+        cacheItem = this.fetchCache.createItem(url);
 
         // Notify the request coordinator that we are sending an API request
         this.requestCoordinator.onApiRequestStart();
@@ -120,7 +120,7 @@ export class ApiClient {
         } catch (e: any) {
 
             // Make sure we clear the item from the cache
-            this.fetchCache.removeItem(options.cacheKey);
+            this.fetchCache.removeItem(url);
 
             // Handle the error and notify the request coordinator that the API request failed
             const error = ErrorFactory.fromException(e);
