@@ -1,9 +1,9 @@
 import EventBus from 'js-event-bus';
-import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {UIError} from '../../plumbing/errors/uiError';
-import {EventNames} from '../../plumbing/events/eventNames';
-import {ApiRequestsEvent} from '../../plumbing/events/apiRequestsEvent';
-import {LoginRequiredEvent} from '../../plumbing/events/loginRequiredEvent';
+import {ErrorCodes} from '../../errors/errorCodes';
+import {UIError} from '../../errors/uiError';
+import {EventNames} from '../../events/eventNames';
+import {ApiRequestsEvent} from '../../events/apiRequestsEvent';
+import {LoginRequiredEvent} from '../../events/loginRequiredEvent';
 
 /*
  * Coordinates API requests from multiple views, and handles session expiry when required

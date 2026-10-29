@@ -1,9 +1,9 @@
 import {JSX, useEffect, useSyncExternalStore} from 'react';
 import {GetOptions} from '../../api/client/getOptions';
-import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {EventNames} from '../../plumbing/events/eventNames';
-import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
-import {ReloadDataEvent} from '../../plumbing/events/reloadDataEvent';
+import {ErrorCodes} from '../../errors/errorCodes';
+import {EventNames} from '../../events/eventNames';
+import {NavigatedEvent} from '../../events/navigatedEvent';
+import {ReloadDataEvent} from '../../events/reloadDataEvent';
 import {ErrorSummaryView} from '../errors/errorSummaryView';
 import {ErrorSummaryViewProps} from '../errors/errorSummaryViewProps';
 import {UserInfoViewProps} from './userInfoViewProps';

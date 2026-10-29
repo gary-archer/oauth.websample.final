@@ -1,6 +1,6 @@
 import {JSX} from 'react';
-import {ErrorField} from '../../plumbing/errors/errorField';
-import {ErrorFormatter} from '../../plumbing/errors/errorFormatter';
+import {ErrorField} from '../../errors/errorField';
+import {ErrorFormatter} from '../../errors/errorFormatter';
 import {ErrorDetailsViewProps} from './errorDetailsViewProps';
 
 /*

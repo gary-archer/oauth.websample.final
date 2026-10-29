@@ -1,8 +1,8 @@
 import {JSX, useEffect, useState} from 'react';
-import {EventNames} from '../../plumbing/events/eventNames';
-import {ApiRequestsEvent} from '../../plumbing/events/apiRequestsEvent';
+import {ApiRequestsEvent} from '../../events/apiRequestsEvent';
+import {EventNames} from '../../events/eventNames';
+import {NavigatedEvent} from '../../events/navigatedEvent';
 import {HeaderButtonsViewProps} from './headerButtonsViewProps';
-import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
 
 /*
  * Render the header buttons

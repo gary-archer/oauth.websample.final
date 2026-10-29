@@ -2,13 +2,13 @@ import EventBus from 'js-event-bus';
 import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
-import {ErrorFactory} from '../plumbing/errors/errorFactory';
-import {UIError} from '../plumbing/errors/uiError';
-import {EventNames} from '../plumbing/events/eventNames';
-import {ErrorConsoleReporter} from '../plumbing/errors/errorConsoleReporter';
-import {ReloadDataEvent} from '../plumbing/events/reloadDataEvent';
-import {OAuthClient} from '../plumbing/oauth/oauthClient';
-import {OAuthClientImpl} from '../plumbing/oauth/oauthClientImpl';
+import {ErrorFactory} from '../errors/errorFactory';
+import {UIError} from '../errors/uiError';
+import {EventNames} from '../events/eventNames';
+import {ErrorConsoleReporter} from '../errors/errorConsoleReporter';
+import {ReloadDataEvent} from '../events/reloadDataEvent';
+import {OAuthClient} from '../oauth/oauthClient';
+import {OAuthClientImpl} from '../oauth/oauthClientImpl';
 import {ViewModelStore} from './viewModelStore';
 
 /*

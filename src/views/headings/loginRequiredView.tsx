@@ -1,7 +1,7 @@
 import {JSX, useEffect} from 'react';
-import {EventNames} from '../../plumbing/events/eventNames';
-import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
-import {HtmlStorageHelper} from '../../plumbing/utilities/htmlStorageHelper';
+import {EventNames} from '../../events/eventNames';
+import {NavigatedEvent} from '../../events/navigatedEvent';
+import {HtmlStorageHelper} from '../../utilities/htmlStorageHelper';
 import {LoginRequiredViewProps} from './loginRequiredViewProps';
 
 /*

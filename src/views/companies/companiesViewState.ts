@@ -1,5 +1,5 @@
 import {Company} from '../../api/entities/company';
-import {UIError} from '../../plumbing/errors/uiError';
+import {UIError} from '../../errors/uiError';
 
 /*
  * The snapshot of state exposed to the view

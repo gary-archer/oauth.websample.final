@@ -4,7 +4,7 @@ import {createRoot} from 'react-dom/client';
 import {BrowserRouter} from 'react-router';
 import {App} from './app/app';
 import {AppViewModel} from './app/appViewModel';
-import {BasePath} from './plumbing/utilities/basePath';
+import {BasePath} from './utilities/basePath';
 import {ErrorBoundary} from './views/errors/errorBoundary';
 
 // Create the view model to hold permanent data

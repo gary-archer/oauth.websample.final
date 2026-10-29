@@ -1,6 +1,6 @@
 import {JSX, useEffect, useState} from 'react';
-import {EventNames} from '../../plumbing/events/eventNames';
-import {NavigatedEvent} from '../../plumbing/events/navigatedEvent';
+import {EventNames} from '../../events/eventNames';
+import {NavigatedEvent} from '../../events/navigatedEvent';
 import {SessionViewProps} from './sessionViewProps';
 
 /*

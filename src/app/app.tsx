@@ -1,9 +1,9 @@
 import {JSX, useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import {Route, Routes, useNavigate} from 'react-router';
-import {EventNames} from '../plumbing/events/eventNames';
-import {LoginRequiredEvent} from '../plumbing/events/loginRequiredEvent';
-import {HtmlStorageHelper} from '../plumbing/utilities/htmlStorageHelper';
+import {EventNames} from '../events/eventNames';
+import {LoginRequiredEvent} from '../events/loginRequiredEvent';
+import {HtmlStorageHelper} from '../utilities/htmlStorageHelper';
 import {CompaniesView} from '../views/companies/companiesView';
 import {CompaniesViewProps} from '../views/companies/companiesViewProps';
 import {ErrorSummaryView} from '../views/errors/errorSummaryView';

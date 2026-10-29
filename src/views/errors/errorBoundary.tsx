@@ -1,5 +1,5 @@
 import {Component, ErrorInfo, ReactNode} from 'react';
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {ErrorFactory} from '../../errors/errorFactory';
 import {ErrorBoundaryState} from './errorBoundaryState';
 import {ErrorDetailsView} from './errorDetailsView';
 

@@ -1,4 +1,4 @@
-import {ErrorFactory} from '../plumbing/errors/errorFactory';
+import {ErrorFactory} from '../errors/errorFactory';
 import {Configuration} from './configuration';
 import {productionCloudNativeConfiguration, productionServerlessConfiguration} from './productionConfiguration';
 

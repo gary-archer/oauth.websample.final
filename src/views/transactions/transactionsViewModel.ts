@@ -1,9 +1,9 @@
 import EventBus from 'js-event-bus';
 import {GetOptions} from '../../api/client/getOptions';
 import {ApiClient} from '../../api/client/apiClient';
-import {ErrorCodes} from '../../plumbing/errors/errorCodes';
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
-import {UIError} from '../../plumbing/errors/uiError';
+import {ErrorCodes} from '../../errors/errorCodes';
+import {ErrorFactory} from '../../errors/errorFactory';
+import {UIError} from '../../errors/uiError';
 import {TransactionsViewState} from './transactionsViewState';
 
 /*

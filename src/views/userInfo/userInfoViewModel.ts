@@ -1,7 +1,7 @@
 import EventBus from 'js-event-bus';
 import {ApiClient} from '../../api/client/apiClient';
 import {GetOptions} from '../../api/client/getOptions';
-import {ErrorFactory} from '../../plumbing/errors/errorFactory';
+import {ErrorFactory} from '../../errors/errorFactory';
 import {UserInfoViewState} from './userInfoViewState';
 
 /*
