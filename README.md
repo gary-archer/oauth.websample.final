@@ -19,7 +19,6 @@ Cookies are managed solely by OAuth Agent and OAuth Proxy utilities on the API s
 
 ![SPA Architecture](./images/spa-architecture.png)
 
-
 ## Views
 
 The SPA is a simple UI with some basic navigation between views, to render fictional investment resources.\
