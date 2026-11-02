@@ -6,12 +6,12 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">=24"
+    "node": ">=26"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
-    "@types/node": "^24.13.4",
-    "@types/ws": "^8.18.1",
+    "@types/node": "^26.6.6",
+    "@types/ws": "^8.18.2",
     "express": "^5.3.0",
     "ws": "^8.21.0"
   }

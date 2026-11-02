@@ -1,4 +1,4 @@
-FROM node:24-trixie-slim
+FROM node:26-trixie-slim
 
 # Copy the web host application and install its dependencies
 WORKDIR /usr/webhost
