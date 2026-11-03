@@ -22,8 +22,7 @@ fi
 #
 # Require OpenSSL 3 so that up to date syntax can be used
 #
-OPENSSL_VERSION_3="$(openssl version | grep 'OpenSSL 3')"
-if [ "$OPENSSL_VERSION_3" == '' ]; then
+if ! openssl version | grep -qE 'OpenSSL ([3-9]|[1-9][0-9]+)\.'; then
   echo 'Please install openssl version 3 or higher before running this script'
   exit 1
 fi

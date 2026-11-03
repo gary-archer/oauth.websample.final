@@ -65,7 +65,7 @@ Finally, configure [Browser SSL Trust](https://github.com/gary-archer/oauth.blog
 
 ### Run the Code
 
-Ensure that Node.js 24+ is installed, then build the SPA code and run a development web server:
+Ensure that Node.js 26+ is installed, then build the SPA code and run a development web server:
 
 ```bash
 ./start.sh
