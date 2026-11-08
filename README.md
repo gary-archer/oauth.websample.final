@@ -30,7 +30,7 @@ The SPA uses user attributes from both the OpenID Connect userinfo endpoint and 
 ## Online System
 
 The online version uses the AWS CloudFront content delivery network to deliver static content to the browser.\
-Login at https://www.authsamples.com/ with this AWS Cognito test account:
+Login at https://www.authsamples.com/ with the following AWS Cognito test account:
 
 ```text
 - User: guestuser@example.com
@@ -39,17 +39,18 @@ Login at https://www.authsamples.com/ with this AWS Cognito test account:
 
 ## Local Development Quick Start
 
-To run the code sample locally you must configure some infrastructure before you run the code.
+The SPA uses a [Real World OAuth Development URL](https://github.com/gary-archer/oauth.blog/blob/master/public/posts/developer-ssl-setup.mdx#real-world-oauth-development-urls) on a local computer.  
+You must use admin permissions to configure infrastructure before you run the code.  
 
-### Configure DNS and SSL
+### Infrastructure Setup
 
-Configure custom development domains by adding this DNS entry to your hosts file:
+Add DNS entries to your `/etc/hosts` file:
 
 ```bash
 127.0.0.1 localhost www.authsamples-dev.com
 ```
 
-Install OpenSSL 3+ if required, create a secrets folder, then create development certificates:
+Make sure OpenSSL 3+ is installed, specify a secrets folder, then create development certificates:
 
 ```bash
 export SECRETS_FOLDER="$HOME/secrets"
@@ -57,15 +58,21 @@ mkdir -p "$SECRETS_FOLDER"
 ./certs/create.sh
 ```
 
-Finally, configure [Browser SSL Trust](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/developer-ssl-setup.mdx#trust-a-root-certificate-in-browsers) for the SSL root certificate at this location:
+Configure [HTTPS Trust](https://github.com/gary-archer/oauth.blog/blob/master/public/posts/developer-ssl-setup.mdx#configure-operating-system-trust) for the SSL root certificate at the following location:
 
 ```text
 ./certs/authsamples-dev.ca.crt
 ```
 
+Ensure that Node.js 26+ is installed, then grant it access to listen on port 443:
+
+```bash
+sudo setcap 'cap_net_bind_service=+ep' $(which node)
+```
+
 ### Run the Code
 
-Ensure that Node.js 26+ is installed, then build the SPA code and run a development web server:
+Then run the SPA, which does not require admin permissions:
 
 ```bash
 ./start.sh
