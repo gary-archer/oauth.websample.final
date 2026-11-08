@@ -70,9 +70,9 @@ if [ "$NODE_EXTRA_CA_CERTS" == '' ]; then
   export NODE_EXTRA_CA_CERTS='./certs/authsamples-dev.ca.crt'
 fi
 
+#
 # Build the SPA using a bundler and run a development web server
-# On Linux ensure that you have first granted Node.js permissions to listen on port 443:
-# - sudo setcap 'cap_net_bind_service=+ep' $(which node)
+#
 npm start
 if [ $? -ne 0 ]; then
   echo 'Problem encountered serving SPA static content'
