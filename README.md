@@ -39,12 +39,13 @@ Login at https://www.authsamples.com/ with the following AWS Cognito test accoun
 
 ## Local Development Quick Start
 
-The SPA uses a [Real World OAuth Development URL](https://github.com/gary-archer/oauth.blog/blob/master/public/posts/developer-ssl-setup.mdx#real-world-oauth-development-urls) on a local computer.  
+Run the code sample from a terminal on Linux, macOS or Windows (with Git bash).  
+The SPA and API use [Real World OAuth Development URLs](https://github.com/gary-archer/oauth.blog/blob/master/public/posts/developer-ssl-setup.mdx#real-world-oauth-development-urls) on a local computer.  
+
+### Administrator Setup
+
 You must use admin permissions to configure infrastructure before you run the code.  
-
-### Infrastructure Setup
-
-Add DNS entries to your `/etc/hosts` file:
+First, add DNS entries to your `/etc/hosts` file:
 
 ```bash
 127.0.0.1 localhost www.authsamples-dev.com
