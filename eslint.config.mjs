@@ -24,10 +24,5 @@ export default defineConfig([
                 'allowArgumentsExplicitlyTypedAsAny': true,
             }],
         },
-        settings: {
-            react: {
-                version: 'detect',
-            },
-        },
     },
 ]);

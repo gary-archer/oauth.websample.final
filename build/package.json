@@ -17,8 +17,8 @@
     "@types/node": "^26.6.6",
     "cssnano": "^9.9.0",
     "open": "^11.0.0",
-    "postcss": "^8.5.32",
-    "rollup": "^4.68.2",
+    "postcss": "^8.5.33",
+    "rollup": "^4.68.8",
     "rollup-plugin-esbuild": "^6.2.1",
     "rollup-plugin-postcss": "^4.0.2"
   }
